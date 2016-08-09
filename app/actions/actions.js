@@ -14,7 +14,13 @@ const finishedRequest = (response) => {
 export const getGraph = (payload) => {
 	return dispatch => {
 		dispatch(startingRequest());
-		return new Promise(function(resolve, reject) {
+		fecth('/graphql', {
+			method: 'post',
+			headers: {
+				'Content-Type': 'application'
+			},
+			body: payload 
+		}).then(response =>)
 			let request=new XMLHttpRequest();
 			request.open("POST", "/graphql", true);
 			request.setRequestHeader("Content-Type",

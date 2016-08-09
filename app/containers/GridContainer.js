@@ -11,7 +11,11 @@ let Grid = React.createClass({
 	},
 	render() {
 		let dispatch = this.props.dispatch;
-		let workouts = this.props.store.get('data').toObject();
+		let dataFromState = this.props.store.get("data").toArray();
+		let workouts = this.props.store.get("data").toArray();
+		console.log(workouts)
+		
+
 		return (
 			<GridComponent workouts={workouts} />
 		)
@@ -24,6 +28,8 @@ const mapStateToProps = (state) => {
 	}
 };
 
-export const GridContainer = connect(
+const GridContainer = connect(
 	mapStateToProps
 )(Grid);
+
+export default GridContainer

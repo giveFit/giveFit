@@ -1,17 +1,16 @@
 import React from 'react';
-import { createStore, applyMiddleware } from "redux";
-import { Provider } from "react-redux";
+import { bindActionCreators, createStore, applyMiddleware } from "redux";
+import { Provider, connect } from "react-redux";
 import { queryReducer } from "../reducers/reducer.js";
 import thunkMiddleware from "redux-thunk";
-
 import MainToolbar from './MainToolbar';
 import GridContainer from '../containers/GridContainer';
 
 const Home = React.createClass({
-	render: () => {
+	render() {
 		return(
 			<div>
-				<MainToolbar /> 
+				<GridContainer /> 
 			</div>
 		)
 	}

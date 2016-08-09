@@ -20,26 +20,28 @@ const styles = {
   },
 };
 
-function GridComponent({ workouts }) {
-  return (
-      <div>  
-       <GridList
-          style={styles.gridList}
-          cols={1}
-          cellHeight={500}
-          padding={1}
-        >
-          {workouts.map((item, index) => (
-               <MainFeed 
-                  key={index}
-                  data={item}
-               />
-          ))}
-        </GridList>
-      </div>
-        
-  );
-}
+const GridComponent = React.createClass({
+  render() {
+    return (
+        <div>  
+         <GridList
+            style={styles.gridList}
+            cols={1}
+            cellHeight={500}
+            padding={1}
+          >
+            {this.props.workouts.map((item, index) => (
+                 <MainFeed 
+                    key={index}
+                    data={item}
+                 />
+            ))}
+          </GridList>
+        </div>
+          
+    );
+  }
+})
 
 GridComponent.propTypes = {
   workouts: PropTypes.arrayOf(PropTypes.shape({

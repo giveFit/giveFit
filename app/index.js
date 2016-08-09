@@ -1,5 +1,18 @@
-var React = require('react') 
-var ReactDOM = require('react-dom');
-var Application = require('./config/routes')
+import React from 'react';
+import { render } from 'react-dom';
+import routes from './config/routes';
+import { browserHistory, Router } from 'react-router';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 
-ReactDOM.render(<Application />, document.getElementById('app'));
+var Application = () => (
+  <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
+    <Router
+    	history={browserHistory}
+		routes={routes}
+	/>
+  </MuiThemeProvider>
+);
+
+render(<Application />, document.getElementById('app'));
