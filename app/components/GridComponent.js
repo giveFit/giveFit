@@ -21,7 +21,7 @@ const styles = {
 };
 
 function GridComponent (props) {
-  console.log("grid component props");
+  /*console.log("grid component props");
   console.log(props);
   console.log("grid component props");
   console.log("grid component props.workouts");
@@ -29,7 +29,7 @@ function GridComponent (props) {
   console.log("grid component props.workouts");
   console.log("grid component props.workouts nodes entry");
   console.log(props.workouts[0]);
-  console.log("grid component props.workouts nodes entry");
+  console.log("grid component props.workouts nodes entry");*/
   return (
         <div>  
          <GridList
@@ -39,11 +39,11 @@ function GridComponent (props) {
             padding={1}
           >
             {props.workouts.map((item, index) => (
-      
-                 <MainFeed 
-                    key={index}
-                    data={item._root.nodes.entry}
-                 />
+                 <div key={index}> {!item || 
+                  (<MainFeed 
+                    data={item}
+                 />)} </div>
+                 
             ))}
           </GridList>
         </div>
@@ -51,7 +51,7 @@ function GridComponent (props) {
     );
 } 
  
-GridComponent.propTypes = {
+/*GridComponent.propTypes = {
   workouts: PropTypes.arrayOf(PropTypes.shape({
     title: PropTypes.string.isRequired,
     date: PropTypes.string,
@@ -65,5 +65,5 @@ GridComponent.propTypes = {
     avatar: PropTypes.string,
     id: PropTypes.string,
   })).isRequired,
-};
+};*/
 export default GridComponent;

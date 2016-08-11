@@ -10,6 +10,7 @@ const Home = React.createClass({
 	render() {
 		return(
 			<div>
+				<MainToolbar />
 				<GridContainer /> 
 			</div>
 		)

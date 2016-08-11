@@ -2,25 +2,28 @@ import React, { PropTypes } from 'react';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 
-const MainFeed = (props) => (
-    <Card key={props.data.id}>
+export default class MainFeed extends React.Component{
+  render(){
+    const workout = this.props.data
+    return(
+      <Card key={workout.get('id')}>
       <CardHeader
-        title={props.data.author}
-        avatar={props.data.avatar}
-        subtitle={props.data.location}
+        title={workout.get('author')}
+        avatar={workout.get('avatar')}
+        subtitle={workout.get('location')}
       />
       <CardMedia
         overlay={
                   <CardTitle 
-                    title={props.data.title} 
-                    subtitle={props.data.date}
-                    /*subtitle={props.data.date}*/
+                    title={workout.get('title')} 
+                    subtitle={workout.get('date')}
+                    /*subtitle={workout.get('date')}*/
                   />
                 }
       >
-        <img src={props.data.image} />
+        <img src={workout.get('image')} />
       </CardMedia>
-      <CardTitle title={props.data.contentSnippet} />
+      <CardTitle title={workout.get('contentSnippet')} />
      {/* <CardText>
         <div>Comments</div>
       </CardText>*/}
@@ -28,6 +31,6 @@ const MainFeed = (props) => (
         <FlatButton label="Expand+" />
       </CardActions>
     </Card>
-);
-
-export default MainFeed;
+    )
+  }
+}

@@ -2,7 +2,7 @@ import Immutable from 'immutable';
 
 const immutableState = Immutable.Map({
 	fetching: false,
-	data: Immutable.Map({})
+	data: Immutable.Map({id: null})
 })
 
 export const queryReducer = (state = immutableState, action) => {
