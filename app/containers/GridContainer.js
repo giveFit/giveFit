@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { getGraph } from "../actions/actions.js";
 import GridComponent from '../components/GridComponent';
+import Immutable from 'immutable';
  
 let Grid = React.createClass({
 	componentDidMount() {
@@ -11,11 +12,11 @@ let Grid = React.createClass({
 	},
 	render() {
 		let dispatch = this.props.dispatch;
-		let dataFromState = this.props.store.get("data").toArray();
 		let workouts = this.props.store.get("data").toArray();
+		console.log("container workouts")
 		console.log(workouts)
-		
-
+		console.log("container workouts")
+	
 		return (
 			<GridComponent workouts={workouts} />
 		)
@@ -23,9 +24,8 @@ let Grid = React.createClass({
 });
 
 const mapStateToProps = (state) => {
-	return {
-		store: state
-	}
+	console.log(state);
+	return { store: state }
 };
 
 const GridContainer = connect(

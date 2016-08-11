@@ -4,7 +4,7 @@ var Main = React.createClass({
 	render: function () {
 		return (
 			<div>
-				{React.cloneElement({this.props.children}, this.props)}
+				{this.props.children}
 			</div>
 		)
 	}

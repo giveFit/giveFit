@@ -20,9 +20,17 @@ const styles = {
   },
 };
 
-const GridComponent = React.createClass({
-  render() {
-    return (
+function GridComponent (props) {
+  console.log("grid component props");
+  console.log(props);
+  console.log("grid component props");
+  console.log("grid component props.workouts");
+  console.log(props.workouts[0]);
+  console.log("grid component props.workouts");
+  console.log("grid component props.workouts nodes entry");
+  console.log(props.workouts[0]);
+  console.log("grid component props.workouts nodes entry");
+  return (
         <div>  
          <GridList
             style={styles.gridList}
@@ -30,19 +38,19 @@ const GridComponent = React.createClass({
             cellHeight={500}
             padding={1}
           >
-            {this.props.workouts.map((item, index) => (
+            {props.workouts.map((item, index) => (
+      
                  <MainFeed 
                     key={index}
-                    data={item}
+                    data={item._root.nodes.entry}
                  />
             ))}
           </GridList>
         </div>
           
     );
-  }
-})
-
+} 
+ 
 GridComponent.propTypes = {
   workouts: PropTypes.arrayOf(PropTypes.shape({
     title: PropTypes.string.isRequired,
