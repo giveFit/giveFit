@@ -21,15 +21,6 @@ const styles = {
 };
 
 function GridComponent (props) {
-  /*console.log("grid component props");
-  console.log(props);
-  console.log("grid component props");
-  console.log("grid component props.workouts");
-  console.log(props.workouts[0]);
-  console.log("grid component props.workouts");
-  console.log("grid component props.workouts nodes entry");
-  console.log(props.workouts[0]);
-  console.log("grid component props.workouts nodes entry");*/
   return (
         <div>  
          <GridList
@@ -51,19 +42,4 @@ function GridComponent (props) {
     );
 } 
  
-/*GridComponent.propTypes = {
-  workouts: PropTypes.arrayOf(PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    date: PropTypes.string,
-    time: PropTypes.string.isRequired,
-    location: PropTypes.string,
-    author: PropTypes.string,
-    contentSnippet: PropTypes.string,
-    tags: PropTypes.string,
-    day: PropTypes.string,
-    image: PropTypes.string,
-    avatar: PropTypes.string,
-    id: PropTypes.string,
-  })).isRequired,
-};*/
 export default GridComponent;

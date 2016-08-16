@@ -1,32 +1,25 @@
 import React from 'react';
-import { bindActionCreators, createStore, applyMiddleware } from "redux";
-import { Provider, connect } from "react-redux";
-import { queryReducer } from "../reducers/reducer.js";
+import { bindActionCreators, createStore, applyMiddleware } from 'redux';
+import { Provider, connect } from 'react-redux';
+import { queryReducer } from '../reducers/reducer.js';
+import configStore from '../store/configStore';
 import thunkMiddleware from "redux-thunk";
-import MainToolbar from './MainToolbar';
-import GridContainer from '../containers/GridContainer';
-
-const Home = React.createClass({
-	render() {
-		return(
-			<div>
-				<MainToolbar />
-				<GridContainer /> 
-			</div>
-		)
-	}
-})
+import App from '../containers/App'
 
 const createStoreWithMiddleware = applyMiddleware(thunkMiddleware)(createStore)
 
-const TrialComponent = React.createClass({
+/*const store = configStore();
+*/
+const Home = React.createClass({
 	render: () => {
 		return(
 			<Provider store={createStoreWithMiddleware(queryReducer)}>
-				<Home />
+			{/*Working on alternative implementation
+			<Provider store={store}>*/}
+				<App />
 			</Provider>
 		)
 	}
 }) 
 
-module.exports = TrialComponent;
+module.exports = Home;

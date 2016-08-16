@@ -4,26 +4,26 @@ import FlatButton from 'material-ui/FlatButton';
 
 export default class MainFeed extends React.Component{
   render(){
-    const workout = this.props.data
+    const workout = this.props.data.toObject();
     return(
-      <Card key={workout.get('id')}>
+      <Card key={workout.id}>
       <CardHeader
-        title={workout.get('author')}
-        avatar={workout.get('avatar')}
-        subtitle={workout.get('location')}
+        title={workout.author}
+        avatar={workout.avatar}
+        subtitle={workout.location}
       />
       <CardMedia
         overlay={
                   <CardTitle 
-                    title={workout.get('title')} 
-                    subtitle={workout.get('date')}
+                    title={workout.title} 
+                    subtitle={workout.date}
                     /*subtitle={workout.get('date')}*/
                   />
                 }
       >
-        <img src={workout.get('image')} />
+        <img src={workout.image} />
       </CardMedia>
-      <CardTitle title={workout.get('contentSnippet')} />
+      <CardTitle title={workout.contentSnippet} />
      {/* <CardText>
         <div>Comments</div>
       </CardText>*/}

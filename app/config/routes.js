@@ -1,20 +1,17 @@
 import React from 'react';
-import ReactRouter from 'react-router';
-import injectTapEventPlugin from 'react-tap-event-plugin';
+import ReactRouter, { Router, Route, browserHistory, IndexRoute } from 'react-router';
+
+import HomeContainer from '../components/Home/HomeContainer';
+import GridContainer from '../components/Feed/GridContainer';
+import MainToolbar from '../components/Header/MainToolbar';
 
 
-import { Router, Route, browserHistory, IndexRoute } from 'react-router';
+const routes = (
+	<Route path='/' component={MainToolbar}>
+		<IndexRoute component={HomeContainer} />
+		<Route path='app' component={GridContainer} />
+	</Route>
+)
 
-
-import Main from '../components/Main';
-import TrialComponent from '../components/Home';
-
-injectTapEventPlugin();
-
-var routes = (
-    <Route path='/' component={Main}>
-      <IndexRoute component={TrialComponent} />
-    </Route>
-);
 
 export default routes;
