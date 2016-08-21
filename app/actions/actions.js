@@ -1,3 +1,4 @@
+import * as types from '../constants/ActionTypes';
 const startingRequest = () => {
 	return {
 		type: "STARTING_REQUEST"
@@ -18,7 +19,7 @@ export const getGraph = (payload) => {
 			let request=new XMLHttpRequest();
 			request.open("POST", "/graphql", true);
 			request.setRequestHeader("Content-Type",
-				"application/graphql");
+				"application/graphiql");
 			request.send(payload);
 			request.onreadystatechange = () => {
 				if (request.readyState === 4) {

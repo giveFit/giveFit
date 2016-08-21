@@ -30,10 +30,10 @@ export default class MainToolbar extends Component  {
                   onRequestChange={(open) => this.setState({open})}
                 >
                   <MenuItem onTouchTap={this.handleClose.bind(this)}>
-                    <Link to='/app'>Workout Groups</Link>
+                  <Link to='/'>Home</Link>
                   </MenuItem>
                   <MenuItem onTouchTap={this.handleClose.bind(this)}>
-                  <Link to='/'>Home</Link>
+                    <Link to='/app'>Workout Groups</Link>
                   </MenuItem>
                   <MenuItem onTouchTap={this.handleClose.bind(this)}>Login</MenuItem>
                   <MenuItem onTouchTap={this.handleClose.bind(this)}>Blog</MenuItem>

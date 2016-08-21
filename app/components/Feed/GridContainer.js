@@ -1,33 +1,29 @@
-import React from "react";
-import { connect } from "react-redux";
-import { getGraph } from "../../actions/actions.js";
+import React, { Component } from 'react';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
 import GridComponent from './GridComponent';
-import Immutable from 'immutable';
- 
-let GridContainer = React.createClass({
-	componentDidMount() {
-		this.props.dispatch(
-			getGraph("{workouts{title,date,time,location,author,contentSnippet,tags,day,image,avatar,id}}")
-		);
-	},
+
+class GridContainer extends React.Component {
+
 	render() {
-		let dispatch = this.props.dispatch;
-		let workouts = this.props.store.get("data").toArray();
-		/*console.log("container workouts");
-		console.log(workouts);
-		console.log("container workouts");*/
-	
+		console.log("props")
+		console.log(this.props)
+		const workouts = this.props.data.workouts;
+		
 		return (
 			<GridComponent workouts={workouts} />
 		)
 	}
-});
-
-const mapStateToProps = (state) => {
-/*	console.log(state);*/
-	return { store: state }
 };
 
-export default connect(
-	mapStateToProps
-)(GridContainer);
+const GET_WORKOUTS = gql`
+  query getWorkouts {
+     workouts { title, date, time, location, author, contentSnippet, tags, day, image, avatar, id } 
+  }
+`;
+
+const withWorkouts = graphql(GET_WORKOUTS);
+
+const GridContainerWithData = withWorkouts(GridContainer)
+
+export default GridContainerWithData;

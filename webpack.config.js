@@ -1,7 +1,13 @@
+
+var HtmlWebpackPlugin = require('html-webpack-plugin')
 var webpack = require('webpack');
+var HTMLWebpackPluginConfig = new HtmlWebpackPlugin({
+  template: __dirname + '/app/index.html',
+  filename: 'index.html',
+  inject: 'body'
+});
 
 var compiler = webpack({
-  devtool: "inline-source-map",
   entry: "./app/index.js",
   output: {
     path: __dirname,
