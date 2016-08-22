@@ -24,7 +24,7 @@ injectTapEventPlugin();
 //Create store middleware
 /*const createStoreWithMiddleware = applyMiddleware(thunkMiddleware)(createStore);*/
 const client = new ApolloClient({
-    networkInterface: createNetworkInterface('localhost:8080/graphql', {
+    networkInterface: createNetworkInterface('/graphql', {
         credentials: 'same-origin',
     }),
     shouldBatch: false

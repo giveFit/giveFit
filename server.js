@@ -21,7 +21,7 @@ var PORT = 8080;
 
 var graphqlServer = express();
 
-graphqlServer.use('/graphql', bodyParser.json(), new apolloExpress({
+graphqlServer.use('/graphql', bodyParser.json(), apolloExpress({
   schema: schema
 }));
 
@@ -36,6 +36,9 @@ graphqlServer.listen(PORT, () => console.log(
 
 var app = new WebpackDevServer(compiler, {
  contentBase: "/public/",
+ proxy: {
+ 	"/graphql": `http://localhost:${PORT}`
+ },
  publicPath: "/static/",
  stats: {colors: true}
 });
