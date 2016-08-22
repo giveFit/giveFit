@@ -13,9 +13,9 @@ let GridContainer = React.createClass({
 	render() {
 		let dispatch = this.props.dispatch;
 		let workouts = this.props.store.get("data").toArray();
-		/*console.log("container workouts");
+		console.log("container workouts");
 		console.log(workouts);
-		console.log("container workouts");*/
+		console.log("container workouts");
 	
 		return (
 			<GridComponent workouts={workouts} />
