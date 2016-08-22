@@ -7,6 +7,8 @@ var apollo = require('apollo-server');
 var apolloExpress = apollo.apolloExpress;
 var graphiqlExpress = apollo.graphiqlExpress;
 var bodyParser = require('body-parser')
+var proxyMiddleware = require('http-proxy-middleware');
+var cors = require('cors');
 
 //Material UI
 global.navigator = { navigator: 'all' };
@@ -15,11 +17,11 @@ var schema = require('./app/data/schema');
 var compiler = require('./webpack.config');
 
 //GraphQL Stuff
-var PORT = 3010;
+var PORT = 8080;
 
 var graphqlServer = express();
 
-graphqlServer.use('/graphql', bodyParser.json(), apolloExpress({
+graphqlServer.use('/graphql', bodyParser.json(), new apolloExpress({
   schema: schema
 }));
 
@@ -34,12 +36,11 @@ graphqlServer.listen(PORT, () => console.log(
 
 var app = new WebpackDevServer(compiler, {
  contentBase: "/public/",
- proxy: {
- 	"/graphql": `http://localhost:${3010}`
- },
  publicPath: "/static/",
  stats: {colors: true}
 });
+
+/*app.use(proxyMiddleware('http://localhost:8080/graphql'));*/
 
 app.use("/", express.static("static"));
 app.listen(3000);

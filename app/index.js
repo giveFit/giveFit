@@ -23,12 +23,15 @@ injectTapEventPlugin();
 
 //Create store middleware
 /*const createStoreWithMiddleware = applyMiddleware(thunkMiddleware)(createStore);*/
-const store = configStore()
-
 const client = new ApolloClient({
-  networkInterface: createNetworkInterface('http://localhost:8080/graphql'),
-  queryTransformer: addTypename,
+    networkInterface: createNetworkInterface('localhost:8080/graphql', {
+        credentials: 'same-origin',
+    }),
+    shouldBatch: false
 })
+console.log("client");
+console.log(client);
+console.log("client");
 
 const Application = () => (
   <MuiThemeProvider>
@@ -38,6 +41,7 @@ const Application = () => (
      />
   </MuiThemeProvider>
 );
+
 render(
 	<ApolloProvider client={client}>
 		<Application />
