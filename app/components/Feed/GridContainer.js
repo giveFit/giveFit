@@ -14,7 +14,7 @@ class GridContainer extends React.Component {
 		console.log(this.props.data.workouts)
 		
 		return this.props.data.loading === true
-		? <p> Loading </p>
+		? <p> Loading... </p>
 		:	<GridComponent workouts={this.props.data.workouts} />
 	}
 };

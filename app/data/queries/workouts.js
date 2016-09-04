@@ -1,8 +1,8 @@
 var graphql = require('graphql');
 var List = graphql.GraphQLList;
 
-var WorkoutList = require ('./fakeData/workoutData');
-var WorkoutType = require ('../types/WorkoutType')
+var WorkoutList = require('./fakeData/workoutData');
+var WorkoutType = require('../types/WorkoutType');
 // Workout feed
 const workouts = {
   type: new List(WorkoutType),
