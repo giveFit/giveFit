@@ -8,10 +8,12 @@ import GridContainer from '../components/Feed/GridContainer';
 
 class App extends Component {
 	render() {
+
 		return (
-			<div> 
+			<div>
 				<MainToolbar />
 				<HomeContainer />
+
 			</div>
 		);
 	}

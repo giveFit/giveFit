@@ -2,13 +2,14 @@
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var webpack = require('webpack');
 var HTMLWebpackPluginConfig = new HtmlWebpackPlugin({
-  template: __dirname + '/app/index.html',
+  template: '/app/index.html',
   filename: 'index.html',
-  inject: 'body'
+  googleMaps:true
 });
 
 var compiler = webpack({
   entry: "./app/index.js",
+  devtool : "#source-map",
   output: {
     path: __dirname,
     filename: "bundle.js",

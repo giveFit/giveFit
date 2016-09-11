@@ -29,6 +29,7 @@
     "react": "^15.3.0",
     "react-apollo": "^0.4.6",
     "react-dom": "^15.3.0",
+    "react-google-maps": "^4.11.0",
     "react-redux": "^4.0.6",
     "react-router": "^2.6.1",
     "react-tap-event-plugin": "^1.0.0",

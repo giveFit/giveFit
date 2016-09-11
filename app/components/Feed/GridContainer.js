@@ -12,16 +12,16 @@ class GridContainer extends React.Component {
 		console.log(this.props.data.error)
 		console.log("error")
 		console.log(this.props.data.workouts)
-		
+
 		return this.props.data.loading === true
 		? <p> Loading </p>
-		:	<GridComponent workouts={this.props.data.workouts} />
+		:	<GridComponent onPlaceSelect={(place)=>{console.log(place)}} workouts={this.props.data.workouts} />
 	}
 };
 
 const GET_WORKOUTS = gql`
   query getWorkouts {
-     workouts { title, date, time, location, author, contentSnippet, tags, day, image, avatar, id } 
+     workouts { title, date, time, location, author, contentSnippet, tags, day, image, avatar, id }
   }
 `;
 
