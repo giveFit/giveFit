@@ -57,7 +57,10 @@ class GridComponent extends Component {
                 map: map
               });
               this.infowindow.setContent(results[1].formatted_address);
-              this.props.onPlaceSelect(results[1].formatted_address);
+              this.props.onPlaceSelect({
+                  coordinates : latlng,
+                  address :results[1].formatted_address
+              });
               this.infowindow.open(map, marker);
             } else {
               //window.alert('No results found');
@@ -89,7 +92,10 @@ class GridComponent extends Component {
                      ref={(map) => { this._googleMapComponent = map ; console.log(map);} }
                      defaultZoom={8}
                      defaultCenter={{ lat: -25.363882, lng: 131.044922 }}
-                     onClick={(...args)=>this.geocodeLatLng(...args)}
+                     onClick={(...args)=>{
+                      console.log(...args);
+                      return this.geocodeLatLng(...args)
+                     }}
                    >
                      {props.markers ? props.marker.map((marker, index) => {
                        return (
