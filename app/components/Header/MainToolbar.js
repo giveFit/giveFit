@@ -35,8 +35,13 @@ export default class MainToolbar extends Component  {
                   <MenuItem onTouchTap={this.handleClose.bind(this)}>
                     <Link to='/app'>Workout Groups</Link>
                   </MenuItem>
+                  <MenuItem onTouchTap={this.handleClose.bind(this)}>
+                    <Link to='/blog'>Blog</Link>
+                  </MenuItem>
+                  <MenuItem onTouchTap={this.handleClose.bind(this)}>
+                    <Link to='/map'>Map</Link>
+                  </MenuItem>
                   <MenuItem onTouchTap={this.handleClose.bind(this)}>Login</MenuItem>
-                  <MenuItem onTouchTap={this.handleClose.bind(this)}>Blog</MenuItem>
                 </Drawer>
 
                 <AppBar title={<Link to='/'>givefit</Link>}

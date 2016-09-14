@@ -4,6 +4,7 @@ var ObjectType = graphql.GraphQLObjectType;
 
 var workouts =require('./queries/workouts');
 var locations = require('./queries/locations');
+var getWorkoutsViaLatLng = require('./queries/mutation')
 
 const schema = new Schema({
   query: new ObjectType({

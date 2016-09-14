@@ -1,4 +1,8 @@
 import React, { PropTypes } from 'react';
+
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+
 import IconButton from 'material-ui/IconButton';
 import Subheader from 'material-ui/Subheader';
 import StarBorder from 'material-ui/svg-icons/toggle/star-border';

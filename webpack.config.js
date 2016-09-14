@@ -1,14 +1,13 @@
 
-var HtmlWebpackPlugin = require('html-webpack-plugin')
 var webpack = require('webpack');
-var HTMLWebpackPluginConfig = new HtmlWebpackPlugin({
-  template: __dirname + '/app/index.html',
-  filename: 'index.html',
-  inject: 'body'
-});
 
 var compiler = webpack({
-  entry: "./app/index.js",
+  entry: [
+    'react-hot-loader/patch',
+    'webpack-dev-server/client?http://localhost:3000',
+    'webpack/hot/only-dev-server',
+    "./app/index.js",
+    ],
   output: {
     path: __dirname,
     filename: "bundle.js",
@@ -21,7 +20,10 @@ var compiler = webpack({
         loader: "babel-loader"
       }
     ]
-  }
+  },
+   plugins: [
+   new webpack.HotModuleReplacementPlugin()
+ ],
 });
 
 module.exports = compiler;
