@@ -12,6 +12,7 @@ const schema = new Schema({
     fields: {
       workouts,
       locations,
+      getWorkoutsViaLatLng,
     },
   }),
 });

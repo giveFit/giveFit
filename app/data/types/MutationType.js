@@ -4,7 +4,7 @@ var StringType = graphql.GraphQLString;
 var NonNull = graphql.GraphQLNonNull;
 
 const MutationType = new ObjectType({
-	name: 'Location',
+	name: 'MutationType',
 	fields: {
 		location: { type: StringType },
 		lat: { type: StringType },

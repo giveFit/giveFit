@@ -1,63 +1,87 @@
 var graphql = require('graphql');
 var List = graphql.GraphQLList;
-var GoogleMapsAPI = require('googlemaps');
-
-var MutationType = require('../types/MutationType');
+var distance = require('google-distance')
 
 //Mock API
 var WorkoutList = require('./fakeData/workoutData');
 
-var publicConfig = {
-  key: 'AIzaSyDaqZIUzhyOdPDlsVjkdLbuWj89F3gNCMg',
-  stagger_time:       1000, // for elevationPath 
-  encode_polylines:   false,
-  secure:             true, // use https 
-  //proxy:              'http://127.0.0.1:9999' // optional, set a proxy for HTTP requests 
+//Type
+var MutationType = require('../types/MutationType');
+
+distance.apiKey = 'AIzaSyAJwnW0tijEPtd2YUH_e7uW1U0vIWLtg0k';
+
+function calculateDistance(params, callback){
+  distance.get(params, function(err, result){
+      var distance = result;
+      callback(null, distance)
+  });
+}
+
+	
+/*I want to go through my workout list and return 
+any workouts within 10 miles
+
+a. submit orign and destination as "params" to distance
+b. push distance to workouts object
+b. filter those workouts to return workouts greater than 10 miles*/
+
+console.log("getWorkoutListCoordinates(WorkoutList);")
+function getWorkoutListDistances(workouts) {
+	workouts.map((workout, index)=>{
+	var lat = workout.lat;
+	var lng = workout.lng;
+	var workoutCoordinates = lat + "," + lng;
+    var params = {
+      origin: origin,
+      destination: workoutCoordinates
+    }
+
+	calculateDistance(params, (err, distance)=>{
+		if(err){
+			console.error(err)
+			}else{
+				var distanceInMeters = distance.distanceValue
+				console.log('distanceInMeters')
+				console.log(distanceInMeters)
+				console.log('workout')
+				workout.distance = distanceInMeters
+				console.log(workout)
+			}		
+		}) 
+		
+	})
 };
- 
-var gmAPI = new GoogleMapsAPI(publicConfig);
 
-function calculateDistances(latlng) {
+/*team formation
+introduce
+teams to split up and pick a topic
+startups, showcase solution related to a topic
+startups, can mingle and be mentors
+do presentations, after presentations, judges deliberate
+keynote during deliberation 
+*/
 
-  		var destinations = [
-		    "2033 Dorsett Village, Maryland Heights, MO 63043",
-		    "1208 Tamm Avenue, St. Louis, MO 63139",
-		    "1964 S Old Highway 94 St Charles, MO 63303"];
+//Filter workouts by their distance to the origin
+function filterByDistance(obj){
+	if (obj.distance > 10000) {
+		return true;
+	} else {
+		return false;
+	}
+};
 
-		    gmAPI.getDistanceMatrix({
-		        origins: [latlng], //array of origins
-		        destinations: destinations, //array of destinations
-		        travelMode: google.maps.TravelMode.DRIVING,
-		        unitSystem: google.maps.UnitSystem.METRIC,
-		        avoidHighways: false,
-		        avoidTolls: false
-		    }, callback);
-}	
 
 const getWorkoutsViaLatLng = {
-  type: new List(MutationType),
-  resolve: (source, args) => {
-  		let latlng = Object.assign({}, args);
+	  type: new List(MutationType),
+	  resolve: (source, args) => {
+		let origin = "39.292013,-76.653072";
+		
+		getWorkoutListDistances(WorkoutList)
 
-  		console.log(latlng);
-  		
-  		return calculateDistances(latlng)
-
-		function callback(response, status) {
-		    if (status != google.maps.DistanceMatrixStatus.OK) {
-		        alert('Error was: ' + status);
-		    } else {
-		        //we only have one origin so there should only be one row
-		        var routes = response.rows[0];
-		        
-		        //return routes that are less than 10 miles
-		        //1,609.34 meters in a mile (the duration value is returned in meters)
-		        routes.filter((route) => {
-		            return routes.elements[route].duration.value < 16093.4
-		        })
-		    }
-		}
-  	}
+	}
 }
 
 module.exports = getWorkoutsViaLatLng;
+
+
+
