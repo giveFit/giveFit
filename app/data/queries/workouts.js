@@ -56,6 +56,9 @@ function getWorkoutListDistances(workouts) {
 	})
 };
 
+let origin = "39.292013,-76.653072";
+console.log("Hey here's getWorkoutListDistances")
+getWorkoutListDistances(WorkoutList)
 
 //Filter workouts by their distance to the origin
 function filterByDistance(obj){
@@ -65,39 +68,51 @@ function filterByDistance(obj){
 		return false;
 	}
 };
+
+
 // Workout feed
 const workouts = {
   type: new List(WorkoutType),
-  resolve: (source, args) => {
-  	let origin = "39.292013,-76.653072";
-  	WorkoutList.map((workout, index)=>{
-	var lat = workout.lat;
-	var lng = workout.lng;
-	var workoutCoordinates = lat + "," + lng;
-    var params = {
-      origin: origin,
-      destination: workoutCoordinates
-    }
-
-	calculateDistance(params, (err, distance)=>{
-		if(err){
-			console.error(err)
-			}else{
-				var distanceInMeters = distance.distanceValue
-				workout.distance = distanceInMeters
-				var workoutsArray = [];
-				workoutsArray.push(workout);
-				console.log("workoutsArray");
-				console.log(workoutsArray);
-			}	
+	resolve: (source, args) => {
+		let workoutsArray = [];
+	  	let origin = "39.292013,-76.653072";
+/*	  	console.log(WorkoutList);
+*/	  	return WorkoutList.map((workout, index)=>{
+			var lat = workout.lat;
+			var lng = workout.lng;
+			var workoutCoordinates = lat + "," + lng;
+		    var params = {
+		      origin: origin,
+		      destination: workoutCoordinates
+		    }
 			
-		}).bind(this) 
-		
-	}).bind(this)
+			/*workoutsArray.push(workout);
+			console.log("workoutsArray1");
+			console.log(workoutsArray);*/
 
-  		console.log('workoutObject');	
-			return workoutObject;
-  }
+			calculateDistance(params, (err, distance)=>{
+				if(err){
+					console.error(err)
+				} else {
+					var distanceInMeters = distance.distanceValue
+					workout.distance = distanceInMeters
+					console.log("workout")
+					console.log(workout)
+					
+					workoutsArray.push(workout);
+					console.log("workoutsArray1");
+					console.log(workoutsArray);
+
+				};
+			})
+			console.log("after calculate distance");
+			return;
+	  	});
+
+		console.log('workoutsArray2');
+		console.log(workoutsArray)	
+	  	return workoutsArray;
+	}
 };
 
 module.exports = workouts;
