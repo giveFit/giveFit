@@ -23,9 +23,11 @@ class GridContainer extends React.Component {
 	}
 };
 
+let latLng = "39.292013,-76.653072";
+
 const GET_WORKOUTS = gql`
   query getWorkouts {
-     workouts { title, date, time, location, author, contentSnippet, tags, day, image, avatar, id }
+     workouts{ title, date, time, location, author, contentSnippet, tags, day, image, avatar, id }
   }
 `;
 

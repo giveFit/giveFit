@@ -25,7 +25,6 @@ a. submit orign and destination as "params" to distance
 b. push distance to workouts object
 b. filter those workouts to return workouts greater than 10 miles*/
 
-console.log("getWorkoutListCoordinates(WorkoutList);")
 function getWorkoutListDistances(workouts) {
 	workouts.map((workout, index)=>{
 	var lat = workout.lat;
@@ -70,13 +69,12 @@ function filterByDistance(obj){
 	}
 };
 
-
 const getWorkoutsViaLatLng = {
 	  type: new List(MutationType),
 	  resolve: (source, args) => {
 		let origin = "39.292013,-76.653072";
-		
-		getWorkoutListDistances(WorkoutList)
+
+		/*getWorkoutListDistances(WorkoutList)*/
 
 	}
 }
