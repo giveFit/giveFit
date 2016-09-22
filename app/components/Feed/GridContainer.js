@@ -15,11 +15,9 @@ class GridContainer extends React.Component {
 
 		return this.props.data.loading === true
 		? <p> Loading </p>
-		:	<GridComponent onPlaceSelect={(place)=>{
-			console.log(place);
-			this.props.data.refetch();
-			return null;
-		}} workouts={this.props.data.workouts} />
+		:	<GridComponent 
+			workouts={this.props.data.workouts} 
+			/>
 	}
 };
 

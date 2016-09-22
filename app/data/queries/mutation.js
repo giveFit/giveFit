@@ -51,6 +51,8 @@ function getWorkoutListDistances(workouts) {
 	})
 };
 
+
+
 /*team formation
 introduce
 teams to split up and pick a topic
@@ -69,10 +71,13 @@ function filterByDistance(obj){
 	}
 };
 
+
 const getWorkoutsViaLatLng = {
 	  type: new List(MutationType),
 	  resolve: (source, args) => {
 		let origin = "39.292013,-76.653072";
+
+		return WorkoutList;
 
 		/*getWorkoutListDistances(WorkoutList)*/
 
