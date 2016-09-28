@@ -15,22 +15,29 @@ class GridContainer extends React.Component {
 
 		return this.props.data.loading === true
 		? <p> Loading </p>
-		:	<GridComponent 
-			workouts={this.props.data.workouts} 
-			/>
+		:	<div>
+				<GridComponent 
+					workouts={this.props.data.workouts} 
+					/>
+			</div>
+
 	}
 };
 
-let latLng = "39.292013,-76.653072";
-
+const LAT_LNG = "39.292013,-76.653072";
 const GET_WORKOUTS = gql`
-  query getWorkouts {
-     workouts{ title, date, time, location, author, contentSnippet, tags, day, image, avatar, id }
+  query getWorkouts($latLng: String!){
+     workouts(latLng: $latLng){title, date, time, location, author, contentSnippet, tags, day, image, avatar, id }
   }
 `;
 
-const withWorkouts = graphql(GET_WORKOUTS);
-
-const GridContainerWithData = withWorkouts(GridContainer)
+const GridContainerWithData = graphql(GET_WORKOUTS, {
+	options(props) {
+		return { 
+		variables: { 
+			latLng : LAT_LNG
+		}
+	};
+}})(GridContainer);
 
 export default GridContainerWithData;

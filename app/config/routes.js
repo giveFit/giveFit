@@ -21,7 +21,7 @@ import MapContainerWithData from '../components/Map/Map';
 	*/
 const routes = (
 	<Route path='/' component={MainToolbar}>
-		<IndexRoute component={HomeContainer} />
+		<IndexRoute component={GridContainerWithData} />
 		<Route path='app' component={GridContainerWithData} />
 		<Route path='blog' component={Blog} />
 		<Route path='map' component={MapContainerWithData} />

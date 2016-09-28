@@ -1,5 +1,6 @@
 var graphql = require('graphql');
 var List = graphql.GraphQLList;
+var StringType = graphql.GraphQLString;
 
 var WorkoutList = require('./fakeData/workoutData');
 var WorkoutType = require('../types/WorkoutType');
@@ -17,14 +18,14 @@ distance.apiKey = 'AIzaSyAJwnW0tijEPtd2YUH_e7uW1U0vIWLtg0k';
 // Workout feed
 const workouts = {
   type: new List(WorkoutType),
-	resolve: (source, args) => {
+  args: { latLng: { type: StringType }},
+	resolve: (root, { latLng }, args) => {
 		/*eventually will want to turn this into a promise-based
 		architecture, callbacks ok for now*/
+		console.log("argssss")
+		console.log(latLng)
 		
-		//dummy variable pass
-		let origin = "39.292013,-76.653072";
-		//defining our filtered array
-
+		//building our locationParams
 		function getWorkoutParams(workouts){
 			var workoutsArray = workouts.map(function(workout){
 				var lat = workout.lat
@@ -33,7 +34,7 @@ const workouts = {
 				return workoutCoordinates;
 			})
 			return {
-				origins: [origin],
+				origins: [latLng],
 				destinations: workoutsArray
 			}
 		}

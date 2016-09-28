@@ -17,6 +17,9 @@ const WorkoutType = new ObjectType({
     image: { type: StringType},
     avatar: { type: StringType},
     id: { type: StringType},
+    lat: { type: StringType},
+    lng: { type: StringType},
+    
   },
 });
 
