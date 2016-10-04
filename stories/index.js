@@ -36,6 +36,7 @@ storiesOf('Group', module)
 	id="502062160786789448"
 	image="http://dummyimage.com/239x100.png/dddddd/000000"
 	location="00865 Garrison Street"
+  workoutName="Next workout: get swole"
 	tags="[object Object]"
 	time="10:50 AM"
 	title="pellentesque at"

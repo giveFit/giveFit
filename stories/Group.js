@@ -4,22 +4,24 @@ import FlatButton from 'material-ui/FlatButton';
 
 const Group = (props) => (
     <Card >
-      <CardHeader
-        title={props.author}
-        avatar={props.avatar}
+      <CardTitle 
+        title={props.title} 
         subtitle={props.location}
       />
       <CardMedia
         overlay={
                   <CardTitle 
-                    title={props.title} 
+                    title={props.workoutName} 
                     subtitle={props.date}
-                    /*subtitle={props.data.date}*/
                   />
                 }
       >
         <img src={props.image} />
       </CardMedia>
+       <CardHeader
+        title={props.author}
+        avatar={props.avatar}
+      />
       <CardTitle title={props.contentSnippet} />
      
       <CardActions>

@@ -1,11 +1,10 @@
 import React, { PropTypes,Component } from 'react';
-import IconButton from 'material-ui/IconButton';
-import Subheader from 'material-ui/Subheader';
-import StarBorder from 'material-ui/svg-icons/toggle/star-border';
-import GridList from 'material-ui/GridList'
 import {GoogleMapLoader, GoogleMap, Marker} from "react-google-maps";
+import {default as ScriptjsLoader} from "react-google-maps/lib/async/ScriptjsLoader";
 
-import MainFeed from './subComponents/MainFeed';
+//Apollo
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
 
 const styles = {
   root: {
@@ -21,7 +20,10 @@ const styles = {
   },
 };
 
-class GridComponent extends Component {
+const latlng = { "lat" : 39.283402,
+                  "lng" : -76.612912 }
+
+class MapComponent extends Component {
     constructor(props){
       super(props);
       // grab our googleMaps obj from whever she may lay
@@ -76,7 +78,7 @@ class GridComponent extends Component {
       console.log(props);
       return (
             <div style={styles.root}>
-
+            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDaqZIUzhyOdPDlsVjkdLbuWj89F3gNCMg" ></script>  
             <section style={{height: "100%",flex:1}}>
                <GoogleMapLoader
                  containerElement={
@@ -91,7 +93,7 @@ class GridComponent extends Component {
                    <GoogleMap
                      ref={(map) => { this._googleMapComponent = map ; console.log(map);} }
                      defaultZoom={8}
-                     defaultCenter={{ lat: 39.2904, lng: -76.6122 }}
+                     defaultCenter={{ lat: -25.363882, lng: 131.044922 }}
                      onClick={(...args)=>{
                       console.log(...args);
                       return this.geocodeLatLng(...args)
@@ -108,27 +110,31 @@ class GridComponent extends Component {
                  }
                />
              </section>
-
-             <GridList
-                style={styles.gridList}
-                cols={1}
-                cellHeight={500}
-                padding={1}
-              >
-
-
-                {props.workouts.map((item, index) => (
-                     <div key={index}> {!item ||
-                      (<MainFeed
-                        data={item}
-                     />)} </div>
-
-                ))}
-              </GridList>
-            </div>
-
+             </div>
         );
     }
-}
+};
 
-export default GridComponent;
+const GET_WORKOUTS_VIA_LATLNG = gql `
+  mutation getWorkoutsViaLatLng {
+    getWorkoutsViaLatLng(latlng: $latlng) {
+      workouts
+    }
+  }
+`;
+
+/*We need an api which 
+takes lat and lng as input 
+and returns workouts as output*/
+
+const MapComponentWithData = graphql(GET_WORKOUTS_VIA_LATLNG, {
+  props({ mutate }) {
+    return {
+      submit(latlng) {
+        return mutate({ variables: { latlng}})
+      }
+    }
+  }
+})(MapComponent);
+
+export default MapComponentWithData;

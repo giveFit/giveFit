@@ -10,6 +10,7 @@ const MainFeed = (props) => (
         subtitle={props.data.location}
       />
       <CardMedia
+        style={{width: '100%'}}
         overlay={
                   <CardTitle 
                     title={props.data.title} 
