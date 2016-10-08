@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PropTypes, Component } from 'react'
 import { Link } from 'react-router';
 import { Route, Router } from 'react-router'
 
@@ -50,12 +50,17 @@ export default class MainToolbar extends Component  {
                   <MenuItem onTouchTap={this.handleClose.bind(this)}>Login</MenuItem>
                 </Drawer>
 
-                <AppBar title={<Link to='/'>givefit</Link>}
+                <AppBar title={"GiveFit"}
+                onTitleTouchTap={()=>this.context.router.push('/')}
                 onLeftIconButtonTouchTap={this.handleToggle.bind(this)} />
                 {this.props.children}
                 </div>
             );
         }
+    }
+
+    MainToolbar.contextTypes = {
+      router : PropTypes.object.isRequired
     }
 
 export default MainToolbar;

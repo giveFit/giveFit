@@ -4,6 +4,7 @@ import Subheader from 'material-ui/Subheader';
 import StarBorder from 'material-ui/svg-icons/toggle/star-border';
 import GridList from 'material-ui/GridList'
 import {GoogleMapLoader, GoogleMap, Marker} from "react-google-maps";
+import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 
 import MainFeed from './subComponents/MainFeed';
 
@@ -73,7 +74,35 @@ class GridComponent extends Component {
 
     render(){
       const {props} = this;
-      console.log(props);
+      const {workouts} = props;
+
+      const listView = workouts.length ? <GridList
+          style={styles.gridList}
+          cols={1}
+          cellHeight={500}
+          padding={1}
+        >
+
+
+          {props.workouts.map((item, index) => (
+               <div key={index}> {!item ||
+                (<MainFeed
+                  data={item}
+               />)} </div>
+
+          ))}
+        </GridList> :  <Card>
+              <CardHeader
+                title="No Workouts In this location"
+                subtitle="Please try a different location"
+                actAsExpander={true}
+                showExpandableButton={true}
+              />
+              <CardText expandable={true}>
+                We are working to get workouts here
+              </CardText>
+            </Card>
+
       return (
             <div style={styles.root}>
 
@@ -107,24 +136,11 @@ class GridComponent extends Component {
                    </GoogleMap>
                  }
                />
+
+
              </section>
+             {listView}
 
-             <GridList
-                style={styles.gridList}
-                cols={1}
-                cellHeight={500}
-                padding={1}
-              >
-
-
-                {props.workouts.map((item, index) => (
-                     <div key={index}> {!item ||
-                      (<MainFeed
-                        data={item}
-                     />)} </div>
-
-                ))}
-              </GridList>
             </div>
 
         );

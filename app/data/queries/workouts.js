@@ -6,7 +6,7 @@ var WorkoutList = require('./fakeData/workoutData');
 var WorkoutType = require('../types/WorkoutType');
 
 var distance = require('google-distance')
-
+var debug = require('debug');
 //Mock API
 var WorkoutList = require('./fakeData/workoutData');
 
@@ -24,7 +24,7 @@ const workouts = {
 		architecture, callbacks ok for now*/
 		console.log("argssss")
 		console.log(latLng)
-		
+
 		//building our locationParams
 		function getWorkoutParams(workouts){
 			var workoutsArray = workouts.map(function(workout){
@@ -43,19 +43,22 @@ const workouts = {
 			return new Promise(function(resolve, reject){
 				distance.get(getWorkoutParams(workouts), function(err, result){
 			      	var distances = result;
-					
-					
+
+          if(!distances){
+            debug('No distances');
+            return resolve([]);
+          }
 					workouts.forEach(function(workout, index){
 						workout.distance = distances[index].distanceValue
 					})
 
-					
+
 					var filtered = workouts.filter(function(el){
-						console.log(el.distance);
+						debug(el.distance);
 						return el.distance < 5000
 					})
-					console.log(filtered)
-			      	
+					//console.log(filtered)
+
 					resolve(filtered);
 		  		});
 			})

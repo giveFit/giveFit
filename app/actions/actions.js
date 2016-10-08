@@ -26,7 +26,7 @@ export const getGraph = (payload) => {
 					resolve(request.responseText)
 				}
 			}
-		}).then(response => 
+		}).then(response =>
 			dispatch(finishedRequest(JSON.parse(response))))
 	}
 }

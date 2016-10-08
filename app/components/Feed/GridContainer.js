@@ -6,18 +6,19 @@ import GridComponent from './GridComponent';
 class GridContainer extends React.Component {
 
 	render() {
-		console.log("props")
-		console.log(this.props)
-		console.log("error")
-		console.log(this.props.data.error)
-		console.log("error")
-		console.log(this.props.data.workouts)
+		console.log("props", this.props)
+		console.log("error", this.props.data.error)
+		console.log("workouts",this.props.data.workouts)
 
 		return this.props.data.loading === true
 		? <p> Loading </p>
 		:	<GridComponent onPlaceSelect={(place)=>{
+			console.log("place---");
 			console.log(place);
-			this.props.data.refetch();
+			console.log(this.props);
+			this.props.data.refetch({
+				latLng : place.address
+			});
 			return null;
 		}} workouts={this.props.data.workouts} />
 	}
