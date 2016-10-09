@@ -76,6 +76,8 @@ class GridComponent extends Component {
       const {props} = this;
       const {workouts} = props;
 
+      console.log(props.markers);
+
       const listView = workouts.length ? <GridList
           style={styles.gridList}
           cols={1}
@@ -126,7 +128,7 @@ class GridComponent extends Component {
                       return this.geocodeLatLng(...args)
                      }}
                    >
-                     {props.markers ? props.marker.map((marker, index) => {
+                     {props.markers ? props.markers.map((marker, index) => {
                        return (
                          <Marker
                            {...marker}

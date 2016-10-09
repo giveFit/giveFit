@@ -20,14 +20,21 @@ class GridContainer extends React.Component {
 				latLng : place.address
 			});
 			return null;
-		}} workouts={this.props.data.workouts} />
+		}} workouts={this.props.data.workouts || []}
+		markers={this.props.data.workouts ?  this.props.data.workouts.map(i=>({
+			title : i.title,
+			position : {
+				lat : parseFloat(i.lat),
+				lng : parseFloat(i.lng)
+			}
+		})) : []} />
 	}
 };
 
 const LAT_LNG = "39.292013,-76.653072";
 const GET_WORKOUTS = gql`
   query getWorkouts($latLng: String!){
-     workouts(latLng: $latLng){title, date, time, location, author, contentSnippet, tags, day, image, avatar, id }
+			workouts(latLng: $latLng){title, date, lat, lng , time, location, author, contentSnippet, tags, day, image, avatar, id }
   }
 `;
 
