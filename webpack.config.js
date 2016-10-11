@@ -4,7 +4,6 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var HTMLWebpackPluginConfig = new HtmlWebpackPlugin({
   template: 'app/index.html',
   filename: 'index.html',
-  googleMaps:true
 });
 
 var compiler = webpack({

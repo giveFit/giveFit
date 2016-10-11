@@ -131,6 +131,7 @@ class GridComponent extends Component {
                      {props.markers ? props.markers.map((marker, index) => {
                        return (
                          <Marker
+                          key={index}
                            {...marker}
                            onRightclick={() => console.log(marker,index)} />
                        );
