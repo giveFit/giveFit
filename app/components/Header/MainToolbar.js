@@ -7,7 +7,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import mui, { Drawer, AppBar, MenuItem, Styles } from 'material-ui';
 //import MyRawTheme from '../../../static/material_ui_raw_theme_file';
 
-export default class MainToolbar extends Component  {
+class MainToolbar extends Component  {
   constructor(props){
     super(props);
     this.state = {open:false};
