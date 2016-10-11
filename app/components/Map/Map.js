@@ -46,6 +46,7 @@ class MapComponent extends Component {
 
     geocodeLatLng(obj) {
         const {map} = this._googleMapComponent.props;
+        console.log('geocodelatlng');
         //var input = "40,-90";
         //var latlngStr = input.split(',', 2);
         var latlng = {lat: obj.latLng.lat(), lng: obj.latLng.lng()};
@@ -53,9 +54,12 @@ class MapComponent extends Component {
           if (status === 'OK') {
             if (results[1]) {
               map.setZoom(9);
+              console.log('results');
+              console.log(results[1]);
               map.setCenter(latlng);
               var marker = new google.maps.Marker({
                 position: latlng,
+                icon : 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
                 map: map
               });
               this.infowindow.setContent(results[1].formatted_address);
@@ -78,7 +82,7 @@ class MapComponent extends Component {
       console.log(props);
       return (
             <div style={styles.root}>
-            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDaqZIUzhyOdPDlsVjkdLbuWj89F3gNCMg" ></script>  
+            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDaqZIUzhyOdPDlsVjkdLbuWj89F3gNCMg" ></script>
             <section style={{height: "100%",flex:1}}>
                <GoogleMapLoader
                  containerElement={
@@ -123,8 +127,8 @@ const GET_WORKOUTS_VIA_LATLNG = gql `
   }
 `;
 
-/*We need an api which 
-takes lat and lng as input 
+/*We need an api which
+takes lat and lng as input
 and returns workouts as output*/
 
 const MapComponentWithData = graphql(GET_WORKOUTS_VIA_LATLNG, {

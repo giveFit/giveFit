@@ -39,9 +39,12 @@ class GridComponent extends Component {
       // now grab the services we need
       this.googleMaps = googleMaps;
       this.geocoder = new googleMaps.Geocoder();
+      this.clickMarker = null;
       this.infowindow = new googleMaps.InfoWindow;
       console.log(this.props);
     }
+
+
 
     geocodeLatLng(obj) {
         const {map} = this._googleMapComponent.props;
@@ -55,8 +58,13 @@ class GridComponent extends Component {
               map.setCenter(latlng);
               var marker = new google.maps.Marker({
                 position: latlng,
+                icon : 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
                 map: map
               });
+              if(this.clickMarker){
+                  this.clickMarker.setMap(null);
+              }
+              this.clickMarker = marker;
               this.infowindow.setContent(results[1].formatted_address);
               this.props.onPlaceSelect({
                   coordinates : latlng,

@@ -13,9 +13,9 @@ export default class MainToolbar extends Component  {
     this.state = {open:false};
   }
   componentWillMount() {
-        const script = document.createElement("script");
-        script.src = "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing&key=AIzaSyBHKy1LTcqyrPI6duYgTmLT8vlpE9dAJRo";
-        document.body.appendChild(script);
+        // const script = document.createElement("script");
+        // script.src = "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing&key=AIzaSyBHKy1LTcqyrPI6duYgTmLT8vlpE9dAJRo";
+        // document.body.appendChild(script);
   }
 
 
