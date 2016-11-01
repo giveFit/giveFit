@@ -1,11 +1,9 @@
 import React from 'react';
 import ReactRouter, { Router, Route, browserHistory, IndexRoute } from 'react-router';
 
-import HomeContainer from '../components/Home/HomeContainer';
 import GridContainerWithData from '../components/Feed/GridContainer';
 import MainToolbar from '../components/Header/MainToolbar';
-import Blog from '../components/Blog/Blog';
-import MapContainerWithData from '../components/Map/Map';
+
 
 /*Keep some front-end principles in place
 	React works well, building app, data flows down. Events bubble up
@@ -22,9 +20,6 @@ import MapContainerWithData from '../components/Map/Map';
 const routes = (
 	<Route path='/' component={MainToolbar}>
 		<IndexRoute component={GridContainerWithData} />
-		<Route path='app' component={GridContainerWithData} />
-		<Route path='blog' component={Blog} />
-		<Route path='map' component={MapContainerWithData} />
 	</Route>
 )
 

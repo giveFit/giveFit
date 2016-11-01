@@ -22,7 +22,7 @@ devtool : "#source-map",
     loaders: [
       { test: /\.js$/,
         exclude: /node_modules/,
-        loaders: ["babel"]
+        loader: "babel",
       }
     ]
   },

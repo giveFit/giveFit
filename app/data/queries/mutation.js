@@ -52,16 +52,6 @@ function getWorkoutListDistances(workouts) {
 };
 
 
-
-/*team formation
-introduce
-teams to split up and pick a topic
-startups, showcase solution related to a topic
-startups, can mingle and be mentors
-do presentations, after presentations, judges deliberate
-keynote during deliberation 
-*/
-
 //Filter workouts by their distance to the origin
 function filterByDistance(obj){
 	if (obj.distance > 10000) {

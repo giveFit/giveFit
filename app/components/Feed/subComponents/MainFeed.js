@@ -7,14 +7,12 @@ const MainFeed = (props) => (
       <CardHeader
         title={props.data.author}
         avatar={props.data.avatar}
-        subtitle={props.data.location}
       />
       <CardMedia
         style={{width: '100%'}}
         overlay={
                   <CardTitle 
                     title={props.data.title} 
-                    subtitle={props.data.date}
                     /*subtitle={props.data.date}*/
                   />
                 }

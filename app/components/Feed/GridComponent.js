@@ -50,8 +50,10 @@ class GridComponent extends Component {
         const {map} = this._googleMapComponent.props;
         //var input = "40,-90";
         //var latlngStr = input.split(',', 2);
+        console.log("this is the geocoded object", obj.latLng)
         var latlng = {lat: obj.latLng.lat(), lng: obj.latLng.lng()};
-        this.geocoder.geocode({'location': latlng}, (results, status)=>{
+        console.log("this is latlng", latlng)
+        this.geocoder.geocode({'location': obj.latLng}, (results, status)=>{
           if (status === 'OK') {
             if (results[1]) {
               map.setZoom(9);
@@ -68,7 +70,7 @@ class GridComponent extends Component {
               this.infowindow.setContent(results[1].formatted_address);
               this.props.onPlaceSelect({
                   coordinates : latlng,
-                  address :results[1].formatted_address
+                  address : results[1].formatted_address
               });
               this.infowindow.open(map, marker);
             } else {
@@ -84,7 +86,7 @@ class GridComponent extends Component {
       const {props} = this;
       const {workouts} = props;
 
-      console.log(props.markers);
+      console.log("props markers", props.markers);
 
       const listView = workouts.length ? <GridList
           style={styles.gridList}
@@ -92,7 +94,6 @@ class GridComponent extends Component {
           cellHeight={500}
           padding={1}
         >
-
 
           {props.workouts.map((item, index) => (
                <div key={index}> {!item ||
@@ -132,10 +133,11 @@ class GridComponent extends Component {
                      defaultZoom={8}
                      defaultCenter={{ lat: 39.2904, lng: -76.6122 }}
                      onClick={(...args)=>{
-                      console.log(...args);
+                      console.log("map args",...args);
                       return this.geocodeLatLng(...args)
                      }}
                    >
+                   {console.log("props for markers", props.markers)}
                      {props.markers ? props.markers.map((marker, index) => {
                        return (
                          <Marker
