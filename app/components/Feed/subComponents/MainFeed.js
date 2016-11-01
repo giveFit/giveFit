@@ -24,7 +24,7 @@ const MainFeed = (props) => (
         <div>Comments</div>
       </CardText>*/}
       <CardActions>
-        <FlatButton label="Expand+" />
+        <FlatButton label="Share" />
       </CardActions>
     </Card>
 );
