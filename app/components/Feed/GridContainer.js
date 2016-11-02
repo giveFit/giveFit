@@ -6,33 +6,33 @@ import GridComponent from './GridComponent';
 class GridContainer extends React.Component {
 
 	render() {
-		console.log("props", this.props)
-		console.log("error", this.props.data.error)
-		console.log("loading",this.props.data.loading)
-		if(this.props.data.loading === true){
-			console.log("loading",this.props.data.viewer)	
-		}else{
-			console.log("post loading workouts",this.props.data.viewer.getWorkoutsInsideCircleByLocation)
-		}
 		
-
-		return this.props.data.loading === true ? <p> loading </p> 
-		: <GridComponent onPlaceSelect={(place)=>{
+		//The GridComponent contains both the feed and the map
+		return <GridComponent onPlaceSelect={(place)=>{
 			console.log("place---");
 			console.log(place);
 			console.log(this.props);
 			this.props.data.refetch({
-				latLng : place.address
+				circle : 
+				{
+					"center": {
+					    "lat": place.coordinates.lat,
+					    "lon": place.coordinates.lng
+					},
+					"radius": 20000,
+					"unit": "m"
+				}
 			});
 			return null;
 		}}
 
-		workouts={this.props.data.viewer.getWorkoutsInsideCircleByLocation || []}
-		markers={(this.props.data.viewer.getWorkoutsInsideCircleByLocation && !this.props.data.loading) ?  this.props.data.viewer.getWorkoutsInsideCircleByLocation.map(i=>({
+		//After loading the "viewer" becomes available
+		workouts={(!this.props.data.loading && this.props.data.viewer.getWorkoutsInsideCircleByLocation) ? this.props.data.viewer.getWorkoutsInsideCircleByLocation : []}
+		markers={(!this.props.data.loading && this.props.data.viewer.getWorkoutsInsideCircleByLocation) ?  this.props.data.viewer.getWorkoutsInsideCircleByLocation.map(i=>({
 			title : i.title,
 			position : {
 				lat : parseFloat(i.location.lat),
-				lon : parseFloat(i.location.lon)
+				lng : parseFloat(i.location.lon)
 			}
 		})) : []} />
 
@@ -42,10 +42,10 @@ class GridContainer extends React.Component {
 const circle = 
 {
 	"center": {
-	    "lat": 37.769040,
-	    "lon": -122.483519
+	    "lat": 39.283402,
+	    "lon": -76.612912
 	},
-	"radius": 9985160,
+	"radius": 20000,
 	"unit": "m"
 }
 
