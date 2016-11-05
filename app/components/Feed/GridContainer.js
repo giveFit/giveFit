@@ -19,7 +19,7 @@ class GridContainer extends React.Component {
 					    "lat": place.coordinates.lat,
 					    "lon": place.coordinates.lng
 					},
-					"radius": 20000,
+					"radius": 20000000,
 					"unit": "m"
 				}
 			});
