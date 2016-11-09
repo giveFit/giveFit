@@ -36,9 +36,7 @@ graphqlServer.listen(PORT, () => console.log(
 
 var app = new WebpackDevServer(compiler, {
  contentBase: "/public/",
- proxy: {
- 	"/graphql": `http://localhost:${PORT}`
- },
+ proxy: { "/graphql": config.scapholdUrl },
  publicPath: "/static/",
  stats: {colors: true}
 });
