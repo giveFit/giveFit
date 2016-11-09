@@ -6,76 +6,73 @@ import GridComponent from './GridComponent';
 class GridContainer extends React.Component {
 
 	render() {
-		
-		//The GridComponent contains both the feed and the map
-		return <GridComponent onPlaceSelect={(place)=>{
-			console.log("place---");
-			console.log(place);
-			console.log(this.props);
-			this.props.data.refetch({
-				circle : 
-				{
-					"center": {
-					    "lat": place.coordinates.lat,
-					    "lon": place.coordinates.lng
-					},
-					"radius": 20000000,
-					"unit": "m"
-				}
-			});
-			return null;
-		}}
+		console.log("props", this.props)
+		console.log("error", this.props.data.error)
+		let loading = this.props.data.loading
+		console.log("loading?", loading)
+		if (loading == false){
+			console.log("not loading any more", this.props.data.viewer.allWorkoutGroups.edges)
+		}
+		/*this.props.data.loading ? console.log("still loading", this.props.data) : 
+		console.log("workouts",this.props.data.viewer.allWorkoutGroups)
+		*/
 
-		//After loading the "viewer" becomes available
-		workouts={(!this.props.data.loading && this.props.data.viewer.getWorkoutsInsideCircleByLocation) ? this.props.data.viewer.getWorkoutsInsideCircleByLocation : []}
-		markers={(!this.props.data.loading && this.props.data.viewer.getWorkoutsInsideCircleByLocation) ?  this.props.data.viewer.getWorkoutsInsideCircleByLocation.map(i=>({
-			title : i.title,
-			position : {
-				lat : parseFloat(i.location.lat),
-				lng : parseFloat(i.location.lon)
-			}
-		})) : []} />
-
+		return (
+			<div>
+				<GridComponent onPlaceSelect={(place)=>{
+					console.log("place---");
+					console.log(place);
+					console.log(this.props);
+					this.props.data.refetch({
+						latLng : place.address
+					});
+					return null;
+				}}
+				workouts={(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ? this.props.data.viewer.allWorkoutGroups.edges : []}
+				markers={(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ?  this.props.data.viewer.allWorkoutGroups.edges.map(i=>({
+					title : i.node.title,
+					position : {
+						lat : parseFloat(i.node.lat),
+						lng : parseFloat(i.node.lng)
+					}
+				})) : []} />
+		</div>
+		)
 	};
 }
 
-const circle = 
-{
-	"center": {
-	    "lat": 39.283402,
-	    "lon": -76.612912
-	},
-	"radius": 20000,
-	"unit": "m"
-}
-
-const GET_WORKOUTS = gql`
-  query NearestWorkoutsByLocation($circle: _GeoCircleInput){
-	viewer{
-    getWorkoutsInsideCircleByLocation(circle: $circle){
-      id
-      title
-      author
-      avatar
-      time
-      contentSnippet
-      image
-      location{
-        lat
-        lon
-      }
-    }
-  }
+//Get some WorkoutGroups
+const GET_THROUGH_VIEWER = gql`
+	query GetThroughViewer($first: Int) {
+  	viewer {
+	  	allWorkoutGroups(first: $first) {
+	  		edges {
+	  			node {
+				  id
+				  image
+				  title
+				  lat
+				  lng
+				  avatar
+				  contentSnippet
+	  			}
+	  		}
+	  	}
+	}
 }
 `;
 
-const GridContainerWithData = graphql(GET_WORKOUTS, {
+//How many WorkoutGroups to return
+const FIRST = 6; 
+
+const GridContainerWithData = graphql(GET_THROUGH_VIEWER, {
 	options(props) {
 		return {
 		variables: {
-			circle : circle
+			first : FIRST
 		}
 	};
 }})(GridContainer);
+
 
 export default GridContainerWithData;

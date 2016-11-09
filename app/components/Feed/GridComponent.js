@@ -98,7 +98,7 @@ class GridComponent extends Component {
           {props.workouts.map((item, index) => (
                <div key={index}> {!item ||
                 (<MainFeed
-                  data={item}
+                  data={item.node}
                />)} </div>
 
           ))}
