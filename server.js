@@ -1,21 +1,40 @@
-var WebpackDevServer = require('webpack-dev-server');
-var express = require('express');
+var argv = require('yargs').argv;
+var path = require('path');
 
-//Material UI
-global.navigator = { navigator: 'all' };
+var webpackConfig = require('./webpack.config');
 
-var compiler = require('./webpack.config');
-var config = require('./config');
+module.exports = function(config) {
+  config.set({
+    basePath: '',
+    frameworks: ['mocha', 'chai'],
+    files: [
+      'tests.webpack.js'
+    ],
 
-const APP_PORT = 3000;
+    preprocessors: {
+      // add webpack as preprocessor
+      'tests.webpack.js': ['webpack', 'sourcemap'],
+    },
 
-var app = new WebpackDevServer(compiler, {
- contentBase: "/public/",
- proxy: { "/graphql": config.scapholdUrl },
- publicPath: "/static/",
- stats: {colors: true}
-});
+    webpack: webpackConfig,
+    webpackServer: {
+      noInfo: true
+    },
 
-app.use("/", express.static("static"));
-app.listen(APP_PORT);
-console.log(`The App Server is running on http://localhost: ${APP_PORT}`)
+    plugins: [
+      'karma-mocha',
+      'karma-chai',
+      'karma-webpack',
+      'karma-phantomjs-launcher',
+      'karma-spec-reporter',
+      'karma-sourcemap-loader'
+    ],
+
+    reporters: ['spec'],
+    port: 9876,
+    colors: true,
+    logLevel: config.LOG_INFO,
+    browsers: ['PhantomJS'],
+    singleRun: !argv.watch
+  })
+};
