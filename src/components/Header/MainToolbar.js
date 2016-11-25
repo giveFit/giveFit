@@ -5,20 +5,15 @@ import { Route, Router } from 'react-router'
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import mui, { Drawer, AppBar, MenuItem, Styles } from 'material-ui';
-//import MyRawTheme from '../../../static/material_ui_raw_theme_file';
+
+import Login from '../Login/Login';
 
 class MainToolbar extends Component  {
   constructor(props){
     super(props);
     this.state = {open:false};
   }
-  componentWillMount() {
-        // const script = document.createElement("script");
-        // script.src = "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing&key=AIzaSyBHKy1LTcqyrPI6duYgTmLT8vlpE9dAJRo";
-        // document.body.appendChild(script);
-  }
-
-
+  //open the side bar
   handleToggle() {
     this.setState({open: !this.state.open});
     console.log("open")
