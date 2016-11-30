@@ -8,16 +8,21 @@ import client from '../apollo';
 
 //Material UI qualms
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import './styles/base.css';
+import theme from './theme';
+const muiTheme = getMuiTheme(theme);
+
 import injectTapEventPlugin from "react-tap-event-plugin";
+injectTapEventPlugin();
 
 import ApolloClient, { createNetworkInterface, addTypename } from 'apollo-client'
 import { ApolloProvider } from 'react-apollo'
 
-injectTapEventPlugin();
 
 //Wrap the app with our theme provider
 const Application = () => (
-  <MuiThemeProvider>
+  <MuiThemeProvider muiTheme={muiTheme}>
     <Router
     	history={browserHistory}
     	routes={routes}
@@ -30,6 +35,6 @@ const mountNode = document.querySelector('#root');
 render(
 	<ApolloProvider client={client}>
 		<Application />
-	</ApolloProvider>, 
+	</ApolloProvider>,
 	mountNode
 );
