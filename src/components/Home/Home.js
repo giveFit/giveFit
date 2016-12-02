@@ -21,7 +21,7 @@ export class Home extends React.Component {
       var token = this.state.token;
       var identity = newProfile.identities[0];
       console.log("token", token)
-      console.log("token", identity)
+      console.log("identity", identity)
       this.props.register({
         identity, token
       }).then(({ data }) => {
@@ -34,10 +34,6 @@ export class Home extends React.Component {
         profile: newProfile,
       })
     })
-    /*var data = {
-        query: 'mutation Login($data: LoginUserWithAuth0LockInput!) { loginUserWithAuth0Lock(input: $data) { token user { id username } } }',
-        variables: JSON.stringify({"data": {"identity": JSON.parse(localStorage.getItem('profile')).identities[0], "token": localStorage.getItem('token')}})
-    }*/
   }
 
   logout(){

@@ -16,8 +16,9 @@ class GridContainer extends React.Component {
 		/*this.props.data.loading ? console.log("still loading", this.props.data) : 
 		console.log("workouts",this.props.data.viewer.allWorkoutGroups)
 		*/
-
+		console.log("props for the gridcontainer", this.props)
 		return (
+
 			<div>
 				<GridComponent onPlaceSelect={(place)=>{
 					console.log("place---");
