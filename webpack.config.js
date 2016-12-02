@@ -39,7 +39,7 @@ var config = getConfig({
     return {
       'index.html': context.defaultTemplate({
         title: 'givefit',
-        head: '<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDaqZIUzhyOdPDlsVjkdLbuWj89F3gNCMg" ></script>',
+        head: '<style> html,body, #root { width: 100%; height : 100%; } </style><script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDaqZIUzhyOdPDlsVjkdLbuWj89F3gNCMg" ></script>',
         publicPath: isDev ? 'http://localhost:3000/' : '',
         meta: {
           'name': 'givefit',
@@ -47,7 +47,7 @@ var config = getConfig({
         }
       })
     }
-  }  
+  }
 });
 
 // ENV variables
@@ -117,7 +117,6 @@ config.resolve.alias = {
   'containers': join(src, 'containers'),
   'components': join(src, 'components'),
   'utils': join(src, 'utils'),
-
   'styles': join(src, 'styles')
 }
 // end Roots

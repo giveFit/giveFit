@@ -3,6 +3,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import AuthService from 'utils/AuthService';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
+import {Card, CardActions, CardMedia, CardHeader, CardText} from 'material-ui/Card';
 
 import styles from './styles.module.css';
 import ProfileDetails from '../Profile/ProfileDetails';
@@ -42,14 +43,18 @@ export class Home extends React.Component {
   }
 
   render(){
-    const { profile } = this.state    
+    const { profile } = this.state
     return (
+      <Card>
+      <CardText>
       <div className={styles.root}>
         <p>Welcome, {profile.given_name}!</p>
         <ProfileDetails profile={profile}></ProfileDetails>
         <ProfileEdit profile={profile} auth={this.props.auth}></ProfileEdit>
         <RaisedButton onClick={this.logout.bind(this)}>Logout</RaisedButton>
       </div>
+      </CardText>
+      </Card>
     )
   }
 }

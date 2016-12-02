@@ -1,0 +1,10 @@
+.workouts{
+  display : flex;
+}
+
+.workout{
+  flex : 1;
+}
+.submitButton{
+  margin : 12px;
+}

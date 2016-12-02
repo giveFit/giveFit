@@ -13,7 +13,7 @@ class GridContainer extends React.Component {
 		if (loading == false){
 			console.log("not loading any more", this.props.data.viewer.allWorkoutGroups.edges)
 		}
-		/*this.props.data.loading ? console.log("still loading", this.props.data) : 
+		/*this.props.data.loading ? console.log("still loading", this.props.data) :
 		console.log("workouts",this.props.data.viewer.allWorkoutGroups)
 		*/
 		console.log("props for the gridcontainer", this.props)
@@ -30,7 +30,7 @@ class GridContainer extends React.Component {
 					return null;
 				}}
 				workouts={(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ? this.props.data.viewer.allWorkoutGroups.edges : []}
-				markers={(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ?  this.props.data.viewer.allWorkoutGroups.edges.map(i=>({
+				markers={(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ?  this.props.data.viewer.allWorkoutGroups.edges.map((i,index)=>({
 					title : i.node.title,
 					position : {
 						lat : parseFloat(i.node.lat),
@@ -64,7 +64,7 @@ const GET_THROUGH_VIEWER = gql`
 `;
 
 //How many WorkoutGroups to return
-const FIRST = 6; 
+const FIRST = 6;
 
 const GridContainerWithData = graphql(GET_THROUGH_VIEWER, {
 	options(props) {
