@@ -7,6 +7,7 @@ import {GoogleMapLoader, GoogleMap, Marker} from "react-google-maps";
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 
 import MainFeed from './subComponents/MainFeed';
+const height = window.innerHeight - 64;
 
 const styles = {
   root: {
@@ -16,10 +17,14 @@ const styles = {
   },
   gridList: {
     width: 500,
-    height: 500,
-    overflowY: 'auto',
-    marginBottom: 24,
+    height: height,
+    overflowY : 'auto',
+    background : '#e5e5e5'
   },
+  workout : {
+    padding : '20px 12px 10px',
+    boxSizing : 'border-box'
+  }
 };
 
 class GridComponent extends Component {
@@ -36,12 +41,16 @@ class GridComponent extends Component {
           'Google map api was not found in the page.');
         return;
       }
+      this.state = {
+        activeIndex : -1
+      };
       // now grab the services we need
       this.googleMaps = googleMaps;
       this.geocoder = new googleMaps.Geocoder();
       this.clickMarker = null;
       this.infowindow = new googleMaps.InfoWindow;
-      console.log(this.props);
+
+
     }
 
     geocodeLatLng(obj) {
@@ -54,8 +63,8 @@ class GridComponent extends Component {
         this.geocoder.geocode({'location': obj.latLng}, (results, status)=>{
           if (status === 'OK') {
             if (results[1]) {
-              map.setZoom(9);
-              map.setCenter(latlng);
+              //map.setZoom(9);
+              //map.setCenter(latlng);
               var marker = new google.maps.Marker({
                 position: latlng,
                 icon : 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
@@ -79,28 +88,31 @@ class GridComponent extends Component {
           }
         });
       }
+    markerClick(index){
+      this.setState({activeIndex : index});
+    }
+
 
     render(){
       const {props} = this;
+      const {activeIndex} = this.state;
       const {workouts} = props;
 
       console.log("props markers", props.markers);
 
-      const listView = workouts.length ? <GridList
+      const listView = workouts.length ? <div
           style={styles.gridList}
-          cols={1}
-          cellHeight={500}
-          padding={1}
         >
 
           {props.workouts.map((item, index) => (
-               <div key={index}> {!item ||
+               <div key={index} style={styles.workout}> {!item ||
                 (<MainFeed
+                  active={activeIndex===index}
                   data={item.node}
                />)} </div>
 
           ))}
-        </GridList> :  <Card>
+        </div> :  <Card>
               <CardHeader
                 title="No Workouts In this location"
                 subtitle="Please try a different location"
@@ -120,7 +132,7 @@ class GridComponent extends Component {
                    <div
                      {...props.containerElementProps}
                      style={{
-                       height: 500,
+                       height: height,
                      }}
                    />
                  }
@@ -140,6 +152,7 @@ class GridComponent extends Component {
                          <Marker
                           key={index}
                            {...marker}
+                           onClick={()=>this.markerClick(index)}
                            onRightclick={() => console.log(marker,index)} />
                        );
                      }) : null}

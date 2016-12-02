@@ -5,9 +5,19 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import AuthService from 'utils/AuthService';
 import TextField from 'material-ui/TextField';
+import styles from './styles.module.css';
+import RaisedButton from 'material-ui/RaisedButton';
 
 export class LandingPage extends React.Component {
+  handleSubmit(){
+    const {value} = this.refs.textbox.input;
+    if(value.length > 0){
+      this.context.router.push('/app');
+    }
+  }
   render(){
+    const workouts=(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ? this.props.data.viewer.allWorkoutGroups.edges : [];
+    console.log(workouts);
     return<Card>
           <CardMedia
            overlay={<CardTitle title="Givefit" subtitle="Find your free fitness community" />}
@@ -21,11 +31,24 @@ export class LandingPage extends React.Component {
       Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
     </CardText>
     <CardText>
-    <TextField
-     hintText="Start typing here.."
-     floatingLabelText="Search for Workouts"
-   /><br />
+      <TextField
+       hintText="Start typing here.."
+       floatingLabelText="Search for Workouts"
+       ref="textbox"
+       onKeyDown={(e)=>{
+         if(e.which===13){
+           this.handleSubmit();
+         }
+       }}
+     />
+     <RaisedButton label="Search for Workouts" secondary={true} className={styles.submitButton} onTouchTap={()=>this.handleSubmit()} />
+     <br />
   </CardText>
+  <CardText className={styles.workouts}>
+    {workouts.map(workout=>workout.node).map((workout,index)=><Card className={styles.workout} key={index}>  <CardMedia>
+       <img src={workout.avatar} />
+     </CardMedia><CardText>{workout.title}</CardText></Card>)}
+</CardText>
   </Card>
   }
 }
@@ -34,30 +57,38 @@ LandingPage.contextTypes = {
   router: T.object
 };
 
-LandingPage.propTypes = {
-  auth: T.instanceOf(AuthService),
-  register: T.func.isRequired
-};
 
-const LOGIN_USER_WITH_AUTH0_LOCK = gql `
-  mutation loginUserWithAuth0Lock($data: LoginUserWithAuth0LockInput!) {
-    loginUserWithAuth0Lock(input: $data) {
-    token
-    user{
-      id
-      username
-    }
-    }
-  }
-`
-const LandingPageContainerWithData = graphql(LOGIN_USER_WITH_AUTH0_LOCK, {
-  props: ({ mutate }) => ({
-    register: (data) => mutate({
-      variables: {
-        data
-      }
-    }),
-  }),
-})(LandingPage);
+//Get some WorkoutGroups
+const GET_THROUGH_VIEWER = gql`
+	query GetThroughViewer($first: Int) {
+  	viewer {
+	  	allWorkoutGroups(first: $first) {
+	  		edges {
+	  			node {
+				  id
+				  image
+				  title
+				  lat
+				  lng
+				  avatar
+				  contentSnippet
+	  			}
+	  		}
+	  	}
+	}
+}
+`;
+
+//How many WorkoutGroups to return
+const FIRST = 4;
+
+const LandingPageContainerWithData = graphql(GET_THROUGH_VIEWER, {
+	options(props) {
+		return {
+		variables: {
+			first : FIRST
+		}
+	};
+}})(LandingPage);
 
 export default LandingPageContainerWithData;
