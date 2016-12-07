@@ -8,3 +8,34 @@
 .submitButton{
   margin : 12px;
 }
+.banner{
+  display : block;
+  background-image : url('https://images.unsplash.com/photo-1446770145316-10a05382c470?dpr=1&auto=format&fit=crop&w=767&h=508&q=80&cs=tinysrgb&crop=');
+  background-size : cover;
+  height : 700px;
+  position : relative;
+  text-align : center;
+  max-height : 100%;
+}
+.bannerInner{
+  position :absolute;
+  top : 50%;
+  left: 50%;
+  transform : translate(-50%,-50%);
+
+}
+.bannerCard{
+  background : transparent !important;
+  box-shadow : none !important;
+}
+.heading{
+  margin : 0 !important;
+  padding: 0.67em 0;
+  text-transform : uppercase;
+  font-weight : bold;
+}
+
+.subHeading{
+  font-style : italic;
+ font-weight : normal;
+}

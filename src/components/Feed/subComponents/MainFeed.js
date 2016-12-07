@@ -18,11 +18,8 @@ class MainFeed extends React.Component{
       const {props} = this;
       return <Card ref='root' key={props.data.id} className={props.active ? styles.cardActive : ""}>
         <CardHeader
-          actAsExpander={true}
           title={props.data.author}
           avatar={props.data.avatar}
-          showExpandableButton={true}
-
         />
         <CardMedia
             overlay={
@@ -62,7 +59,9 @@ class MainFeed extends React.Component{
        {/* <CardText>
           <div>Comments</div>
         </CardText>*/}
-        <CardActions>
+        <CardActions actAsExpander={true}
+        showExpandableButton={true}
+>
           <FlatButton label="Share" />
         </CardActions>
       </Card>
