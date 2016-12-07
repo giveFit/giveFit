@@ -18,38 +18,46 @@ export class LandingPage extends React.Component {
   render(){
     const workouts=(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ? this.props.data.viewer.allWorkoutGroups.edges : [];
     console.log(workouts);
-    return<Card>
-          <CardMedia
-           overlay={<CardTitle title="Givefit" subtitle="Find your free fitness community" />}
-         >
-           <img src="https://images.unsplash.com/photo-1446770145316-10a05382c470?dpr=1&auto=format&fit=crop&w=767&h=508&q=80&cs=tinysrgb&crop=" />
-         </CardMedia>
-      <CardText>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-      Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-      Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
-    </CardText>
-    <CardText>
-      <TextField
-       hintText="Start typing here.."
-       floatingLabelText="Search for Workouts"
-       ref="textbox"
-       onKeyDown={(e)=>{
-         if(e.which===13){
-           this.handleSubmit();
-         }
-       }}
-     />
-     <RaisedButton label="Search for Workouts" secondary={true} className={styles.submitButton} onTouchTap={()=>this.handleSubmit()} />
-     <br />
-  </CardText>
+    return<div>
+    <div className={styles.banner}>
+    <div className={styles.bannerInner}>
+      <h1 className={styles.heading}>Givefit</h1>
+      <h3 className={styles.subHeading}>Find your free fitness community</h3>
+      <Card className={styles.bannerCard}>
+        <CardText>
+          <TextField
+           hintText="Start typing here.."
+           floatingLabelText="Search for Workouts"
+           ref="textbox"
+           onKeyDown={(e)=>{
+             if(e.which===13){
+               this.handleSubmit();
+             }
+           }}
+         />
+         <RaisedButton label="Search for Workouts" secondary={true} className={styles.submitButton} onTouchTap={()=>this.handleSubmit()} />
+         <br />
+      </CardText>
+      </Card>
+      </div>
+    </div>
+    <Card>
+
+         <CardText>
+         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+         Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
+         Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
+         Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
+       </CardText>
+
   <CardText className={styles.workouts}>
     {workouts.map(workout=>workout.node).map((workout,index)=><Card className={styles.workout} key={index}>  <CardMedia>
        <img src={workout.avatar} />
      </CardMedia><CardText>{workout.title}</CardText></Card>)}
 </CardText>
   </Card>
+
+  </div>
   }
 }
 
