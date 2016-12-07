@@ -19,12 +19,12 @@ export class Home extends React.Component {
 
     props.auth.on('profile_updated', (newProfile) => {
       console.log('newProfile', newProfile)
-      var token = this.state.token;
+      var access_token = this.state.token;
       var identity = newProfile.identities[0];
-      console.log("token", token)
+      console.log("token", access_token)
       console.log("identity", identity)
       this.props.register({
-        identity, token
+        identity, access_token
       }).then(({ data }) => {
         console.log('got data', data);
       }).catch((error) => {
@@ -71,7 +71,6 @@ Home.propTypes = {
 const LOGIN_USER_WITH_AUTH0_LOCK = gql `
   mutation loginUserWithAuth0Lock($data: LoginUserWithAuth0LockInput!) {
     loginUserWithAuth0Lock(input: $data) {
-    token
     user{
       id
       username
