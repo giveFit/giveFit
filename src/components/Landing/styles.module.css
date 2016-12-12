@@ -1,16 +1,18 @@
 .workouts{
   display : flex;
+  flex-wrap: wrap;
 }
 
 .workout{
   flex : 1;
+  margin: 10px 15px 10px 10px;
 }
 .submitButton{
   margin : 12px;
 }
 .banner{
   display : block;
-  background-image : url('https://images.unsplash.com/photo-1446770145316-10a05382c470?dpr=1&auto=format&fit=crop&w=767&h=508&q=80&cs=tinysrgb&crop=');
+  background-image : url('https://static1.squarespace.com/static/5633dd05e4b03216fd2f5ab9/t/5790125d8419c25e40eb78a0/1469059682228/?format=1500w');
   background-size : cover;
   height : 700px;
   position : relative;
@@ -22,7 +24,7 @@
   top : 50%;
   left: 50%;
   transform : translate(-50%,-50%);
-
+  color: white;
 }
 .bannerCard{
   background : transparent !important;

@@ -4,16 +4,22 @@ import { isTokenExpired } from './jwtHelper'
 import Auth0Lock from 'auth0-lock'
 import { browserHistory } from 'react-router'
 
+var options = {
+   auth: {
+        redirectUrl: `${window.location.origin}/login`,
+        responseType: 'token'
+      },
+  theme: {
+    primaryColor: '#CF1F3C',
+    logo: 'https://static1.squarespace.com/static/5633dd05e4b03216fd2f5ab9/t/579011122994cad3347ce32e/1478460286586/?format=1500w'
+  }  
+};
+
 export default class AuthService extends EventEmitter {
   constructor(clientId, domain) {
     super()
     // Configure Auth0
-    this.lock = new Auth0Lock(clientId, domain, {
-      auth: {
-        redirectUrl: `${window.location.origin}/login`,
-        responseType: 'token'
-      }
-    })
+    this.lock = new Auth0Lock(clientId, domain, options)
     // Add callback for lock `authenticated` event
     this.lock.on('authenticated', this._doAuthentication.bind(this))
     // Add callback for lock `authorization_error` event
@@ -26,7 +32,7 @@ export default class AuthService extends EventEmitter {
     // Saves the user token
     this.setToken(authResult.idToken)
     // navigate to the home route
-    browserHistory.replace('/home')
+    browserHistory.replace('/app')
     // Async loads the user profile data
     this.lock.getProfile(authResult.idToken, (error, profile) => {
       if (error) {

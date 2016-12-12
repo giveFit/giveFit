@@ -39,7 +39,6 @@ Login.contextTypes = {
 };
 
 Login.propTypes = {
-  location: T.object,
   auth: T.instanceOf(AuthService)
 };
 

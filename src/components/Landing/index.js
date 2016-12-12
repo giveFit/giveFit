@@ -1,5 +1,6 @@
-import React, { PropTypes as T } from 'react'
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import React, { PropTypes as T } from 'react';
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText, GridList} from 'material-ui/Card';
+import MainFeed from '../Feed/subComponents/MainFeed';
 
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -7,57 +8,66 @@ import AuthService from 'utils/AuthService';
 import TextField from 'material-ui/TextField';
 import styles from './styles.module.css';
 import RaisedButton from 'material-ui/RaisedButton';
+import {orange500, blue500} from 'material-ui/styles/colors';
+
+
+const inlineStyles = {
+  textFieldStyle: {
+    color: orange500,
+  }
+}
 
 export class LandingPage extends React.Component {
   handleSubmit(){
-    const {value} = this.refs.textbox.input;
-    if(value.length > 0){
-      this.context.router.push('/app');
-    }
+    /*I want users to be able to press the button without
+    entering anything, but still have the value declaration
+    below for when i do a location query*/
+    /*const {value} = this.refs.textbox.input;*/
+    this.context.router.push('/app');
   }
   render(){
     const workouts=(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ? this.props.data.viewer.allWorkoutGroups.edges : [];
-    console.log(workouts);
-    return<div>
-    <div className={styles.banner}>
-    <div className={styles.bannerInner}>
-      <h1 className={styles.heading}>Givefit</h1>
-      <h3 className={styles.subHeading}>Find your free fitness community</h3>
-      <Card className={styles.bannerCard}>
-        <CardText>
-          <TextField
-           hintText="Start typing here.."
-           floatingLabelText="Search for Workouts"
-           ref="textbox"
-           onKeyDown={(e)=>{
-             if(e.which===13){
-               this.handleSubmit();
-             }
-           }}
-         />
-         <RaisedButton label="Search for Workouts" secondary={true} className={styles.submitButton} onTouchTap={()=>this.handleSubmit()} />
-         <br />
-      </CardText>
-      </Card>
+    console.log('workouts', workouts);
+    const listView = workouts.length ? <div className={styles.workouts}>
+    {workouts.map((item, index) => (
+         <div key={index} className={styles.workout}> {!item ||
+          (<MainFeed
+            data={item.node}
+         />)} </div>
+    ))}
+    </div>: <h4> Loading... </h4>
+    return (
+      <div className={styles.root}>
+      <div className={styles.banner}>
+      <div className={styles.bannerInner}>
+        <h1 className={styles.heading}>Find Your Fitness Tribe</h1>
+        <h3 className={styles.subHeading}>Starting in Baltimore</h3>
+        <Card className={styles.bannerCard}>
+          <CardText>
+            <TextField
+             hintText="Start typing here.."
+             floatingLabelText="Search for Workouts"
+             ref="textbox"
+             textareaStyle={inlineStyles.textFieldStyle}
+             onKeyDown={(e)=>{
+               if(e.which===13){
+                 this.handleSubmit();
+               }
+             }}
+           />
+           <RaisedButton label="Search for Workouts" secondary={true} className={styles.submitButton} onTouchTap={()=>this.handleSubmit()} />
+           <br />
+        </CardText>
+        </Card>
+        </div>
       </div>
+      <h2>
+           Check out this week's highlighted workout groups. 
+           Search above for more awesome group workouts in your area.
+      </h2>
+       {listView}
     </div>
-    <Card>
-
-         <CardText>
-         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-         Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-         Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-         Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
-       </CardText>
-
-  <CardText className={styles.workouts}>
-    {workouts.map(workout=>workout.node).map((workout,index)=><Card className={styles.workout} key={index}>  <CardMedia>
-       <img src={workout.avatar} />
-     </CardMedia><CardText>{workout.title}</CardText></Card>)}
-</CardText>
-  </Card>
-
-  </div>
+    )
   }
 }
 
