@@ -1,6 +1,7 @@
 import React, { PropTypes as T } from 'react';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText, GridList} from 'material-ui/Card';
 import MainFeed from '../Feed/subComponents/MainFeed';
+import MainToolbar from '../Header/MainToolbar'
 
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -38,6 +39,7 @@ export class LandingPage extends React.Component {
     </div>: <h4> Loading... </h4>
     return (
       <div className={styles.root}>
+      <MainToolbar auth={this.props}/>
       <div className={styles.banner}>
       <div className={styles.bannerInner}>
         <h1 className={styles.heading}>Find Your Fitness Tribe</h1>
@@ -46,7 +48,7 @@ export class LandingPage extends React.Component {
           <CardText>
             <TextField
              hintText="Start typing here.."
-             floatingLabelText="Search for Workouts"
+             floatingLabelText="Search by location or type of workout"
              ref="textbox"
              textareaStyle={inlineStyles.textFieldStyle}
              onKeyDown={(e)=>{

@@ -1,6 +1,7 @@
 .workouts{
   display : flex;
   flex-wrap: wrap;
+  /*column-count: 3;*/
 }
 
 .workout{

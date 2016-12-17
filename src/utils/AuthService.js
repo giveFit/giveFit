@@ -6,7 +6,7 @@ import { browserHistory } from 'react-router'
 
 var options = {
    auth: {
-        redirectUrl: `${window.location.origin}/login`,
+        redirectUrl: `${window.location.origin}/app-logged-in`,
         responseType: 'token'
       },
   theme: {
@@ -32,7 +32,7 @@ export default class AuthService extends EventEmitter {
     // Saves the user token
     this.setToken(authResult.idToken)
     // navigate to the home route
-    browserHistory.replace('/app')
+    browserHistory.replace('/app-logged-in')
     // Async loads the user profile data
     this.lock.getProfile(authResult.idToken, (error, profile) => {
       if (error) {

@@ -1,0 +1,12 @@
+.img{
+  max-height : 300px;
+  width : 100%;
+}
+
+.cardActive{
+  border: 4px solid #000000;
+  border-radius: 7px;
+  outline: none;
+  border-color: #2F1557;
+  box-shadow: 0 0 10px #2F1557;
+}

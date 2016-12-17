@@ -2,12 +2,12 @@ import React from 'react';
 import ReactRouter, { Router, Route, browserHistory, IndexRoute, IndexRedirect } from 'react-router';
 import AuthService from '../utils/AuthService';
 
-//Components
-import GridContainerWithData from '../components/Feed/GridContainer';
-import MainToolbar from '../components/Header/MainToolbar';
-import LandingPageContainerWithData from '../components/Landing/index';
-import HomeContainerWithData from '../components/Home/Home';
-import Login from '../components/Login/Login';
+//Not logged in Components
+import GridContainerWithData from '../components/Home/Feed/GridContainer';
+import MainToolbar from '../components/Home/Header/MainToolbar';
+import LandingPageContainerWithData from '../components/Home/Landing/index';
+import HomeContainerWithData from '../components/Home/Home/Home';
+import Login from '../components/Home/Login/Login';
 
 /*Keep some front-end principles in place
 	React works well, building app, data flows down. Events bubble up
@@ -35,6 +35,8 @@ const routes = (
 		<IndexRoute component={LandingPageContainerWithData} />
 		<Route path="home" component={HomeContainerWithData} onEnter={requireAuth} />
 		<Route path="login" component={Login} />
+		<Route path="app-home" component={AppHome} />
+		<Route path="app-workoutgroups" component={AppWorkoutGroups} />
 		<Route path="app" component={GridContainerWithData}  />
 	</Route>
 )

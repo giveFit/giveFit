@@ -2,53 +2,69 @@ import React, { Component, PropTypes as T } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import GridComponent from './GridComponent';
+import MainToolbar from '../Header/MainToolbar'
 
 //local utils
 import AuthService from 'utils/AuthService';
+import searchNearby from 'utils/googleApiHelpers';
 
 
 class GridContainer extends React.Component {
 	constructor(props, context) {
-    super(props, context)
-    this.state = {
-      profile: props.auth.getProfile(),
-      token: props.auth.getToken(),
-    };
+		console.log('GridContainer constructor', props)
+	    super(props, context)
+	    this.state = {
+	      profile: props.route.auth.getProfile(),
+	      token: props.route.auth.getToken(),
+	    };
 
-    props.auth.on('profile_updated', (newProfile) => {
-      console.log('newProfile', newProfile)
-      var access_token = this.state.token;
-      var identity = newProfile.identities[0];
-      console.log("token", access_token)
-      console.log("identity", identity)
-      this.props.register({
-        identity, access_token
-      }).then(({ data }) => {
-        console.log('got data', data);
-      }).catch((error) => {
-        console.log('there was an error sending the query', error);
-      });
-      console.log('what do we have', newProfile)
-      this.setState({
-        profile: newProfile,
-      })
-    })
-  }
+	    props.route.auth.on('profile_updated', (newProfile) => {
+	      console.log('newProfile', newProfile)
+	      var access_token = this.state.token;
+	      var identity = newProfile.identities[0];
+	      console.log("token", access_token)
+	      console.log("identity", identity)
+	      this.props.register({
+	        identity, access_token
+	      }).then(({ data }) => {
+	        console.log('got data', data);
+	      }).catch((error) => {
+	        console.log('there was an error sending the query', error);
+	      });
+	      console.log('what do we have', newProfile)
+	      this.setState({
+	        profile: newProfile,
+	      })
+	    })
+  	}
+
+  	onReady(mapProps, map) {
+  		const {google} = this.props;
+  		const opts = {
+  			location: map.center,
+  			radius: '500',
+  			types: ['cafe']
+  		}
+		searchNearby(google, map, opts)
+			.then((results, pagination) => {
+				//We got some results and a pag. object
+			}).catch((status, result) =>{
+				//There was an error
+			})
+  	}
 	render() {
-		console.log("props", this.props)
+		console.log("gridcontainer props", this.props)
 		console.log("error", this.props.data.error)
 		let loading = this.props.data.loading
 		console.log("loading?", loading)
 		if (loading == false){
 			console.log("not loading any more", this.props.data.viewer.allWorkoutGroups.edges)
 		}
-		/*this.props.data.loading ? console.log("still loading", this.props.data) :
-		console.log("workouts",this.props.data.viewer.allWorkoutGroups)
-		*/
 		console.log("props for the gridcontainer", this.props)
 		return (
 
 			<div>
+				<MainToolbar auth={this.props}/>
 				<GridComponent onPlaceSelect={(place)=>{
 					console.log("place---");
 					console.log(place);
