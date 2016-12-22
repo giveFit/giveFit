@@ -10,7 +10,7 @@ import TextField from 'material-ui/TextField';
 import styles from './styles.module.css';
 import RaisedButton from 'material-ui/RaisedButton';
 import {orange500, blue500} from 'material-ui/styles/colors';
-
+import CircularProgress from 'material-ui/CircularProgress';
 
 const inlineStyles = {
   textFieldStyle: {
@@ -19,6 +19,34 @@ const inlineStyles = {
 }
 
 export class HomeLoggedIn extends React.Component {
+  constructor(props, context) {
+    console.log('GridContainer constructor', props)
+      super(props, context)
+      this.state = {
+        profile: props.route.auth.getProfile(),
+        token: props.route.auth.getToken()
+      };
+
+    props.route.auth.on('profile_updated', (newProfile) => {
+      console.log('newProfile', newProfile)
+      var access_token = this.state.token;
+      var identity = newProfile.identities[0];
+      console.log("token", access_token)
+      console.log("identity", identity)
+      this.props.register({
+        identity, access_token
+      }).then(({ data }) => {
+        console.log('got data', data);
+      }).catch((error) => {
+        console.log('there was an error sending the query', error);
+      });
+      console.log('what do we have', newProfile)
+      this.setState({
+        profile: newProfile,
+      })
+    })
+  }
+
   handleSubmit(){
     /*I want users to be able to press the button without
     entering anything, but still have the value declaration
@@ -36,10 +64,13 @@ export class HomeLoggedIn extends React.Component {
             data={item.node}
          />)} </div>
     ))}
-    </div>: <h4> Loading... </h4>
+    </div>: <CircularProgress size={80} />
     return (
       <div className={styles.root}>
-      <MainToolbar auth={this.props}/>
+      <MainToolbar 
+        auth={this.props}
+        profile={this.state.profile}
+      />
       <div className={styles.banner}>
       <div className={styles.bannerInner}>
         <h1 className={styles.heading}>Find Your Fitness Tribe</h1>
@@ -63,10 +94,10 @@ export class HomeLoggedIn extends React.Component {
         </Card>
         </div>
       </div>
-      <h2>
+      <h3 className={styles.featuredWorkouts}>
            Check out this week's highlighted workout groups. 
            Search above for more awesome group workouts in your area.
-      </h2>
+      </h3>
        {listView}
     </div>
     )

@@ -1,14 +1,16 @@
-export function searchNearby(google, map, request) {
+import GooglePlaces from 'node-googleplaces';
+
+//returns a list of 20 places based on our request options
+export function searchNearby(googleMaps, div, request) {
 	console.log("we did the searchNearby")
   return new Promise((resolve, reject) => {
-    const service = new google.maps.places.PlacesService(map);
-
-    service.nearbySearch(request, (results, status, pagination) => {
-      if (status == google.maps.places.PlacesServiceStatus.OK) {
-
-        resolve(results, pagination);
+    const placesService = new googleMaps.places.PlacesService(div)
+    // https://developers.google.com/maps/documentation/javascript/examples/place-search
+    placesService.nearbySearch(request, (results, status) => {
+      if (status === googleMaps.places.PlacesServiceStatus.OK) {
+        resolve(results)
       } else {
-        reject(results, status);
+        reject('Error')
       }
     })
   });

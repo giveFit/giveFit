@@ -26,6 +26,8 @@ export default class AuthService extends EventEmitter {
     this.lock.on('authorization_error', this._authorizationError.bind(this))
     // binds login functions to keep this context
     this.login = this.login.bind(this)
+    // binds logout functions to keep this context
+    this.logout = this.logout.bind(this)
   }
 
   _doAuthentication(authResult){

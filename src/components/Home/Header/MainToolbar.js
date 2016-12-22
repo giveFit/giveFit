@@ -9,12 +9,14 @@ import { Route, Router, Link } from 'react-router'
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import mui, { Drawer, MenuItem, Styles, RaisedButton, FlatButton, Avatar } from 'material-ui';
+import PersonAdd from 'material-ui/svg-icons/social/person-add';
 
-
-const styles = {
+const inlineStyles = {
   title: {
     cursor: 'pointer',
   },
+  avatar: {
+    margin: '10px 10px 10px 10px',  }
 };
 
 class MainToolbar extends Component {
@@ -25,6 +27,7 @@ class MainToolbar extends Component {
     this.state = {
       value: 3,
       open: false,
+      /*profile: props.auth.getProfile(),*/
     };
   }
 
@@ -45,7 +48,13 @@ class MainToolbar extends Component {
     this.context.router.push('/')
   }
 
+  logout(){
+    this.props.auth.logout()
+    this.context.router.push('/app');
+  }
+
   render() {
+    const { profile } = this.props
     console.log('toolbar this.props',this.props)
     return (
       <div>
@@ -59,25 +68,30 @@ class MainToolbar extends Component {
               </IconButton>
             }
           >
-          <MenuItem onTouchTap={this.handleClose.bind(this)}>
-          <Link to='/'>Home</Link>
-          </MenuItem>
-          <MenuItem onTouchTap={this.handleClose.bind(this)}>
-            <Link to='/app'>Workout Groups</Link>
-          </MenuItem>
-          <MenuItem onTouchTap={this.handleClose.bind(this)}>
-            <Link to='/blog'>Blog</Link>
-          </MenuItem>
-          <MenuItem onTouchTap={this.handleClose.bind(this)}>
-            <Link to='/about-us'>About Us</Link>
-          </MenuItem>
-          <MenuItem onTouchTap={this.handleClose.bind(this)}>
-            <RaisedButton onClick={this.props.auth.route.auth.login.bind(this)}>Login</RaisedButton>
-          </MenuItem>
-
+          <MenuItem 
+            onTouchTap={this.handleClose.bind(this)}
+            onClick={()=>this.context.router.push('/')}
+            primaryText="Home" />
+          <MenuItem 
+            onTouchTap={this.handleClose.bind(this)}
+            onClick={()=>this.context.router.push('/app')}
+            primaryText="Workout Groups" />
+          <MenuItem 
+            onTouchTap={this.handleClose.bind(this)}
+            onClick={()=>this.context.router.push('/blog')}
+            primaryText="Blog" />
+          <MenuItem 
+            onTouchTap={this.handleClose.bind(this)}
+            onClick={()=>this.context.router.push('/about-us')}
+            primaryText="About Us" />
+          <MenuItem 
+            onTouchTap={this.handleClose.bind(this)}
+            onClick={this.props.auth.route.auth.login.bind(this)}
+            primaryText="Log in"
+            leftIcon={<PersonAdd />} />
           </IconMenu>
-          <ToolbarTitle style={styles.title} text="givefit" 
-            onClick={this.handleTouchTap.bind(this)}
+          <ToolbarTitle style={inlineStyles.title} text="givefit" 
+            onClick={()=>this.context.router.push('/')}
           />
         </ToolbarGroup>
         <ToolbarGroup>
@@ -87,16 +101,6 @@ class MainToolbar extends Component {
           <FontIcon className="muidocs-icon-custom-sort" />
           <ToolbarSeparator />
           <RaisedButton label="Login" primary={true} onClick={this.props.auth.route.auth.login.bind(this)}/>
-          <IconMenu
-            iconButtonElement={
-              <IconButton touch={true}>
-                <NavigationExpandMoreIcon />
-              </IconButton>
-            }
-          >
-            <MenuItem primaryText="Download" />
-            <MenuItem primaryText="More Info" />
-          </IconMenu>
         </ToolbarGroup>
       </Toolbar>
       </div>

@@ -3,7 +3,6 @@ import { render } from 'react-dom';
 import { browserHistory, IndexRoute, Router, Route, routes, applyRouterMiddleware } from 'react-router';
 
 //Local imports
-//import routes from './config/routes';
 import client from '../apollo';
 
 //Material UI qualms
@@ -12,7 +11,6 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import './styles/base.css';
 import theme from './theme';
 const muiTheme = getMuiTheme(theme);
-
 import injectTapEventPlugin from "react-tap-event-plugin";
 injectTapEventPlugin();
 
@@ -28,6 +26,8 @@ import LandingPageContainerWithData from './components/Home/Landing/index';
 //Logged in Components
 import AppLoggedInWithData from './components/App/Feed/AppLoggedIn';
 import HomeLoggedInWithData from './components/App/Landing/HomeLoggedIn';
+//Actually the profile route
+import HomeContainerWithData from './components/App/Home/Home'
 
 const auth = new AuthService(__AUTH0_CLIENT_ID__, __AUTH0_DOMAIN__);
 // onEnter callback to validate authentication in private routes
@@ -45,11 +45,13 @@ const Application = () => (
       render={
         applyRouterMiddleware()
       }
+      auth={auth}
      >
       <Route path="/" component={LandingPageContainerWithData} auth={auth} />
       <Route path="/app" component={GridContainerWithData} auth={auth} />
       <Route path="/home-logged-in" component={HomeLoggedInWithData} auth={auth} />
       <Route path="/app-logged-in" component={AppLoggedInWithData} auth={auth} />
+      <Route path="/profile" component={HomeContainerWithData} auth={auth} />
     </Router>
   </MuiThemeProvider>
 );

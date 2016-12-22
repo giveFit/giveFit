@@ -5,18 +5,15 @@ import GridComponent from './GridComponent';
 import MainToolbar from '../Header/MainToolbar'
 
 //local utils
-import searchNearby from '../../../utils/googleApiHelpers';
 import AuthService from 'utils/AuthService'
 
-class AppLoggedIn extends React.Component {
+class AppLoggedIn extends Component {
 	constructor(props, context) {
 		console.log('GridContainer constructor', props)
 	    super(props, context)
 	    this.state = {
 	      profile: props.route.auth.getProfile(),
-	      token: props.route.auth.getToken(),
-	      places: [],
-	      pagination: null
+	      token: props.route.auth.getToken()
 	    };
 
 	    props.route.auth.on('profile_updated', (newProfile) => {
@@ -38,26 +35,6 @@ class AppLoggedIn extends React.Component {
 	      })
 	    })
   	}
-  	/*componentDidMount(mapProps, map) {
-  	console.log("component mounted", map)
-    const {googleMaps} = this.props;
-    const opts = {
-      location: { lat: 39.2904, lng: -76.6122 },
-      radius: '500',
-      types: ['cafe']
-    }
-    searchNearby(googleMaps, map, opts)
-      .then((results, pagination) => {
-      	console.log('successful gapi', results, pagination)
-        this.setState({
-          places: results,
-          pagination
-        })
-      }).catch((status, result) => {
-        console.error('error', status, result)
-      })
-  	}*/
-  	
 	render() {
 		console.log("gridcontainer props", this.props)
 		console.log("error", this.props.data.error)
@@ -67,10 +44,13 @@ class AppLoggedIn extends React.Component {
 			console.log("not loading any more", this.props.data.viewer.allWorkoutGroups.edges)
 		}
 		console.log("props for the gridcontainer", this.props)
+		console.log("this.state", this.state)
 		return (
-
 			<div>
-				<MainToolbar auth={this.props}/>
+				<MainToolbar 
+					auth={this.props}
+					profile={this.state.profile}
+				/>
 				<GridComponent onPlaceSelect={(place)=>{
 					console.log("place---");
 					console.log(place);

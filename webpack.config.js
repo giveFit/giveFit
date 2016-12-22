@@ -39,7 +39,7 @@ var config = getConfig({
     return {
       'index.html': context.defaultTemplate({
         title: 'givefit',
-        head: '<style> html,body, #root { width: 100%; height : 100%; } </style><script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDaqZIUzhyOdPDlsVjkdLbuWj89F3gNCMg" ></script>',
+        head: '<style> html,body, #root { width: 100%; height : 100%; } </style><script src="https://maps.googleapis.com/maps/api/js?libraries=geometry,drawing,places&key=AIzaSyBwOsxUEBGettfG4jFkxFNl2lt3s7dtYPc" ></script>',
         publicPath: isDev ? 'http://localhost:3000/' : '',
         meta: {
           'name': 'givefit',
