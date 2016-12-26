@@ -6,14 +6,31 @@ import MainToolbar from '../Header/MainToolbar'
 
 //local utils
 import AuthService from 'utils/AuthService'
+import {searchNearby} from 'utils/googleApiHelpers';
+
 
 class AppLoggedIn extends Component {
 	constructor(props, context) {
 		console.log('GridContainer constructor', props)
-	    super(props, context)
+	    super(props, context);
+	    var googleMaps = this.props.googleMaps ||
+        (window.google && // eslint-disable-line no-extra-parens
+          window.google.maps) ||
+        this.googleMaps;
+
+	    if (!googleMaps) {
+	        console.error(// eslint-disable-line no-console
+	          'Google map api was not found in the page.');
+	        return;
+	    }
+	    
 	    this.state = {
-	      profile: props.route.auth.getProfile(),
-	      token: props.route.auth.getToken()
+	      	profile: props.route.auth.getProfile(),
+	      	token: props.route.auth.getToken(),
+	      	parks: [],
+	        parksAndGyms: [],
+	        markers: [],
+	        pagination: null
 	    };
 
 	    props.route.auth.on('profile_updated', (newProfile) => {
@@ -62,7 +79,7 @@ class AppLoggedIn extends Component {
 				}}
 				workouts={(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ? this.props.data.viewer.allWorkoutGroups.edges : []}
 				markers={(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ?  this.props.data.viewer.allWorkoutGroups.edges.map((i,index)=>({
-					title : i.node.title,
+					//title : i.node.title,
 					position : {
 						lat : parseFloat(i.node.lat),
 						lng : parseFloat(i.node.lng)

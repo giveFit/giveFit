@@ -1,6 +1,6 @@
 import React, { PropTypes as T } from 'react';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText, GridList} from 'material-ui/Card';
-import MainFeed from '../Feed/subComponents/MainFeed';
+import HomeFeed from './SubComponents/HomeFeed';
 import MainToolbar from '../Header/MainToolbar'
 
 import { graphql } from 'react-apollo';
@@ -60,11 +60,11 @@ export class HomeLoggedIn extends React.Component {
     const listView = workouts.length ? <div className={styles.workouts}>
     {workouts.map((item, index) => (
          <div key={index} className={styles.workout}> {!item ||
-          (<MainFeed
+          (<HomeFeed
             data={item.node}
          />)} </div>
     ))}
-    </div>: <CircularProgress size={80} />
+    </div> : <CircularProgress size={80} />
     return (
       <div className={styles.root}>
       <MainToolbar 
@@ -88,7 +88,7 @@ export class HomeLoggedIn extends React.Component {
                }
              }}
            />
-           <RaisedButton label="Search for Workouts" secondary={true} className={styles.submitButton} onTouchTap={()=>this.handleSubmit()} />
+           <RaisedButton label="Find Groups" secondary={true} className={styles.submitButton} onTouchTap={()=>this.handleSubmit()} />
            <br />
         </CardText>
         </Card>

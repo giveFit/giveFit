@@ -5,7 +5,7 @@ import StarBorder from 'material-ui/svg-icons/toggle/star-border';
 import GridList from 'material-ui/GridList'
 import {GoogleMapLoader, GoogleMap, Marker} from 'react-google-maps';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
-
+import CircularProgress from 'material-ui/CircularProgress';
 import MainFeed from './subComponents/MainFeed';
 import {searchNearby} from 'utils/googleApiHelpers';
 
@@ -46,7 +46,8 @@ class GridComponent extends Component {
       this.state = {
         activeIndex : -1,
         parks: [],
-        gyms: [],
+        parksAndGyms: [],
+        markers: [],
         pagination: null
       };
       // now grab the services we need
@@ -57,9 +58,6 @@ class GridComponent extends Component {
       this.infowindow = new googleMaps.InfoWindow;
     }
     /*Working on Google API for location fetching
-    Cannot get the _googleMapComponent.props
-    possible reference material:
-    https://dna.hioscar.com/2016/01/25/google-maps-a-call-to-reaction/
     This google apis return the places in sets of 20, the maximum number of places that an api can fetch is 60. If you carefully observe the response of the google places api, it has a parameter called next_pagetoken. So the second time you hit the API u need to pass this next_pagetoken to fetch the next set of schools.@ChithriAjay
     how to do multiple types
     http://stackoverflow.com/questions/19625228/google-maps-api-multiple-keywords-in-place-searches*/
@@ -67,12 +65,13 @@ class GridComponent extends Component {
     const div = document.createElement('div')
     console.log("isMounted method", div)
     /*const {googleMaps} = this.props;*/
+    //baltimore parks search params
     const parks = {
       location: { lat: 39.2904, lng: -76.6122 },
       radius: 5000,
       type: 'park'
     }
-
+    //baltimore gym search params
     const gyms = {
       location: { lat: 39.2904, lng: -76.6122 },
       radius: 5000,
@@ -96,7 +95,7 @@ class GridComponent extends Component {
         console.log('searchNearby results', results)
         console.log('searchNearby pagination', pagination)
         this.setState({
-          gyms: results,
+          parksAndGyms: this.state.parks.concat(results),
           pagination
         })
       }).catch((status, result) => {
@@ -146,23 +145,21 @@ class GridComponent extends Component {
     }
     render(){
       const {props} = this;
-      const {activeIndex, parks, gyms} = this.state;
-      const {workouts} = props;
+      const {activeIndex, parks, parksAndGyms, markers} = this.state;
 
-      console.log("props markers", props.markers);
-
+      //Build placeById object
       const placeById = {}
-      parks.forEach(s => {
+      parksAndGyms.forEach(s => {
         /*const place_id = s.place_id*/
         console.log('each spot', s)
         /*const workout = workouts.find(w => w.placeId == place_id)*/
         placeById[s.place_id] = {
           /*comments: workout.comments,*/
           googleData: {
-            'name': s.name,
-            'rating': s.rating,
-            'photos': s.photos,
-            'position' : {
+            name: s.name,
+            rating: s.rating,
+            photos: s.photos,
+            position : {
                 lat : s.geometry.location.lat(),
                 lng : s.geometry.location.lng()
             }
@@ -170,75 +167,30 @@ class GridComponent extends Component {
         }
         console.log("first parks", placeById)
       })
-       gyms.forEach(s => {
-        /*const place_id = s.place_id*/
-        console.log('each spot', s)
-        /*const workout = workouts.find(w => w.placeId == place_id)*/
-        placeById[s.place_id] = {
-          /*comments: workout.comments,*/
-          googleData: {
-            'name': s.name,
-            'rating': s.rating,
-            'photos': s.photos,
-            'position' : {
+      
+      parksAndGyms.map(s => {
+        markers.push({
+          title: s.name,
+          position : {
                 lat : s.geometry.location.lat(),
                 lng : s.geometry.location.lng()
             }
-          }
-        }
-        console.log("then gyms", placeById)
+        })
       })
 
       //list with google data
-      /*const gListView = spots.length ? <div
+      const gListView = parks.length ? <div
           style={styles.gridList} 
-          >
-          {Object.keys(placeById).map((id, index) => (
-            console.log('gListView id', id)
-            console.log('gListView index', index)
-            const item = placeById[id]
+          > {Object.keys(placeById).map((item, index) => (
                <div key={index} style={styles.workout}> {!item ||
                 (<MainFeed
                   active={activeIndex===index}
-                  data={item.node}
+                  data={placeById[item]}
                />)} </div>
-          ))}
-      </div> : <Card>
-              <CardHeader
-                title="No Workouts In this location"
-                subtitle="Please try a different location"
-                actAsExpander={true}
-                showExpandableButton={true}
-              />
-              <CardText expandable={true}>
-                We are working to get workouts here
-              </CardText>
-      </Card>*/
-      //google maps list view
-      /*console.log('gListView', gridList)*/
-      
-      const listView = workouts.length ? <div
-          style={styles.gridList}
-        >
-          {props.workouts.map((item, index) => (
-               <div key={index} style={styles.workout}> {!item ||
-                (<MainFeed
-                  active={activeIndex===index}
-                  data={item.node}
-               />)} </div>
-          ))}
-      </div>  :  <Card>
-              <CardHeader
-                title="No Workouts In this location"
-                subtitle="Please try a different location"
-                actAsExpander={true}
-                showExpandableButton={true}
-              />
-              <CardText expandable={true}>
-                We are working to get workouts here
-              </CardText>
-            </Card>
-
+          ))} 
+          </div> : <Card>
+              <CircularProgress size={80} />
+      </Card>
       return (
             <div style={styles.root}>
             <section style={{height: "100%",flex:1}}>
@@ -254,7 +206,7 @@ class GridComponent extends Component {
                  googleMapElement={
                    <GoogleMap
                     ref={(map) => { this._googleMapComponent = map ; console.log("the map", map);} }
-                    defaultZoom={8}
+                    defaultZoom={14}
                     defaultCenter={{ lat: 39.2904, lng: -76.6122 }}
                     onClick={(...args)=>{
                       console.log("map args", ...args);
@@ -262,7 +214,8 @@ class GridComponent extends Component {
                      }}
                    >
                    {console.log("props for markers", props.markers)}
-                     {props.markers ? props.markers.map((marker, index) => {
+                   {console.log("compare marker arrays", markers)}
+                     {parksAndGyms.length ? markers.map((marker, index) => {
                        return (
                          <Marker
                           key={index}
@@ -275,7 +228,7 @@ class GridComponent extends Component {
                  }
                />
              </section>
-             {listView}
+             {gListView}
             </div>
 
         );

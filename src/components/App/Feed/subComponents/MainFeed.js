@@ -62,10 +62,11 @@ class MainFeed extends React.Component{
 
   render(){
     const {props} = this;
+    console.log('feed props', props)
     return <Card ref='root' key={props.data.id} className={props.active ? styles.cardActive : ""}>
       <CardHeader
-        title={props.data.author}
-        avatar={props.data.avatar}
+        title={props.data.googleData.name}
+        //avatar={props.data.avatar}
       />
       <CardMedia
           overlay={
@@ -80,13 +81,13 @@ class MainFeed extends React.Component{
                   />
                 }
       >
-        <img src={props.data.image} className={styles.img}/>
+        
       </CardMedia>
       <CardText>{props.data.contentSnippet} </CardText>
       <Card expanded={this.state.expanded}>
       <CardText expandable={true}>
       <Tabs >
-          <Tab label="Workouts" >
+          <Tab label="Workouts">
            <div>
              <h2 className={styles.headline}>Upcoming Workouts</h2>
                 <TextField hintText="Workout Title"/> <FitnessCenter />
