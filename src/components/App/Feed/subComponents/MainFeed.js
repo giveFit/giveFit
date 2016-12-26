@@ -81,7 +81,7 @@ class MainFeed extends React.Component{
                   />
                 }
       >
-        
+        {props.data.googleData.photos ? <img src={props.data.googleData.photos[0].getUrl({'maxWidth': 200, 'maxHeight': 300})} className={styles.img}/> : <img src="http://lorempixel.com/400/200" />}
       </CardMedia>
       <CardText>{props.data.contentSnippet} </CardText>
       <Card expanded={this.state.expanded}>

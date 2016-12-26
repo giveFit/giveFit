@@ -6,31 +6,14 @@ import MainToolbar from '../Header/MainToolbar'
 
 //local utils
 import AuthService from 'utils/AuthService'
-import {searchNearby} from 'utils/googleApiHelpers';
-
 
 class AppLoggedIn extends Component {
 	constructor(props, context) {
 		console.log('GridContainer constructor', props)
-	    super(props, context);
-	    var googleMaps = this.props.googleMaps ||
-        (window.google && // eslint-disable-line no-extra-parens
-          window.google.maps) ||
-        this.googleMaps;
-
-	    if (!googleMaps) {
-	        console.error(// eslint-disable-line no-console
-	          'Google map api was not found in the page.');
-	        return;
-	    }
-	    
+	    super(props, context)
 	    this.state = {
-	      	profile: props.route.auth.getProfile(),
-	      	token: props.route.auth.getToken(),
-	      	parks: [],
-	        parksAndGyms: [],
-	        markers: [],
-	        pagination: null
+	      profile: props.route.auth.getProfile(),
+	      token: props.route.auth.getToken()
 	    };
 
 	    props.route.auth.on('profile_updated', (newProfile) => {

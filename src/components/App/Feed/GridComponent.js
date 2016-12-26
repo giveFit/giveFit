@@ -169,7 +169,7 @@ class GridComponent extends Component {
       })
       
       parksAndGyms.map(s => {
-        markers.push({
+        return markers.push({
           title: s.name,
           position : {
                 lat : s.geometry.location.lat(),
@@ -206,8 +206,8 @@ class GridComponent extends Component {
                  googleMapElement={
                    <GoogleMap
                     ref={(map) => { this._googleMapComponent = map ; console.log("the map", map);} }
-                    defaultZoom={14}
-                    defaultCenter={{ lat: 39.2904, lng: -76.6122 }}
+                    defaultZoom={13}
+                    defaultCenter={{ lat: 39.287014134966526, lng: -76.55342102050781 }}
                     onClick={(...args)=>{
                       console.log("map args", ...args);
                       return this.geocodeLatLng(...args)
