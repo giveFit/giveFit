@@ -5,6 +5,7 @@ import FlatButton from 'material-ui/FlatButton';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import TextField from 'material-ui/TextField';
 import Toggle from 'material-ui/Toggle';
+import { Avatar, Chip } from 'material-ui';
 //svg-icons
 import BookmarkBorder from 'material-ui/svg-icons/action/bookmark-border';
 import Done from 'material-ui/svg-icons/action/done';
@@ -13,6 +14,8 @@ import DatePicker from 'material-ui/DatePicker';
 import Comment from 'material-ui/svg-icons/communication/comment';
 import {blue500, red500, greenA200, white} from 'material-ui/styles/colors';
 
+//Local components
+import WorkoutCreator from './WorkoutCreator';
 
 //styles module
 import styles from '../styles.module.css';
@@ -20,6 +23,9 @@ import styles from '../styles.module.css';
 const inlineStyles = {
   subtitleStyle: {
     subtitleColor: 'rgba(211, 211, 211)'
+  },
+  chip: {
+    margin: 4,
   }
 };
 
@@ -27,8 +33,7 @@ class MainFeed extends React.Component{
   constructor(props, context) {
     super(props, context);
     this.state = {
-      expanded: false,
-      recur: true,
+      expanded: false
     };
   }
   componentWillReceiveProps(newProps){
@@ -51,21 +56,24 @@ class MainFeed extends React.Component{
     alert('hey saving')
     //add a mutation here to save to the user's "saved workouts"
   }
-  addWorkout(){
-    alert('adding workout')
+  handleTouchTap(){
+  alert('You clicked the Chip.');
   }
-  handleToggle(event, toggled){
-    this.setState({
-      [event.target.name]: toggled,
-    });
-  }
-
+  //handleOpen of WorkoutCreator
+  handleOpen(){
+    console.log('handling open')
+    this.setState({open: true});
+  };
+  //handleClose of WorkoutCreator
+  handleClose(){
+    this.setState({open: false});
+  };
   render(){
     const {props} = this;
     console.log('feed props', props)
     return <Card ref='root' key={props.data.id} className={props.active ? styles.cardActive : ""}>
       <CardHeader
-        title={props.data.googleData.name}
+        title={props.data.googleData.title}
         //avatar={props.data.avatar}
       />
       <CardMedia
@@ -73,6 +81,7 @@ class MainFeed extends React.Component{
                   <CardTitle
                     title={props.data.title}
                     /*subtitle={props.data.date}*/
+                    //What shoul
                     subtitle={<BookmarkBorder 
                                 color={white} 
                                 hoverColor={greenA200}
@@ -83,29 +92,37 @@ class MainFeed extends React.Component{
       >
         {props.data.googleData.photos ? <img src={props.data.googleData.photos[0].getUrl({'maxWidth': 200, 'maxHeight': 300})} className={styles.img}/> : <img src="http://lorempixel.com/400/200" />}
       </CardMedia>
-      <CardText>{props.data.contentSnippet} </CardText>
+      <CardText>
+        <Chip
+          onTouchTap={this.handleTouchTap}
+          style={inlineStyles.chip}
+        >
+          <Avatar />
+          Image Avatar Chip
+        </Chip> 
+        1/17/2017, yoga on the hill, bring your mat, I'll be instructing an intermediate class
+      </CardText>
       <Card expanded={this.state.expanded}>
       <CardText expandable={true}>
       <Tabs >
           <Tab label="Workouts">
            <div>
-             <h2 className={styles.headline}>Upcoming Workouts</h2>
-                <TextField hintText="Workout Title"/> <FitnessCenter />
-                    <DatePicker hintText="Select a date" /> 
-                    <Toggle
-                      name="recur"
-                      value="recur"
-                      label="Recurring?"
-                      toggled={this.state.recur}
-                      onToggle={this.handleToggle.bind(this)}
-                    />
-                  <b>Submit &nbsp;</b><Done hoverColor={blue500} onClick={this.addWorkout.bind(this)} />
-                <p>This will render data<FitnessCenter /> </p>
+            <WorkoutCreator /> 
+            <CardText>
+              <Chip
+                onTouchTap={this.handleTouchTap}
+                style={inlineStyles.chip}
+              >
+                <Avatar />
+                Image Avatar Chip
+              </Chip> 
+              1/17/2017, yoga on the hill, bring your mat, I'll be instructing an intermediate class
+            </CardText>
+            
            </div>
           </Tab>
           <Tab label="Comments" >
            <div>
-             <h2 style={styles.headline}>Comments/Questions</h2>
              <div>
                <TextField hintText="Add a comment"/>
                <Comment />
@@ -119,7 +136,7 @@ class MainFeed extends React.Component{
         <div>Comments</div>
       </CardText>*/}
       <CardActions >
-      {this.state.expanded ? <FlatButton label="Reduce" onTouchTap={this.handleReduce.bind(this)} /> : <FlatButton label="See upcoming workouts" onTouchTap={this.handleExpand.bind(this)} /> } 
+      {this.state.expanded ? <FlatButton label="Reduce" onTouchTap={this.handleReduce.bind(this)} /> : <FlatButton label="See more" onTouchTap={this.handleExpand.bind(this)} /> } 
       </CardActions>
     </Card>
   }

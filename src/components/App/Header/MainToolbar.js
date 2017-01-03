@@ -83,7 +83,7 @@ class MainToolbar extends Component {
           <MenuItem 
             onTouchTap={this.handleClose.bind(this)}
             onClick={()=>this.context.router.push('/app-logged-in')}
-            primaryText="Workout Groups" />
+            primaryText="Workout Locations" />
           <MenuItem 
             onTouchTap={this.handleClose.bind(this)}
             onClick={()=>this.context.router.push('/blog')}

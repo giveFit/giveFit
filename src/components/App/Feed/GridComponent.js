@@ -156,28 +156,19 @@ class GridComponent extends Component {
         placeById[s.place_id] = {
           /*comments: workout.comments,*/
           googleData: {
-            name: s.name,
-            rating: s.rating,
-            photos: s.photos,
+            title: s.name,
             position : {
                 lat : s.geometry.location.lat(),
                 lng : s.geometry.location.lng()
-            }
+            },
+            rating: s.rating,
+            photos: s.photos,
+            vicinity: s.vicinity
           }
         }
         console.log("first parks", placeById)
       })
-      
-      parksAndGyms.map(s => {
-        return markers.push({
-          title: s.name,
-          position : {
-                lat : s.geometry.location.lat(),
-                lng : s.geometry.location.lng()
-            }
-        })
-      })
-
+    
       //list with google data
       const gListView = parks.length ? <div
           style={styles.gridList} 
@@ -213,13 +204,11 @@ class GridComponent extends Component {
                       return this.geocodeLatLng(...args)
                      }}
                    >
-                   {console.log("props for markers", props.markers)}
-                   {console.log("compare marker arrays", markers)}
-                     {parksAndGyms.length ? markers.map((marker, index) => {
+                     {parksAndGyms.length ? Object.keys(placeById).map((marker, index) => {
                        return (
                          <Marker
                           key={index}
-                           {...marker}
+                           {...placeById[marker].googleData}
                            onClick={()=>this.markerClick(index)}
                            onRightclick={() => console.log(marker,index)} />
                        );
