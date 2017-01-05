@@ -4,6 +4,7 @@ import GooglePlaces from 'node-googleplaces';
 export function searchNearby(googleMaps, div, request) {
 	console.log("we did the searchNearby")
   return new Promise((resolve, reject) => {
+    //the api call is within the promise ;)
     const placesService = new googleMaps.places.PlacesService(div)
     // https://developers.google.com/maps/documentation/javascript/examples/place-search
     placesService.nearbySearch(request, (results, status) => {
