@@ -29,7 +29,7 @@ const inlineStyles = {
   }
 };
 
-class MainFeed extends React.Component{
+class GymFeed extends React.Component{
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -56,9 +56,6 @@ class MainFeed extends React.Component{
     alert('hey saving')
     //add a mutation here to save to the user's "saved workouts"
   }
-  handleTouchTap(){
-  alert('You clicked the Chip.');
-  }
   //handleOpen of WorkoutCreator
   handleOpen(){
     console.log('handling open')
@@ -70,7 +67,7 @@ class MainFeed extends React.Component{
   };
   render(){
     const {props} = this;
-    console.log('feed props', props)
+    //console.log('feed props', props)
     return <Card ref='root' key={props.data.id} className={props.active ? styles.cardActive : ""}>
       <CardHeader
         title={props.data.googleData.title}
@@ -93,14 +90,7 @@ class MainFeed extends React.Component{
         {props.data.googleData.photos ? <img src={props.data.googleData.photos[0].getUrl({'maxWidth': 200, 'maxHeight': 300})} className={styles.img}/> : <img src="http://lorempixel.com/400/200" />}
       </CardMedia>
       <CardText>
-        <Chip
-          onTouchTap={this.handleTouchTap}
-          style={inlineStyles.chip}
-        >
-          <Avatar />
-          Image Avatar Chip
-        </Chip> 
-        1/17/2017, yoga on the hill, bring your mat, I'll be instructing an intermediate class
+        Is this your gym? Claim it here!
       </CardText>
       <Card expanded={this.state.expanded}>
       <CardText expandable={true}>
@@ -108,17 +98,6 @@ class MainFeed extends React.Component{
           <Tab label="Workouts">
            <div>
             <WorkoutCreator /> 
-            <CardText>
-              <Chip
-                onTouchTap={this.handleTouchTap}
-                style={inlineStyles.chip}
-              >
-                <Avatar />
-                Image Avatar Chip
-              </Chip> 
-              1/17/2017, yoga on the hill, bring your mat, I'll be instructing an intermediate class
-            </CardText>
-            
            </div>
           </Tab>
           <Tab label="Comments" >
@@ -136,12 +115,10 @@ class MainFeed extends React.Component{
         <div>Comments</div>
       </CardText>*/}
       <CardActions >
-      {this.state.expanded ? <FlatButton label="Reduce" onTouchTap={this.handleReduce.bind(this)} /> : <FlatButton label="See more" onTouchTap={this.handleExpand.bind(this)} /> } 
+      {this.state.expanded ? <FlatButton label="Reduce" onTouchTap={this.handleReduce.bind(this)} /> : <FlatButton label="See more workouts" onTouchTap={this.handleExpand.bind(this)} /> } 
       </CardActions>
     </Card>
   }
 }
 
-
-
-export default MainFeed;
+export default GymFeed;

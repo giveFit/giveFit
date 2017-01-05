@@ -52,7 +52,7 @@ export class HomeLoggedIn extends React.Component {
     entering anything, but still have the value declaration
     below for when i do a location query*/
     /*const {value} = this.refs.textbox.input;*/
-    this.context.router.push('/app');
+    this.context.router.push('/app-logged-in');
   }
   render(){
     const workouts=(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ? this.props.data.viewer.allWorkoutGroups.edges : [];

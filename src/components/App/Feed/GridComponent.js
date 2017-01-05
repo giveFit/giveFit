@@ -6,7 +6,8 @@ import GridList from 'material-ui/GridList'
 import {GoogleMapLoader, GoogleMap, Marker} from 'react-google-maps';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import CircularProgress from 'material-ui/CircularProgress';
-import MainFeed from './subComponents/MainFeed';
+import ParkFeed from './subComponents/ParkFeed';
+import GymFeed from './subComponents/GymFeed';
 import {searchNearby} from 'utils/googleApiHelpers';
 
 const height = window.innerHeight - 64;
@@ -65,10 +66,11 @@ class GridComponent extends Component {
     const div = document.createElement('div')
     console.log("isMounted method", div)
     /*const {googleMaps} = this.props;*/
+    //Need to update these searches when a new map center is created
     //baltimore parks search params
     const parks = {
       location: { lat: 39.2904, lng: -76.6122 },
-      radius: 5000,
+      radius: 50000,
       type: 'park'
     }
     //baltimore gym search params
@@ -80,7 +82,7 @@ class GridComponent extends Component {
     //search and add parks to state
     searchNearby(this.googleMaps, div, parks)
       .then((results, pagination) => {
-        console.log('searchNearby results', results)
+        console.log('searchNearby parks', results)
         console.log('searchNearby pagination', pagination)
         this.setState({
           parks: results,
@@ -92,7 +94,7 @@ class GridComponent extends Component {
     //search and add gyms to state  
     searchNearby(this.googleMaps, div, gyms)
       .then((results, pagination) => {
-        console.log('searchNearby results', results)
+        console.log('searchNearby gyms', results)
         console.log('searchNearby pagination', pagination)
         this.setState({
           parksAndGyms: this.state.parks.concat(results),
@@ -115,17 +117,9 @@ class GridComponent extends Component {
     this.geocoder.geocode({'location': obj.latLng}, (results, status)=>{
       if (status === 'OK') {
         if (results[1]) {
-          //map.setZoom(9);
-          //map.setCenter(latlng);
-          /*var marker = new google.maps.Marker({
-            position: latlng,
-            icon : 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
-            map: map
-          });
-          if(this.clickMarker){
-              this.clickMarker.setMap(null);
-          }
-          this.clickMarker = marker;*/
+          //why is map not setting to the actual center? appears to be offset by the feed
+          map.setCenter(latlng);
+          //Display location infowindow on hover  
           /*this.infowindow.setContent(results[1].formatted_address);*/
           this.props.onPlaceSelect({
               coordinates : latlng,
@@ -151,7 +145,7 @@ class GridComponent extends Component {
       const placeById = {}
       parksAndGyms.forEach(s => {
         /*const place_id = s.place_id*/
-        console.log('each spot', s)
+        //console.log('each spot', s)
         /*const workout = workouts.find(w => w.placeId == place_id)*/
         placeById[s.place_id] = {
           /*comments: workout.comments,*/
@@ -163,18 +157,23 @@ class GridComponent extends Component {
             },
             rating: s.rating,
             photos: s.photos,
-            vicinity: s.vicinity
+            vicinity: s.vicinity,
+            types: s.types
           }
         }
-        console.log("first parks", placeById)
       })
+
+      console.log('placeById', placeById)
     
       //list with google data
       const gListView = parks.length ? <div
           style={styles.gridList} 
           > {Object.keys(placeById).map((item, index) => (
                <div key={index} style={styles.workout}> {!item ||
-                (<MainFeed
+                (placeById[item].googleData.types.indexOf('park') !== -1 ? <ParkFeed
+                  active={activeIndex===index}
+                  data={placeById[item]}
+               /> : <GymFeed
                   active={activeIndex===index}
                   data={placeById[item]}
                />)} </div>
