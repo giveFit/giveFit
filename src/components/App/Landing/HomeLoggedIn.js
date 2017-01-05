@@ -54,6 +54,13 @@ export class HomeLoggedIn extends React.Component {
     /*const {value} = this.refs.textbox.input;*/
     this.context.router.push('/app-logged-in');
   }
+  //Need Google maps API here
+  handleAutoComplete(){
+    new google.maps.places.Autocomplete(
+    (document.getElementById('autocomplete')), {
+        types: ['geocode']
+    });
+  }
   render(){
     const workouts=(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ? this.props.data.viewer.allWorkoutGroups.edges : [];
     console.log('workouts', workouts);
@@ -81,6 +88,8 @@ export class HomeLoggedIn extends React.Component {
              hintText="Start typing here.."
              floatingLabelText="Search by location or type of workout"
              ref="textbox"
+             id="autocomplete"
+             onTouchTap={this.handleAutoComplete.bind(this)}
              textareaStyle={inlineStyles.textFieldStyle}
              onKeyDown={(e)=>{
                if(e.which===13){

@@ -90,7 +90,7 @@ class GymFeed extends React.Component{
         {props.data.googleData.photos ? <img src={props.data.googleData.photos[0].getUrl({'maxWidth': 200, 'maxHeight': 300})} className={styles.img}/> : <img src="http://lorempixel.com/400/200" />}
       </CardMedia>
       <CardText>
-        Is this your gym? Claim it here!
+        Is this your gym or studio? Claim it here!
       </CardText>
       <Card expanded={this.state.expanded}>
       <CardText expandable={true}>

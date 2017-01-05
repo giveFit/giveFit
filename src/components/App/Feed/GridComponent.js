@@ -8,6 +8,7 @@ import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import CircularProgress from 'material-ui/CircularProgress';
 import ParkFeed from './subComponents/ParkFeed';
 import GymFeed from './subComponents/GymFeed';
+import DayPicker from './subComponents/DayPicker';
 import {searchNearby} from 'utils/googleApiHelpers';
 
 const height = window.innerHeight - 64;
@@ -70,7 +71,7 @@ class GridComponent extends Component {
     //baltimore parks search params
     const parks = {
       location: { lat: 39.2904, lng: -76.6122 },
-      radius: 50000,
+      radius: 5000,
       type: 'park'
     }
     //baltimore gym search params
@@ -168,7 +169,7 @@ class GridComponent extends Component {
       //list with google data
       const gListView = parks.length ? <div
           style={styles.gridList} 
-          > {Object.keys(placeById).map((item, index) => (
+          > <DayPicker/> {Object.keys(placeById).map((item, index) => (
                <div key={index} style={styles.workout}> {!item ||
                 (placeById[item].googleData.types.indexOf('park') !== -1 ? <ParkFeed
                   active={activeIndex===index}

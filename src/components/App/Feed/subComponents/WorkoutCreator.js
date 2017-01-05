@@ -58,14 +58,14 @@ export default class WorkoutCreator extends Component {
         >
           <TextField hintText="Workout Title"/>
           <TextField hintText="Description"/>
-                    <DatePicker hintText="Select a date" /> 
-                    <Toggle
-                      name="recur"
-                      value="recur"
-                      label="Recurring?"
-                      toggled={this.state.recur}
-                      onToggle={this.handleToggle.bind(this)}
-                    />
+          <DatePicker hintText="Select a date" /> 
+          <Toggle
+            name="recur"
+            value="recur"
+            label="Recurring?"
+            toggled={this.state.recur}
+            onToggle={this.handleToggle.bind(this)}
+          />
         </Dialog>
       </div>
     );

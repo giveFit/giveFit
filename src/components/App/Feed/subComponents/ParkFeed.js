@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import {findDOMNode} from 'react-dom';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import TextField from 'material-ui/TextField';
 import Toggle from 'material-ui/Toggle';
@@ -91,7 +92,7 @@ class ParkFeed extends Component{
                   />
                 }
       >
-        {props.data.googleData.photos ? <img src={props.data.googleData.photos[0].getUrl({'maxWidth': 200, 'maxHeight': 300})} className={styles.img}/> : <img src="http://lorempixel.com/400/200" />}
+        {props.data.googleData.photos ? <img src={props.data.googleData.photos[0].getUrl({'maxWidth': 500, 'maxHeight': 750})} className={styles.img}/> : <img src="http://lorempixel.com/400/200" />}
       </CardMedia>
       <CardText>
         Next workout:
@@ -102,8 +103,8 @@ class ParkFeed extends Component{
       <Tabs >
           <Tab label="Workouts">
            <div>
-            <WorkoutCreator /> 
             <WorkoutPost />
+            <WorkoutCreator /> 
            </div>
           </Tab>
           <Tab label="Comments" >
@@ -121,7 +122,7 @@ class ParkFeed extends Component{
         <div>Comments</div>
       </CardText>*/}
       <CardActions >
-      {this.state.expanded ? <FlatButton label="Reduce" onTouchTap={this.handleReduce.bind(this)} /> : <FlatButton label="See more workouts" onTouchTap={this.handleExpand.bind(this)} /> } 
+      {this.state.expanded ? <RaisedButton label="Reduce" onTouchTap={this.handleReduce.bind(this)} /> : <RaisedButton label="See more workouts" onTouchTap={this.handleExpand.bind(this)} /> } 
       </CardActions>
     </Card>
   }
