@@ -2,6 +2,7 @@ const NODE_ENV = process.env.NODE_ENV;
 const dotenv = require('dotenv');
 const scapholdUrl = require('./apolloConfig').scapholdUrl;
 const proxy = require('http-proxy-middleware');
+const configKeys = require('./configKeys');
 
 
 const webpack = require('webpack');
@@ -39,7 +40,7 @@ var config = getConfig({
     return {
       'index.html': context.defaultTemplate({
         title: 'givefit',
-        head: '<style> html,body, #root { width: 100%; height : 100%; } </style><script src="https://maps.googleapis.com/maps/api/js?libraries=geometry,drawing,places&key=AIzaSyBwOsxUEBGettfG4jFkxFNl2lt3s7dtYPc" ></script>',
+        head: configKeys.GOOGLE_API,
         publicPath: isDev ? 'http://localhost:3000/' : '',
         meta: {
           'name': 'givefit',

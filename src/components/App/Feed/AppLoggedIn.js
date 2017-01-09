@@ -72,6 +72,10 @@ class AppLoggedIn extends Component {
 		)
 	};
 }
+AppLoggedIn.propTypes = {
+  auth: T.instanceOf(AuthService),
+  register: T.func.isRequired
+};
 
 //Get some WorkoutGroups
 const GET_THROUGH_VIEWER = gql`
@@ -96,11 +100,6 @@ const GET_THROUGH_VIEWER = gql`
 
 //How many WorkoutGroups to return
 const FIRST = 6;
-
-AppLoggedIn.propTypes = {
-  auth: T.instanceOf(AuthService),
-  register: T.func.isRequired
-};
 
 const LOGIN_USER_WITH_AUTH0_LOCK = gql `
   mutation loginUserWithAuth0Lock($data: LoginUserWithAuth0LockInput!) {

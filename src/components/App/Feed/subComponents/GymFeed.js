@@ -74,21 +74,26 @@ class GymFeed extends React.Component{
         //avatar={props.data.avatar}
       />
       <CardMedia
-          overlay={
-                  <CardTitle
-                    title={props.data.title}
-                    /*subtitle={props.data.date}*/
-                    //What shoul
-                    subtitle={<BookmarkBorder 
-                                color={white} 
-                                hoverColor={greenA200}
-                                onClick={this.handleSave.bind(this)}
-                              />}
-                  />
-                }
+        overlay={
+          <CardTitle
+            title={props.data.googleData.rating > 0 ? <div> Rating: {props.data.googleData.rating} </div>: <div></div>}
+            subtitle={
+              <div> Save:
+                <BookmarkBorder 
+                  color={white} 
+                  hoverColor={greenA200}
+                  onClick={this.handleSave.bind(this)}
+                />
+              </div>
+            }
+          />
+        }
       >
-        {props.data.googleData.photos ? <img src={props.data.googleData.photos[0].getUrl({'maxWidth': 200, 'maxHeight': 300})} className={styles.img}/> : <img src="http://lorempixel.com/400/200" />}
+        {props.data.googleData.photos ? <img src={props.data.googleData.photos} className={styles.img}/> : <img src="http://lorempixel.com/400/200" />}
       </CardMedia>
+      <CardText>
+        {props.data.rating ? <div> Rating: &nbsp {props.data.rating} </div>: <div></div>}
+      </CardText>
       <CardText>
         Is this your gym or studio? Claim it here!
       </CardText>

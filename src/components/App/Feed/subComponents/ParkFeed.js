@@ -72,32 +72,36 @@ class ParkFeed extends Component{
   };
   render(){
     const {props} = this;
-    //console.log('feed props', props)
+    console.log('feed props', props)
     return <Card ref='root' key={props.data.id} className={props.active ? styles.cardActive : ""}>
       <CardHeader
         title={props.data.googleData.title}
+        subtitle={<a href="http://maps.google.com/?q=">{props.data.googleData.vicinity}</a>}
         //avatar={props.data.avatar}
-      />
+        >
+      {/*would eventually like to add tags*/}
+        </CardHeader>
       <CardMedia
-          overlay={
-                  <CardTitle
-                    title={props.data.title}
-                    /*subtitle={props.data.date}*/
-                    //What shoul
-                    subtitle={<BookmarkBorder 
-                                color={white} 
-                                hoverColor={greenA200}
-                                onClick={this.handleSave.bind(this)}
-                              />}
-                  />
-                }
+        overlay={
+          <CardTitle
+            title={props.data.googleData.rating > 0 ? <div> Rating: {props.data.googleData.rating} </div>: <div></div>}
+            subtitle={
+              <div> Save:
+                <BookmarkBorder 
+                  color={white} 
+                  hoverColor={greenA200}
+                  onClick={this.handleSave.bind(this)}
+                />
+              </div>
+            }
+          />
+        }
       >
-        {props.data.googleData.photos ? <img src={props.data.googleData.photos[0].getUrl({'maxWidth': 500, 'maxHeight': 750})} className={styles.img}/> : <img src="http://lorempixel.com/400/200" />}
+        {props.data.googleData.photos ? <img src={props.data.googleData.photos} className={styles.img}/> : <img src="http://lorempixel.com/400/200" />}
       </CardMedia>
       <CardText>
-        Next workout:
+      Next Workout: <WorkoutPost />
       </CardText>
-      <WorkoutPost />
       <Card expanded={this.state.expanded}>
       <CardText expandable={true}>
       <Tabs >

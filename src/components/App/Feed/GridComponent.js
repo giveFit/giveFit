@@ -142,6 +142,7 @@ class GridComponent extends Component {
       const {props} = this;
       const {activeIndex, parks, parksAndGyms, markers} = this.state;
 
+      console.log('props, i.e. the scaphold backend', props)
       //Build placeById object
       const placeById = {}
       parksAndGyms.forEach(s => {
@@ -157,15 +158,30 @@ class GridComponent extends Component {
                 lng : s.geometry.location.lng()
             },
             rating: s.rating,
-            photos: s.photos,
+            photos: s.photos ? s.photos[0].getUrl({'maxWidth': 500, 'maxHeight': 750}) : null,
             vicinity: s.vicinity,
             types: s.types
           }
         }
       })
 
+      props.workouts.forEach(s => {
+        console.log('s workout props', s)
+        placeById[s.node.id] = {
+          /*comments: workout.comments,*/
+          googleData: {
+            title: s.node.title,
+            position : {
+                lat : parseFloat(s.node.lat),
+                lng : parseFloat(s.node.lng)
+            },            
+            photos: s.node.image,
+            types: 'park'
+          }
+        }
+      })
+
       console.log('placeById', placeById)
-    
       //list with google data
       const gListView = parks.length ? <div
           style={styles.gridList} 

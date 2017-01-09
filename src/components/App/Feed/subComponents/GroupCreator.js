@@ -12,6 +12,8 @@ import WorkoutPost from './WorkoutPost';
 import WorkoutCreator from './WorkoutCreator';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import AddAPhoto from 'material-ui/svg-icons/image/add-a-photo';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag'
 
 const inlineStyles = {
   listStyle: {
@@ -19,16 +21,20 @@ const inlineStyles = {
   }
 }
 
-export default class GroupCreator extends Component {
+class GroupCreator extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
       open: false,
       expanded: false,
-      recur: true
+      recur: true,
+      title: undefined,
+      contentSnippet: undefined
     };
+    this._handleTitleChange = this._handleTitleChange.bind(this);
+    this._handleDescriptionChange = this._handleDescriptionChange.bind(this);
+    //this._handleLocation = this._handleLocation.bind(this);
   }
-
   handleOpen(){
     console.log('handling open')
     this.setState({open: true});
@@ -39,8 +45,23 @@ export default class GroupCreator extends Component {
     });
   }
   handleClose(){
-    this.setState({open: false});
+    this.setState({
+      open: false
+    });
+    console.log('closed');
+    this.props.createWorkoutGroup({
+      title: this.state.title,
+      contentSnippet: this.state.contentSnippet,
+      lat: 39.283402,
+      lng: -76.612912,
+      image: "http://dummyimage.com/116x155.jpg/cc0000/ffffff",
+    }).then(({ data }) => {
+      console.log("data", data)
+    }).catch((error) => {
+      console.error('error in form', error)
+    });
   };
+  //reference https://scotch.io/tutorials/handling-file-uploads-painlessly-with-filepicker
   addImage(){
     alert(event.fpfile.url)
   }
@@ -58,7 +79,18 @@ export default class GroupCreator extends Component {
     (document.getElementById('autocomplete')), {
         types: ['geocode']
     });
-  }
+  };
+  _handleTitleChange(e){
+    this.state.title = e.target.value;
+  };
+  _handleDescriptionChange(e){
+    this.state.contentSnippet = e.target.value;
+  };
+  /*_handleLocation(e){
+    this.state.location = {
+
+    }
+  }*/
   render() {
     const actions = [
       <FlatButton
@@ -90,20 +122,23 @@ export default class GroupCreator extends Component {
             <ul className={inlineStyles.listStyle}>
               <li>
                 <TextField 
-                  hintText="Group Name"
-                  name="groupName"
+                  hintText="Group Title"
+                  name="groupTitle"
+                  onChange={this._handleTitleChange}
                 />
               </li>
               <li>
                 <TextField 
                   hintText="Group description"
                   name="groupName"
+                  onChange={this._handleDescriptionChange}
                 />
               </li>
               <li>
                 <TextField 
                   id="autocomplete" 
                   onTouchTap={this.handleAutoComplete.bind(this)}
+                  //onChange={this._handleLocation}
                 />
               </li>
           </ul>
@@ -120,3 +155,35 @@ export default class GroupCreator extends Component {
     );
   }
 }
+
+//I want to tie the workout group to a user
+const CREATE_WORKOUT_GROUP = gql`
+  mutation CreateWorkoutGroup($data: CreateWorkoutGroupInput!) {
+  createWorkoutGroup(input:$data){
+    changedWorkoutGroup{
+      title,
+      contentSnippet,
+      lat,
+      lng,
+      image
+    }
+  }
+}
+`;
+
+const GroupCreatorWithData = graphql(CREATE_WORKOUT_GROUP, {
+  props: ({ mutate }) => ({
+    createWorkoutGroup: (data) => mutate({
+      variables: {
+        data,
+      },
+    }),
+  }),
+})(GroupCreator);
+
+export default GroupCreatorWithData;
+
+
+
+
+
