@@ -12,10 +12,15 @@ const styles = {
 };
 
 class DayPicker extends Component{
+	constructor(props){
+		super(props)
+		console.log('props of daypicker', props)
+	}
 	handleActive(tab) {
 	  alert(`A tab with this route property ${tab.props['data-route']} was activated.`);
 	}
 	render(){
+		const {props} = this;
 		return(
 			<div>
 				<Tabs>
@@ -28,7 +33,7 @@ class DayPicker extends Component{
 				    <Tab label="Sun" />
 				  </Tabs>
 				<div>
-					<GroupCreator />
+					<GroupCreator geocoder={props.geocoder}/>
 				</div>
 			</div>
 		)

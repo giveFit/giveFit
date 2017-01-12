@@ -100,7 +100,7 @@ class ParkFeed extends Component{
         {props.data.googleData.photos ? <img src={props.data.googleData.photos} className={styles.img}/> : <img src="http://lorempixel.com/400/200" />}
       </CardMedia>
       <CardText>
-      Next Workout: <WorkoutPost />
+      {this.state.expanded ? null : <div>Next Workout: <WorkoutPost /></div>}
       </CardText>
       <Card expanded={this.state.expanded}>
       <CardText expandable={true}>

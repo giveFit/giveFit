@@ -142,9 +142,9 @@ class GridComponent extends Component {
       const {props} = this;
       const {activeIndex, parks, parksAndGyms, markers} = this.state;
 
-      console.log('props, i.e. the scaphold backend', props)
+      console.log('props, i.e. the scaphold backend', props);
       //Build placeById object
-      const placeById = {}
+      const placeById = {};
       parksAndGyms.forEach(s => {
         /*const place_id = s.place_id*/
         //console.log('each spot', s)
@@ -185,7 +185,7 @@ class GridComponent extends Component {
       //list with google data
       const gListView = parks.length ? <div
           style={styles.gridList} 
-          > <DayPicker/> {Object.keys(placeById).map((item, index) => (
+          > <DayPicker geocoder={this.geocoder}/> {Object.keys(placeById).map((item, index) => (
                <div key={index} style={styles.workout}> {!item ||
                 (placeById[item].googleData.types.indexOf('park') !== -1 ? <ParkFeed
                   active={activeIndex===index}

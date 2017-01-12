@@ -13,7 +13,9 @@ import WorkoutCreator from './WorkoutCreator';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import AddAPhoto from 'material-ui/svg-icons/image/add-a-photo';
 import { graphql } from 'react-apollo';
-import gql from 'graphql-tag'
+import gql from 'graphql-tag';
+import ReactFilepicker from 'react-filepicker';
+import configKeys from '../../../../../configKeys';
 
 const inlineStyles = {
   listStyle: {
@@ -24,17 +26,23 @@ const inlineStyles = {
 class GroupCreator extends Component {
   constructor(props, context) {
     super(props, context);
+    console.log("does group creator geocode?", props)
     this.state = {
       open: false,
       expanded: false,
       recur: true,
       title: undefined,
-      contentSnippet: undefined
+      contentSnippet: undefined,
+      location: undefined,
+      lat: undefined,
+      lng: undefined
     };
     this._handleTitleChange = this._handleTitleChange.bind(this);
     this._handleDescriptionChange = this._handleDescriptionChange.bind(this);
-    //this._handleLocation = this._handleLocation.bind(this);
-  }
+    this._handleLocationChange = this._handleLocationChange.bind(this);
+    this._handleAutoComplete = this._handleAutoComplete.bind(this);
+    this.addImage = this.addImage.bind(this);
+  };
   handleOpen(){
     console.log('handling open')
     this.setState({open: true});
@@ -43,54 +51,84 @@ class GroupCreator extends Component {
     this.setState({
       [event.target.name]: toggled,
     });
-  }
+  };
   handleClose(){
     this.setState({
       open: false
     });
+    var address = this.state.location;
+    this.props.geocoder.geocode({'address' : address}, (results, status) => {
+      if(status == google.maps.GeocoderStatus.OK){
+        console.log('geocoded results', results)
+        this.setState({
+          lat: results[0].geometry.location.lat(),
+          lng: results[0].geometry.location.lng(),
+        })
+        this.props.createWorkoutGroup({
+          title: this.state.title,
+          contentSnippet: this.state.contentSnippet,
+          lat: this.state.lat,
+          lng: this.state.lng,
+          image: "http://dummyimage.com/116x155.jpg/cc0000/ffffff",
+        }).then(({ data }) => {
+          console.log("data", data)
+        }).catch((error) => {
+          console.error('error in form', error)
+        });
+      }else{
+            alert("Geocode was not successful for the following reason: " + status);
+        }
+    })
     console.log('closed');
-    this.props.createWorkoutGroup({
-      title: this.state.title,
-      contentSnippet: this.state.contentSnippet,
-      lat: 39.283402,
-      lng: -76.612912,
-      image: "http://dummyimage.com/116x155.jpg/cc0000/ffffff",
-    }).then(({ data }) => {
-      console.log("data", data)
-    }).catch((error) => {
-      console.error('error in form', error)
-    });
   };
   //reference https://scotch.io/tutorials/handling-file-uploads-painlessly-with-filepicker
+  //https://www.youtube.com/watch?v=ngeYUo7ElGY
   addImage(){
-    alert(event.fpfile.url)
-  }
+    filepicker.pick(
+      {
+        mimetype: 'image/*',
+        container: 'window',
+        services: ['COMPUTER', 'FACEBOOK', 'INSTAGRAM', 'GOOGLE_DRIVE', 'DROPBOX']
+      },
+      function(Blob){
+        console.log(JSON.stringify(Blob));
+      },
+      function(FPError){
+        console.log(FPError.toString());
+      }
+    );
+  };
   handleReduce(){
     this.setState({expanded: false});
     console.log('reduced')
-  }
+  };
   handleExpand(){
     this.setState({expanded: true});
     console.log('expanded')
-  }
-  //Needs to be looked at
-  handleAutoComplete(){
-    new google.maps.places.Autocomplete(
-    (document.getElementById('autocomplete')), {
-        types: ['geocode']
-    });
   };
+  //consider this syntax:
+  /*updateUsername(e){
+    this.setState({
+      username: e.target.value,
+    })
+  }*/
   _handleTitleChange(e){
     this.state.title = e.target.value;
   };
   _handleDescriptionChange(e){
     this.state.contentSnippet = e.target.value;
   };
-  /*_handleLocation(e){
-    this.state.location = {
-
-    }
-  }*/
+  _handleLocationChange(e){
+    console.log('e looking at location data', e.target.value)
+    this.state.location = e.target.value;
+  };
+  //Not working
+  _handleAutoComplete(){
+    new google.maps.places.Autocomplete(
+    (document.getElementById('autocomplete')), {
+        types: ['geocode']
+    });
+  }
   render() {
     const actions = [
       <FlatButton
@@ -104,7 +142,6 @@ class GroupCreator extends Component {
     return (
       //Need to improve styling a lot here
       <div>
-      <script type="text/javascript" src="//api.filestackapi.com/filestack.js"></script>
         <RaisedButton 
           label="Create a workout group" 
           labelPosition="before"
@@ -123,22 +160,20 @@ class GroupCreator extends Component {
               <li>
                 <TextField 
                   hintText="Group Title"
+                  id="autocomplete"
                   name="groupTitle"
                   onChange={this._handleTitleChange}
                 />
               </li>
               <li>
-                <TextField 
-                  hintText="Group description"
-                  name="groupName"
-                  onChange={this._handleDescriptionChange}
-                />
+                <ReactFilepicker apikey={configKeys.FILESTACK_API} onTouchTap={this.addImage}/>
               </li>
               <li>
                 <TextField 
-                  id="autocomplete" 
-                  onTouchTap={this.handleAutoComplete.bind(this)}
-                  //onChange={this._handleLocation}
+                  hintText="Location"
+                  id="autocomplete"
+                  onChange={this._handleLocationChange}
+                  //onTouchTap={this._handleAutoComplete}
                 />
               </li>
           </ul>
@@ -165,7 +200,7 @@ const CREATE_WORKOUT_GROUP = gql`
       contentSnippet,
       lat,
       lng,
-      image
+      image,
     }
   }
 }
