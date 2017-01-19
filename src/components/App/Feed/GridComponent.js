@@ -166,7 +166,7 @@ class GridComponent extends Component {
       })
 
       props.workouts.forEach(s => {
-        console.log('s workout props', s)
+        //console.log('s workout props', s)
         placeById[s.node.id] = {
           /*comments: workout.comments,*/
           googleData: {
@@ -185,7 +185,7 @@ class GridComponent extends Component {
       //list with google data
       const gListView = parks.length ? <div
           style={styles.gridList} 
-          > <DayPicker geocoder={this.geocoder}/> {Object.keys(placeById).map((item, index) => (
+          > <DayPicker profile={props.profile} geocoder={this.geocoder}/> {Object.keys(placeById).map((item, index) => (
                <div key={index} style={styles.workout}> {!item ||
                 (placeById[item].googleData.types.indexOf('park') !== -1 ? <ParkFeed
                   active={activeIndex===index}

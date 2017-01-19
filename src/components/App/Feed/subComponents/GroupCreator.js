@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes as T } from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -12,7 +12,7 @@ import WorkoutPost from './WorkoutPost';
 import WorkoutCreator from './WorkoutCreator';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import AddAPhoto from 'material-ui/svg-icons/image/add-a-photo';
-import { graphql } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import ReactFilepicker from 'react-filepicker';
 import configKeys from '../../../../../configKeys';
@@ -52,10 +52,10 @@ class GroupCreator extends Component {
       [event.target.name]: toggled,
     });
   };
-  handleClose(){
-    this.setState({
-      open: false
-    });
+  submitWorkoutGroup(e){
+    if (e) {
+      e.preventDefault();
+    }
     var address = this.state.location;
     this.props.geocoder.geocode({'address' : address}, (results, status) => {
       if(status == google.maps.GeocoderStatus.OK){
@@ -64,14 +64,21 @@ class GroupCreator extends Component {
           lat: results[0].geometry.location.lat(),
           lng: results[0].geometry.location.lng(),
         })
+
+        console.log('submitWorkoutGroup props', this.props)
         this.props.createWorkoutGroup({
           title: this.state.title,
           contentSnippet: this.state.contentSnippet,
           lat: this.state.lat,
           lng: this.state.lng,
-          image: "http://dummyimage.com/116x155.jpg/cc0000/ffffff",
+          image: this.props.profile.picture,
+          avatar: this.props.profile.picture,
+          userGroupsId: this.props.loggedInUser ? this.props.loggedInUser.id : undefined
         }).then(({ data }) => {
           console.log("data", data)
+          this.setState({
+            open: false
+          });
         }).catch((error) => {
           console.error('error in form', error)
         });
@@ -119,7 +126,6 @@ class GroupCreator extends Component {
     this.state.contentSnippet = e.target.value;
   };
   _handleLocationChange(e){
-    console.log('e looking at location data', e.target.value)
     this.state.location = e.target.value;
   };
   //Not working
@@ -135,7 +141,7 @@ class GroupCreator extends Component {
         label="Ok"
         primary={true}
         keyboardFocused={true}
-        onTouchTap={this.handleClose.bind(this)}
+        onTouchTap={this.submitWorkoutGroup.bind(this)}
       />,
     ];
 
@@ -153,7 +159,7 @@ class GroupCreator extends Component {
           actions={actions}
           modal={false}
           open={this.state.open}
-          onRequestClose={this.handleClose.bind(this)}
+          //onRequestClose={this.submitWorkoutGroup.bind(this)}
         >
          <Card>
             <ul className={inlineStyles.listStyle}>
@@ -191,8 +197,80 @@ class GroupCreator extends Component {
   }
 }
 
+/*GroupCreator.propTypes = {
+  createWorkoutGroup: T.func.isRequired
+};*/
+
+const LOGGED_IN_USER = gql`
+  query LoggedInUser {
+    viewer {
+      user {
+        id
+      }
+    }
+  }
+`;
+
 //I want to tie the workout group to a user
 const CREATE_WORKOUT_GROUP = gql`
+  mutation CreateWorkoutGroup($data: CreateWorkoutGroupInput!) {
+  createWorkoutGroup(input:$data){
+    changedWorkoutGroup{
+      title,
+      lat,
+      lng,
+      image,
+      avatar,
+      UserGroups {
+        id
+      }
+    }
+  }
+}
+`;
+
+const GroupCreatorWithData = compose(
+  graphql(LOGGED_IN_USER, {
+    props: ({ data }) => ({
+      loggedInUser: data.viewer ? data.viewer.user : null
+    })
+  }),
+  graphql(CREATE_WORKOUT_GROUP, {
+    props: ({ mutate }) => ({
+      createWorkoutGroup: (data) => mutate({ variables: { data: data } })
+    }),
+  }),
+)(GroupCreator);
+
+export default GroupCreatorWithData;
+
+//without compose
+/*const GroupCreatorWithData = graphql(LOGGED_IN_USER, {
+    props: ({ data }) => ({
+      loggedInUser: data.viewer ? data.viewer.user : null
+    })
+})(
+  graphql(CREATE_WORKOUT_GROUP, {
+    props: ({ mutate }) => ({
+      createWorkoutGroup: (data) => mutate({ variables: { data: data } })
+    }),
+  })(GroupCreator));*/
+
+/*const GroupCreatorWithData =  graphql(GET_WORKOUTS, {
+  options: (props) => ({  
+    variables: { workoutsNumber : workoutsNumber } 
+  }),
+})(
+  graphql(LOGGED_IN_USER, {
+  props: ({ data }) => ({
+      loggedInUser: data.viewer ? data.viewer.user : null
+    })
+})(GroupCreator));
+
+export default GroupCreatorWithData;*/
+
+//original query, pre-id
+/*const CREATE_WORKOUT_GROUP = gql`
   mutation CreateWorkoutGroup($data: CreateWorkoutGroupInput!) {
   createWorkoutGroup(input:$data){
     changedWorkoutGroup{
@@ -214,11 +292,6 @@ const GroupCreatorWithData = graphql(CREATE_WORKOUT_GROUP, {
       },
     }),
   }),
-})(GroupCreator);
+})(GroupCreator);*/
 
-export default GroupCreatorWithData;
-
-
-
-
-
+/*export default GroupCreatorWithData;*/

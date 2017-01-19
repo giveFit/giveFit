@@ -72,12 +72,12 @@ class ParkFeed extends Component{
   };
   render(){
     const {props} = this;
-    console.log('feed props', props)
+    //console.log('feed props', props)
     return <Card ref='root' key={props.data.id} className={props.active ? styles.cardActive : ""}>
       <CardHeader
         title={props.data.googleData.title}
-        subtitle={<a href="http://maps.google.com/?q=">{props.data.googleData.vicinity}</a>}
-        //avatar={props.data.avatar}
+        //href={'/posts/' + post.id}
+        subtitle={<a href={"http://maps.google.com/?q=" + props.data.googleData.vicinity} target="_blank">{props.data.googleData.vicinity}</a>}
         >
       {/*would eventually like to add tags*/}
         </CardHeader>
@@ -108,6 +108,10 @@ class ParkFeed extends Component{
           <Tab label="Workouts">
            <div>
             <WorkoutPost />
+            <WorkoutPost />
+            <WorkoutPost />
+            <WorkoutPost />
+            <WorkoutPost />
             <WorkoutCreator /> 
            </div>
           </Tab>
@@ -126,7 +130,7 @@ class ParkFeed extends Component{
         <div>Comments</div>
       </CardText>*/}
       <CardActions >
-      {this.state.expanded ? <RaisedButton label="Reduce" onTouchTap={this.handleReduce.bind(this)} /> : <RaisedButton label="See more workouts" onTouchTap={this.handleExpand.bind(this)} /> } 
+      {this.state.expanded ? <RaisedButton label="Reduce" onTouchTap={this.handleReduce.bind(this)} /> : <RaisedButton label="See more activities" onTouchTap={this.handleExpand.bind(this)} /> } 
       </CardActions>
     </Card>
   }

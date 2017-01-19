@@ -40,7 +40,7 @@ var config = getConfig({
     return {
       'index.html': context.defaultTemplate({
         title: 'givefit',
-        head: configKeys.GOOGLE_API,
+        head: configKeys.GOOGLE_API, 
         publicPath: isDev ? 'http://localhost:3000/' : '',
         meta: {
           'name': 'givefit',

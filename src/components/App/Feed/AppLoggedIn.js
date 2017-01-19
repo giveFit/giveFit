@@ -19,11 +19,15 @@ class AppLoggedIn extends Component {
 	    props.route.auth.on('profile_updated', (newProfile) => {
 	      console.log('newProfile', newProfile)
 	      var access_token = this.state.token;
+	      //the Scaphold schema expects an identity with field userId, not user_id
 	      var identity = newProfile.identities[0];
+	      identity.userId = identity.user_id;
+		  delete identity.user_id
+		  console.log('altered identity', identity)
 	      console.log("token", access_token)
-	      console.log("identity", identity)
 	      this.props.register({
-	        identity, access_token
+	        identity: identity, 
+	        access_token: access_token
 	      }).then(({ data }) => {
 	        console.log('got data', data);
 	      }).catch((error) => {
@@ -60,6 +64,7 @@ class AppLoggedIn extends Component {
 					});
 					return null;
 				}}
+				profile={this.state.profile}
 				workouts={(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ? this.props.data.viewer.allWorkoutGroups.edges : []}
 				markers={(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ?  this.props.data.viewer.allWorkoutGroups.edges.map((i,index)=>({
 					//title : i.node.title,
@@ -99,7 +104,7 @@ const GET_THROUGH_VIEWER = gql`
 `;
 
 //How many WorkoutGroups to return
-const FIRST = 6;
+const FIRST = 8;
 
 const LOGIN_USER_WITH_AUTH0_LOCK = gql `
   mutation loginUserWithAuth0Lock($data: LoginUserWithAuth0LockInput!) {
@@ -113,18 +118,13 @@ const LOGIN_USER_WITH_AUTH0_LOCK = gql `
 `
 const AppLoggedInWithData =  graphql(GET_THROUGH_VIEWER, {
 	options: (props) => ({	
-		variables: {
-			first : FIRST
-		}
+		variables: { first : FIRST } 
 	}),
 })(
   graphql(LOGIN_USER_WITH_AUTH0_LOCK, {
   props: ({ mutate }) => ({
     register: (data) => mutate({
-      variables: {
-        data
-      }
-    }),
+      variables: { data } })
   }),
 })(AppLoggedIn));
 

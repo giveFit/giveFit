@@ -9,12 +9,12 @@ import AuthService from 'utils/AuthService';
 import TextField from 'material-ui/TextField';
 import styles from './styles.module.css';
 import RaisedButton from 'material-ui/RaisedButton';
-import {orange500, blue500} from 'material-ui/styles/colors';
+import {orange500, blue500, indigo500} from 'material-ui/styles/colors';
 import CircularProgress from 'material-ui/CircularProgress';
 
 const inlineStyles = {
   textFieldStyle: {
-    color: orange500,
+    color: indigo500,
   }
 }
 
@@ -24,7 +24,8 @@ export class HomeLoggedIn extends React.Component {
       super(props, context)
       this.state = {
         profile: props.route.auth.getProfile(),
-        token: props.route.auth.getToken()
+        token: props.route.auth.getToken(),
+        //hintText: "Enter a location"
       };
 
     props.route.auth.on('profile_updated', (newProfile) => {
@@ -56,6 +57,9 @@ export class HomeLoggedIn extends React.Component {
   }
   //Need Google maps API here
   handleAutoComplete(){
+    /*this.setState({
+      hintText = null;
+    })*/
     new google.maps.places.Autocomplete(
     (document.getElementById('autocomplete')), {
         types: ['geocode']
@@ -85,10 +89,10 @@ export class HomeLoggedIn extends React.Component {
         <Card className={styles.bannerCard}>
           <CardText>
             <TextField
-             hintText="Start typing here.."
-             floatingLabelText="Search by location or type of workout"
              ref="textbox"
              id="autocomplete"
+             hintText="Enter a location"
+             multiLine={true}
              onTouchTap={this.handleAutoComplete.bind(this)}
              textareaStyle={inlineStyles.textFieldStyle}
              onKeyDown={(e)=>{
@@ -103,12 +107,12 @@ export class HomeLoggedIn extends React.Component {
         </Card>
         </div>
       </div>
-      <h3 className={styles.featuredWorkouts}>
+      <h2 className={styles.featuredWorkouts}>
            Check out this week's highlighted workout groups. 
            Search above for more awesome group workouts in your area.
-      </h3>
-       {listView}
-    </div>
+      </h2>
+           {listView}
+        </div>
     )
   }
 }
@@ -140,7 +144,7 @@ const GET_THROUGH_VIEWER = gql`
 `;
 
 //How many WorkoutGroups to return
-const FIRST = 4;
+const FIRST = 8;
 
 const HomeLoggedInWithData = graphql(GET_THROUGH_VIEWER, {
 	options(props) {

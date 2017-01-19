@@ -44,7 +44,7 @@ export default class WorkoutCreator extends Component {
     return (
       <div>
         <RaisedButton 
-          label="Post a workout to the group" 
+          label="Post an activity" 
           labelPosition="before"
           onTouchTap={this.handleOpen.bind(this)}
           icon={<FitnessCenter />}
