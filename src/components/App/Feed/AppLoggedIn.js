@@ -1,5 +1,5 @@
 import React, { Component, PropTypes as T } from 'react';
-import { graphql } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import GridComponent from './GridComponent';
 import MainToolbar from '../Header/MainToolbar'
@@ -13,29 +13,41 @@ class AppLoggedIn extends Component {
 	    super(props, context)
 	    this.state = {
 	      profile: props.route.auth.getProfile(),
-	      token: props.route.auth.getToken()
+	      token: props.route.auth.getToken(),
+	      user: null
 	    };
 
-	    props.route.auth.on('profile_updated', (newProfile) => {
-	      console.log('newProfile', newProfile)
+	    props.route.auth.on('authenticated', (auth0Profile, tokenPayload) => {
+	      console.log('auth0Profile', auth0Profile)
+	      console.log('tokenPayload', tokenPayload)
 	      var access_token = this.state.token;
-	      //the Scaphold schema expects an identity with field userId, not user_id
-	      var identity = newProfile.identities[0];
-	      identity.userId = identity.user_id;
-		  delete identity.user_id
-		  console.log('altered identity', identity)
-	      console.log("token", access_token)
-	      this.props.register({
+	      var identity = auth0Profile.identities[0];
+	      const that = this;
+	      this.props.loginUser({
 	        identity: identity, 
-	        access_token: access_token
-	      }).then(({ data }) => {
-	        console.log('got data', data);
-	      }).catch((error) => {
+	        access_token: tokenPayload.accessToken,
+	      }).then(res => {
+	      	console.log('res going to updateUser', res)
+		      const scapholdUserId = res.data.loginUserWithAuth0Lock.user.id;
+		      const profilePicture = auth0Profile.picture;
+		      const nickname = auth0Profile.nickname;
+		      // Cause a UI update :)
+		      console.log('scapholdUserId', scapholdUserId)
+		      this.setState({
+		      	user: scapholdUserId
+		      });
+		      return that.props.updateUser({
+		        id: scapholdUserId,
+		        picture: profilePicture,
+		        nickname: nickname
+		      });
+		      
+		    }).catch((error) => {
 	        console.log('there was an error sending the query', error);
 	      });
-	      console.log('what do we have', newProfile)
+	      console.log('what do we have', auth0Profile)
 	      this.setState({
-	        profile: newProfile,
+	        profile: auth0Profile,
 	      })
 	    })
   	}
@@ -47,7 +59,6 @@ class AppLoggedIn extends Component {
 		if (loading == false){
 			console.log("not loading any more", this.props.data.viewer.allWorkoutGroups.edges)
 		}
-		console.log("props for the gridcontainer", this.props)
 		console.log("this.state", this.state)
 		return (
 			<div>
@@ -65,6 +76,7 @@ class AppLoggedIn extends Component {
 					return null;
 				}}
 				profile={this.state.profile}
+				user={this.state.user}
 				workouts={(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ? this.props.data.viewer.allWorkoutGroups.edges : []}
 				markers={(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ?  this.props.data.viewer.allWorkoutGroups.edges.map((i,index)=>({
 					//title : i.node.title,
@@ -79,8 +91,20 @@ class AppLoggedIn extends Component {
 }
 AppLoggedIn.propTypes = {
   auth: T.instanceOf(AuthService),
-  register: T.func.isRequired
+  loginUser: T.func.isRequired
 };
+
+const LOGGED_IN_USER = gql`
+  query LoggedInUser {
+    viewer {
+      user {
+        id
+        username
+        nickname
+      }
+    }
+  }
+`;
 
 //Get some WorkoutGroups
 const GET_THROUGH_VIEWER = gql`
@@ -107,8 +131,8 @@ const GET_THROUGH_VIEWER = gql`
 const FIRST = 8;
 
 const LOGIN_USER_WITH_AUTH0_LOCK = gql `
-  mutation loginUserWithAuth0Lock($data: LoginUserWithAuth0LockInput!) {
-    loginUserWithAuth0Lock(input: $data) {
+  mutation loginUserWithAuth0Lock($credential: LoginUserWithAuth0LockInput!) {
+    loginUserWithAuth0Lock(input: $credential) {
     user{
       id
       username
@@ -116,16 +140,39 @@ const LOGIN_USER_WITH_AUTH0_LOCK = gql `
     }
   }
 `
-const AppLoggedInWithData =  graphql(GET_THROUGH_VIEWER, {
-	options: (props) => ({	
-		variables: { first : FIRST } 
+const UpdateUserQuery = gql`
+mutation UpdateUser($user: UpdateUserInput!) {
+  updateUser(input: $user) {
+    changedUser {
+      id
+      username
+      picture
+    }
+  }
+}
+`;
+
+const AppLoggedInWithData =  compose(
+	graphql(GET_THROUGH_VIEWER, {
+		options: (props) => ({	
+			variables: { first : FIRST } 
+		}),
 	}),
-})(
-  graphql(LOGIN_USER_WITH_AUTH0_LOCK, {
-  props: ({ mutate }) => ({
-    register: (data) => mutate({
-      variables: { data } })
-  }),
-})(AppLoggedIn));
+  	graphql(LOGIN_USER_WITH_AUTH0_LOCK, {
+	  props: ({ mutate }) => ({
+	    loginUser: (credential) => mutate({ variables: { credential: credential } })
+	  	})
+  	}),
+  	graphql(LOGGED_IN_USER, {
+	    props: ({ data }) =>  ({
+	      loggedInUser: data.viewer ? data.viewer.user : null
+	    })
+  	}),
+  graphql(UpdateUserQuery, {
+    props: ({ mutate }) => ({
+      updateUser: (user) => mutate({ variables: { user: user }}),
+    })
+  })
+)(AppLoggedIn);
 
 export default AppLoggedInWithData;

@@ -36,6 +36,7 @@ class DayPicker extends Component{
 					<GroupCreator 
 						geocoder={props.geocoder}
 						profile={props.profile}
+						user={props.user}
 					/>
 				</div>
 			</div>

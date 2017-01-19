@@ -24,7 +24,7 @@ const inlineStyles = {
 }
 
 class GroupCreator extends Component {
-  constructor(props, context) {
+  constructor(props: any, context) {
     super(props, context);
     console.log("does group creator geocode?", props)
     this.state = {
@@ -42,6 +42,7 @@ class GroupCreator extends Component {
     this._handleLocationChange = this._handleLocationChange.bind(this);
     this._handleAutoComplete = this._handleAutoComplete.bind(this);
     this.addImage = this.addImage.bind(this);
+    this.submitWorkoutGroup = this.submitWorkoutGroup.bind(this);
   };
   handleOpen(){
     console.log('handling open')
@@ -73,7 +74,7 @@ class GroupCreator extends Component {
           lng: this.state.lng,
           image: this.props.profile.picture,
           avatar: this.props.profile.picture,
-          userGroupsId: this.props.loggedInUser ? this.props.loggedInUser.id : undefined
+          userGroupsId: this.props.user ? this.props.user : null
         }).then(({ data }) => {
           console.log("data", data)
           this.setState({
@@ -213,8 +214,8 @@ const LOGGED_IN_USER = gql`
 
 //I want to tie the workout group to a user
 const CREATE_WORKOUT_GROUP = gql`
-  mutation CreateWorkoutGroup($data: CreateWorkoutGroupInput!) {
-  createWorkoutGroup(input:$data){
+  mutation CreateWorkoutGroup($input: CreateWorkoutGroupInput!) {
+  createWorkoutGroup(input:$input){
     changedWorkoutGroup{
       title,
       lat,
@@ -228,46 +229,50 @@ const CREATE_WORKOUT_GROUP = gql`
   }
 }
 `;
+//Get some WorkoutGroups
+const GET_THROUGH_VIEWER = gql`
+  query GetThroughViewer($first: Int) {
+    viewer {
+      allWorkoutGroups(first: $first) {
+        edges {
+          node {
+          id
+          image
+          title
+          lat
+          lng
+          avatar
+          contentSnippet
+          }
+        }
+      }
+  }
+}
+`;
+
+//How many WorkoutGroups to return
+const FIRST = 0;
 
 const GroupCreatorWithData = compose(
-  graphql(LOGGED_IN_USER, {
-    props: ({ data }) => ({
-      loggedInUser: data.viewer ? data.viewer.user : null
-    })
+  graphql(GET_THROUGH_VIEWER, {
+    options: (props) => ({  
+      variables: { first : FIRST } 
+    }),
   }),
+  /*graphql(LOGGED_IN_USER, {
+    props: ({ data }) =>  console.log('LOGGED_IN_USER data', data)
+    ({
+      loggedInUser: data.loading ? null : data.viewer.user
+    })
+  }),*/
   graphql(CREATE_WORKOUT_GROUP, {
     props: ({ mutate }) => ({
-      createWorkoutGroup: (data) => mutate({ variables: { data: data } })
+      createWorkoutGroup: (input) => mutate({ variables: { input: input } })
     }),
   }),
 )(GroupCreator);
 
 export default GroupCreatorWithData;
-
-//without compose
-/*const GroupCreatorWithData = graphql(LOGGED_IN_USER, {
-    props: ({ data }) => ({
-      loggedInUser: data.viewer ? data.viewer.user : null
-    })
-})(
-  graphql(CREATE_WORKOUT_GROUP, {
-    props: ({ mutate }) => ({
-      createWorkoutGroup: (data) => mutate({ variables: { data: data } })
-    }),
-  })(GroupCreator));*/
-
-/*const GroupCreatorWithData =  graphql(GET_WORKOUTS, {
-  options: (props) => ({  
-    variables: { workoutsNumber : workoutsNumber } 
-  }),
-})(
-  graphql(LOGGED_IN_USER, {
-  props: ({ data }) => ({
-      loggedInUser: data.viewer ? data.viewer.user : null
-    })
-})(GroupCreator));
-
-export default GroupCreatorWithData;*/
 
 //original query, pre-id
 /*const CREATE_WORKOUT_GROUP = gql`

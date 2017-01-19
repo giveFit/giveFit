@@ -30,7 +30,7 @@ export default class AuthService extends EventEmitter {
     this.logout = this.logout.bind(this)
   }
 
-  _doAuthentication(authResult){
+  /*_doAuthentication(authResult){
     // Saves the user token
     this.setToken(authResult.idToken)
     // navigate to the home route
@@ -43,6 +43,20 @@ export default class AuthService extends EventEmitter {
         this.setProfile(profile)   
       }
     })
+  }*/
+  _doAuthentication(tokenPaylod){
+    browserHistory.replace('/app-logged-in')
+    this.lock.getUserInfo(tokenPaylod.accessToken, (error, profile) => {
+      if (error) {
+        this.emit('error', error);
+        return;
+      }
+      this.setProfile(profile);
+      this.emit('authenticated', profile, tokenPaylod);
+    });
+
+    // Saves the user token
+    this.setToken(tokenPaylod.idToken)
   }
 
   _authorizationError(error){
