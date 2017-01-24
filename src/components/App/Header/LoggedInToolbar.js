@@ -5,7 +5,7 @@ import FontIcon from 'material-ui/FontIcon';
 import NavigationExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-more';
 import Hamburger from 'material-ui/svg-icons/navigation/menu';
 import DropDownMenu from 'material-ui/DropDownMenu';
-import { Route, Router, Link, pathname } from 'react-router'
+import { Route, Router, Link, pathname, hashHistory } from 'react-router'
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import mui, { Drawer, MenuItem, Styles, RaisedButton, FlatButton, Avatar } from 'material-ui';
@@ -17,6 +17,7 @@ import apolloConfig from '../../../../apolloConfig';
 import AuthService from 'utils/AuthService'
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
+import MainToolbar from '../../Home/Header/MainToolbar'
 
 const inlineStyles = {
   title: {
@@ -62,7 +63,9 @@ class LoggedInToolbar extends Component {
     this.auth.logout()
     this.context.router.push('/');
   }
-
+  goToWorkouts(){
+    hashHistory.push('/app-logged-in')
+  }
   render() {
     console.log('LoggedInToolbar this', this)
     const { profile } = this.props
@@ -80,7 +83,7 @@ class LoggedInToolbar extends Component {
           >
           <MenuItem 
             onTouchTap={this.handleClose.bind(this)}
-            onClick={()=>this.context.router.push('/home-logged-in')}
+            onClick={()=>this.context.router.push('/')}
             primaryText="Home" />
           <MenuItem 
             onTouchTap={this.handleClose.bind(this)}

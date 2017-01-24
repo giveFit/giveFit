@@ -6,6 +6,7 @@ import LoggedInToolbar from '../Header/LoggedInToolbar'
 import apolloConfig from '../../../../apolloConfig';
 //local utils
 import AuthService from 'utils/AuthService'
+import MainToolbar from '../../Home/Header/MainToolbar'
 
 const LOGGED_IN_USER = gql`
   query LoggedInUser {
@@ -84,8 +85,9 @@ class AppLoggedIn extends Component {
 
   	}
   	onAuthenticated(auth0Profile, tokenPayload) {
+	    console.log('onAuthenticated props', this.props)
 	    console.log("auth0Profile", auth0Profile)
-	    console.log("auth0Profile", tokenPayload)
+	    console.log("tokenPayload", tokenPayload)
 	    const identity = auth0Profile.identities[0];
 	    const that = this;
 	    //debugger;
@@ -93,50 +95,57 @@ class AppLoggedIn extends Component {
 	      identity: identity,
 	      access_token: tokenPayload.accessToken,
 	    }).then(res => {
+	      console.log('authentication response', res)
 	      const scapholdUserId = res.data.loginUserWithAuth0Lock.user.id;
 	      const profilePicture = auth0Profile.picture;
 	      const nickname = auth0Profile.nickname;
+	      // Cause a UI update :)
+	      console.log('scapholdUserId', scapholdUserId)
+	      //this.setState({userId: scapholdUserId});
+	      localStorage.setItem('scapholdUserId', JSON.stringify(scapholdUserId))
+
 	      return that.props.updateUser({
 	        id: scapholdUserId,
 	        picture: profilePicture,
 	        nickname: nickname
 	      });
-	      // Cause a UI update :)
-	      this.setState({
-	      	loggedInToolbar: true,
-	      });
+
 	    }).catch(err => {
 	      console.log(`Error updating user: ${err.message}`);
 	    });
-	 }
+	}
 	render() {
 		const profile = this.auth.getProfile();
 		return (
-			<div>{ profile ? 
+			<div> 
 				<div>
-				<LoggedInToolbar 
-					auth={this.props}
+					{ !this.auth.loggedIn() ? 
+				        <MainToolbar
+				            auth={this.props}
+				        /> : 
+			            <LoggedInToolbar 
+			            	auth={this.props}
+			            	profile={profile}
+				        /> 
+				    }
+					<GridComponentWithData onPlaceSelect={(place)=>{
+						this.props.data.refetch({
+							latLng : place.address
+						});
+						return null;
+					}}
 					profile={profile}
-				/>
-				<GridComponentWithData onPlaceSelect={(place)=>{
-					this.props.data.refetch({
-						latLng : place.address
-					});
-					return null;
-				}}
-				profile={profile}
-				user={this.state.user}
-				workouts={(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ? this.props.data.viewer.allWorkoutGroups.edges : []}
-				markers={(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ?  this.props.data.viewer.allWorkoutGroups.edges.map((i,index)=>({
-					//title : i.node.title,
-					position : {
-						lat : parseFloat(i.node.lat),
-						lng : parseFloat(i.node.lng)
-					}
-				})) : []} />
-					</div>
-					: null
-				}
+					user={this.state.user}
+					workouts={(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ? this.props.data.viewer.allWorkoutGroups.edges : []}
+					markers={(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ?  this.props.data.viewer.allWorkoutGroups.edges.map((i,index)=>({
+						//title : i.node.title,
+						position : {
+							lat : parseFloat(i.node.lat),
+							lng : parseFloat(i.node.lng)
+						}
+					})) : []} />
+				</div>
+			
 		</div>
 		)
 	};

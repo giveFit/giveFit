@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { browserHistory, IndexRoute, Router, Route, routes, applyRouterMiddleware } from 'react-router';
+import { browserHistory, IndexRoute, Router, Route, routes, applyRouterMiddleware, hashHistory } from 'react-router';
 
 //Local imports
 import makeApolloClient from '../apollo';
@@ -22,6 +22,7 @@ import AuthService from './utils/AuthService';
 //Not logged in Components
 import GridContainerWithData from './components/Home/Feed/GridContainer';
 import LandingPageContainerWithData from './components/Home/Landing/index';
+import App from './app.js'
 
 
 //Logged in Components
@@ -43,14 +44,14 @@ const client = makeApolloClient(apolloConfig.scapholdUrl);
 const Application = () => (
   <MuiThemeProvider muiTheme={muiTheme}>
     <Router
-    	history={browserHistory}
-    	routes={routes}
+      history={browserHistory}
+      routes={routes}
       render={
         applyRouterMiddleware()
       }
      >
       <Route path="/" component={HomeLoggedInWithData} />
-      <Route path="/app" component={GridContainerWithData} />
+      <Route path="/app" component={AppLoggedInWithData} />
       <Route path="/home-logged-in" component={HomeLoggedInWithData} />
       <Route path="/app-logged-in" component={AppLoggedInWithData} />
       <Route path="/profile" component={HomeContainerWithData} />
