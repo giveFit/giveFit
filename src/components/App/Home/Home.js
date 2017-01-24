@@ -9,7 +9,9 @@ import styles from './styles.module.css';
 
 import ProfileDetails from '../Profile/ProfileDetails';
 import ProfileEdit from '../Profile/ProfileEdit';
-import MainToolbar from '../Header/MainToolbar'
+import LoggedInToolbar from '../Header/LoggedInToolbar'
+import apolloConfig from '../../../../apolloConfig';
+
 /*possible reference: https://github.com/scaphold-io/auth0-lock-playground*/
 export class Home extends React.Component {
   constructor(props, context, state) {
@@ -17,29 +19,7 @@ export class Home extends React.Component {
     console.log('profile context', context)
     console.log('profile state', state)
     super(props, context)
-    this.state = {
-      profile: props.route.auth.getProfile(),
-      token: props.route.auth.getToken(),
-    };
-
-    props.route.auth.on('profile_updated', (newProfile) => {
-      console.log('newProfile', newProfile)
-      var access_token = this.state.token;
-      var identity = newProfile.identities[0];
-      console.log("token", access_token)
-      console.log("identity", identity)
-      this.props.register({
-        identity, access_token
-      }).then(({ data }) => {
-        console.log('got data', data);
-      }).catch((error) => {
-        console.log('there was an error sending the query', error);
-      });
-      console.log('what do we have', newProfile)
-      this.setState({
-        profile: newProfile,
-      })
-    })
+    this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain);
   }
 
   logout(){
@@ -49,12 +29,12 @@ export class Home extends React.Component {
   }
 
   render(){
-    const { profile } = this.state
+    const profile = this.auth.getProfile();
     return (
       <div className={styles.root}>
-        <MainToolbar 
+        <LoggedInToolbar 
             auth={this.props}
-            profile={this.state.profile}
+            profile={profile}
           />
         <Card>
         <CardText>

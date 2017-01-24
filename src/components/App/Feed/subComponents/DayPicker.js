@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Tab, Tabs, Slider} from 'material-ui';
-import GroupCreator from './GroupCreator';
+import GroupCreatorWithData from './GroupCreator';
 
 const styles = {
   headline: {
@@ -33,10 +33,9 @@ class DayPicker extends Component{
 				    <Tab label="Sun" />
 				  </Tabs>
 				<div>
-					<GroupCreator 
+					<GroupCreatorWithData 
 						geocoder={props.geocoder}
 						profile={props.profile}
-						user={props.user}
 					/>
 				</div>
 			</div>

@@ -1,9 +1,10 @@
 import React, { PropTypes as T } from 'react';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText, GridList} from 'material-ui/Card';
 import HomeFeed from './SubComponents/HomeFeed';
-import MainToolbar from '../Header/MainToolbar'
+import LoggedInToolbar from '../Header/LoggedInToolbar'
+import MainToolbar from '../../Home/Header/MainToolbar'
 
-import { graphql } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import AuthService from 'utils/AuthService';
 import TextField from 'material-ui/TextField';
@@ -11,6 +12,7 @@ import styles from './styles.module.css';
 import RaisedButton from 'material-ui/RaisedButton';
 import {orange500, blue500, indigo500} from 'material-ui/styles/colors';
 import CircularProgress from 'material-ui/CircularProgress';
+import apolloConfig from '../../../../apolloConfig';
 
 const inlineStyles = {
   textFieldStyle: {
@@ -20,40 +22,60 @@ const inlineStyles = {
 
 export class HomeLoggedIn extends React.Component {
   constructor(props, context) {
-    console.log('GridContainer constructor', props)
-      super(props, context)
-      this.state = {
-        profile: props.route.auth.getProfile(),
-        token: props.route.auth.getToken(),
-        //hintText: "Enter a location"
-      };
-
-    props.route.auth.on('profile_updated', (newProfile) => {
-      console.log('newProfile', newProfile)
-      var access_token = this.state.token;
-      var identity = newProfile.identities[0];
-      console.log("token", access_token)
-      console.log("identity", identity)
-      this.props.register({
-        identity, access_token
-      }).then(({ data }) => {
-        console.log('got data', data);
-      }).catch((error) => {
-        console.log('there was an error sending the query', error);
-      });
-      console.log('what do we have', newProfile)
-      this.setState({
-        profile: newProfile,
-      })
-    })
+    console.log('HomeLoggedIn props', props)
+    super(props, context)
+    this.state = {
+      profile: null,
+      token: null,
+      userId: null,
+      //hintText: "Enter a location"
+    };
+    this.onAuthenticated = this.onAuthenticated.bind(this);
+    this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain);
+    this.auth.on('authenticated', this.onAuthenticated);
+    this.auth.on('error', console.log);
   }
-
+  /*componentDidMount(){
+    console.log('componentDidMount');
+    localStorage.setItem('userId', JSON.stringify(this.state.userId))
+  }*/
   handleSubmit(){
     /*I want users to be able to press the button without
     entering anything, but still have the value declaration
     below for when i do a location query*/
     /*const {value} = this.refs.textbox.input;*/
     this.context.router.push('/app-logged-in');
+  }
+  //different config
+  onAuthenticated(auth0Profile, tokenPayload) {
+    console.log('onAuthenticated props', this.props)
+    console.log("auth0Profile", auth0Profile)
+    console.log("tokenPayload", tokenPayload)
+    const identity = auth0Profile.identities[0];
+    const that = this;
+    //debugger;
+    this.props.loginUser({
+      identity: identity,
+      access_token: tokenPayload.accessToken,
+    }).then(res => {
+      console.log('authentication response', res)
+      const scapholdUserId = res.data.loginUserWithAuth0Lock.user.id;
+      const profilePicture = auth0Profile.picture;
+      const nickname = auth0Profile.nickname;
+      // Cause a UI update :)
+      console.log('scapholdUserId', scapholdUserId)
+      //this.setState({userId: scapholdUserId});
+      localStorage.setItem('scapholdUserId', JSON.stringify(scapholdUserId))
+
+      return that.props.updateUser({
+        id: scapholdUserId,
+        picture: profilePicture,
+        nickname: nickname
+      });
+
+    }).catch(err => {
+      console.log(`Error updating user: ${err.message}`);
+    });
   }
   //Need Google maps API here
   handleAutoComplete(){
@@ -66,8 +88,11 @@ export class HomeLoggedIn extends React.Component {
     });
   }
   render(){
+    console.log('HomeLoggedIn this', this)
+    const profile = this.auth.getProfile();
+    console.log('HomeLoggedIn profile', profile)
     const workouts=(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ? this.props.data.viewer.allWorkoutGroups.edges : [];
-    console.log('workouts', workouts);
+    console.log('profile', profile);
     const listView = workouts.length ? <div className={styles.workouts}>
     {workouts.map((item, index) => (
          <div key={index} className={styles.workout}> {!item ||
@@ -78,10 +103,16 @@ export class HomeLoggedIn extends React.Component {
     </div> : <CircularProgress size={80} />
     return (
       <div className={styles.root}>
-      <MainToolbar 
-        auth={this.props}
-        profile={this.state.profile}
-      />
+      { !this.auth.loggedIn() ? 
+          <MainToolbar
+            auth={this.props}
+          /> : 
+          <LoggedInToolbar 
+            auth={this.props}
+            profile={profile}
+            userId={this.state.userId}
+          /> 
+      }
       <div className={styles.banner}>
       <div className={styles.bannerInner}>
         <h1 className={styles.heading}>Find Your Fitness Tribe</h1>
@@ -146,13 +177,61 @@ const GET_THROUGH_VIEWER = gql`
 //How many WorkoutGroups to return
 const FIRST = 8;
 
-const HomeLoggedInWithData = graphql(GET_THROUGH_VIEWER, {
-	options(props) {
-		return {
-		variables: {
-			first : FIRST
-		}
-	};
-}})(HomeLoggedIn);
+const LOGIN_USER_WITH_AUTH0_LOCK = gql `
+  mutation Login($credential: LoginUserWithAuth0LockInput!) {
+  loginUserWithAuth0Lock(input: $credential) {
+    user {
+      id
+      username
+    }
+  }
+}
+`
+const UPDATE_USER_QUERY = gql`
+mutation UpdateUser($user: UpdateUserInput!) {
+  updateUser(input: $user) {
+    changedUser {
+      id
+      username
+      picture
+    }
+  }
+}
+`;
+
+const LOGGED_IN_USER = gql`
+  query LoggedInUser {
+    viewer {
+      user {
+        id
+        username
+        nickname
+      }
+    }
+  }
+`;
+
+const HomeLoggedInWithData =  compose(
+  graphql(GET_THROUGH_VIEWER, {
+    options: (props) => ({  
+      variables: { first : FIRST } 
+    }),
+  }),
+  graphql(LOGGED_IN_USER, {
+    props: ({ data }) =>  ({
+      loggedInUser: data.viewer ? data.viewer.user : null
+    })
+  }),
+  graphql(LOGIN_USER_WITH_AUTH0_LOCK, {
+    props: ({ mutate }) => ({
+      loginUser: (credential) => mutate({ variables: { credential: credential } })
+    })
+  }),
+  graphql(UPDATE_USER_QUERY, {
+    props: ({ mutate }) => ({
+      updateUser: (user) => mutate({ variables: { user: user }}),
+    })
+  })
+)(HomeLoggedIn);
 
 export default HomeLoggedInWithData;

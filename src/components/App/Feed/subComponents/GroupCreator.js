@@ -16,6 +16,8 @@ import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import ReactFilepicker from 'react-filepicker';
 import configKeys from '../../../../../configKeys';
+import apolloConfig from '../../../../../apolloConfig';
+import AuthService from 'utils/AuthService';
 
 const inlineStyles = {
   listStyle: {
@@ -24,9 +26,9 @@ const inlineStyles = {
 }
 
 class GroupCreator extends Component {
-  constructor(props: any, context) {
-    super(props, context);
-    console.log("does group creator geocode?", props)
+  constructor(props: any) {
+    super(props);
+    console.log("GroupCreator props", props)
     this.state = {
       open: false,
       expanded: false,
@@ -43,6 +45,7 @@ class GroupCreator extends Component {
     this._handleAutoComplete = this._handleAutoComplete.bind(this);
     this.addImage = this.addImage.bind(this);
     this.submitWorkoutGroup = this.submitWorkoutGroup.bind(this);
+    this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain);
   };
   handleOpen(){
     console.log('handling open')
@@ -57,7 +60,9 @@ class GroupCreator extends Component {
     if (e) {
       e.preventDefault();
     }
-    var address = this.state.location;
+    console.log('submitWorkoutGroup props', this.props)
+    const address = this.state.location;
+    const loggedInUser = this.auth.getLoggedInUser();
     this.props.geocoder.geocode({'address' : address}, (results, status) => {
       if(status == google.maps.GeocoderStatus.OK){
         console.log('geocoded results', results)
@@ -65,8 +70,7 @@ class GroupCreator extends Component {
           lat: results[0].geometry.location.lat(),
           lng: results[0].geometry.location.lng(),
         })
-
-        console.log('submitWorkoutGroup props', this.props)
+        console.log('submitWorkoutGroup props inside geocoder', this.props)
         this.props.createWorkoutGroup({
           title: this.state.title,
           contentSnippet: this.state.contentSnippet,
@@ -74,7 +78,7 @@ class GroupCreator extends Component {
           lng: this.state.lng,
           image: this.props.profile.picture,
           avatar: this.props.profile.picture,
-          userGroupsId: this.props.user ? this.props.user : null
+          userGroupsId: loggedInUser
         }).then(({ data }) => {
           console.log("data", data)
           this.setState({
@@ -202,6 +206,7 @@ class GroupCreator extends Component {
   createWorkoutGroup: T.func.isRequired
 };*/
 
+//Data operations begin below
 const LOGGED_IN_USER = gql`
   query LoggedInUser {
     viewer {
@@ -229,6 +234,7 @@ const CREATE_WORKOUT_GROUP = gql`
   }
 }
 `;
+
 //Get some WorkoutGroups
 const GET_THROUGH_VIEWER = gql`
   query GetThroughViewer($first: Int) {
@@ -251,7 +257,7 @@ const GET_THROUGH_VIEWER = gql`
 `;
 
 //How many WorkoutGroups to return
-const FIRST = 0;
+const FIRST = 8;
 
 const GroupCreatorWithData = compose(
   graphql(GET_THROUGH_VIEWER, {
@@ -260,9 +266,8 @@ const GroupCreatorWithData = compose(
     }),
   }),
   /*graphql(LOGGED_IN_USER, {
-    props: ({ data }) =>  console.log('LOGGED_IN_USER data', data)
-    ({
-      loggedInUser: data.loading ? null : data.viewer.user
+    props: ({ data }) => ({
+      loggedInUser: data.viewer ? data.viewer.user : null
     })
   }),*/
   graphql(CREATE_WORKOUT_GROUP, {
@@ -273,30 +278,3 @@ const GroupCreatorWithData = compose(
 )(GroupCreator);
 
 export default GroupCreatorWithData;
-
-//original query, pre-id
-/*const CREATE_WORKOUT_GROUP = gql`
-  mutation CreateWorkoutGroup($data: CreateWorkoutGroupInput!) {
-  createWorkoutGroup(input:$data){
-    changedWorkoutGroup{
-      title,
-      contentSnippet,
-      lat,
-      lng,
-      image,
-    }
-  }
-}
-`;
-
-const GroupCreatorWithData = graphql(CREATE_WORKOUT_GROUP, {
-  props: ({ mutate }) => ({
-    createWorkoutGroup: (data) => mutate({
-      variables: {
-        data,
-      },
-    }),
-  }),
-})(GroupCreator);*/
-
-/*export default GroupCreatorWithData;*/

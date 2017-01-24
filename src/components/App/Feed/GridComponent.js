@@ -9,7 +9,10 @@ import CircularProgress from 'material-ui/CircularProgress';
 import ParkFeed from './subComponents/ParkFeed';
 import GymFeed from './subComponents/GymFeed';
 import DayPicker from './subComponents/DayPicker';
+import GroupCreatorWithData from './subComponents/GroupCreator'
 import {searchNearby} from 'utils/googleApiHelpers';
+import { graphql, compose } from 'react-apollo';
+import gql from 'graphql-tag';
 
 const height = window.innerHeight - 64;
 
@@ -33,6 +36,7 @@ const styles = {
 
 class GridComponent extends Component {
     constructor(props){
+      console.log('GridComponent props', props)
       super(props);
       // grab our googleMaps obj from whever she may lay
       var googleMaps = this.props.googleMaps ||
@@ -65,7 +69,6 @@ class GridComponent extends Component {
     http://stackoverflow.com/questions/19625228/google-maps-api-multiple-keywords-in-place-searches*/
     componentDidMount(obj){
     const div = document.createElement('div')
-    console.log("isMounted method", div)
     /*const {googleMaps} = this.props;*/
     //Need to update these searches when a new map center is created
     //baltimore parks search params
@@ -112,9 +115,7 @@ class GridComponent extends Component {
     const {map} = this._googleMapComponent.props;
     //var input = "40,-90";
     //var latlngStr = input.split(',', 2);
-    console.log("this is the geocoded object", obj.latLng)
     var latlng = {lat: obj.latLng.lat(), lng: obj.latLng.lng()};
-    console.log("this is latlng", latlng)
     this.geocoder.geocode({'location': obj.latLng}, (results, status)=>{
       if (status === 'OK') {
         if (results[1]) {
@@ -141,8 +142,6 @@ class GridComponent extends Component {
     render(){
       const {props} = this;
       const {activeIndex, parks, parksAndGyms, markers} = this.state;
-
-      console.log('props, i.e. the scaphold backend', props);
       //Build placeById object
       const placeById = {};
       parksAndGyms.forEach(s => {
@@ -180,12 +179,10 @@ class GridComponent extends Component {
           }
         }
       })
-
-      console.log('placeById', placeById)
       //list with google data
       const gListView = parks.length ? <div
           style={styles.gridList} 
-          > <DayPicker profile={props.profile} user={props.user} geocoder={this.geocoder}/> {Object.keys(placeById).map((item, index) => (
+          > <GroupCreatorWithData profile={props.profile} geocoder={this.geocoder}/> {Object.keys(placeById).map((item, index) => (
                <div key={index} style={styles.workout}> {!item ||
                 (placeById[item].googleData.types.indexOf('park') !== -1 ? <ParkFeed
                   active={activeIndex===index}
@@ -212,7 +209,7 @@ class GridComponent extends Component {
                  }
                  googleMapElement={
                    <GoogleMap
-                    ref={(map) => { this._googleMapComponent = map ; console.log("the map", map);} }
+                    ref={(map) => { this._googleMapComponent = map ; } }
                     defaultZoom={13}
                     defaultCenter={{ lat: 39.287014134966526, lng: -76.55342102050781 }}
                     onClick={(...args)=>{
@@ -240,4 +237,56 @@ class GridComponent extends Component {
     }
 }
 
-export default GridComponent;
+//export default GridComponent;
+const LOGGED_IN_USER = gql`
+  query LoggedInUser {
+    viewer {
+      user {
+        id
+        username
+        nickname
+      }
+    }
+  }
+`;
+
+//Get some WorkoutGroups
+const GET_THROUGH_VIEWER = gql`
+  query GetThroughViewer($first: Int) {
+    viewer {
+      allWorkoutGroups(first: $first) {
+        edges {
+          node {
+          id
+          image
+          title
+          lat
+          lng
+          avatar
+          contentSnippet
+          }
+        }
+      }
+  }
+}
+`;
+
+//How many WorkoutGroups to return
+const FIRST = 8;
+
+const GridComponentWithData =  compose(
+  graphql(GET_THROUGH_VIEWER, {
+    options: (props) => ({  
+      variables: { first : FIRST } 
+    }),
+  }),
+    graphql(LOGGED_IN_USER, {
+      props: ({ data }) =>  ({
+        loggedInUser: data.viewer ? data.viewer.user : null
+      })
+    })
+)(GridComponent);
+
+export default GridComponentWithData;
+
+

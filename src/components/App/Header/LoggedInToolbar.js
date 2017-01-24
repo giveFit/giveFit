@@ -13,6 +13,10 @@ import PersonAdd from 'material-ui/svg-icons/social/person-add';
 import Comment from 'material-ui/svg-icons/communication/comment';
 import GroupAdd from 'material-ui/svg-icons/social/group-add';
 import styles from './styles.module.css';
+import apolloConfig from '../../../../apolloConfig';
+import AuthService from 'utils/AuthService'
+import { graphql, compose } from 'react-apollo';
+import gql from 'graphql-tag';
 
 const inlineStyles = {
   title: {
@@ -24,16 +28,16 @@ const inlineStyles = {
   }
 };
 
-class MainToolbar extends Component {
-
+class LoggedInToolbar extends Component {
   constructor(props) {
-    console.log('toolbar constructor', props)
     super(props);
+    console.log('LoggedInToolbar props', props)
     this.state = {
       value: 3,
       open: false,
       /*profile: props.auth.getProfile(),*/
     };
+    this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain);
   }
 
   handleChange (event, index, value){
@@ -55,15 +59,13 @@ class MainToolbar extends Component {
 
   logout(){
     console.log('did the logout')
-    this.props.auth.route.auth.logout()
-    this.context.router.push('/app');
+    this.auth.logout()
+    this.context.router.push('/');
   }
 
   render() {
-    console.log('profile', profile)
-    console.log('props', this.props)
+    console.log('LoggedInToolbar this', this)
     const { profile } = this.props
-    console.log('toolbar this.props',this.props)
     return (
       <div>
        <Toolbar>
@@ -94,7 +96,6 @@ class MainToolbar extends Component {
             primaryText="About Us" />
           <MenuItem 
             onTouchTap={this.handleClose.bind(this)}
-            onClick={this.props.auth.route.auth.login.bind(this)}
             primaryText="Add a Group"
             leftIcon={<GroupAdd />} />
           </IconMenu>
@@ -108,11 +109,14 @@ class MainToolbar extends Component {
           <FlatButton label="About Us" />
           <FontIcon className="muidocs-icon-custom-sort" />
           <ToolbarSeparator />
-          <Avatar 
-            style={inlineStyles.avatar} 
-            src={profile.picture}
-            onClick={()=>this.context.router.push('/profile')} 
-          />        
+          {
+            this.props.profile ?
+            <Avatar 
+              style={inlineStyles.avatar} 
+              src={profile.picture}
+              onClick={()=>this.context.router.push('/profile')} 
+            /> : null    
+          }      
           <IconMenu
             iconButtonElement={
               <IconButton touch={true}>
@@ -136,12 +140,12 @@ class MainToolbar extends Component {
   }
 }
 
-  MainToolbar.contextTypes = {
+  LoggedInToolbar.contextTypes = {
       router : T.object.isRequired
     }
 
-    MainToolbar.propTypes = {
+    LoggedInToolbar.propTypes = {
       location: T.object,
     };
 
-export default MainToolbar
+export default LoggedInToolbar;

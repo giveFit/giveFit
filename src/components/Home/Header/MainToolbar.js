@@ -10,6 +10,12 @@ import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import mui, { Drawer, MenuItem, Styles, RaisedButton, FlatButton, Avatar } from 'material-ui';
 import PersonAdd from 'material-ui/svg-icons/social/person-add';
+import apolloConfig from '../../../../apolloConfig';
+import AuthService from 'utils/AuthService';
+import gql from 'graphql-tag';
+import { graphql, compose } from 'react-apollo';
+
+import { hashHistory } from 'react-router';
 
 const inlineStyles = {
   title: {
@@ -22,15 +28,21 @@ const inlineStyles = {
 class MainToolbar extends Component {
 
   constructor(props) {
-    console.log('toolbar constructor', props)
+    console.log('MainToolbar props', props)
     super(props);
     this.state = {
       value: 3,
       open: false,
       /*profile: props.auth.getProfile(),*/
     };
+    this.startLogin = this.startLogin.bind(this);
+    this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain);
+    
   }
-
+  
+  startLogin() {
+    this.auth.login();
+  }
   handleChange (event, index, value){
     this.setState({value})
   };
@@ -49,13 +61,12 @@ class MainToolbar extends Component {
   }
 
   logout(){
-    this.props.auth.logout()
-    this.context.router.push('/app');
+    this.auth.logout()
+    this.context.router.push('/');
   }
 
   render() {
     const { profile } = this.props
-    console.log('toolbar this.props',this.props)
     return (
       <div>
        <Toolbar>
@@ -86,7 +97,7 @@ class MainToolbar extends Component {
             primaryText="About Us" />
           <MenuItem 
             onTouchTap={this.handleClose.bind(this)}
-            onClick={this.props.auth.route.auth.login.bind(this)}
+            onClick={this.startLogin}
             primaryText="Log in"
             leftIcon={<PersonAdd />} />
           </IconMenu>
@@ -100,7 +111,7 @@ class MainToolbar extends Component {
           <FlatButton label="About Us" />
           <FontIcon className="muidocs-icon-custom-sort" />
           <ToolbarSeparator />
-          <RaisedButton label="Login" primary={true} onClick={this.props.auth.route.auth.login.bind(this)}/>
+          <RaisedButton label="Login" primary={true} onClick={this.startLogin}/>
         </ToolbarGroup>
       </Toolbar>
       </div>
@@ -116,4 +127,4 @@ class MainToolbar extends Component {
       location: T.object,
     };
 
-export default MainToolbar
+export default MainToolbar;

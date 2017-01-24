@@ -3,7 +3,8 @@ import { render } from 'react-dom';
 import { browserHistory, IndexRoute, Router, Route, routes, applyRouterMiddleware } from 'react-router';
 
 //Local imports
-import client from '../apollo';
+import makeApolloClient from '../apollo';
+import apolloConfig from '../apolloConfig';
 
 //Material UI qualms
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -29,13 +30,15 @@ import HomeLoggedInWithData from './components/App/Landing/HomeLoggedIn';
 //Actually the profile route
 import HomeContainerWithData from './components/App/Home/Home'
 
-const auth = new AuthService(__AUTH0_CLIENT_ID__, __AUTH0_DOMAIN__);
+//const auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain);
+//const auth = new AuthService(__AUTH0_CLIENT_ID__, __AUTH0_DOMAIN__);
 // onEnter callback to validate authentication in private routes
 const requireAuth = (nextState, replace) => {
   if (!auth.loggedIn()) {
     replace({ pathname: '/login' })
   }
 }
+const client = makeApolloClient(apolloConfig.scapholdUrl);
 //Wrap the app with our theme provider
 const Application = () => (
   <MuiThemeProvider muiTheme={muiTheme}>
@@ -45,13 +48,12 @@ const Application = () => (
       render={
         applyRouterMiddleware()
       }
-      auth={auth}
      >
-      <Route path="/" component={LandingPageContainerWithData} auth={auth} />
-      <Route path="/app" component={GridContainerWithData} auth={auth} />
-      <Route path="/home-logged-in" component={HomeLoggedInWithData} auth={auth} />
-      <Route path="/app-logged-in" component={AppLoggedInWithData} auth={auth} />
-      <Route path="/profile" component={HomeContainerWithData} auth={auth} />
+      <Route path="/" component={HomeLoggedInWithData} />
+      <Route path="/app" component={GridContainerWithData} />
+      <Route path="/home-logged-in" component={HomeLoggedInWithData} />
+      <Route path="/app-logged-in" component={AppLoggedInWithData} />
+      <Route path="/profile" component={HomeContainerWithData} />
     </Router>
   </MuiThemeProvider>
 );
