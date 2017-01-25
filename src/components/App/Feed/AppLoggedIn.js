@@ -167,11 +167,11 @@ const AppLoggedInWithData =  compose(
 	    	loginUser: (credential) => mutate({ variables: { credential: credential } })
 	  	})
   	}),
-  	graphql(LOGGED_IN_USER, {
+  	/*graphql(LOGGED_IN_USER, {
 	    props: ({ data }) =>  ({
 	      loggedInUser: data.viewer ? data.viewer.user : null
 	    })
-  	}),
+  	}),*/
 	graphql(UPDATE_USER_QUERY, {
 	    props: ({ mutate }) => ({
 	      updateUser: (user) => mutate({ variables: { user: user }}),

@@ -217,11 +217,11 @@ const HomeLoggedInWithData =  compose(
       variables: { first : FIRST } 
     }),
   }),
-  graphql(LOGGED_IN_USER, {
+  /*graphql(LOGGED_IN_USER, {
     props: ({ data }) =>  ({
       loggedInUser: data.viewer ? data.viewer.user : null
     })
-  }),
+  }),*/
   graphql(LOGIN_USER_WITH_AUTH0_LOCK, {
     props: ({ mutate }) => ({
       loginUser: (credential) => mutate({ variables: { credential: credential } })
