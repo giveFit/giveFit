@@ -43,18 +43,14 @@ const client = makeApolloClient(apolloConfig.scapholdUrl);
 //Wrap the app with our theme provider
 const Application = () => (
   <MuiThemeProvider muiTheme={muiTheme}>
-    <Router
-      history={browserHistory}
-      routes={routes}
-      render={
-        applyRouterMiddleware()
-      }
-     >
-      <Route path="/" component={HomeLoggedInWithData} />
-      <Route path="/app" component={AppLoggedInWithData} />
-      <Route path="/home-logged-in" component={HomeLoggedInWithData} />
-      <Route path="/app-logged-in" component={AppLoggedInWithData} />
-      <Route path="/profile" component={HomeContainerWithData} />
+    <Router history={browserHistory}>
+      <Route path="/" component={App}>
+        <IndexRoute component={HomeLoggedInWithData}></IndexRoute>
+        <Route path="/app" component={AppLoggedInWithData}></Route>
+        {/*<Route path="/home-logged-in" component={HomeLoggedInWithData}></Route>
+        <Route path="/app-logged-in" component={AppLoggedInWithData}></Route>*/}
+        <Route path="/profile" component={HomeContainerWithData}></Route>
+      </Route>
     </Router>
   </MuiThemeProvider>
 );

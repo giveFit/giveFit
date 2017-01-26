@@ -44,7 +44,7 @@ export class HomeLoggedIn extends React.Component {
     entering anything, but still have the value declaration
     below for when i do a location query*/
     /*const {value} = this.refs.textbox.input;*/
-    this.context.router.push('/app-logged-in');
+    this.context.router.push('/app');
   }
   //different config
   onAuthenticated(auth0Profile, tokenPayload) {
@@ -103,16 +103,6 @@ export class HomeLoggedIn extends React.Component {
     </div> : <CircularProgress size={80} />
     return (
       <div className={styles.root}>
-      { !this.auth.loggedIn() ? 
-          <MainToolbar
-            auth={this.props}
-          /> : 
-          <LoggedInToolbar 
-            auth={this.props}
-            profile={profile}
-            userId={this.state.userId}
-          /> 
-      }
       <div className={styles.banner}>
       <div className={styles.bannerInner}>
         <h1 className={styles.heading}>Find Your Fitness Tribe</h1>

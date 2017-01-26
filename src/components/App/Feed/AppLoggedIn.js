@@ -78,13 +78,13 @@ class AppLoggedIn extends Component {
 	      loggedInToolbar: false,
 	    };
 	    
-	    this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain);
+	    /*this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain);
 	    this.onAuthenticated = this.onAuthenticated.bind(this);  
     	this.auth.on('authenticated', this.onAuthenticated);
-    	this.auth.on('error', console.log);
+    	this.auth.on('error', console.log);*/
 
   	}
-  	onAuthenticated(auth0Profile, tokenPayload) {
+  	/*onAuthenticated(auth0Profile, tokenPayload) {
 	    console.log('onAuthenticated props', this.props)
 	    console.log("auth0Profile", auth0Profile)
 	    console.log("tokenPayload", tokenPayload)
@@ -113,29 +113,19 @@ class AppLoggedIn extends Component {
 	    }).catch(err => {
 	      console.log(`Error updating user: ${err.message}`);
 	    });
-	}
+	}*/
 	render() {
-		const profile = this.auth.getProfile();
+		/*const profile = this.auth.getProfile();*/
 		return (
 			<div> 
 				<div>
-					{ !this.auth.loggedIn() ? 
-				        <MainToolbar
-				            auth={this.props}
-				        /> : 
-			            <LoggedInToolbar 
-			            	auth={this.props}
-			            	profile={profile}
-				        /> 
-				    }
 					<GridComponentWithData onPlaceSelect={(place)=>{
 						this.props.data.refetch({
 							latLng : place.address
 						});
 						return null;
 					}}
-					profile={profile}
-					user={this.state.user}
+					profile={this.props.loggedinUser ? this.props.loggedInUser.id : undefined}
 					workouts={(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ? this.props.data.viewer.allWorkoutGroups.edges : []}
 					markers={(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ?  this.props.data.viewer.allWorkoutGroups.edges.map((i,index)=>({
 						//title : i.node.title,
@@ -167,11 +157,11 @@ const AppLoggedInWithData =  compose(
 	    	loginUser: (credential) => mutate({ variables: { credential: credential } })
 	  	})
   	}),
-  	/*graphql(LOGGED_IN_USER, {
+  	graphql(LOGGED_IN_USER, {
 	    props: ({ data }) =>  ({
 	      loggedInUser: data.viewer ? data.viewer.user : null
 	    })
-  	}),*/
+  	}),
 	graphql(UPDATE_USER_QUERY, {
 	    props: ({ mutate }) => ({
 	      updateUser: (user) => mutate({ variables: { user: user }}),

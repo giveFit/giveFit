@@ -45,7 +45,7 @@ class GroupCreator extends Component {
     this._handleAutoComplete = this._handleAutoComplete.bind(this);
     this.addImage = this.addImage.bind(this);
     this.submitWorkoutGroup = this.submitWorkoutGroup.bind(this);
-    this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain);
+    //this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain);
   };
   handleOpen(){
     console.log('handling open')
@@ -62,7 +62,7 @@ class GroupCreator extends Component {
     }
     console.log('submitWorkoutGroup props', this.props)
     const address = this.state.location;
-    const loggedInUser = this.auth.getLoggedInUser();
+    const scapholdUser = this.auth.getLoggedInUser();
     this.props.geocoder.geocode({'address' : address}, (results, status) => {
       if(status == google.maps.GeocoderStatus.OK){
         console.log('geocoded results', results)
@@ -78,7 +78,7 @@ class GroupCreator extends Component {
           lng: this.state.lng,
           image: this.props.profile.picture,
           avatar: this.props.profile.picture,
-          userGroupsId: loggedInUser
+          userGroupsId: scapholdUser
         }).then(({ data }) => {
           console.log("data", data)
           this.setState({
@@ -207,14 +207,16 @@ class GroupCreator extends Component {
 };*/
 
 //Data operations begin below
-const LOGGED_IN_USER = gql`
-  query LoggedInUser {
-    viewer {
-      user {
-        id
-      }
+const LoggedInUserQuery = gql`
+query LoggedInUser {
+  viewer {
+    user {
+      id
+      username
+      nickname
     }
   }
+}
 `;
 
 //I want to tie the workout group to a user
@@ -265,9 +267,9 @@ const GroupCreatorWithData = compose(
       variables: { first : FIRST } 
     }),
   }),
-  graphql(LOGGED_IN_USER, {
+  graphql(LoggedInUserQuery, {
     props: ({ data }) => ({
-      scapholdViewerUser: data.viewer ? data.viewer.user : null
+      loggedInUser: data.viewer ? data.viewer.user : null
     })
   }),
   graphql(CREATE_WORKOUT_GROUP, {

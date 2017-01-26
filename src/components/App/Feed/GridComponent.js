@@ -279,12 +279,12 @@ const GridComponentWithData =  compose(
     options: (props) => ({  
       variables: { first : FIRST } 
     }),
-  }),
+  })/*,
     graphql(LOGGED_IN_USER, {
       props: ({ data }) =>  ({
         loggedInUser: data.viewer ? data.viewer.user : null
       })
-    })
+    })*/
 )(GridComponent);
 
 export default GridComponentWithData;

@@ -5,6 +5,9 @@ import Auth0Lock from 'auth0-lock'
 import { browserHistory } from 'react-router'
 
 var options = {
+  /*auth: {
+      redirectUrl: 'http://localhost:3000/app'
+  },*/
   theme: {
     primaryColor: '#CF1F3C',
     logo: 'https://static1.squarespace.com/static/5633dd05e4b03216fd2f5ab9/t/579011122994cad3347ce32e/1478460286586/?format=1500w'
