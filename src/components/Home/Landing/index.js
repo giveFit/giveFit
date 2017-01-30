@@ -64,7 +64,7 @@ export class LandingPage extends React.Component {
         </div>
       </div>
       <h2>
-           Check out this week's highlighted workout groups. 
+           Check out this week&quos;s highlighted workout groups.
            Search above for more awesome group workouts in your area.
       </h2>
        {listView}

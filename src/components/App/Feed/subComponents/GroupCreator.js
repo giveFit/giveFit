@@ -18,7 +18,7 @@ import ReactFilepicker from 'react-filepicker';
 import configKeys from '../../../../../configKeys';
 import apolloConfig from '../../../../../apolloConfig';
 import AuthService from 'utils/AuthService';
-
+import styles from '../styles.module.css';
 const inlineStyles = {
   listStyle: {
     'list-style-type': 'none'
@@ -50,6 +50,10 @@ class GroupCreator extends Component {
   handleOpen(){
     console.log('handling open')
     this.setState({open: true});
+  };
+  handleClose=()=>{
+    console.log('handling open')
+    this.setState({open: false});
   };
   handleToggle(event, toggled){
     this.setState({
@@ -148,18 +152,25 @@ class GroupCreator extends Component {
         keyboardFocused={true}
         onTouchTap={this.submitWorkoutGroup.bind(this)}
       />,
+      <FlatButton
+        label="Cancel"
+        secondary={true}
+        keyboardFocused={false}
+        onTouchTap={this.handleClose}
+      />,
     ];
 
     return (
       //Need to improve styling a lot here
       <div>
-        <RaisedButton 
-          label="Create a workout group" 
+        <RaisedButton
+          label="Create a workout group"
           labelPosition="before"
           onTouchTap={this.handleOpen.bind(this)}
           icon={<GroupAdd />}
         />
         <Dialog
+          className = {styles.dialogClassName}
           title="Add your own awesome group"
           actions={actions}
           modal={false}
@@ -169,7 +180,7 @@ class GroupCreator extends Component {
          <Card>
             <ul className={inlineStyles.listStyle}>
               <li>
-                <TextField 
+                <TextField
                   hintText="Group Title"
                   id="autocomplete"
                   name="groupTitle"
@@ -177,10 +188,10 @@ class GroupCreator extends Component {
                 />
               </li>
               <li>
-                <ReactFilepicker apikey={configKeys.FILESTACK_API} onTouchTap={this.addImage}/>
+                <ReactFilepicker apikey={configKeys.FILESTACK_API} onTouchTap={this.addImage} onSuccess={(...args)=>console.log(...args)}/>
               </li>
               <li>
-                <TextField 
+                <TextField
                   hintText="Location"
                   id="autocomplete"
                   onChange={this._handleLocationChange}
@@ -188,7 +199,7 @@ class GroupCreator extends Component {
                 />
               </li>
           </ul>
-          {/*<RaisedButton 
+          {/*<RaisedButton
             label="Add an Image"
             type="filepicker"
             onTouchTap={this.addImage.bind(this)}
@@ -261,8 +272,8 @@ const FIRST = 8;
 
 const GroupCreatorWithData = compose(
   graphql(GET_THROUGH_VIEWER, {
-    options: (props) => ({  
-      variables: { first : FIRST } 
+    options: (props) => ({
+      variables: { first : FIRST }
     }),
   }),
   graphql(LOGGED_IN_USER, {

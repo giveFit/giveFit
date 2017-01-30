@@ -10,3 +10,12 @@
   border-color: #2F1557;
   box-shadow: 0 0 10px #2F1557;
 }
+
+.dialogClassName{
+  z-index : 800 !important;
+}
+.stackedTop {
+  position : absolute;
+  top : 0;
+  width : 100%;
+}

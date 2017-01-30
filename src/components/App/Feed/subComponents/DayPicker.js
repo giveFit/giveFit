@@ -22,7 +22,7 @@ class DayPicker extends Component{
 	render(){
 		const {props} = this;
 		return(
-			<div>
+			<div className={props.className || ''}>
 				<Tabs>
 				    <Tab label="Mon" />
 				    <Tab label="Tues" />
@@ -33,7 +33,7 @@ class DayPicker extends Component{
 				    <Tab label="Sun" />
 				  </Tabs>
 				<div>
-					<GroupCreatorWithData 
+					<GroupCreatorWithData
 						geocoder={props.geocoder}
 						profile={props.profile}
 					/>

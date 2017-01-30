@@ -1,0 +1,11 @@
+@media (min-width : 480px){
+  .iconMenu{
+      display : none !important;
+  }
+}
+
+@media (max-width : 480px){
+  .onlyLargeScreens{
+      display : none !important;
+  }
+}

@@ -40,7 +40,7 @@ var config = getConfig({
     return {
       'index.html': context.defaultTemplate({
         title: 'givefit',
-        head: configKeys.GOOGLE_API, 
+        head: '<style> html,body, #root { width: 100%; height : 100%; } </style><script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDaqZIUzhyOdPDlsVjkdLbuWj89F3gNCMg&libraries=places" ></script>',
         publicPath: isDev ? 'http://localhost:3000/' : '',
         meta: {
           'name': 'givefit',

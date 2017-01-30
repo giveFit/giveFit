@@ -1,3 +1,5 @@
+require('babel-core/register');
+require('babel-polyfill');
 import React from 'react';
 import { render } from 'react-dom';
 import { browserHistory, IndexRoute, Router, Route, routes, applyRouterMiddleware, hashHistory } from 'react-router';

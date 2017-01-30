@@ -13,7 +13,7 @@ import GroupCreatorWithData from './subComponents/GroupCreator'
 import {searchNearby} from 'utils/googleApiHelpers';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
-
+import classes from './styles.module.css';
 const height = window.innerHeight - 64;
 
 const styles = {
@@ -25,6 +25,8 @@ const styles = {
   gridList: {
     width: 500,
     height: height,
+    paddingTop:100,
+    position : 'relative',
     overflowY : 'auto',
     background : '#e5e5e5'
   },
@@ -95,7 +97,7 @@ class GridComponent extends Component {
       }).catch((status, result) => {
         console.error('error', status, result)
       })
-    //search and add gyms to state  
+    //search and add gyms to state
     searchNearby(this.googleMaps, div, gyms)
       .then((results, pagination) => {
         console.log('searchNearby gyms', results)
@@ -109,7 +111,7 @@ class GridComponent extends Component {
       })
     }
 
-    /*gets us our map on click location, 
+    /*gets us our map on click location,
     may pass for location queries in the future*/
     geocodeLatLng(obj) {
     const {map} = this._googleMapComponent.props;
@@ -121,7 +123,7 @@ class GridComponent extends Component {
         if (results[1]) {
           //why is map not setting to the actual center? appears to be offset by the feed
           map.setCenter(latlng);
-          //Display location infowindow on hover  
+          //Display location infowindow on hover
           /*this.infowindow.setContent(results[1].formatted_address);*/
           this.props.onPlaceSelect({
               coordinates : latlng,
@@ -173,26 +175,29 @@ class GridComponent extends Component {
             position : {
                 lat : parseFloat(s.node.lat),
                 lng : parseFloat(s.node.lng)
-            },            
+            },
             photos: s.node.image,
             types: 'park'
           }
         }
       })
       //list with google data
-      const gListView = parks.length ? <div
-          style={styles.gridList} 
-          > <DayPicker profile={props.profile} geocoder={this.geocoder}/> {Object.keys(placeById).map((item, index) => (
-               <div key={index} style={styles.workout}> {!item ||
-                (placeById[item].googleData.types.indexOf('park') !== -1 ? <ParkFeed
-                  active={activeIndex===index}
-                  data={placeById[item]}
-               /> : <GymFeed
-                  active={activeIndex===index}
-                  data={placeById[item]}
-               />)} </div>
-          ))} 
-          </div> : <Card>
+      const gListView = parks.length ?
+                <div style={styles.gridList} >
+                <DayPicker className={classes.stackedTop} profile={props.profile} geocoder={this.geocoder}/> {Object.keys(placeById).map((item, index) => (
+                  <div key={index} style={styles.workout}> {!item ||
+                      (placeById[item].googleData.types.indexOf('park') !== -1 ?
+                      <ParkFeed
+                        active={activeIndex===index}
+                        data={placeById[item]} />
+                        :
+                      <GymFeed
+                        active={activeIndex===index}
+                        data={placeById[item]}
+                     />)}
+                      </div>
+                  ))} </div> :
+               <Card>
               <CircularProgress size={80} />
       </Card>
       return (
@@ -276,8 +281,8 @@ const FIRST = 8;
 
 const GridComponentWithData =  compose(
   graphql(GET_THROUGH_VIEWER, {
-    options: (props) => ({  
-      variables: { first : FIRST } 
+    options: (props) => ({
+      variables: { first : FIRST }
     }),
   }),
     graphql(LOGGED_IN_USER, {
@@ -288,5 +293,3 @@ const GridComponentWithData =  compose(
 )(GridComponent);
 
 export default GridComponentWithData;
-
-

@@ -13,7 +13,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import {orange500, blue500, indigo500} from 'material-ui/styles/colors';
 import CircularProgress from 'material-ui/CircularProgress';
 import apolloConfig from '../../../../apolloConfig';
-
+import FindWorkouts from './FindWorkouts';
 const inlineStyles = {
   textFieldStyle: {
     color: indigo500,
@@ -28,13 +28,14 @@ export class HomeLoggedIn extends React.Component {
       profile: null,
       token: null,
       userId: null,
-      //hintText: "Enter a location"
     };
     this.onAuthenticated = this.onAuthenticated.bind(this);
     this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain);
     this.auth.on('authenticated', this.onAuthenticated);
     this.auth.on('error', console.log);
   }
+
+
   /*componentDidMount(){
     console.log('componentDidMount');
     localStorage.setItem('userId', JSON.stringify(this.state.userId))
@@ -88,11 +89,11 @@ export class HomeLoggedIn extends React.Component {
     });
   }
   render(){
-    console.log('HomeLoggedIn this', this)
+    //console.log('HomeLoggedIn this', this)
     const profile = this.auth.getProfile();
-    console.log('HomeLoggedIn profile', profile)
+    //console.log('HomeLoggedIn profile', profile)
     const workouts=(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ? this.props.data.viewer.allWorkoutGroups.edges : [];
-    console.log('profile', profile);
+    //console.log('profile', profile);
     const listView = workouts.length ? <div className={styles.workouts}>
     {workouts.map((item, index) => (
          <div key={index} className={styles.workout}> {!item ||
@@ -103,15 +104,15 @@ export class HomeLoggedIn extends React.Component {
     </div> : <CircularProgress size={80} />
     return (
       <div className={styles.root}>
-      { !this.auth.loggedIn() ? 
+      { !this.auth.loggedIn() ?
           <MainToolbar
             auth={this.props}
-          /> : 
-          <LoggedInToolbar 
+          /> :
+          <LoggedInToolbar
             auth={this.props}
             profile={profile}
             userId={this.state.userId}
-          /> 
+          />
       }
       <div className={styles.banner}>
       <div className={styles.bannerInner}>
@@ -135,13 +136,18 @@ export class HomeLoggedIn extends React.Component {
            <RaisedButton label="Find Groups" secondary={true} className={styles.submitButton} onTouchTap={()=>this.handleSubmit()} />
            <br />
         </CardText>
+          <CardText>
+            <FindWorkouts/>
+          </CardText>
+
         </Card>
         </div>
       </div>
       <h2 className={styles.featuredWorkouts}>
-           Check out this week's highlighted workout groups. 
+           Check out this week&quot;s highlighted workout groups.
            Search above for more awesome group workouts in your area.
       </h2>
+        <div style={{margin: 20, overflow :'hidden'}}/>
            {listView}
         </div>
     )
@@ -213,8 +219,8 @@ const LOGGED_IN_USER = gql`
 
 const HomeLoggedInWithData =  compose(
   graphql(GET_THROUGH_VIEWER, {
-    options: (props) => ({  
-      variables: { first : FIRST } 
+    options: (props) => ({
+      variables: { first : FIRST }
     }),
   }),
   /*graphql(LOGGED_IN_USER, {

@@ -14,7 +14,7 @@ import apolloConfig from '../../../../apolloConfig';
 import AuthService from 'utils/AuthService';
 import gql from 'graphql-tag';
 import { graphql, compose } from 'react-apollo';
-
+import styles from './styles.module.css';
 import { hashHistory } from 'react-router';
 
 const inlineStyles = {
@@ -37,9 +37,9 @@ class MainToolbar extends Component {
     };
     this.startLogin = this.startLogin.bind(this);
     this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain);
-    
+
   }
-  
+
   startLogin() {
     this.auth.login();
   }
@@ -55,7 +55,7 @@ class MainToolbar extends Component {
   handleClose() {
     this.setState({open: false})
   }
-  
+
   handleTouchTap(){
     this.context.router.push('/')
   }
@@ -73,42 +73,43 @@ class MainToolbar extends Component {
         <ToolbarGroup>
           <FontIcon className="muidocs-icon-custom-sort" />
           <IconMenu
+            className={styles.iconMenu}
             iconButtonElement={
               <IconButton touch={true} onTouchTap={this.handleToggle.bind(this)}>
                 <Hamburger />
               </IconButton>
             }
           >
-          <MenuItem 
+          <MenuItem
             onTouchTap={this.handleClose.bind(this)}
             onClick={()=>this.context.router.push('/')}
             primaryText="Home" />
-          <MenuItem 
+          <MenuItem
             onTouchTap={this.handleClose.bind(this)}
             onClick={()=>this.context.router.push('/app')}
             primaryText="Workout Groups" />
-          <MenuItem 
+          <MenuItem
             onTouchTap={this.handleClose.bind(this)}
             onClick={()=>this.context.router.push('/blog')}
             primaryText="Blog" />
-          <MenuItem 
+          <MenuItem
             onTouchTap={this.handleClose.bind(this)}
             onClick={()=>this.context.router.push('/about-us')}
             primaryText="About Us" />
-          <MenuItem 
+          <MenuItem
             onTouchTap={this.handleClose.bind(this)}
             onClick={this.startLogin}
             primaryText="Log in"
             leftIcon={<PersonAdd />} />
           </IconMenu>
-          <ToolbarTitle style={inlineStyles.title} text="givefit" 
+          <ToolbarTitle style={inlineStyles.title} text="givefit"
             onClick={()=>this.context.router.push('/')}
           />
         </ToolbarGroup>
-        <ToolbarGroup>
+        <ToolbarGroup className={styles.onlyLargeScreens}>
           <FlatButton label="Workouts" onClick={()=>this.context.router.push('/app')}/>
-          <FlatButton label="Blog" />
-          <FlatButton label="About Us" />
+          <FlatButton label="Blog" onClick={()=>this.context.router.push('/blog')} />
+          <FlatButton label="About Us" onClick={()=>this.context.router.push('/about-us')}  />
           <FontIcon className="muidocs-icon-custom-sort" />
           <ToolbarSeparator />
           <RaisedButton label="Login" primary={true} onClick={this.startLogin}/>

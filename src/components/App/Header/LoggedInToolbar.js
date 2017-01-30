@@ -24,7 +24,7 @@ const inlineStyles = {
     cursor: 'pointer',
   },
   avatar: {
-    margin: '10px 10px 10px 10px',  
+    margin: '10px 10px 10px 10px',
     cursor: 'pointer'
   }
 };
@@ -53,7 +53,7 @@ class LoggedInToolbar extends Component {
   handleClose() {
     this.setState({open: false})
   }
-  
+
   handleTouchTap(){
     this.context.router.push('/')
   }
@@ -67,7 +67,7 @@ class LoggedInToolbar extends Component {
     hashHistory.push('/app-logged-in')
   }
   render() {
-    console.log('LoggedInToolbar this', this)
+    //console.log('LoggedInToolbar this', this)
     const { profile } = this.props
     return (
       <div>
@@ -75,51 +75,52 @@ class LoggedInToolbar extends Component {
         <ToolbarGroup>
           <FontIcon className="muidocs-icon-custom-sort" />
           <IconMenu
+            className={styles.iconMenu}
             iconButtonElement={
               <IconButton touch={true} onTouchTap={this.handleToggle.bind(this)}>
                 <Hamburger />
               </IconButton>
             }
           >
-          <MenuItem 
+          <MenuItem
             onTouchTap={this.handleClose.bind(this)}
             onClick={()=>this.context.router.push('/')}
             primaryText="Home" />
-          <MenuItem 
+          <MenuItem
             onTouchTap={this.handleClose.bind(this)}
             onClick={()=>this.context.router.push('/app-logged-in')}
             primaryText="Workout Locations" />
-          <MenuItem 
+          <MenuItem
             onTouchTap={this.handleClose.bind(this)}
             onClick={()=>this.context.router.push('/blog')}
             primaryText="Blog" />
-          <MenuItem 
+          <MenuItem
             onTouchTap={this.handleClose.bind(this)}
             onClick={()=>this.context.router.push('/about-us')}
             primaryText="About Us" />
-          <MenuItem 
+          <MenuItem
             onTouchTap={this.handleClose.bind(this)}
             primaryText="Add a Group"
             leftIcon={<GroupAdd />} />
           </IconMenu>
-          <ToolbarTitle style={inlineStyles.title} text="givefit" 
+          <ToolbarTitle style={inlineStyles.title} text="givefit"
             onClick={()=>this.context.router.push('/home-logged-in')}
           />
         </ToolbarGroup>
-        <ToolbarGroup>
-          <FlatButton label="Workout Groups" onClick={()=>this.context.router.push('/app-logged-in')}/>
-          <FlatButton label="Blog" />
-          <FlatButton label="About Us" />
-          <FontIcon className="muidocs-icon-custom-sort" />
+        <ToolbarGroup >
+          <FlatButton className={styles.onlyLargeScreens} label="Workout Groups" onClick={()=>this.context.router.push('/app-logged-in')}/>
+          <FlatButton className={styles.onlyLargeScreens} label="Blog" />
+          <FlatButton className={styles.onlyLargeScreens} label="About Us" />
+          <FontIcon className={styles.onlyLargeScreens} className="muidocs-icon-custom-sort" />
           <ToolbarSeparator />
           {
             this.props.profile ?
-            <Avatar 
-              style={inlineStyles.avatar} 
+            <Avatar
+              style={inlineStyles.avatar}
               src={profile.picture}
-              onClick={()=>this.context.router.push('/profile')} 
-            /> : null    
-          }      
+              onClick={()=>this.context.router.push('/profile')}
+            /> : null
+          }
           <IconMenu
             iconButtonElement={
               <IconButton touch={true}>
@@ -127,12 +128,12 @@ class LoggedInToolbar extends Component {
               </IconButton>
             }
           >
-            <MenuItem 
+            <MenuItem
               primaryText="Profile"
               onTouchTap={this.handleClose.bind(this)}
-              onClick={()=>this.context.router.push('/profile')} 
+              onClick={()=>this.context.router.push('/profile')}
               />
-            <MenuItem 
+            <MenuItem
               primaryText="Logout"
               onClick={this.logout.bind(this)} />
           </IconMenu>
