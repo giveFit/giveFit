@@ -78,7 +78,7 @@ class GroupCreator extends Component {
           lng: this.state.lng,
           image: this.props.profile.picture,
           avatar: this.props.profile.picture,
-          userGroupsId: scapholdUser
+          userGroupsId: this.props.loggedInUser ? this.props.loggedInUser.id : undefined
         }).then(({ data }) => {
           console.log("data", data)
           this.setState({
