@@ -40,6 +40,7 @@ const requireAuth = (nextState, replace) => {
   }
 }
 const client = makeApolloClient(apolloConfig.scapholdUrl);
+console.log('client', client);
 //Wrap the app with our theme provider
 const Application = () => (
   <MuiThemeProvider muiTheme={muiTheme}>

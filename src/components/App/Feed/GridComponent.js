@@ -147,6 +147,8 @@ class GridComponent extends Component {
       parksAndGyms.forEach(s => {
         /*const place_id = s.place_id*/
         //console.log('each spot', s)
+        /*need to iterate over workouts, matching them to the place_id, adding 
+        them as an array to the placeById*/
         /*const workout = workouts.find(w => w.placeId == place_id)*/
         placeById[s.place_id] = {
           /*comments: workout.comments,*/
@@ -165,21 +167,6 @@ class GridComponent extends Component {
         }
       })
 
-      props.workouts.forEach(s => {
-        //console.log('s workout props', s)
-        placeById[s.node.id] = {
-          /*comments: workout.comments,*/
-          googleData: {
-            title: s.node.title,
-            position : {
-                lat : parseFloat(s.node.lat),
-                lng : parseFloat(s.node.lng)
-            },            
-            photos: s.node.image,
-            types: 'park'
-          }
-        }
-      })
       //list with google data
       const gListView = parks.length ? <div
           style={styles.gridList} 
