@@ -151,6 +151,7 @@ class GridComponent extends Component {
         placeById[s.place_id] = {
           /*comments: workout.comments,*/
           googleData: {
+            parkId: s.place_id,
             title: s.name,
             position : {
                 lat : s.geometry.location.lat(),

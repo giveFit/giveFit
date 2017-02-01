@@ -70,52 +70,17 @@ class AppLoggedIn extends Component {
 	constructor(props, context) {
 		console.log('AppLoggedIn props', props)
 	    super(props, context)
-
 	    this.state = {
 	      profile: null,
 	      token: null,
 	      user: null,
 	      loggedInToolbar: false,
 	    };
-	    
-	    /*this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain);
-	    this.onAuthenticated = this.onAuthenticated.bind(this);  
-    	this.auth.on('authenticated', this.onAuthenticated);
-    	this.auth.on('error', console.log);*/
-
+	    this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain);
   	}
-  	/*onAuthenticated(auth0Profile, tokenPayload) {
-	    console.log('onAuthenticated props', this.props)
-	    console.log("auth0Profile", auth0Profile)
-	    console.log("tokenPayload", tokenPayload)
-	    const identity = auth0Profile.identities[0];
-	    const that = this;
-	    //debugger;
-	    this.props.loginUser({
-	      identity: identity,
-	      access_token: tokenPayload.accessToken,
-	    }).then(res => {
-	      console.log('authentication response', res)
-	      const scapholdUserId = res.data.loginUserWithAuth0Lock.user.id;
-	      const profilePicture = auth0Profile.picture;
-	      const nickname = auth0Profile.nickname;
-	      // Cause a UI update :)
-	      console.log('scapholdUserId', scapholdUserId)
-	      //this.setState({userId: scapholdUserId});
-	      localStorage.setItem('scapholdUserId', JSON.stringify(scapholdUserId))
-
-	      return that.props.updateUser({
-	        id: scapholdUserId,
-	        picture: profilePicture,
-	        nickname: nickname
-	      });
-
-	    }).catch(err => {
-	      console.log(`Error updating user: ${err.message}`);
-	    });
-	}*/
 	render() {
-		/*const profile = this.auth.getProfile();*/
+		//Grab profile from localStorage via auth service
+		const profile = this.auth.getProfile();
 		return (
 			<div> 
 				<div>
@@ -125,7 +90,7 @@ class AppLoggedIn extends Component {
 						});
 						return null;
 					}}
-					profile={this.props.loggedinUser ? this.props.loggedInUser.id : undefined}
+					profile={profile}
 					workouts={(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ? this.props.data.viewer.allWorkoutGroups.edges : []}
 					markers={(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ?  this.props.data.viewer.allWorkoutGroups.edges.map((i,index)=>({
 						//title : i.node.title,

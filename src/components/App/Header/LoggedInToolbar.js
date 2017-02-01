@@ -78,10 +78,15 @@ class LoggedInToolbar extends Component {
     this.startLogin = this.startLogin.bind(this);
     this.onAuthenticated = this.onAuthenticated.bind(this);  
     this.auth.on('authenticated', this.onAuthenticated);
+    this.onLoggedOut = this.onLoggedOut.bind(this);
+    this.auth.on('loggedOut', this.onLoggedOut);
     this.auth.on('error', console.log);
   }
   startLogin() {
     this.auth.login();
+  }
+  onLoggedOut(){
+    this.setState({profile: null})
   }
   onAuthenticated(auth0Profile, tokenPayload) {
       console.log('onAuthenticated props', this.props)
@@ -126,21 +131,21 @@ class LoggedInToolbar extends Component {
     this.setState({open: false})
   }
   
-  handleTouchTap(){
+  /*handleTouchTap(){
     this.context.router.push('/')
-  }
+  }*/
 
   logout(){
     console.log('did the logout')
     this.auth.logout()
-    this.context.router.push('/');
+    //this.context.router.push('/');
   }
   goToWorkouts(){
     hashHistory.push('/app-logged-in')
   }
-  componentDidMount(){
+  /*componentDidMount(){
     var profile = this.auth.getProfile();
-  }
+  }*/
   render() {
     console.log('LoggedInToolbar this', this)
     console.log('LoggedInToolbar profile', this.state.profile)

@@ -48,6 +48,8 @@ export default class AuthService extends EventEmitter {
 
   logout() {
     localStorage.clear();
+    //emit an event to clear profile from state
+    this.emit('loggedOut');
   }
 
   setProfile(profile) {

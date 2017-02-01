@@ -45,7 +45,7 @@ class GroupCreator extends Component {
     this._handleAutoComplete = this._handleAutoComplete.bind(this);
     this.addImage = this.addImage.bind(this);
     this.submitWorkoutGroup = this.submitWorkoutGroup.bind(this);
-    //this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain);
+    this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain);
   };
   handleOpen(){
     console.log('handling open')
@@ -86,9 +86,15 @@ class GroupCreator extends Component {
           });
         }).catch((error) => {
           console.error('error in form', error)
+          this.setState({
+            open: false
+          });
         });
       }else{
-            alert("Geocode was not successful for the following reason: " + status);
+            console.log('nah', status)
+            this.setState({
+            open: false
+          });
         }
     })
     console.log('closed');
@@ -149,54 +155,70 @@ class GroupCreator extends Component {
         onTouchTap={this.submitWorkoutGroup.bind(this)}
       />,
     ];
-
     return (
       //Need to improve styling a lot here
       <div>
+        <div>
         <RaisedButton 
           label="Create a workout group" 
           labelPosition="before"
           onTouchTap={this.handleOpen.bind(this)}
           icon={<GroupAdd />}
         />
-        <Dialog
-          title="Add your own awesome group"
-          actions={actions}
-          modal={false}
-          open={this.state.open}
-          //onRequestClose={this.submitWorkoutGroup.bind(this)}
-        >
-         <Card>
-            <ul className={inlineStyles.listStyle}>
-              <li>
-                <TextField 
-                  hintText="Group Title"
-                  id="autocomplete"
-                  name="groupTitle"
-                  onChange={this._handleTitleChange}
+        </div>
+        {
+          !this.auth.loggedIn() ?
+            <div>
+              <Dialog
+                title="Please Login to Create a Workout Group"
+                actions={actions}
+                modal={false}
+                open={this.state.open}
+                onRequestClose={this.submitWorkoutGroup.bind(this)}
+              >
+              </Dialog>
+            </div> :
+            <div>
+              <Dialog
+                title="Add your own awesome group"
+                actions={actions}
+                modal={false}
+                open={this.state.open}
+                onRequestClose={this.submitWorkoutGroup.bind(this)}
+              >
+               <Card>
+                  <ul className={inlineStyles.listStyle}>
+                    <li>
+                      <TextField 
+                        hintText="Group Title"
+                        id="autocomplete"
+                        name="groupTitle"
+                        onChange={this._handleTitleChange}
+                      />
+                    </li>
+                    <li>
+                      <ReactFilepicker apikey={configKeys.FILESTACK_API} onTouchTap={this.addImage}/>
+                    </li>
+                    <li>
+                      <TextField 
+                        hintText="Location"
+                        id="autocomplete"
+                        onChange={this._handleLocationChange}
+                        //onTouchTap={this._handleAutoComplete}
+                      />
+                    </li>
+                </ul>
+                {/*<RaisedButton 
+                  label="Add an Image"
+                  type="filepicker"
+                  onTouchTap={this.addImage.bind(this)}
+                  icon={<AddAPhoto/>}
                 />
-              </li>
-              <li>
-                <ReactFilepicker apikey={configKeys.FILESTACK_API} onTouchTap={this.addImage}/>
-              </li>
-              <li>
-                <TextField 
-                  hintText="Location"
-                  id="autocomplete"
-                  onChange={this._handleLocationChange}
-                  //onTouchTap={this._handleAutoComplete}
-                />
-              </li>
-          </ul>
-          {/*<RaisedButton 
-            label="Add an Image"
-            type="filepicker"
-            onTouchTap={this.addImage.bind(this)}
-            icon={<AddAPhoto/>}
-          />
-          <input type="filepicker" data-fp-apikey="AqoZLyjES7m7e3lO4h8ZFz" onChange={alert(event.fpfile.url)}/>*/}
-         </Card>
-        </Dialog>
+                <input type="filepicker" data-fp-apikey="AqoZLyjES7m7e3lO4h8ZFz" onChange={alert(event.fpfile.url)}/>*/}
+               </Card>
+              </Dialog>
+            </div> 
+          }
       </div>
     );
   }
