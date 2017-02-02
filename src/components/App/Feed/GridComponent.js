@@ -14,6 +14,29 @@ import {searchNearby} from 'utils/googleApiHelpers';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 
+const GET_WORKOUTS = gql `
+  query GetThroughViewer{
+    viewer {
+      allWorkouts {
+        edges {
+          node {
+            parkId
+                title
+                date
+                description
+                recurring
+                Workout{
+                  nickname
+                  username
+                  picture
+                }
+          }
+        }
+      }
+  }
+}
+`
+
 const height = window.innerHeight - 64;
 
 const styles = {
@@ -74,7 +97,7 @@ class GridComponent extends Component {
     //baltimore parks search params
     const parks = {
       location: { lat: 39.2904, lng: -76.6122 },
-      radius: 5000,
+      radius: 10000,
       type: 'park'
     }
     //baltimore gym search params
@@ -140,17 +163,23 @@ class GridComponent extends Component {
       this.setState({activeIndex : index});
     }
     render(){
+      console.log("GridComponent this", this)
       const {props} = this;
       const {activeIndex, parks, parksAndGyms, markers} = this.state;
       //Build placeById object
+      const workouts = props.data.viewer ? props.data.viewer.allWorkouts.edges : [];
+      console.log('workouts', workouts);
       const placeById = {};
       parksAndGyms.forEach(s => {
         /*const place_id = s.place_id*/
         //console.log('each spot', s)
+        /*need to iterate over workouts, matching them to the place_id, adding 
+        them as an array to the placeById*/
         /*const workout = workouts.find(w => w.placeId == place_id)*/
         placeById[s.place_id] = {
           /*comments: workout.comments,*/
           googleData: {
+            parkId: s.place_id,
             title: s.name,
             position : {
                 lat : s.geometry.location.lat(),
@@ -164,25 +193,10 @@ class GridComponent extends Component {
         }
       })
 
-      props.workouts.forEach(s => {
-        //console.log('s workout props', s)
-        placeById[s.node.id] = {
-          /*comments: workout.comments,*/
-          googleData: {
-            title: s.node.title,
-            position : {
-                lat : parseFloat(s.node.lat),
-                lng : parseFloat(s.node.lng)
-            },            
-            photos: s.node.image,
-            types: 'park'
-          }
-        }
-      })
       //list with google data
       const gListView = parks.length ? <div
           style={styles.gridList} 
-          > <DayPicker profile={props.profile} geocoder={this.geocoder}/> {Object.keys(placeById).map((item, index) => (
+          > <DayPicker geocoder={this.geocoder}/> {Object.keys(placeById).map((item, index) => (
                <div key={index} style={styles.workout}> {!item ||
                 (placeById[item].googleData.types.indexOf('park') !== -1 ? <ParkFeed
                   active={activeIndex===index}
@@ -237,54 +251,9 @@ class GridComponent extends Component {
     }
 }
 
-//export default GridComponent;
-const LOGGED_IN_USER = gql`
-  query LoggedInUser {
-    viewer {
-      user {
-        id
-        username
-        nickname
-      }
-    }
-  }
-`;
-
-//Get some WorkoutGroups
-const GET_THROUGH_VIEWER = gql`
-  query GetThroughViewer($first: Int) {
-    viewer {
-      allWorkoutGroups(first: $first) {
-        edges {
-          node {
-          id
-          image
-          title
-          lat
-          lng
-          avatar
-          contentSnippet
-          }
-        }
-      }
-  }
-}
-`;
-
-//How many WorkoutGroups to return
-const FIRST = 8;
 
 const GridComponentWithData =  compose(
-  graphql(GET_THROUGH_VIEWER, {
-    options: (props) => ({  
-      variables: { first : FIRST } 
-    }),
-  }),
-    graphql(LOGGED_IN_USER, {
-      props: ({ data }) =>  ({
-        loggedInUser: data.viewer ? data.viewer.user : null
-      })
-    })
+  graphql(GET_WORKOUTS)
 )(GridComponent);
 
 export default GridComponentWithData;

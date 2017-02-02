@@ -16,7 +16,7 @@ import Comment from 'material-ui/svg-icons/communication/comment';
 import {blue500, red500, greenA200, white} from 'material-ui/styles/colors';
 
 //Local components
-import WorkoutCreator from './WorkoutCreator';
+import WorkoutCreatorWithData from './WorkoutCreator';
 import WorkoutPost from './WorkoutPost';
 
 //styles module
@@ -33,6 +33,7 @@ const inlineStyles = {
 
 class ParkFeed extends Component{
   constructor(props, context) {
+    console.log('ParkFeed props', props)
     super(props, context);
     this.state = {
       expanded: false
@@ -100,19 +101,16 @@ class ParkFeed extends Component{
         {props.data.googleData.photos ? <img src={props.data.googleData.photos} className={styles.img}/> : <img src="http://lorempixel.com/400/200" />}
       </CardMedia>
       <CardText>
-      {this.state.expanded ? null : <div>Next Workout: <WorkoutPost /></div>}
+      {this.state.expanded ? null : <div>Next Activity: <WorkoutPost /></div>}
       </CardText>
       <Card expanded={this.state.expanded}>
       <CardText expandable={true}>
       <Tabs >
           <Tab label="Workouts">
            <div>
-            <WorkoutPost />
-            <WorkoutPost />
-            <WorkoutPost />
-            <WorkoutPost />
-            <WorkoutPost />
-            <WorkoutCreator /> 
+            <WorkoutCreatorWithData data={this.props.data}/> 
+            
+            
            </div>
           </Tab>
           <Tab label="Comments" >

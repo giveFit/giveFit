@@ -62,7 +62,7 @@ class GroupCreator extends Component {
     }
     console.log('submitWorkoutGroup props', this.props)
     const address = this.state.location;
-    const loggedInUser = this.auth.getLoggedInUser();
+    const scapholdUser = this.auth.getLoggedInUser();
     this.props.geocoder.geocode({'address' : address}, (results, status) => {
       if(status == google.maps.GeocoderStatus.OK){
         console.log('geocoded results', results)
@@ -78,7 +78,7 @@ class GroupCreator extends Component {
           lng: this.state.lng,
           image: this.props.profile.picture,
           avatar: this.props.profile.picture,
-          userGroupsId: loggedInUser
+          userGroupsId: this.props.loggedInUser ? this.props.loggedInUser.id : undefined
         }).then(({ data }) => {
           console.log("data", data)
           this.setState({
@@ -86,9 +86,15 @@ class GroupCreator extends Component {
           });
         }).catch((error) => {
           console.error('error in form', error)
+          this.setState({
+            open: false
+          });
         });
       }else{
-            alert("Geocode was not successful for the following reason: " + status);
+            console.log('nah', status)
+            this.setState({
+            open: false
+          });
         }
     })
     console.log('closed');
@@ -149,54 +155,70 @@ class GroupCreator extends Component {
         onTouchTap={this.submitWorkoutGroup.bind(this)}
       />,
     ];
-
     return (
       //Need to improve styling a lot here
       <div>
+        <div>
         <RaisedButton 
           label="Create a workout group" 
           labelPosition="before"
           onTouchTap={this.handleOpen.bind(this)}
           icon={<GroupAdd />}
         />
-        <Dialog
-          title="Add your own awesome group"
-          actions={actions}
-          modal={false}
-          open={this.state.open}
-          //onRequestClose={this.submitWorkoutGroup.bind(this)}
-        >
-         <Card>
-            <ul className={inlineStyles.listStyle}>
-              <li>
-                <TextField 
-                  hintText="Group Title"
-                  id="autocomplete"
-                  name="groupTitle"
-                  onChange={this._handleTitleChange}
+        </div>
+        {
+          !this.auth.loggedIn() ?
+            <div>
+              <Dialog
+                title="Please Login to Create a Workout Group"
+                actions={actions}
+                modal={false}
+                open={this.state.open}
+                onRequestClose={this.submitWorkoutGroup.bind(this)}
+              >
+              </Dialog>
+            </div> :
+            <div>
+              <Dialog
+                title="Add your own awesome group"
+                actions={actions}
+                modal={false}
+                open={this.state.open}
+                onRequestClose={this.submitWorkoutGroup.bind(this)}
+              >
+               <Card>
+                  <ul className={inlineStyles.listStyle}>
+                    <li>
+                      <TextField 
+                        hintText="Group Title"
+                        id="autocomplete"
+                        name="groupTitle"
+                        onChange={this._handleTitleChange}
+                      />
+                    </li>
+                    <li>
+                      <ReactFilepicker apikey={configKeys.FILESTACK_API} onTouchTap={this.addImage}/>
+                    </li>
+                    <li>
+                      <TextField 
+                        hintText="Location"
+                        id="autocomplete"
+                        onChange={this._handleLocationChange}
+                        //onTouchTap={this._handleAutoComplete}
+                      />
+                    </li>
+                </ul>
+                {/*<RaisedButton 
+                  label="Add an Image"
+                  type="filepicker"
+                  onTouchTap={this.addImage.bind(this)}
+                  icon={<AddAPhoto/>}
                 />
-              </li>
-              <li>
-                <ReactFilepicker apikey={configKeys.FILESTACK_API} onTouchTap={this.addImage}/>
-              </li>
-              <li>
-                <TextField 
-                  hintText="Location"
-                  id="autocomplete"
-                  onChange={this._handleLocationChange}
-                  //onTouchTap={this._handleAutoComplete}
-                />
-              </li>
-          </ul>
-          {/*<RaisedButton 
-            label="Add an Image"
-            type="filepicker"
-            onTouchTap={this.addImage.bind(this)}
-            icon={<AddAPhoto/>}
-          />
-          <input type="filepicker" data-fp-apikey="AqoZLyjES7m7e3lO4h8ZFz" onChange={alert(event.fpfile.url)}/>*/}
-         </Card>
-        </Dialog>
+                <input type="filepicker" data-fp-apikey="AqoZLyjES7m7e3lO4h8ZFz" onChange={alert(event.fpfile.url)}/>*/}
+               </Card>
+              </Dialog>
+            </div> 
+          }
       </div>
     );
   }
@@ -207,14 +229,16 @@ class GroupCreator extends Component {
 };*/
 
 //Data operations begin below
-const LOGGED_IN_USER = gql`
-  query LoggedInUser {
-    viewer {
-      user {
-        id
-      }
+const LOGGEDIN_USER_QUERY = gql`
+query LoggedInUser {
+  viewer {
+    user {
+      id
+      username
+      nickname
     }
   }
+}
 `;
 
 //I want to tie the workout group to a user
@@ -265,9 +289,9 @@ const GroupCreatorWithData = compose(
       variables: { first : FIRST } 
     }),
   }),
-  graphql(LOGGED_IN_USER, {
+  graphql(LOGGEDIN_USER_QUERY, {
     props: ({ data }) => ({
-      scapholdViewerUser: data.viewer ? data.viewer.user : null
+      loggedInUser: data.viewer ? data.viewer.user : null
     })
   }),
   graphql(CREATE_WORKOUT_GROUP, {
