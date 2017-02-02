@@ -109,8 +109,8 @@ class ParkFeed extends Component{
           <Tab label="Workouts">
            <div>
             <WorkoutCreatorWithData data={this.props.data}/> 
-            <WorkoutPost />
-            <WorkoutPost />
+            
+            
            </div>
           </Tab>
           <Tab label="Comments" >

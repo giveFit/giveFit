@@ -14,6 +14,29 @@ import {searchNearby} from 'utils/googleApiHelpers';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 
+const GET_WORKOUTS = gql `
+  query GetThroughViewer{
+    viewer {
+      allWorkouts {
+        edges {
+          node {
+            parkId
+                title
+                date
+                description
+                recurring
+                Workout{
+                  nickname
+                  username
+                  picture
+                }
+          }
+        }
+      }
+  }
+}
+`
+
 const height = window.innerHeight - 64;
 
 const styles = {
@@ -140,6 +163,7 @@ class GridComponent extends Component {
       this.setState({activeIndex : index});
     }
     render(){
+      console.log("GridComponent this", this)
       const {props} = this;
       const {activeIndex, parks, parksAndGyms, markers} = this.state;
       //Build placeById object
@@ -170,7 +194,7 @@ class GridComponent extends Component {
       //list with google data
       const gListView = parks.length ? <div
           style={styles.gridList} 
-          > <DayPicker profile={props.profile} geocoder={this.geocoder}/> {Object.keys(placeById).map((item, index) => (
+          > <DayPicker geocoder={this.geocoder}/> {Object.keys(placeById).map((item, index) => (
                <div key={index} style={styles.workout}> {!item ||
                 (placeById[item].googleData.types.indexOf('park') !== -1 ? <ParkFeed
                   active={activeIndex===index}
@@ -225,54 +249,9 @@ class GridComponent extends Component {
     }
 }
 
-//export default GridComponent;
-const LOGGED_IN_USER = gql`
-  query LoggedInUser {
-    viewer {
-      user {
-        id
-        username
-        nickname
-      }
-    }
-  }
-`;
-
-//Get some WorkoutGroups
-const GET_THROUGH_VIEWER = gql`
-  query GetThroughViewer($first: Int) {
-    viewer {
-      allWorkoutGroups(first: $first) {
-        edges {
-          node {
-          id
-          image
-          title
-          lat
-          lng
-          avatar
-          contentSnippet
-          }
-        }
-      }
-  }
-}
-`;
-
-//How many WorkoutGroups to return
-const FIRST = 8;
 
 const GridComponentWithData =  compose(
-  graphql(GET_THROUGH_VIEWER, {
-    options: (props) => ({  
-      variables: { first : FIRST } 
-    }),
-  })/*,
-    graphql(LOGGED_IN_USER, {
-      props: ({ data }) =>  ({
-        loggedInUser: data.viewer ? data.viewer.user : null
-      })
-    })*/
+  graphql(GET_WORKOUTS)
 )(GridComponent);
 
 export default GridComponentWithData;

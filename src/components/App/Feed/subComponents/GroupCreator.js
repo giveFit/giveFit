@@ -229,7 +229,7 @@ class GroupCreator extends Component {
 };*/
 
 //Data operations begin below
-const LoggedInUserQuery = gql`
+const LOGGEDIN_USER_QUERY = gql`
 query LoggedInUser {
   viewer {
     user {
@@ -289,7 +289,7 @@ const GroupCreatorWithData = compose(
       variables: { first : FIRST } 
     }),
   }),
-  graphql(LoggedInUserQuery, {
+  graphql(LOGGEDIN_USER_QUERY, {
     props: ({ data }) => ({
       loggedInUser: data.viewer ? data.viewer.user : null
     })

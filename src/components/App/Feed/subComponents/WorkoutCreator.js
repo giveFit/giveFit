@@ -19,7 +19,23 @@ const CREATE_WORKOUT = gql`
         date,
         description,
         recurring,
-        parkId
+        parkId,
+        Workout{
+          nickname,
+          username,
+          picture
+        }
+      }
+    }
+  }
+`
+const LOGGEDIN_USER_QUERY = gql`
+  query LoggedInUser{
+    viewer{
+      user{
+        id
+        username
+        nickname
       }
     }
   }
@@ -65,6 +81,8 @@ class WorkoutCreator extends Component {
       date: this.state.date,
       recurring: this.state.recur,
       parkId: this.props.data.googleData.parkId ? this.props.data.googleData.parkId : undefined,
+      //workoutId is the id of the loggedInUser, allowing us to make a connection in our data graph
+      workoutId: this.props.loggedInUser ? this.props.loggedInUser.id : undefined
     }).then(({data}) => {
       console.log('submitWorkout data', data)
       that.setState({
@@ -169,6 +187,11 @@ const WorkoutCreatorWithData = compose(
     props: ({ mutate }) => ({
       createWorkout: (input) => mutate({ variables: { input: input } })
     }),
+  }),
+  graphql(LOGGEDIN_USER_QUERY, {
+    props: ({ data }) => ({
+       loggedInUser: data.viewer ? data.viewer.user : null 
+    })
   }),
 )(WorkoutCreator);
 

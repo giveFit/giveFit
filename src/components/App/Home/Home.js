@@ -32,10 +32,6 @@ export class Home extends React.Component {
     const profile = this.auth.getProfile();
     return (
       <div className={styles.root}>
-        <LoggedInToolbar 
-            auth={this.props}
-            profile={profile}
-          />
         <Card>
         <CardText>
           <p>Welcome, {profile.given_name}!</p>
