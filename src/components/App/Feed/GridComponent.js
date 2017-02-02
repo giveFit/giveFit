@@ -97,7 +97,7 @@ class GridComponent extends Component {
     //baltimore parks search params
     const parks = {
       location: { lat: 39.2904, lng: -76.6122 },
-      radius: 5000,
+      radius: 10000,
       type: 'park'
     }
     //baltimore gym search params
@@ -167,6 +167,8 @@ class GridComponent extends Component {
       const {props} = this;
       const {activeIndex, parks, parksAndGyms, markers} = this.state;
       //Build placeById object
+      const workouts = props.data.viewer ? props.data.viewer.allWorkouts.edges : [];
+      console.log('workouts', workouts);
       const placeById = {};
       parksAndGyms.forEach(s => {
         /*const place_id = s.place_id*/
