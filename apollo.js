@@ -14,13 +14,13 @@ function makeApolloClient(scapholdUrl) {
     applyMiddleware(req, next) {
       // Easy way to add authorization headers for every request
       if (!req.options.headers) {
-        console.log('Create the header object if needed.')
+        //console.log('Create the header object if needed.')
         req.options.headers = {};  // Create the header object if needed.
       }
       if (localStorage.getItem('scaphold_user_token')) {
         // assumes we have logged in and stored the returned user token in local storage
         req.options.headers.Authorization = `Bearer ${localStorage.getItem('scaphold_user_token')}`;
-        console.log('assumes we have logged in and stored the returned user token in local storage', req.options.headers.Authorization)
+        //console.log('assumes we have logged in and stored the returned user token in local storage', req.options.headers.Authorization)
       }
       next();
     },

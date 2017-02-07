@@ -14,29 +14,6 @@ import {searchNearby} from 'utils/googleApiHelpers';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 
-const GET_WORKOUTS = gql `
-  query GetThroughViewer{
-    viewer {
-      allWorkouts {
-        edges {
-          node {
-            parkId
-                title
-                date
-                description
-                recurring
-                Workout{
-                  nickname
-                  username
-                  picture
-                }
-          }
-        }
-      }
-  }
-}
-`
-
 const height = window.innerHeight - 64;
 
 const styles = {
@@ -109,8 +86,8 @@ class GridComponent extends Component {
     //search and add parks to state
     searchNearby(this.googleMaps, div, parks)
       .then((results, pagination) => {
-        console.log('searchNearby parks', results)
-        console.log('searchNearby pagination', pagination)
+        //console.log('searchNearby parks', results)
+        //console.log('searchNearby pagination', pagination)
         this.setState({
           parks: results,
           pagination
@@ -121,8 +98,7 @@ class GridComponent extends Component {
     //search and add gyms to state  
     searchNearby(this.googleMaps, div, gyms)
       .then((results, pagination) => {
-        console.log('searchNearby gyms', results)
-        console.log('searchNearby pagination', pagination)
+        //console.log('searchNearby gyms', results)
         this.setState({
           parksAndGyms: this.state.parks.concat(results),
           pagination
@@ -167,15 +143,17 @@ class GridComponent extends Component {
       const {props} = this;
       const {activeIndex, parks, parksAndGyms, markers} = this.state;
       //Build placeById object
-      const workouts = props.data.viewer ? props.data.viewer.allWorkouts.edges : [];
-      console.log('workouts', workouts);
+      console.log('GridComponent this.props.workouts', this.props.workouts)
       const placeById = {};
       parksAndGyms.forEach(s => {
         /*const place_id = s.place_id*/
         //console.log('each spot', s)
         /*need to iterate over workouts, matching them to the place_id, adding 
         them as an array to the placeById*/
-        /*const workout = workouts.find(w => w.placeId == place_id)*/
+        const filteredWorkouts = this.props.workouts.filter((w)=> {
+          //console.log('filteredWorkouts w', w);
+          return s.place_id == w.node.parkId;
+        })
         placeById[s.place_id] = {
           /*comments: workout.comments,*/
           googleData: {
@@ -188,24 +166,26 @@ class GridComponent extends Component {
             rating: s.rating,
             photos: s.photos ? s.photos[0].getUrl({'maxWidth': 500, 'maxHeight': 750}) : null,
             vicinity: s.vicinity,
-            types: s.types
+            types: s.types,
+            workouts: filteredWorkouts
           }
         }
       })
 
       //list with google data
-      const gListView = parks.length ? <div
-          style={styles.gridList} 
-          > <DayPicker geocoder={this.geocoder}/> {Object.keys(placeById).map((item, index) => (
-               <div key={index} style={styles.workout}> {!item ||
-                (placeById[item].googleData.types.indexOf('park') !== -1 ? <ParkFeed
-                  active={activeIndex===index}
-                  data={placeById[item]}
-               /> : <GymFeed
-                  active={activeIndex===index}
-                  data={placeById[item]}
-               />)} </div>
-          ))} 
+      const gListView = parks.length ? 
+          <div style={styles.gridList}> 
+            <DayPicker geocoder={this.geocoder}/> 
+              {Object.keys(placeById).map((item, index) => (
+                   <div key={index} style={styles.workout}> {!item ||
+                    (placeById[item].googleData.types.indexOf('park') !== -1 ? <ParkFeed
+                      active={activeIndex===index}
+                      data={placeById[item]}
+                   /> : <GymFeed
+                      active={activeIndex===index}
+                      data={placeById[item]}
+                   />)} </div>
+              ))} 
           </div> : <Card>
               <CircularProgress size={80} />
       </Card>
@@ -251,11 +231,6 @@ class GridComponent extends Component {
     }
 }
 
-
-const GridComponentWithData =  compose(
-  graphql(GET_WORKOUTS)
-)(GridComponent);
-
-export default GridComponentWithData;
+export default GridComponent;
 
 

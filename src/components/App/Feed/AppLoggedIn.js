@@ -1,7 +1,7 @@
 import React, { Component, PropTypes as T } from 'react';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
-import GridComponentWithData from './GridComponent';
+import GridComponent from './GridComponent';
 import LoggedInToolbar from '../Header/LoggedInToolbar'
 import apolloConfig from '../../../../apolloConfig';
 //local utils
@@ -11,8 +11,24 @@ import MainToolbar from '../../Home/Header/MainToolbar'
 
 //Get some WorkoutGroups
 const GET_THROUGH_VIEWER = gql`
-	query GetThroughViewer($first: Int) {
+query GetThroughViewer($first: Int) {
   	viewer {
+		allWorkouts {
+		    edges {
+		        node {
+			          parkId
+			          title
+			          date
+			          description
+			          recurring
+			          Workout{
+			            nickname
+			            username
+			            picture
+			        }
+			    }
+		    }
+	    }
 	  	allWorkoutGroups(first: $first) {
 	  		edges {
 	  			node {
@@ -26,7 +42,7 @@ const GET_THROUGH_VIEWER = gql`
 	  			}
 	  		}
 	  	}
-	}
+    }
 }
 `;
 
@@ -49,9 +65,9 @@ class AppLoggedIn extends Component {
 		return (
 			<div> 
 				<div>
-					<GridComponentWithData 					
+					<GridComponent 					
 						workoutGroups={(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ? this.props.data.viewer.allWorkoutGroups.edges : []}
-						//workouts={(!this.props.data.loading && this.props.data.viewer.allWorkouts.edges) ? this.props.data.viewer.allWorkouts.edges : []}
+						workouts={(!this.props.data.loading && this.props.data.viewer.allWorkouts.edges) ? this.props.data.viewer.allWorkouts.edges : []}
 						markers={(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ?  this.props.data.viewer.allWorkoutGroups.edges.map((i,index)=>({
 							//title : i.node.title,
 							position : {
