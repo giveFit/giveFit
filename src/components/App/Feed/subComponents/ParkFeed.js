@@ -101,9 +101,12 @@ class ParkFeed extends Component{
       >
         {props.data.googleData.photos ? <img src={props.data.googleData.photos} className={styles.img}/> : <img src="http://lorempixel.com/400/200" />}
       </CardMedia>
+    {/*//checks to see if we have any workouts
+      if we do, look at each workout object, returning the first activity with a Workout node */}
       <CardText>
       {this.state.expanded ? null : 
         <div>Next Activity: 
+        
           {this.props.data.googleData.workouts.length ? 
             <div>
               <WorkoutPost data={this.props.data.googleData.workouts.find((w)=>{

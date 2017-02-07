@@ -14,29 +14,6 @@ import {searchNearby} from 'utils/googleApiHelpers';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 
-const GET_WORKOUTS = gql `
-  query GetThroughViewer{
-    viewer {
-      allWorkouts {
-        edges {
-          node {
-            parkId
-                title
-                date
-                description
-                recurring
-                Workout{
-                  nickname
-                  username
-                  picture
-                }
-          }
-        }
-      }
-  }
-}
-`
-
 const height = window.innerHeight - 64;
 
 const styles = {
@@ -166,15 +143,14 @@ class GridComponent extends Component {
       const {props} = this;
       const {activeIndex, parks, parksAndGyms, markers} = this.state;
       //Build placeById object
-      const workouts = props.data.viewer ? props.data.viewer.allWorkouts.edges : [];
-      console.log('GridComponent workouts', workouts);
+      console.log('GridComponent this.props.workouts', this.props.workouts)
       const placeById = {};
       parksAndGyms.forEach(s => {
         /*const place_id = s.place_id*/
         //console.log('each spot', s)
         /*need to iterate over workouts, matching them to the place_id, adding 
         them as an array to the placeById*/
-        const filteredWorkouts = workouts.filter((w)=> {
+        const filteredWorkouts = this.props.workouts.filter((w)=> {
           //console.log('filteredWorkouts w', w);
           return s.place_id == w.node.parkId;
         })
@@ -255,11 +231,6 @@ class GridComponent extends Component {
     }
 }
 
-
-const GridComponentWithData =  compose(
-  graphql(GET_WORKOUTS)
-)(GridComponent);
-
-export default GridComponentWithData;
+export default GridComponent;
 
 
