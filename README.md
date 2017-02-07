@@ -1,7 +1,7 @@
 # givefit
 givefit is the an open-source solution to the exclusive fitness community. We're bringing accessible healthy activities through open-source code, accessible, human-centered design, and partnering with likeminded indviduals.
 
-## contact [jake@givefit.net](<jake@givefit.net>) to become a collaborator
+## contact jake@givefit.net to become a collaborator
 
 
 This starter kit is powered by the GraphQL backend-as-a-service [scaphold.io](https://scaphold.io).
