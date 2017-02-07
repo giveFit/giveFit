@@ -172,10 +172,13 @@ class GridComponent extends Component {
       const placeById = {};
       parksAndGyms.forEach(s => {
         /*const place_id = s.place_id*/
-        //console.log('each spot', s)
+        console.log('each spot', s)
         /*need to iterate over workouts, matching them to the place_id, adding 
         them as an array to the placeById*/
-        /*const workout = workouts.find(w => w.placeId == place_id)*/
+        const filteredWorkouts = workouts.filter((w)=> {
+          console.log('filteredWorkouts w', w);
+          return s.place_id == w.node.parkId;
+        })
         placeById[s.place_id] = {
           /*comments: workout.comments,*/
           googleData: {
@@ -188,7 +191,8 @@ class GridComponent extends Component {
             rating: s.rating,
             photos: s.photos ? s.photos[0].getUrl({'maxWidth': 500, 'maxHeight': 750}) : null,
             vicinity: s.vicinity,
-            types: s.types
+            types: s.types,
+            workouts: filteredWorkouts
           }
         }
       })
