@@ -18,6 +18,7 @@ import {blue500, red500, greenA200, white} from 'material-ui/styles/colors';
 //Local components
 import WorkoutCreatorWithData from './WorkoutCreator';
 import WorkoutPost from './WorkoutPost';
+import WorkoutStream from './WorkoutStream';
 
 //styles module
 import styles from '../styles.module.css';
@@ -101,7 +102,14 @@ class ParkFeed extends Component{
         {props.data.googleData.photos ? <img src={props.data.googleData.photos} className={styles.img}/> : <img src="http://lorempixel.com/400/200" />}
       </CardMedia>
       <CardText>
-      {this.state.expanded ? null : <div>Next Activity: <WorkoutPost /></div>}
+      {this.state.expanded ? null : 
+        <div>Next Activity: 
+          {this.props.data.googleData.workouts.length ? 
+            <WorkoutPost data={this.props.data.googleData.workouts}/> 
+            : null
+          }
+          <WorkoutCreatorWithData data={this.props.data}/> </div>
+      }
       </CardText>
       <Card expanded={this.state.expanded}>
       <CardText expandable={true}>
@@ -109,8 +117,7 @@ class ParkFeed extends Component{
           <Tab label="Workouts">
            <div>
             <WorkoutCreatorWithData data={this.props.data}/> 
-            
-            
+            <WorkoutStream data={this.props.data}/>
            </div>
           </Tab>
           <Tab label="Comments" >

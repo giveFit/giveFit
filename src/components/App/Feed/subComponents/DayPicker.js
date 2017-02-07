@@ -33,10 +33,11 @@ class DayPicker extends Component{
 				    <Tab label="Sun" />
 				  </Tabs>
 				<div>
-					<GroupCreatorWithData 
+				Find a workout location near you, checkout upcoming activities, and event post your own!
+					{/*<GroupCreatorWithData 
 						geocoder={props.geocoder}
 						profile={props.profile}
-					/>
+					/>*/}
 				</div>
 			</div>
 		)

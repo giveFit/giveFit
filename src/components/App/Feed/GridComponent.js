@@ -109,8 +109,8 @@ class GridComponent extends Component {
     //search and add parks to state
     searchNearby(this.googleMaps, div, parks)
       .then((results, pagination) => {
-        console.log('searchNearby parks', results)
-        console.log('searchNearby pagination', pagination)
+        //console.log('searchNearby parks', results)
+        //console.log('searchNearby pagination', pagination)
         this.setState({
           parks: results,
           pagination
@@ -121,8 +121,7 @@ class GridComponent extends Component {
     //search and add gyms to state  
     searchNearby(this.googleMaps, div, gyms)
       .then((results, pagination) => {
-        console.log('searchNearby gyms', results)
-        console.log('searchNearby pagination', pagination)
+        //console.log('searchNearby gyms', results)
         this.setState({
           parksAndGyms: this.state.parks.concat(results),
           pagination
@@ -172,11 +171,11 @@ class GridComponent extends Component {
       const placeById = {};
       parksAndGyms.forEach(s => {
         /*const place_id = s.place_id*/
-        console.log('each spot', s)
+        //console.log('each spot', s)
         /*need to iterate over workouts, matching them to the place_id, adding 
         them as an array to the placeById*/
         const filteredWorkouts = workouts.filter((w)=> {
-          console.log('filteredWorkouts w', w);
+          //console.log('filteredWorkouts w', w);
           return s.place_id == w.node.parkId;
         })
         placeById[s.place_id] = {
@@ -198,18 +197,19 @@ class GridComponent extends Component {
       })
 
       //list with google data
-      const gListView = parks.length ? <div
-          style={styles.gridList} 
-          > <DayPicker geocoder={this.geocoder}/> {Object.keys(placeById).map((item, index) => (
-               <div key={index} style={styles.workout}> {!item ||
-                (placeById[item].googleData.types.indexOf('park') !== -1 ? <ParkFeed
-                  active={activeIndex===index}
-                  data={placeById[item]}
-               /> : <GymFeed
-                  active={activeIndex===index}
-                  data={placeById[item]}
-               />)} </div>
-          ))} 
+      const gListView = parks.length ? 
+          <div style={styles.gridList}> 
+            <DayPicker geocoder={this.geocoder}/> 
+              {Object.keys(placeById).map((item, index) => (
+                   <div key={index} style={styles.workout}> {!item ||
+                    (placeById[item].googleData.types.indexOf('park') !== -1 ? <ParkFeed
+                      active={activeIndex===index}
+                      data={placeById[item]}
+                   /> : <GymFeed
+                      active={activeIndex===index}
+                      data={placeById[item]}
+                   />)} </div>
+              ))} 
           </div> : <Card>
               <CircularProgress size={80} />
       </Card>

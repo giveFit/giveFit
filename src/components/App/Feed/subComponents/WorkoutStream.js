@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {CardText, Chip, Avatar} from 'material-ui'
+import WorkoutPost from './WorkoutPost';
 
 const inlineStyles = {
   subtitleStyle: {
@@ -10,7 +11,7 @@ const inlineStyles = {
   }
 };
 
-class WorkoutPost extends Component{
+class WorkoutStream extends Component{
 	constructor(props){
 		console.log('WorkoutPost props', props)
 		super(props)
@@ -25,17 +26,13 @@ class WorkoutPost extends Component{
 		          onTouchTap={this.handleTouchTap}
 		          style={inlineStyles.chip}
 		        >
-		        {
-
-		        	<Avatar />
-		          
-		        }
-		          
+		          <Avatar />
+		          Image Avatar Chip
 		        </Chip> 
-		        {this.props.data[0].node.title}
+		        1/17/2017, yoga on the hill, bring your mat, I'll be instructing an intermediate class
 	      </CardText>
 		)
 	}
 }
 
-export default WorkoutPost;
+export default WorkoutStream;
