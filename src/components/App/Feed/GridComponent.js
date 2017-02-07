@@ -167,7 +167,7 @@ class GridComponent extends Component {
       const {activeIndex, parks, parksAndGyms, markers} = this.state;
       //Build placeById object
       const workouts = props.data.viewer ? props.data.viewer.allWorkouts.edges : [];
-      console.log('workouts', workouts);
+      console.log('GridComponent workouts', workouts);
       const placeById = {};
       parksAndGyms.forEach(s => {
         /*const place_id = s.place_id*/

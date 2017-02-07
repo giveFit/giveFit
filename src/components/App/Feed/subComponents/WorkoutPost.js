@@ -1,5 +1,6 @@
-import React, {Component} from 'react'
+import React, {Component, PropTypes as T} from 'react'
 import {CardText, Chip, Avatar} from 'material-ui'
+import { Route, Router, Link, pathname, hashHistory } from 'react-router'
 
 const inlineStyles = {
   subtitleStyle: {
@@ -20,22 +21,39 @@ class WorkoutPost extends Component{
 	}
 	render(){
 		return(
-			<CardText>
-		        <Chip
-		          onTouchTap={this.handleTouchTap}
-		          style={inlineStyles.chip}
-		        >
-		        {
-
-		        	<Avatar />
-		          
-		        }
-		          
-		        </Chip> 
-		        {this.props.data[0].node.title}
-	      </CardText>
+			<div>
+				{this.props.data ? 
+					<CardText>
+				        <Chip
+				          onTouchTap={()=>this.context.router.push('/profile')}
+				          style={inlineStyles.chip}
+				        >
+				        	
+			        		<Avatar 
+				                src={this.props.data.node.Workout.picture}
+				                onClick={()=>this.context.router.push('/profile')} 
+					        />
+				        
+				        {this.props.data.node.Workout.nickname}  
+				        </Chip> 
+				        {
+				        	<div>
+					        	<p>Title: {this.props.data.node.title}</p>
+						        <p>Date: {this.props.data.node.date}</p>
+						        <p>Time: {this.props.data.node.date}</p>
+						        <p>Description: {this.props.data.node.description}</p>
+						    </div>
+					    }
+			      </CardText>
+					: null
+				}
+			</div>
 		)
 	}
 }
+
+WorkoutPost.contextTypes = {
+      router : T.object.isRequired
+    }
 
 export default WorkoutPost;

@@ -105,7 +105,12 @@ class ParkFeed extends Component{
       {this.state.expanded ? null : 
         <div>Next Activity: 
           {this.props.data.googleData.workouts.length ? 
-            <WorkoutPost data={this.props.data.googleData.workouts}/> 
+            <div>
+              <WorkoutPost data={this.props.data.googleData.workouts.find((w)=>{
+                console.log('ParkFeed w', w)
+                  return w.node.Workout ? w.node : null 
+              })}/>
+            </div>
             : null
           }
           <WorkoutCreatorWithData data={this.props.data}/> </div>
