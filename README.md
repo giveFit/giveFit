@@ -17,5 +17,6 @@ Checkout the GraphiQL endpoint for this app: [GraphiQL](https://us-west-2.api.sc
 
 ## To Run
 
+- Clone repo
 - Install dependencies `npm install`
 - Start the development server `npm run start`
