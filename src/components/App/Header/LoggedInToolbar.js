@@ -93,6 +93,10 @@ class LoggedInToolbar extends Component {
       console.log("auth0Profile", auth0Profile)
       console.log("tokenPayload", tokenPayload)
       const identity = auth0Profile.identities[0];
+      //updateUser/loginUser expects userId, not user_id
+      identity.userId = identity.user_id;
+      delete identity.user_id;
+      console.log('LoggedInToolbar identity', identity)
       const that = this;
       //debugger;
       this.setState({profile: auth0Profile});
