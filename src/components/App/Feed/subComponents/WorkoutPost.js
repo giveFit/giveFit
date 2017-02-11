@@ -22,17 +22,17 @@ class WorkoutPost extends Component{
 	render(){
 		return(
 			<div>
-				{this.props.data ? 
+				{(this.props.data.node.Workout && this.props.data.node.title) ? 
 					<CardText>
 				        <Chip
 				          onTouchTap={()=>this.context.router.push('/profile')}
 				          style={inlineStyles.chip}
 				        >
 				        	
-			        		<Avatar 
-				                src={this.props.data.node.Workout.picture}
-				                onClick={()=>this.context.router.push('/profile')} 
-					        />
+		        		<Avatar 
+			                src={this.props.data.node.Workout.picture}
+			                onClick={()=>this.context.router.push('/profile')} 
+				        />
 				        
 				        {this.props.data.node.Workout.nickname}  
 				        </Chip> 

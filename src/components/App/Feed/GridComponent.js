@@ -86,8 +86,8 @@ class GridComponent extends Component {
     //search and add parks to state
     searchNearby(this.googleMaps, div, parks)
       .then((results, pagination) => {
-        //console.log('searchNearby parks', results)
-        //console.log('searchNearby pagination', pagination)
+        console.log('searchNearby parks', results)
+        
         this.setState({
           parks: results,
           pagination

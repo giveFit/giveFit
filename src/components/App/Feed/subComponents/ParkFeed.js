@@ -29,15 +29,21 @@ const inlineStyles = {
   },
   chip: {
     margin: 4,
+  },
+  workout : {
+    padding : '20px 12px 10px',
+    boxSizing : 'border-box'
   }
 };
+
+
 
 class ParkFeed extends Component{
   constructor(props, context) {
     console.log('ParkFeed props', props)
     super(props, context);
     this.state = {
-      expanded: false
+      expanded: true
     };
   }
   componentWillReceiveProps(newProps){
@@ -100,51 +106,55 @@ class ParkFeed extends Component{
         }
       >
         {props.data.googleData.photos ? <img src={props.data.googleData.photos} className={styles.img}/> : <img src="http://lorempixel.com/400/200" />}
-      </CardMedia>
-    {/*//checks to see if we have any workouts
-      if we do, look at each workout object, returning the first activity with a Workout node */}
-      <CardText>
-      {this.state.expanded ? null : 
-        <div>Next Activity: 
-        
-          {this.props.data.googleData.workouts.length ? 
-            <div>
-              <WorkoutPost data={this.props.data.googleData.workouts.find((w)=>{
-                console.log('ParkFeed w', w)
-                  return w.node.Workout ? w.node : null 
-              })}/>
-            </div>
-            : null
-          }
-          <WorkoutCreatorWithData data={this.props.data}/> </div>
-      }
-      </CardText>
+      </CardMedia>      
       <Card expanded={this.state.expanded}>
       <CardText expandable={true}>
-      <Tabs >
-          <Tab label="Workouts">
-           <div>
-            <WorkoutCreatorWithData data={this.props.data}/> 
-            <WorkoutStream data={this.props.data}/>
-           </div>
+      <Tabs>
+          <Tab label="Calendar">
+            <div>
+              {this.props.data.googleData.workouts.length ? 
+                <div>
+                
+                {this.props.data.googleData.workouts.map((item, index) => (
+                     <div key={index} className={inlineStyles.workout}> {!item ||
+                      (<WorkoutPost
+                        data={item}
+                     />)} </div>
+                ))}
+                </div>
+              : null
+              }
+            </div>
+
           </Tab>
           <Tab label="Comments" >
-           <div>
-             <div>
-               <TextField hintText="Add a comment"/>
-               <Comment />
-             </div>
-           </div>
-          </Tab>
-          </Tabs>
+          <div>
+              <div>
+                <TextField hintText="Add a comment"/>
+              <Comment />
+            </div>
+          </div>
+        </Tab>
+        <Tab label="Calendar" >
+          <div>
+              <div>
+                <TextField hintText="Add a comment"/>
+              <Comment />
+            </div>
+          </div>
+        </Tab>
+      </Tabs>
+      <CardActions >
+        
+        <WorkoutCreatorWithData data={this.props.data}/> 
+        
+      </CardActions>
       </CardText>
       </Card>
      {/* <CardText>
         <div>Comments</div>
       </CardText>*/}
-      <CardActions >
-      {this.state.expanded ? <RaisedButton label="Reduce" onTouchTap={this.handleReduce.bind(this)} /> : <RaisedButton label="See more activities" onTouchTap={this.handleExpand.bind(this)} /> } 
-      </CardActions>
+
     </Card>
   }
 }

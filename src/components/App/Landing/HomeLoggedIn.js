@@ -88,7 +88,7 @@ export class HomeLoggedIn extends React.Component {
              <RaisedButton label="Find Groups" secondary={true} className={styles.submitButton} onTouchTap={()=>this.handleSubmit()} />
              <br />
           </CardText>
-            <h2 className={styles.description}>GiveFit helps you connect with people in your community who want to stay active and healthy.</h2>
+            <h2 className={styles.description}>Connect with fitness groups right in your community.</h2>
           </Card>
           </div>
         </div>
