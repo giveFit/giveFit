@@ -14,21 +14,20 @@ import {searchNearby} from 'utils/googleApiHelpers';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import classes from './styles.module.css';
-const height = window.innerHeight - 64;
+
 
 const styles = {
   root: {
     display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
+		flex : 1,
+		overflowY : 'hidden'
   },
   gridList: {
     width: 500,
-    height: height,
     paddingTop:100,
     position : 'relative',
-    overflowY : 'auto',
-    background : '#e5e5e5'
+    background : '#e5e5e5',
+		display : 'flex'
   },
   workout : {
     padding : '20px 12px 10px',
@@ -56,7 +55,8 @@ class GridComponent extends Component {
         parks: [],
         parksAndGyms: [],
         markers: [],
-        pagination: null
+        pagination: null,
+				loadedMapData : false
       };
       // now grab the services we need
       this.googleMaps = googleMaps;
@@ -69,47 +69,67 @@ class GridComponent extends Component {
     This google apis return the places in sets of 20, the maximum number of places that an api can fetch is 60. If you carefully observe the response of the google places api, it has a parameter called next_pagetoken. So the second time you hit the API u need to pass this next_pagetoken to fetch the next set of schools.@ChithriAjay
     how to do multiple types
     http://stackoverflow.com/questions/19625228/google-maps-api-multiple-keywords-in-place-searches*/
-    componentDidMount(obj){
-    const div = document.createElement('div')
-    /*const {googleMaps} = this.props;*/
-    //Need to update these searches when a new map center is created
-    //baltimore parks search params
-    const parks = {
-      location: { lat: 39.2904, lng: -76.6122 },
-      radius: 5000,
-      type: 'park'
+    componentDidMount(){
+
+	    //search and add parks to state
+	    // searchNearby(this.googleMaps, div, parks)
+	    //   .then((results, pagination) => {
+	    //     console.log('searchNearby parks', results)
+	    //     console.log('searchNearby pagination', pagination)
+	    //     this.setState({
+	    //       parks: results,
+	    //       pagination
+	    //     })
+	    //   }).catch((status, result) => {
+	    //     console.error('error', status, result)
+	    //   })
+	    // //search and add gyms to state
+	    // searchNearby(this.googleMaps, div, gyms)
+	    //   .then((results, pagination) => {
+	    //     console.log('searchNearby gyms', results)
+	    //     console.log('searchNearby pagination', pagination)
+	    //     this.setState({
+	    //       parksAndGyms: this.state.parks.concat(results),
+	    //       pagination
+	    //     })
+	    //   }).catch((status, result) => {
+	    //     console.error('error', status, result)
+	    //   })
+			const div = document.createElement('div')
+			const self = this;
+	    /*const {googleMaps} = this.props;*/
+	    //Need to update these searches when a new map center is created
+	    //baltimore parks search params
+	    const parks = {
+	      location: { lat: 39.2904, lng: -76.6122 },
+	      radius: 5000,
+	      type: 'park'
+	    }
+	    //baltimore gym search params
+	    const gyms = {
+	      location: { lat: 39.2904, lng: -76.6122 },
+	      radius: 5000,
+	      type: 'gym'
+	    }
+			try{
+				//search and add parks to state
+			 const parksPromise = searchNearby(self.googleMaps, div, parks);
+			 const gymsPromise = searchNearby(self.googleMaps, div, gyms);
+			 Promise.all([parksPromise,gymsPromise]).then(([parksResult,gymsResult])=>{
+				 self.setState({
+					 parks : parksResult,
+					 parksAndGyms: parksResult.concat(gymsResult),
+					 loadedMapData : true
+				 });
+			 })
+
+		 }catch(err){
+			 console.log(err);
+		 }
+
+
     }
-    //baltimore gym search params
-    const gyms = {
-      location: { lat: 39.2904, lng: -76.6122 },
-      radius: 5000,
-      type: 'gym'
-    }
-    //search and add parks to state
-    searchNearby(this.googleMaps, div, parks)
-      .then((results, pagination) => {
-        console.log('searchNearby parks', results)
-        console.log('searchNearby pagination', pagination)
-        this.setState({
-          parks: results,
-          pagination
-        })
-      }).catch((status, result) => {
-        console.error('error', status, result)
-      })
-    //search and add gyms to state
-    searchNearby(this.googleMaps, div, gyms)
-      .then((results, pagination) => {
-        console.log('searchNearby gyms', results)
-        console.log('searchNearby pagination', pagination)
-        this.setState({
-          parksAndGyms: this.state.parks.concat(results),
-          pagination
-        })
-      }).catch((status, result) => {
-        console.error('error', status, result)
-      })
-    }
+
 
     /*gets us our map on click location,
     may pass for location queries in the future*/
@@ -143,6 +163,8 @@ class GridComponent extends Component {
     }
     render(){
       const {props} = this;
+			console.log('rerender')
+			const {loadedMapData} = this.state;
       const {activeIndex, parks, parksAndGyms, markers} = this.state;
       //Build placeById object
       const placeById = {};
@@ -184,7 +206,9 @@ class GridComponent extends Component {
       //list with google data
       const gListView = parks.length ?
                 <div style={styles.gridList} >
-                <DayPicker className={classes.stackedTop} profile={props.profile} geocoder={this.geocoder}/> {Object.keys(placeById).map((item, index) => (
+                <DayPicker className={classes.stackedTop} profile={props.profile} geocoder={this.geocoder}/>
+                <div className={classes.workoutList}>
+                  { Object.keys(placeById).map((item, index) => (
                   <div key={index} style={styles.workout}> {!item ||
                       (placeById[item].googleData.types.indexOf('park') !== -1 ?
                       <ParkFeed
@@ -196,19 +220,20 @@ class GridComponent extends Component {
                         data={placeById[item]}
                      />)}
                       </div>
-                  ))} </div> :
+                  ))}
+                  </div> </div> :
                <Card>
               <CircularProgress size={80} />
-      </Card>
+              </Card>
       return (
-            <div style={styles.root}>
-            <section style={{height: "100%",flex:1}}>
-               <GoogleMapLoader
+            <div style={styles.root} className="__app__body__container">
+            <section className="__app__body__container__left" ref={(node)=>this.mapSection = node}>
+              { loadedMapData ? <GoogleMapLoader
                  containerElement={
                    <div
                      {...props.containerElementProps}
                      style={{
-                       height: height,
+                       height: "100%",
                      }}
                    />
                  }
@@ -233,7 +258,7 @@ class GridComponent extends Component {
                      }) : null}
                    </GoogleMap>
                  }
-               />
+               /> : null}
              </section>
              {gListView}
             </div>

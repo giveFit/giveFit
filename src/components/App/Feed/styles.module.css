@@ -19,3 +19,14 @@
   top : 0;
   width : 100%;
 }
+.workoutList{
+	flex : 1;
+	overflow-y : auto;
+}
+.mapContainer{
+	flex : 1;
+}
+.appRoot{
+	display : flex;
+	flex-direction : column;
+}

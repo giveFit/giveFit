@@ -7,6 +7,7 @@ import apolloConfig from '../../../../apolloConfig';
 //local utils
 import AuthService from 'utils/AuthService'
 import MainToolbar from '../../Home/Header/MainToolbar'
+import classes from './styles.module.css';
 
 const LOGGED_IN_USER = gql`
   query LoggedInUser {
@@ -77,9 +78,9 @@ class AppLoggedIn extends Component {
 	      user: null,
 	      loggedInToolbar: false,
 	    };
-	    
+
 	    this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain);
-	    this.onAuthenticated = this.onAuthenticated.bind(this);  
+	    this.onAuthenticated = this.onAuthenticated.bind(this);
     	this.auth.on('authenticated', this.onAuthenticated);
     	this.auth.on('error', console.log);
 
@@ -116,37 +117,40 @@ class AppLoggedIn extends Component {
 	}
 	render() {
 		const profile = this.auth.getProfile();
+
+
+
 		return (
-			<div> 
-				<div>
-					{ !this.auth.loggedIn() ? 
-				        <MainToolbar
-				            auth={this.props}
-				        /> : 
-			            <LoggedInToolbar 
-			            	auth={this.props}
-			            	profile={profile}
-				        /> 
-				    }
-					<GridComponentWithData onPlaceSelect={(place)=>{
-						this.props.data.refetch({
-							latLng : place.address
-						});
-						return null;
-					}}
-					profile={profile}
-					user={this.state.user}
-					workouts={(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ? this.props.data.viewer.allWorkoutGroups.edges : []}
-					markers={(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ?  this.props.data.viewer.allWorkoutGroups.edges.map((i,index)=>({
-						//title : i.node.title,
-						position : {
-							lat : parseFloat(i.node.lat),
-							lng : parseFloat(i.node.lng)
-						}
-					})) : []} />
+				<div className="__app__main">
+				<div className="__app__header">
+				{ !this.auth.loggedIn() ?
+							<MainToolbar
+									auth={this.props}
+							/> :
+								<LoggedInToolbar
+									auth={this.props}
+									profile={profile}
+							/>
+					}
 				</div>
-			
-		</div>
+	<GridComponentWithData onPlaceSelect={(place)=>{
+		this.props.data.refetch({
+			latLng : place.address
+		});
+		return null;
+	}}
+	profile={profile}
+	user={this.state.user}
+	workouts={(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ? this.props.data.viewer.allWorkoutGroups.edges : []}
+	markers={(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ?  this.props.data.viewer.allWorkoutGroups.edges.map((i,index)=>({
+		//title : i.node.title,
+		position : {
+			lat : parseFloat(i.node.lat),
+			lng : parseFloat(i.node.lng)
+		}
+	})) : []} />
+				</div>
+
 		)
 	};
 }
@@ -158,8 +162,8 @@ AppLoggedIn.propTypes = {
 
 const AppLoggedInWithData =  compose(
 	graphql(GET_THROUGH_VIEWER, {
-		options: (props) => ({	
-			variables: { first : FIRST } 
+		options: (props) => ({
+			variables: { first : FIRST }
 		}),
 	}),
   	graphql(LOGIN_USER_WITH_AUTH0_LOCK, {
