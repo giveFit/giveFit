@@ -38,7 +38,7 @@ class WorkoutPost extends Component{
 				        	<div>
 					        	<p>Title: {this.props.data.node.title}</p>
 						        <p>Date: {this.props.data.node.date}</p>
-						        <p>Time: {this.props.data.node.date}</p>
+						        <p>Time: {this.props.data.node.time}</p>
 						        <p>Description: {this.props.data.node.description}</p>
 						    </div>
 					    }

@@ -3,6 +3,7 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import DatePicker from 'material-ui/DatePicker';
+import TimePicker from 'material-ui/TimePicker';
 import TextField from 'material-ui/TextField';
 import FitnessCenter from 'material-ui/svg-icons/places/fitness-center';
 import Toggle from 'material-ui/Toggle';
@@ -17,6 +18,7 @@ const CREATE_WORKOUT = gql`
       changedWorkout{
         title,
         date,
+        time,
         description,
         recurring,
         parkId,
@@ -53,7 +55,7 @@ class WorkoutCreator extends Component {
       description: null,
       date: null
     };
-    this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain);
+    this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain);  
   }
 
   handleOpen(){
@@ -79,6 +81,7 @@ class WorkoutCreator extends Component {
       title: this.state.title,
       description: this.state.description,
       date: this.state.date,
+      time: this.state.time,
       recurring: this.state.recur,
       parkId: this.props.data.googleData.parkId ? this.props.data.googleData.parkId : undefined,
       //workoutId is the id of the loggedInUser, allowing us to make a connection in our data graph
@@ -90,7 +93,8 @@ class WorkoutCreator extends Component {
         recur: true,
         title: undefined,
         description: undefined,
-        date: null
+        date: null,
+        time: null
       })
     }).catch((error) =>{
       console.error('error in form', error)
@@ -104,6 +108,11 @@ class WorkoutCreator extends Component {
   onDateChange(event, date){
     this.setState({
       date: date
+    })
+  };
+  onTimeChange(event, time){
+    this.setState({
+      time: time
     })
   };
   onDescriptionChange(event){
@@ -165,7 +174,11 @@ class WorkoutCreator extends Component {
                 id="text-field-controlled"
                 hintText="Select a date" 
                 onChange={this.onDateChange.bind(this)}
-                
+              />
+              <TimePicker
+                hintText="Select a time"
+                autoOk={true}
+                onChange={this.onTimeChange.bind(this)}
               /> 
               <Toggle
                 name="recur"

@@ -16,11 +16,12 @@ query GetThroughViewer($first: Int) {
 		allWorkouts {
 		    edges {
 		        node {
-			          parkId
-			          title
-			          date
-			          description
-			          recurring
+			          parkId,
+			          title,
+			          date,
+			          time,
+			          description,
+			          recurring,
 			          Workout{
 			            nickname
 			            username
