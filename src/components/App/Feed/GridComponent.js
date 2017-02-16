@@ -191,6 +191,7 @@ class GridComponent extends Component {
       </Card>
       return (
             <div style={styles.root}>
+            {gListView}
             <section style={{height: "100%",flex:1}}>
                <GoogleMapLoader
                  containerElement={
@@ -224,7 +225,7 @@ class GridComponent extends Component {
                  }
                />
              </section>
-             {gListView}
+             
             </div>
 
         );

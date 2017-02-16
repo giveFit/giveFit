@@ -27,13 +27,11 @@ class WorkoutPost extends Component{
 				        <Chip
 				          onTouchTap={()=>this.context.router.push('/profile')}
 				          style={inlineStyles.chip}
-				        >
-				        	
+				        >	
 		        		<Avatar 
 			                src={this.props.data.node.Workout.picture}
 			                onClick={()=>this.context.router.push('/profile')} 
 				        />
-				        
 				        {this.props.data.node.Workout.nickname}  
 				        </Chip> 
 				        {

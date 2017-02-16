@@ -13,6 +13,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import {orange500, blue500, indigo500} from 'material-ui/styles/colors';
 import CircularProgress from 'material-ui/CircularProgress';
 import apolloConfig from '../../../../apolloConfig';
+import AppLoggedInWithData from '../Feed/AppLoggedIn';
 import BottomNav from './SubComponents/BottomNavigation';
 
 const inlineStyles = {
@@ -92,6 +93,8 @@ export class HomeLoggedIn extends React.Component {
           </Card>
           </div>
         </div>
+        <BottomNav />
+        
       </div>
     )
   }

@@ -7,6 +7,8 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import TextField from 'material-ui/TextField';
 import Toggle from 'material-ui/Toggle';
 import { Avatar, Chip } from 'material-ui';
+import ReactPaginate from 'react-paginate';
+
 //svg-icons
 import BookmarkBorder from 'material-ui/svg-icons/action/bookmark-border';
 import Done from 'material-ui/svg-icons/action/done';
@@ -114,7 +116,6 @@ class ParkFeed extends Component{
             <div>
               {this.props.data.googleData.workouts.length ? 
                 <div>
-                
                 {this.props.data.googleData.workouts.map((item, index) => (
                      <div key={index} className={inlineStyles.workout}> {!item ||
                       (<WorkoutPost
@@ -128,14 +129,6 @@ class ParkFeed extends Component{
 
           </Tab>
           <Tab label="Comments" >
-          <div>
-              <div>
-                <TextField hintText="Add a comment"/>
-              <Comment />
-            </div>
-          </div>
-        </Tab>
-        <Tab label="Calendar" >
           <div>
               <div>
                 <TextField hintText="Add a comment"/>

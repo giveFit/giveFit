@@ -14,9 +14,9 @@ export default class App extends React.Component {
           { this.props.children ?
             React.Children.toArray(this.props.children) : null }
         </div>}
-        <div>
+        {/*<div>
           <BottomNav />
-        </div>
+        </div>*/}
       </div>
     )
   }
