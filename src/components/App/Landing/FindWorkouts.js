@@ -2,7 +2,7 @@ import 'whatwg-fetch';
 import React, {Component} from 'react';
 import Autosuggest from 'react-autosuggest';
 import styles from './styles.module.css';
-
+import geocodeHelper from '../../../utils/geocodeHelper';
 const getSuggestions = (value) => {
   //console.log('value',value);
   const inputValue = value.trim().toLowerCase();
@@ -39,7 +39,8 @@ const renderSuggestion = suggestion => (
 export default class FindWorkouts extends Component{
   state = {
     findGroupInputVal : '',
-    findGroupSuggestions : []
+    findGroupSuggestions : [],
+		pos : null
     //hintText: "Enter a location"
   }
   onSuggestionTextChange = (event, { newValue }) => {
@@ -55,13 +56,21 @@ export default class FindWorkouts extends Component{
     }
         //console.log('value',value);
     const findGroupSuggestions =  getSuggestions(value).then(res=>{
-      //console.log(res);
+      console.log(res);
       this.setState({
         findGroupSuggestions : [
           {
             description : 'Get my location'
           },
           ...res
+        ]
+      });
+    }).catch(err=>{
+      this.setState({
+        findGroupSuggestions : [
+          {
+            description : 'Get my location'
+          },
         ]
       });
     });
@@ -75,6 +84,55 @@ export default class FindWorkouts extends Component{
     });
   };
 
+  onSuggestionSelected = (e, {suggestionIndex,suggestionValue})=>{
+    if(suggestionIndex == 0){
+      //Get my location
+      if (navigator.geolocation) {
+					setTimeout(()=>{
+						this.component.input.value = 'Fetching location';
+					});
+					this.component.input.setAttribute(`disabled`,`disabled`);
+					navigator.geolocation.getCurrentPosition((position)=>{
+						const lat = parseFloat(position.coords.latitude) ,
+						lng = parseFloat(position.coords.longitude);
+            var latlng = {lat,lng};
+
+           	geocodeHelper({'location': latlng}).then(results => {
+							localStorage.removeItem('__find_workouts_address');
+							localStorage.setItem('__find_workouts_pos', JSON.stringify(latlng));
+							this.setState({
+								findGroupInputVal : results[0].formatted_address,
+								pos : {
+									lat,
+									lng
+								}
+							}, ()=>{
+									this.component.input.removeAttribute(`disabled`);
+							});
+						}).catch(err=>{
+							this.component.input.removeAttribute(`disabled`);
+						});
+
+          }, function() {
+						this.component.input.removeAttribute(`disabled`);
+            console.log('your browser does not support geo location');
+          });
+        } else {
+          // Browser doesn't support Geolocation
+					this.component.input.removeAttribute(`disabled`);
+          console.log('your browser does not support geo location');
+        }
+    }else{
+			localStorage.removeItem('__find_workouts_pos');
+			localStorage.setItem('__find_workouts_address',suggestionValue);
+		}
+  }
+
+	getLatLng=(address)=>{
+		return geocodeHelper({address});
+
+	}
+
   render(){
     const { findGroupInputVal, findGroupSuggestions } = this.state;
     const inputProps = {
@@ -85,11 +143,12 @@ export default class FindWorkouts extends Component{
    };
 
     return <Autosuggest
+       ref={node=>this.component = node}
        suggestions={findGroupSuggestions}
        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
        onSuggestionsClearRequested={this.onSuggestionsClearRequested}
        getSuggestionValue={getSuggestionValue}
-       onSuggestionSelected={(...args)=>console.log(...args)}
+       onSuggestionSelected={this.onSuggestionSelected}
        renderSuggestion={renderSuggestion}
        inputProps={inputProps}
      />

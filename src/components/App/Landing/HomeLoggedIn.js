@@ -33,6 +33,8 @@ export class HomeLoggedIn extends React.Component {
     this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain);
     this.auth.on('authenticated', this.onAuthenticated);
     this.auth.on('error', console.log);
+		localStorage.removeItem('__find_workouts_pos');
+		localStorage.removeItem('__find_workouts_address');
   }
 
 
@@ -45,7 +47,22 @@ export class HomeLoggedIn extends React.Component {
     entering anything, but still have the value declaration
     below for when i do a location query*/
     /*const {value} = this.refs.textbox.input;*/
-    this.context.router.push('/app-logged-in');
+		const fWPosString = localStorage.getItem('__find_workouts_pos');
+		const fWAddress = localStorage.getItem('__find_workouts_address');
+		if(fWPosString){
+			const {lat,lng} = JSON.parse(fWPosString);
+			return this.context.router.push(`/app-logged-in?lat=${lat}&lng=${lng}`);
+		}
+		if(fWAddress){
+			return this.findWorkoutsComponent.getLatLng(fWAddress).then(results=>{
+				 const {geometry  : {location}} = results[0];
+				 const lat = location.lat(),
+				 				lng = location.lng();
+				this.context.router.push(`/app-logged-in?lat=${lat}&lng=${lng}`);
+			});
+		}
+		this.context.router.push(`/app-logged-in`);
+
   }
   //different config
   onAuthenticated(auth0Profile, tokenPayload) {
@@ -89,6 +106,26 @@ export class HomeLoggedIn extends React.Component {
     });
   }
   render(){
+		/*
+		<CardText>
+			<TextField
+			 ref="textbox"
+			 id="autocomplete"
+			 hintText="Enter a location"
+			 multiLine={true}
+			 onTouchTap={this.handleAutoComplete.bind(this)}
+			 textareaStyle={inlineStyles.textFieldStyle}
+			 onKeyDown={(e)=>{
+				 if(e.which===13){
+					 this.handleSubmit();
+				 }
+			 }}
+		 />
+		 <RaisedButton label="Find Groups" secondary={true} className={styles.submitButton} onTouchTap={()=>this.handleSubmit()} />
+		 <br />
+	</CardText>
+		*/
+
     //console.log('HomeLoggedIn this', this)
     const profile = this.auth.getProfile();
     //console.log('HomeLoggedIn profile', profile)
@@ -119,25 +156,10 @@ export class HomeLoggedIn extends React.Component {
         <h1 className={styles.heading}>Find Your Fitness Tribe</h1>
         <h3 className={styles.subHeading}>Starting in Baltimore</h3>
         <Card className={styles.bannerCard}>
-          <CardText>
-            <TextField
-             ref="textbox"
-             id="autocomplete"
-             hintText="Enter a location"
-             multiLine={true}
-             onTouchTap={this.handleAutoComplete.bind(this)}
-             textareaStyle={inlineStyles.textFieldStyle}
-             onKeyDown={(e)=>{
-               if(e.which===13){
-                 this.handleSubmit();
-               }
-             }}
-           />
-           <RaisedButton label="Find Groups" secondary={true} className={styles.submitButton} onTouchTap={()=>this.handleSubmit()} />
-           <br />
-        </CardText>
-          <CardText>
-            <FindWorkouts/>
+
+          <CardText style={{display : 'flex', alignItems:'center'}}>
+            <FindWorkouts ref={node=>this.findWorkoutsComponent = node}/>
+						<RaisedButton label="Find Groups" secondary={true} className={styles.submitButton} onTouchTap={()=>this.handleSubmit()} />
           </CardText>
 
         </Card>

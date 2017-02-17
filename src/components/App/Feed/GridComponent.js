@@ -70,7 +70,11 @@ class GridComponent extends Component {
     how to do multiple types
     http://stackoverflow.com/questions/19625228/google-maps-api-multiple-keywords-in-place-searches*/
     componentDidMount(){
-
+			const {latLng } = this.props;
+			const centerLatLng = {
+				  lat : latLng ? latLng.lat : 39.287014134966526,
+					lng : latLng ? latLng.lng : -76.55342102050781
+			}
 	    //search and add parks to state
 	    // searchNearby(this.googleMaps, div, parks)
 	    //   .then((results, pagination) => {
@@ -101,13 +105,13 @@ class GridComponent extends Component {
 	    //Need to update these searches when a new map center is created
 	    //baltimore parks search params
 	    const parks = {
-	      location: { lat: 39.2904, lng: -76.6122 },
+	      location: centerLatLng,
 	      radius: 5000,
 	      type: 'park'
 	    }
 	    //baltimore gym search params
 	    const gyms = {
-	      location: { lat: 39.2904, lng: -76.6122 },
+	      location: centerLatLng,
 	      radius: 5000,
 	      type: 'gym'
 	    }
@@ -170,6 +174,12 @@ class GridComponent extends Component {
     render(){
       const {props} = this;
 			console.log('rerender')
+			const {latLng } = props;
+			const centerLatLng = {
+				  lat : latLng ? latLng.lat : 39.287014134966526,
+					lng : latLng ? latLng.lng : -76.55342102050781
+			}
+
 			const {loadedMapData} = this.state;
       const {activeIndex, parks, parksAndGyms, markers} = this.state;
       //Build placeById object
@@ -249,7 +259,7 @@ class GridComponent extends Component {
                    <GoogleMap
                     ref={(map) => { this._googleMapComponent = map ; } }
                     defaultZoom={13}
-                    defaultCenter={{ lat: 39.287014134966526, lng: -76.55342102050781 }}
+                    defaultCenter={centerLatLng}
                     onClick={(...args)=>{
                       console.log("map args", ...args);
                       return this.geocodeLatLng(...args)

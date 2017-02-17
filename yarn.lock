@@ -5045,7 +5045,7 @@ react-autosuggest:
     react-autowhatever "^7.0.0"
     shallow-equal "^1.0.0"
 
-react-autowhatever@^7.0.0:
+react-autowhatever, react-autowhatever@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/react-autowhatever/-/react-autowhatever-7.0.0.tgz#7ea19f8024183acf1568fc8e4b76c0d0cc250d00"
   dependencies:
@@ -5711,7 +5711,7 @@ sha.js@2.2.6:
   version "2.2.6"
   resolved "https://registry.yarnpkg.com/sha.js/-/sha.js-2.2.6.tgz#17ddeddc5f722fb66501658895461977867315ba"
 
-shallow-equal@^1.0.0:
+shallow-equal, shallow-equal@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/shallow-equal/-/shallow-equal-1.0.0.tgz#508d1838b3de590ab8757b011b25e430900945f7"
 

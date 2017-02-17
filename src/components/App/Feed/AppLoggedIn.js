@@ -117,6 +117,13 @@ class AppLoggedIn extends Component {
 	}
 	render() {
 		const profile = this.auth.getProfile();
+		let latLng = null;
+		if(this.props.location.query.lat && this.props.location.query.lng){
+			latLng = {
+				lat : parseFloat(this.props.location.query.lat),
+				lng : parseFloat(this.props.location.query.lng),
+			}
+		}
 
 
 
@@ -133,12 +140,14 @@ class AppLoggedIn extends Component {
 							/>
 					}
 				</div>
-	<GridComponentWithData onPlaceSelect={(place)=>{
-		this.props.data.refetch({
-			latLng : place.address
-		});
+	<GridComponentWithData
+    latLng = {latLng}
+    onPlaceSelect={(place)=>{
+  		this.props.data.refetch({
+  			latLng : place.address
+  		});
 		return null;
-	}}
+	   }}
 	profile={profile}
 	user={this.state.user}
 	workouts={(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ? this.props.data.viewer.allWorkoutGroups.edges : []}
