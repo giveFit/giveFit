@@ -32,6 +32,15 @@ const inlineStyles = {
 };
 
 class ParkFeed extends Component{
+
+	static propTypes = {
+		onClick : PropTypes.func.isRequired
+	}
+
+	static defaultProps = {
+		onClick : ()=>{}
+	}
+
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -73,7 +82,7 @@ class ParkFeed extends Component{
   render(){
     const {props} = this;
     //console.log('feed props', props)
-    return <Card ref='root' key={props.data.id} className={props.active ? styles.cardActive : ""}>
+    return <Card ref='root' key={props.data.id} className={props.active ? styles.cardActive : ""} onTouchTap={()=>this.props.onClick()}>
       <CardHeader
         title={props.data.googleData.title}
         //href={'/posts/' + post.id}
@@ -87,8 +96,8 @@ class ParkFeed extends Component{
             title={props.data.googleData.rating > 0 ? <div> Rating: {props.data.googleData.rating} </div>: <div></div>}
             subtitle={
               <div> Save:
-                <BookmarkBorder 
-                  color={white} 
+                <BookmarkBorder
+                  color={white}
                   hoverColor={greenA200}
                   onClick={this.handleSave.bind(this)}
                 />
@@ -112,7 +121,7 @@ class ParkFeed extends Component{
             <WorkoutPost />
             <WorkoutPost />
             <WorkoutPost />
-            <WorkoutCreator /> 
+            <WorkoutCreator />
            </div>
           </Tab>
           <Tab label="Comments" >
@@ -130,7 +139,7 @@ class ParkFeed extends Component{
         <div>Comments</div>
       </CardText>*/}
       <CardActions >
-      {this.state.expanded ? <RaisedButton label="Reduce" onTouchTap={this.handleReduce.bind(this)} /> : <RaisedButton label="See more activities" onTouchTap={this.handleExpand.bind(this)} /> } 
+      {this.state.expanded ? <RaisedButton label="Reduce" onTouchTap={this.handleReduce.bind(this)} /> : <RaisedButton label="See more activities" onTouchTap={this.handleExpand.bind(this)} /> }
       </CardActions>
     </Card>
   }

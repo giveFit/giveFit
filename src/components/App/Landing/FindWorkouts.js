@@ -7,23 +7,31 @@ const getSuggestions = (value) => {
   //console.log('value',value);
   const inputValue = value.trim().toLowerCase();
   const inputLength = inputValue.length;
-  if(inputLength < 3){
+  if(inputLength < 1){
     return Promise.resolve([]);
   }else{
     try{
-       return window.fetch(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=${inputValue}&key=AIzaSyDaqZIUzhyOdPDlsVjkdLbuWj89F3gNCMg`).then(r=>r.json()).then(res=>res.results);
+			return new Promise((resolve,reject)=>{
+				var service = new google.maps.places.AutocompleteService();
+				service.getQueryPredictions({ input: inputValue }, (predictions,status)=>{
+					if (status != google.maps.places.PlacesServiceStatus.OK) {
+						 return reject(status);
+					}
+					 return resolve(predictions);
+				});
+			});
     } catch(err){
       return Promise.resolve([]);
     }
   }
 };
 
-const getSuggestionValue = suggestion => suggestion.name;
+const getSuggestionValue = suggestion => suggestion.description;
 
 
 const renderSuggestion = suggestion => (
-  <div>
-    {suggestion.name}
+  <div style={{background : 'white'}}>
+    {suggestion.description}
   </div>
 );
 
@@ -42,14 +50,19 @@ export default class FindWorkouts extends Component{
   };
 
   onSuggestionsFetchRequested = ({value}) => {
-    if(value.length<3){
+    if(value.length<1){
       return;
     }
         //console.log('value',value);
     const findGroupSuggestions =  getSuggestions(value).then(res=>{
       //console.log(res);
       this.setState({
-        findGroupSuggestions : res
+        findGroupSuggestions : [
+          {
+            description : 'Get my location'
+          },
+          ...res
+        ]
       });
     });
 
@@ -76,6 +89,7 @@ export default class FindWorkouts extends Component{
        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
        onSuggestionsClearRequested={this.onSuggestionsClearRequested}
        getSuggestionValue={getSuggestionValue}
+       onSuggestionSelected={(...args)=>console.log(...args)}
        renderSuggestion={renderSuggestion}
        inputProps={inputProps}
      />

@@ -30,6 +30,15 @@ const inlineStyles = {
 };
 
 class GymFeed extends React.Component{
+
+	static propTypes = {
+		onClick : PropTypes.func.isRequired
+	}
+
+	static defaultProps = {
+		onClick : ()=>{}
+	}
+
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -68,7 +77,7 @@ class GymFeed extends React.Component{
   render(){
     const {props} = this;
     //console.log('feed props', props)
-    return <Card ref='root' key={props.data.id} className={props.active ? styles.cardActive : ""}>
+    return <Card ref='root' key={props.data.id} className={props.active ? styles.cardActive : ""} onTouchTap={()=>this.props.onClick()}>
       <CardHeader
         title={props.data.googleData.title}
         //avatar={props.data.avatar}
@@ -79,8 +88,8 @@ class GymFeed extends React.Component{
             title={props.data.googleData.rating > 0 ? <div> Rating: {props.data.googleData.rating} </div>: <div></div>}
             subtitle={
               <div> Save:
-                <BookmarkBorder 
-                  color={white} 
+                <BookmarkBorder
+                  color={white}
                   hoverColor={greenA200}
                   onClick={this.handleSave.bind(this)}
                 />
@@ -102,7 +111,7 @@ class GymFeed extends React.Component{
       <Tabs >
           <Tab label="Workouts">
            <div>
-            <WorkoutCreator /> 
+            <WorkoutCreator />
            </div>
           </Tab>
           <Tab label="Comments" >
@@ -120,7 +129,7 @@ class GymFeed extends React.Component{
         <div>Comments</div>
       </CardText>*/}
       <CardActions >
-      {this.state.expanded ? <FlatButton label="Reduce" onTouchTap={this.handleReduce.bind(this)} /> : <FlatButton label="See more workouts" onTouchTap={this.handleExpand.bind(this)} /> } 
+      {this.state.expanded ? <FlatButton label="Reduce" onTouchTap={this.handleReduce.bind(this)} /> : <FlatButton label="See more workouts" onTouchTap={this.handleExpand.bind(this)} /> }
       </CardActions>
     </Card>
   }

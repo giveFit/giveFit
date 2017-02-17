@@ -158,9 +158,15 @@ class GridComponent extends Component {
         }
       });
     }
-    markerClick(index){
-      this.setState({activeIndex : index});
+    markerClick=(index)=>{
+      this.setActiveIndex(index);
     }
+		feedItemClick=(index)=>{
+			this.setActiveIndex(index);
+		}
+		setActiveIndex=(index)=>{
+			this.setState({activeIndex : index});
+		}
     render(){
       const {props} = this;
 			console.log('rerender')
@@ -213,10 +219,12 @@ class GridComponent extends Component {
                       (placeById[item].googleData.types.indexOf('park') !== -1 ?
                       <ParkFeed
                         active={activeIndex===index}
+												onClick={()=>this.feedItemClick(index)}
                         data={placeById[item]} />
                         :
                       <GymFeed
                         active={activeIndex===index}
+												onClick={()=>this.feedItemClick(index)}
                         data={placeById[item]}
                      />)}
                       </div>
@@ -251,6 +259,8 @@ class GridComponent extends Component {
                        return (
                          <Marker
                           key={index}
+													animation={activeIndex===index ? google.maps.Animation.BOUNCE : null}
+                          icon={activeIndex === index ? `http://maps.google.com/mapfiles/ms/icons/yellow-dot.png` :  `http://maps.google.com/mapfiles/ms/icons/red-dot.png`}
                            {...placeById[marker].googleData}
                            onClick={()=>this.markerClick(index)}
                            onRightclick={() => console.log(marker,index)} />
