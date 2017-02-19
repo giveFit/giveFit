@@ -40,9 +40,6 @@ export class HomeLoggedIn extends React.Component {
   }
 
   onAuthenticated(auth0Profile, tokenPayload) {
-    console.log('onAuthenticated props', this.props)
-    console.log("auth0Profile", auth0Profile)
-    console.log("tokenPayload", tokenPayload)
     const identity = auth0Profile.identities[0];
     //updateUser/loginUser expects userId, not user_id
     identity.userId = identity.user_id;

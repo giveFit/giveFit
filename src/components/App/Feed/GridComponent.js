@@ -133,8 +133,6 @@ class GridComponent extends Component {
 
 
     }
-
-
     /*gets us our map on click location,
     may pass for location queries in the future*/
     geocodeLatLng(obj) {
@@ -278,54 +276,5 @@ class GridComponent extends Component {
     }
 }
 
-//export default GridComponent;
-const LOGGED_IN_USER = gql`
-  query LoggedInUser {
-    viewer {
-      user {
-        id
-        username
-        nickname
-      }
-    }
-  }
-`;
+export default GridComponent;
 
-//Get some WorkoutGroups
-const GET_THROUGH_VIEWER = gql`
-  query GetThroughViewer($first: Int) {
-    viewer {
-      allWorkoutGroups(first: $first) {
-        edges {
-          node {
-          id
-          image
-          title
-          lat
-          lng
-          avatar
-          contentSnippet
-          }
-        }
-      }
-  }
-}
-`;
-
-//How many WorkoutGroups to return
-const FIRST = 8;
-
-const GridComponentWithData =  compose(
-  graphql(GET_THROUGH_VIEWER, {
-    options: (props) => ({
-      variables: { first : FIRST }
-    }),
-  }),
-    graphql(LOGGED_IN_USER, {
-      props: ({ data }) =>  ({
-        loggedInUser: data.viewer ? data.viewer.user : null
-      })
-    })
-)(GridComponent);
-
-export default GridComponentWithData;

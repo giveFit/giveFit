@@ -1,7 +1,7 @@
 import React, { Component, PropTypes as T } from 'react';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
-import GridComponentWithData from './GridComponent';
+import GridComponent from './GridComponent';
 import LoggedInToolbar from '../Header/LoggedInToolbar'
 import apolloConfig from '../../../../apolloConfig';
 //local utils
@@ -92,9 +92,6 @@ class AppLoggedIn extends Component {
 
   	}
   	onAuthenticated(auth0Profile, tokenPayload) {
-	    console.log('onAuthenticated props', this.props)
-	    console.log("auth0Profile", auth0Profile)
-	    console.log("tokenPayload", tokenPayload)
 	    const identity = auth0Profile.identities[0];
 	    //updateUser/loginUser expects userId, not user_id
 	    identity.userId = identity.user_id;
@@ -134,22 +131,20 @@ class AppLoggedIn extends Component {
 			}
 		}
 
-
-
 		return (
 				<div className="__app__main">
 				<div className="__app__header">
 				{ !this.auth.loggedIn() ?
-							<MainToolbar
-									auth={this.props}
-							/> :
-								<LoggedInToolbar
-									auth={this.props}
-									profile={profile}
-							/>
+					<MainToolbar
+						auth={this.props}
+					/> :
+					<LoggedInToolbar
+						auth={this.props}
+						profile={profile}
+					/>
 				}
 				</div>
-				<GridComponentWithData
+				<GridComponent
 				    latLng = {latLng}
 				    onPlaceSelect={(place)=>{
 				  		this.props.data.refetch({
