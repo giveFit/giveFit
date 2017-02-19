@@ -64,7 +64,7 @@ class LoggedInToolbar extends Component {
     this.context.router.push('/');
   }
   goToWorkouts(){
-    hashHistory.push('/app-logged-in')
+    hashHistory.push('/app')
   }
   render() {
     //console.log('LoggedInToolbar this', this)
@@ -88,7 +88,7 @@ class LoggedInToolbar extends Component {
             primaryText="Home" />
           <MenuItem
             onTouchTap={this.handleClose.bind(this)}
-            onClick={()=>this.context.router.push('/app-logged-in')}
+            onClick={()=>this.context.router.push('/app')}
             primaryText="Workout Locations" />
           <MenuItem
             onTouchTap={this.handleClose.bind(this)}
@@ -104,15 +104,14 @@ class LoggedInToolbar extends Component {
             leftIcon={<GroupAdd />} />
           </IconMenu>
           <ToolbarTitle style={inlineStyles.title} text="givefit"
-            onClick={()=>this.context.router.push('/home-logged-in')}
+            onClick={()=>this.context.router.push('/')}
           />
         </ToolbarGroup>
         <ToolbarGroup >
-          <FlatButton className={styles.onlyLargeScreens} label="Workout Groups" onClick={()=>this.context.router.push('/app-logged-in')}/>
+          <FlatButton className={styles.onlyLargeScreens} label="Workout Groups" onClick={()=>this.context.router.push('/app')}/>
           <FlatButton className={styles.onlyLargeScreens} label="Blog" />
           <FlatButton className={styles.onlyLargeScreens} label="About Us" />
           <FontIcon className={styles.onlyLargeScreens} className="muidocs-icon-custom-sort" />
-          <ToolbarSeparator />
           {
             this.props.profile ?
             <Avatar

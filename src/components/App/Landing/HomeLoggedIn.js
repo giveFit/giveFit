@@ -1,9 +1,5 @@
 import React, { PropTypes as T } from 'react';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText, GridList} from 'material-ui/Card';
-import HomeFeed from './SubComponents/HomeFeed';
-import LoggedInToolbar from '../Header/LoggedInToolbar'
-import MainToolbar from '../../Home/Header/MainToolbar'
-
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import AuthService from 'utils/AuthService';
@@ -13,7 +9,13 @@ import RaisedButton from 'material-ui/RaisedButton';
 import {orange500, blue500, indigo500} from 'material-ui/styles/colors';
 import CircularProgress from 'material-ui/CircularProgress';
 import apolloConfig from '../../../../apolloConfig';
+
 import FindWorkouts from './FindWorkouts';
+import HomeFeed from './SubComponents/HomeFeed';
+import LoggedInToolbar from '../Header/LoggedInToolbar'
+import MainToolbar from '../../Home/Header/MainToolbar'
+import BottomNav from './SubComponents/BottomNavigation';
+
 const inlineStyles = {
   textFieldStyle: {
     color: indigo500,
@@ -37,41 +39,18 @@ export class HomeLoggedIn extends React.Component {
 		localStorage.removeItem('__find_workouts_address');
   }
 
-
-  /*componentDidMount(){
-    console.log('componentDidMount');
-    localStorage.setItem('userId', JSON.stringify(this.state.userId))
-  }*/
-  handleSubmit(){
-    /*I want users to be able to press the button without
-    entering anything, but still have the value declaration
-    below for when i do a location query*/
-    /*const {value} = this.refs.textbox.input;*/
-		const fWPosString = localStorage.getItem('__find_workouts_pos');
-		const fWAddress = localStorage.getItem('__find_workouts_address');
-		if(fWPosString){
-			const {lat,lng} = JSON.parse(fWPosString);
-			return this.context.router.push(`/app-logged-in?lat=${lat}&lng=${lng}`);
-		}
-		if(fWAddress){
-			return this.findWorkoutsComponent.getLatLng(fWAddress).then(results=>{
-				 const {geometry  : {location}} = results[0];
-				 const lat = location.lat(),
-				 				lng = location.lng();
-				this.context.router.push(`/app-logged-in?lat=${lat}&lng=${lng}`);
-			});
-		}
-		this.context.router.push(`/app-logged-in`);
-
-  }
-  //different config
   onAuthenticated(auth0Profile, tokenPayload) {
     console.log('onAuthenticated props', this.props)
     console.log("auth0Profile", auth0Profile)
     console.log("tokenPayload", tokenPayload)
     const identity = auth0Profile.identities[0];
+    //updateUser/loginUser expects userId, not user_id
+    identity.userId = identity.user_id;
+    delete identity.user_id;
+    console.log('LoggedInToolbar identity', identity)
     const that = this;
     //debugger;
+    this.setState({profile: auth0Profile});
     this.props.loginUser({
       identity: identity,
       access_token: tokenPayload.accessToken,
@@ -82,7 +61,6 @@ export class HomeLoggedIn extends React.Component {
       const nickname = auth0Profile.nickname;
       // Cause a UI update :)
       console.log('scapholdUserId', scapholdUserId)
-      //this.setState({userId: scapholdUserId});
       localStorage.setItem('scapholdUserId', JSON.stringify(scapholdUserId))
 
       return that.props.updateUser({
@@ -95,6 +73,42 @@ export class HomeLoggedIn extends React.Component {
       console.log(`Error updating user: ${err.message}`);
     });
   }
+  /*componentDidMount(){
+    console.log('componentDidMount');
+    localStorage.setItem('userId', JSON.stringify(this.state.userId))
+  }*/
+
+  quickEnter(){
+    /*I want users to be able to press the button without
+    entering anything, but still have the value declaration
+    below for when i do a location query*/
+    /*const {value} = this.refs.textbox.input;*/
+    this.context.router.push('/app');
+  }
+  handleSubmit(){
+    /*I want users to be able to press the button without
+    entering anything, but still have the value declaration
+    below for when i do a location query*/
+    /*const {value} = this.refs.textbox.input;*/
+		const fWPosString = localStorage.getItem('__find_workouts_pos');
+		const fWAddress = localStorage.getItem('__find_workouts_address');
+		if(fWPosString){
+			const {lat,lng} = JSON.parse(fWPosString);
+			return this.context.router.push(`/app?lat=${lat}&lng=${lng}`);
+		}
+		if(fWAddress){
+			return this.findWorkoutsComponent.getLatLng(fWAddress).then(results=>{
+				 const {geometry  : {location}} = results[0];
+				 const lat = location.lat(),
+				 				lng = location.lng();
+				this.context.router.push(`/app?lat=${lat}&lng=${lng}`);
+			});
+		}
+		this.context.router.push(`/app`);
+
+  }
+  
+  
   //Need Google maps API here
   handleAutoComplete(){
     /*this.setState({
@@ -106,26 +120,6 @@ export class HomeLoggedIn extends React.Component {
     });
   }
   render(){
-		/*
-		<CardText>
-			<TextField
-			 ref="textbox"
-			 id="autocomplete"
-			 hintText="Enter a location"
-			 multiLine={true}
-			 onTouchTap={this.handleAutoComplete.bind(this)}
-			 textareaStyle={inlineStyles.textFieldStyle}
-			 onKeyDown={(e)=>{
-				 if(e.which===13){
-					 this.handleSubmit();
-				 }
-			 }}
-		 />
-		 <RaisedButton label="Find Groups" secondary={true} className={styles.submitButton} onTouchTap={()=>this.handleSubmit()} />
-		 <br />
-	</CardText>
-		*/
-
     //console.log('HomeLoggedIn this', this)
     const profile = this.auth.getProfile();
     //console.log('HomeLoggedIn profile', profile)
@@ -156,22 +150,22 @@ export class HomeLoggedIn extends React.Component {
         <h1 className={styles.heading}>Find Your Fitness Tribe</h1>
         <h3 className={styles.subHeading}>Starting in Baltimore</h3>
         <Card className={styles.bannerCard}>
-
-          <CardText style={{display : 'flex', alignItems:'center'}}>
+          <CardText>
             <FindWorkouts ref={node=>this.findWorkoutsComponent = node}/>
 						<RaisedButton label="Find Groups" secondary={true} className={styles.submitButton} onTouchTap={()=>this.handleSubmit()} />
           </CardText>
-
         </Card>
         </div>
       </div>
       <h2 className={styles.featuredWorkouts}>
-           Check out this week&quot;s highlighted workout groups.
-           Search above for more awesome group workouts in your area.
+          <p>Logos</p>
+          <p>mission</p>
+          <p>features</p>
+          <p>mission</p>
+          <p>search again</p>
       </h2>
-        <div style={{margin: 20, overflow :'hidden'}}/>
-           {listView}
-        </div>
+      <BottomNav />
+      </div>
     )
   }
 }
@@ -206,14 +200,14 @@ const GET_THROUGH_VIEWER = gql`
 const FIRST = 8;
 
 const LOGIN_USER_WITH_AUTH0_LOCK = gql `
-  mutation Login($credential: LoginUserWithAuth0LockInput!) {
-  loginUserWithAuth0Lock(input: $credential) {
-    user {
+  mutation loginUserWithAuth0Lock($credential: LoginUserWithAuth0LockInput!) {
+    loginUserWithAuth0Lock(input: $credential) {
+    user{
       id
       username
     }
+    }
   }
-}
 `
 const UPDATE_USER_QUERY = gql`
 mutation UpdateUser($user: UpdateUserInput!) {
@@ -225,18 +219,6 @@ mutation UpdateUser($user: UpdateUserInput!) {
     }
   }
 }
-`;
-
-const LOGGED_IN_USER = gql`
-  query LoggedInUser {
-    viewer {
-      user {
-        id
-        username
-        nickname
-      }
-    }
-  }
 `;
 
 const HomeLoggedInWithData =  compose(

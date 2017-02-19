@@ -60,7 +60,7 @@ export default class FindWorkouts extends Component{
       this.setState({
         findGroupSuggestions : [
           {
-            description : 'Get my location'
+            description : 'Use my location'
           },
           ...res
         ]
@@ -69,7 +69,7 @@ export default class FindWorkouts extends Component{
       this.setState({
         findGroupSuggestions : [
           {
-            description : 'Get my location'
+            description : 'Use my location'
           },
         ]
       });
@@ -132,25 +132,24 @@ export default class FindWorkouts extends Component{
 		return geocodeHelper({address});
 
 	}
-
   render(){
     const { findGroupInputVal, findGroupSuggestions } = this.state;
     const inputProps = {
-     placeholder: 'Enter a place',
+     placeholder: 'Enter a location',
      value : findGroupInputVal,
      onChange: this.onSuggestionTextChange,
      className : styles.autocomplete
    };
 
     return <Autosuggest
-       ref={node=>this.component = node}
-       suggestions={findGroupSuggestions}
-       onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-       onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-       getSuggestionValue={getSuggestionValue}
-       onSuggestionSelected={this.onSuggestionSelected}
-       renderSuggestion={renderSuggestion}
-       inputProps={inputProps}
-     />
+      ref={node=>this.component = node}
+      suggestions={findGroupSuggestions}
+      onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+      onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+      getSuggestionValue={getSuggestionValue}
+      onSuggestionSelected={this.onSuggestionSelected}
+      renderSuggestion={renderSuggestion}
+      inputProps={inputProps}
+    />
   }
 }

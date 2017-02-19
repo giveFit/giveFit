@@ -9,22 +9,27 @@ import AuthService from 'utils/AuthService'
 import MainToolbar from '../../Home/Header/MainToolbar'
 import classes from './styles.module.css';
 
-const LOGGED_IN_USER = gql`
-  query LoggedInUser {
-    viewer {
-      user {
-        id
-        username
-        nickname
-      }
-    }
-  }
-`;
-
 //Get some WorkoutGroups
 const GET_THROUGH_VIEWER = gql`
-	query GetThroughViewer($first: Int) {
+query GetThroughViewer($first: Int) {
   	viewer {
+		allWorkouts {
+		    edges {
+		        node {
+			          parkId,
+			          title,
+			          date,
+			          time,
+			          description,
+			          recurring,
+			          Workout{
+			            nickname
+			            username
+			            picture
+			        }
+			    }
+		    }
+	    }
 	  	allWorkoutGroups(first: $first) {
 	  		edges {
 	  			node {
@@ -38,9 +43,10 @@ const GET_THROUGH_VIEWER = gql`
 	  			}
 	  		}
 	  	}
-	}
+    }
 }
 `;
+
 
 //How many WorkoutGroups to return
 const FIRST = 8;
@@ -90,6 +96,9 @@ class AppLoggedIn extends Component {
 	    console.log("auth0Profile", auth0Profile)
 	    console.log("tokenPayload", tokenPayload)
 	    const identity = auth0Profile.identities[0];
+	    //updateUser/loginUser expects userId, not user_id
+	    identity.userId = identity.user_id;
+	    delete identity.user_id;
 	    const that = this;
 	    //debugger;
 	    this.props.loginUser({
@@ -138,26 +147,28 @@ class AppLoggedIn extends Component {
 									auth={this.props}
 									profile={profile}
 							/>
-					}
+				}
 				</div>
-	<GridComponentWithData
-    latLng = {latLng}
-    onPlaceSelect={(place)=>{
-  		this.props.data.refetch({
-  			latLng : place.address
-  		});
-		return null;
-	   }}
-	profile={profile}
-	user={this.state.user}
-	workouts={(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ? this.props.data.viewer.allWorkoutGroups.edges : []}
-	markers={(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ?  this.props.data.viewer.allWorkoutGroups.edges.map((i,index)=>({
-		//title : i.node.title,
-		position : {
-			lat : parseFloat(i.node.lat),
-			lng : parseFloat(i.node.lng)
-		}
-	})) : []} />
+				<GridComponentWithData
+				    latLng = {latLng}
+				    onPlaceSelect={(place)=>{
+				  		this.props.data.refetch({
+				  			latLng : place.address
+				  		});
+						return null;
+					   }}
+					profile={profile}
+					user={this.state.user}
+					workoutGroups={(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ? this.props.data.viewer.allWorkoutGroups.edges : []}
+					workouts={(!this.props.data.loading && this.props.data.viewer.allWorkouts.edges) ? this.props.data.viewer.allWorkouts.edges : []}
+					markers={(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ?  this.props.data.viewer.allWorkoutGroups.edges.map((i,index)=>({
+						//title : i.node.title,
+						position : {
+							lat : parseFloat(i.node.lat),
+							lng : parseFloat(i.node.lng)
+						}
+					})) : []} 
+				/>
 				</div>
 
 		)
@@ -180,11 +191,6 @@ const AppLoggedInWithData =  compose(
 	    	loginUser: (credential) => mutate({ variables: { credential: credential } })
 	  	})
   	}),
-  	/*graphql(LOGGED_IN_USER, {
-	    props: ({ data }) =>  ({
-	      loggedInUser: data.viewer ? data.viewer.user : null
-	    })
-  	}),*/
 	graphql(UPDATE_USER_QUERY, {
 	    props: ({ mutate }) => ({
 	      updateUser: (user) => mutate({ variables: { user: user }}),

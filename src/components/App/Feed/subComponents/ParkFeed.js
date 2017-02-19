@@ -16,6 +16,7 @@ import Comment from 'material-ui/svg-icons/communication/comment';
 import {blue500, red500, greenA200, white} from 'material-ui/styles/colors';
 
 //Local components
+import WorkoutCreatorWithData from './WorkoutCreator';
 import WorkoutCreator from './WorkoutCreator';
 import WorkoutPost from './WorkoutPost';
 
@@ -32,6 +33,13 @@ const inlineStyles = {
 };
 
 class ParkFeed extends Component{
+  constructor(props, context) {
+    console.log('ParkFeed props', props)
+    super(props, context);
+    this.state = {
+      expanded: true
+    };
+  }
 
 	static propTypes = {
 		onClick : PropTypes.func.isRequired
@@ -41,12 +49,6 @@ class ParkFeed extends Component{
 		onClick : ()=>{}
 	}
 
-  constructor(props, context) {
-    super(props, context);
-    this.state = {
-      expanded: false
-    };
-  }
   componentWillReceiveProps(newProps){
     if(newProps.active !== this.props.active && newProps.active === true){
        console.log('i m now active', this.props.data.title);
@@ -114,32 +116,37 @@ class ParkFeed extends Component{
       <Card expanded={this.state.expanded}>
       <CardText expandable={true}>
       <Tabs >
-          <Tab label="Workouts">
+        <Tab label="Calendar">
+          <div>
+            {this.props.data.googleData.workouts.length ? 
+              <div>
+              {this.props.data.googleData.workouts.map((item, index) => (
+                   <div key={index} className={inlineStyles.workout}> {!item ||
+                    (<WorkoutPost
+                      data={item}
+                   />)} </div>
+              ))}
+              </div>
+            : null
+            }
+          </div>
+        </Tab>
+        <Tab label="Comments" >
+         <div>
            <div>
-            <WorkoutPost />
-            <WorkoutPost />
-            <WorkoutPost />
-            <WorkoutPost />
-            <WorkoutPost />
-            <WorkoutCreator />
+             <TextField hintText="Add a comment"/>
+             <Comment />
            </div>
-          </Tab>
-          <Tab label="Comments" >
-           <div>
-             <div>
-               <TextField hintText="Add a comment"/>
-               <Comment />
-             </div>
-           </div>
-          </Tab>
-          </Tabs>
+         </div>
+        </Tab>
+      </Tabs>
       </CardText>
       </Card>
      {/* <CardText>
         <div>Comments</div>
       </CardText>*/}
       <CardActions >
-      {this.state.expanded ? <RaisedButton label="Reduce" onTouchTap={this.handleReduce.bind(this)} /> : <RaisedButton label="See more activities" onTouchTap={this.handleExpand.bind(this)} /> }
+        <WorkoutCreatorWithData data={this.props.data}/> 
       </CardActions>
     </Card>
   }
