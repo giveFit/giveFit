@@ -90,8 +90,9 @@ class MainToolbar extends Component {
             primaryText="Tribes" />
           <MenuItem
             onTouchTap={this.handleClose.bind(this)}
-            onClick={()=>this.context.router.push('/graphiql')}
-            primaryText="API" />
+            primaryText="API" >  
+            <Link to="https://us-west-2.api.scaphold.io/graphql/newGiveFitAlias" target="_blank"/>
+          </MenuItem>
           <MenuItem
             onTouchTap={this.handleClose.bind(this)}
             onClick={()=>this.context.router.push('/about-us')}
@@ -108,7 +109,7 @@ class MainToolbar extends Component {
         </ToolbarGroup>
         <ToolbarGroup className={styles.onlyLargeScreens}>
           <FlatButton label="Tribes" onClick={()=>this.context.router.push('/app')}/>
-          <FlatButton label="API" onClick={()=>this.context.router.push('/graphiql')} />
+          <FlatButton className={styles.onlyLargeScreens} containerElement={<Link to="https://us-west-2.api.scaphold.io/graphql/newGiveFitAlias" target="_blank"/>} label="API"/>
           <FlatButton label="About Us" onClick={()=>this.context.router.push('/about-us')}  />
           <FontIcon className="muidocs-icon-custom-sort" />
           <ToolbarSeparator />

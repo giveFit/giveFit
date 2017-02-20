@@ -92,8 +92,7 @@ class LoggedInToolbar extends Component {
             primaryText="Tribes" />
           <MenuItem
             onTouchTap={this.handleClose.bind(this)}
-            primaryText="API"
-          >  
+            primaryText="API">  
             <Link to="https://us-west-2.api.scaphold.io/graphql/newGiveFitAlias" target="_blank"/>
           </MenuItem>
           <MenuItem
