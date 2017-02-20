@@ -87,7 +87,6 @@ class ParkFeed extends Component{
     return <Card ref='root' key={props.data.id} className={props.active ? styles.cardActive : ""} onTouchTap={()=>this.props.onClick()}>
       <CardHeader
         title={props.data.googleData.title}
-        //href={'/posts/' + post.id}
         subtitle={<a href={"http://maps.google.com/?q=" + props.data.googleData.vicinity} target="_blank">{props.data.googleData.vicinity}</a>}
         >
       {/*would eventually like to add tags*/}
@@ -112,6 +111,10 @@ class ParkFeed extends Component{
       </CardMedia>
       <CardText>
       {this.state.expanded ? null : <div>Next Workout: <WorkoutPost /></div>}
+      
+        See below for the calendar of upcoming activities at this location. <br />Post your own activity to share  
+        with other tribe members by clicking, "Post an Activity."
+      
       </CardText>
       <Card expanded={this.state.expanded}>
       <CardText expandable={true}>

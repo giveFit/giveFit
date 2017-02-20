@@ -164,7 +164,7 @@ class GroupCreator extends Component {
       //Need to improve styling a lot here
       <div>
         <RaisedButton
-          label="Create a workout group"
+          label="Create Your Tribe"
           labelPosition="before"
           onTouchTap={this.handleOpen.bind(this)}
           icon={<GroupAdd />}

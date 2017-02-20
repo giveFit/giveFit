@@ -89,7 +89,7 @@ export default class FindWorkouts extends Component{
       //Get my location
       if (navigator.geolocation) {
 					setTimeout(()=>{
-						this.component.input.value = 'Fetching location';
+						this.component.input.value = 'Loading...';
 					});
 					this.component.input.setAttribute(`disabled`,`disabled`);
 					navigator.geolocation.getCurrentPosition((position)=>{

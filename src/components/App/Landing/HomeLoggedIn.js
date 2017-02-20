@@ -145,11 +145,11 @@ export class HomeLoggedIn extends React.Component {
       <div className={styles.banner}>
       <div className={styles.bannerInner}>
         <h1 className={styles.heading}>Find Your Fitness Tribe</h1>
-        <h3 className={styles.subHeading}>Starting in Baltimore</h3>
+        <h3 className={styles.subHeading}>Connect with fitness groups right in your community</h3>
         <Card className={styles.bannerCard}>
           <CardText>
             <FindWorkouts ref={node=>this.findWorkoutsComponent = node}/>
-						<RaisedButton label="Find Groups" secondary={true} className={styles.submitButton} onTouchTap={()=>this.handleSubmit()} />
+						<RaisedButton label="Find My Tribe" secondary={true} className={styles.submitButton} onTouchTap={()=>this.handleSubmit()} />
           </CardText>
         </Card>
         </div>

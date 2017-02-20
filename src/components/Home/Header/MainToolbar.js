@@ -87,7 +87,7 @@ class MainToolbar extends Component {
           <MenuItem
             onTouchTap={this.handleClose.bind(this)}
             onClick={()=>this.context.router.push('/app')}
-            primaryText="Workout Groups" />
+            primaryText="Tribes" />
           <MenuItem
             onTouchTap={this.handleClose.bind(this)}
             onClick={()=>this.context.router.push('/blog')}
@@ -107,7 +107,7 @@ class MainToolbar extends Component {
           />
         </ToolbarGroup>
         <ToolbarGroup className={styles.onlyLargeScreens}>
-          <FlatButton label="Workouts" onClick={()=>this.context.router.push('/app')}/>
+          <FlatButton label="Tribes" onClick={()=>this.context.router.push('/app')}/>
           <FlatButton label="Blog" onClick={()=>this.context.router.push('/blog')} />
           <FlatButton label="About Us" onClick={()=>this.context.router.push('/about-us')}  />
           <FontIcon className="muidocs-icon-custom-sort" />
