@@ -14,3 +14,8 @@ Checkout the API for this app by visting our [GraphiQL](https://us-west-2.api.sc
 
 - Install dependencies `npm install`
 - Start the development server `npm run start`
+
+## To Do
+
+- Pull in Meetup API for more workout groups
+- Pull in Strava API for even more groups

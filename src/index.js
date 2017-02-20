@@ -32,6 +32,8 @@ import AppLoggedInWithData from './components/App/Feed/AppLoggedIn';
 import HomeLoggedInWithData from './components/App/Landing/HomeLoggedIn';
 //Actually the profile route
 import HomeContainerWithData from './components/App/Home/Home'
+//API
+import GraphiQLModule from './components/App/GraphiQL/GraphiQL';
 
 //const auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain);
 //const auth = new AuthService(__AUTH0_CLIENT_ID__, __AUTH0_DOMAIN__);
@@ -55,9 +57,8 @@ const Application = () => (
      >
       <Route path="/" component={HomeLoggedInWithData} />
       <Route path="/app" component={AppLoggedInWithData} />
-      <Route path="/home-logged-in" component={HomeLoggedInWithData} />
-      <Route path="/app-logged-in" component={AppLoggedInWithData} />
       <Route path="/profile" component={HomeContainerWithData} />
+      <Route path="/graphiql" component={GraphiQLModule} />
     </Router>
   </MuiThemeProvider>
 );
