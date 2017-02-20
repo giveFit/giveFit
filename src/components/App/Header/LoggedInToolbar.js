@@ -92,8 +92,10 @@ class LoggedInToolbar extends Component {
             primaryText="Tribes" />
           <MenuItem
             onTouchTap={this.handleClose.bind(this)}
-            onClick={()=>this.context.router.push('/blog')}
-            primaryText="Blog" />
+            primaryText="API"
+          >  
+            <Link to="https://us-west-2.api.scaphold.io/graphql/newGiveFitAlias" target="_blank"/>
+          </MenuItem>
           <MenuItem
             onTouchTap={this.handleClose.bind(this)}
             onClick={()=>this.context.router.push('/about-us')}
@@ -109,7 +111,7 @@ class LoggedInToolbar extends Component {
         </ToolbarGroup>
         <ToolbarGroup >
           <FlatButton className={styles.onlyLargeScreens} label="Tribes" onClick={()=>this.context.router.push('/app')}/>
-          <FlatButton className={styles.onlyLargeScreens} label="Blog" />
+          <FlatButton className={styles.onlyLargeScreens} containerElement={<Link to="https://us-west-2.api.scaphold.io/graphql/newGiveFitAlias" target="_blank"/>} label="API"/>
           <FlatButton className={styles.onlyLargeScreens} label="About Us" />
           <FontIcon className={styles.onlyLargeScreens} className="muidocs-icon-custom-sort" />
           {

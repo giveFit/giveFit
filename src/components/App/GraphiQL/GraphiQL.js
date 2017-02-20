@@ -7,11 +7,11 @@ import MainToolbar from '../../Home/Header/MainToolbar'
 
 
 function graphQLFetcher(graphQLParams) {
-  return fetch(scapholdUrl, {
+  return fetch(apolloConfig.api, {
     method: 'post',
     headers: { 
       'Content-Type': 'application/json',
-      'Authorization': localStorage.token ? 'Bearer ' + localStorage.token : ''
+      'Authorization': localStorage.scaphold_user_token ? 'Bearer ' + localStorage.scaphold_user_token : ''
     },
     body: JSON.stringify(graphQLParams),
   }).then(response => response.json());
