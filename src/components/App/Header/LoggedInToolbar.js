@@ -19,47 +19,12 @@ import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import MainToolbar from '../../Home/Header/MainToolbar'
 
-/*const LOGGED_IN_USER = gql`
-  query LoggedInUser {
-    viewer {
-      user {
-        id
-        username
-        nickname
-      }
-    }
-  }
-`;*/
-
-
-const LOGIN_USER_WITH_AUTH0_LOCK = gql `
-  mutation loginUserWithAuth0Lock($credential: LoginUserWithAuth0LockInput!) {
-    loginUserWithAuth0Lock(input: $credential) {
-    user{
-      id
-      username
-    }
-    }
-  }
-`
-const UPDATE_USER_QUERY = gql`
-mutation UpdateUser($user: UpdateUserInput!) {
-  updateUser(input: $user) {
-    changedUser {
-      id
-      username
-      picture
-    }
-  }
-}
-`;
-
 const inlineStyles = {
   title: {
     cursor: 'pointer',
   },
   avatar: {
-    margin: '10px 10px 10px 10px',  
+    margin: '10px 10px 10px 10px',
     cursor: 'pointer'
   }
 };
@@ -71,57 +36,11 @@ class LoggedInToolbar extends Component {
     this.state = {
       value: 3,
       open: false,
-      profile: null,
       /*profile: props.auth.getProfile(),*/
     };
     this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain);
-    this.startLogin = this.startLogin.bind(this);
-    this.onAuthenticated = this.onAuthenticated.bind(this);  
-    this.auth.on('authenticated', this.onAuthenticated);
-    this.onLoggedOut = this.onLoggedOut.bind(this);
-    this.auth.on('loggedOut', this.onLoggedOut);
-    this.auth.on('error', console.log);
   }
-  startLogin() {
-    this.auth.login();
-  }
-  onLoggedOut(){
-    this.setState({profile: null})
-  }
-  onAuthenticated(auth0Profile, tokenPayload) {
-      console.log('onAuthenticated props', this.props)
-      console.log("auth0Profile", auth0Profile)
-      console.log("tokenPayload", tokenPayload)
-      const identity = auth0Profile.identities[0];
-      //updateUser/loginUser expects userId, not user_id
-      identity.userId = identity.user_id;
-      delete identity.user_id;
-      console.log('LoggedInToolbar identity', identity)
-      const that = this;
-      //debugger;
-      this.setState({profile: auth0Profile});
-      this.props.loginUser({
-        identity: identity,
-        access_token: tokenPayload.accessToken,
-      }).then(res => {
-        console.log('authentication response', res)
-        const scapholdUserId = res.data.loginUserWithAuth0Lock.user.id;
-        const profilePicture = auth0Profile.picture;
-        const nickname = auth0Profile.nickname;
-        // Cause a UI update :)
-        console.log('scapholdUserId', scapholdUserId)
-        localStorage.setItem('scapholdUserId', JSON.stringify(scapholdUserId))
 
-        return that.props.updateUser({
-          id: scapholdUserId,
-          picture: profilePicture,
-          nickname: nickname
-        });
-
-      }).catch(err => {
-        console.log(`Error updating user: ${err.message}`);
-      });
-  }
   handleChange (event, index, value){
     this.setState({value})
   };
@@ -134,94 +53,90 @@ class LoggedInToolbar extends Component {
   handleClose() {
     this.setState({open: false})
   }
-  
-  /*handleTouchTap(){
+
+  handleTouchTap(){
     this.context.router.push('/')
-  }*/
+  }
 
   logout(){
     console.log('did the logout')
     this.auth.logout()
-    //this.context.router.push('/');
+    this.context.router.push('/');
   }
   goToWorkouts(){
-    hashHistory.push('/app-logged-in')
+    hashHistory.push('/app')
   }
-  /*componentDidMount(){
-    var profile = this.auth.getProfile();
-  }*/
   render() {
-    console.log('LoggedInToolbar this', this)
-    console.log('LoggedInToolbar profile', this.state.profile)
+    //console.log('LoggedInToolbar this', this)
+    const { profile } = this.props
     return (
       <div>
        <Toolbar>
         <ToolbarGroup>
           <FontIcon className="muidocs-icon-custom-sort" />
           <IconMenu
+            className={styles.iconMenu}
             iconButtonElement={
               <IconButton touch={true} onTouchTap={this.handleToggle.bind(this)}>
                 <Hamburger />
               </IconButton>
             }
           >
-          <MenuItem 
+          <MenuItem
             onTouchTap={this.handleClose.bind(this)}
             onClick={()=>this.context.router.push('/')}
             primaryText="Home" />
-          <MenuItem 
+          <MenuItem
             onTouchTap={this.handleClose.bind(this)}
             onClick={()=>this.context.router.push('/app')}
-            primaryText="Workout Locations" />
-          <MenuItem 
+            primaryText="Tribes" />
+          <MenuItem
             onTouchTap={this.handleClose.bind(this)}
-            onClick={()=>this.context.router.push('/blog')}
-            primaryText="Blog" />
-          <MenuItem 
+            primaryText="API">  
+            <Link to="https://us-west-2.api.scaphold.io/graphql/newGiveFitAlias" target="_blank"/>
+          </MenuItem>
+          <MenuItem
             onTouchTap={this.handleClose.bind(this)}
             onClick={()=>this.context.router.push('/about-us')}
             primaryText="About Us" />
-          <MenuItem 
+          <MenuItem
             onTouchTap={this.handleClose.bind(this)}
             primaryText="Add a Group"
             leftIcon={<GroupAdd />} />
           </IconMenu>
-          <ToolbarTitle style={inlineStyles.title} text="givefit" 
+          <ToolbarTitle style={inlineStyles.title} text="givefit"
             onClick={()=>this.context.router.push('/')}
           />
         </ToolbarGroup>
-        <ToolbarGroup>
-          <FlatButton label="Workout Groups" onClick={()=>this.context.router.push('/app')}/>
-          <FlatButton label="Blog" />
-          <FlatButton label="About Us" />
-          <FontIcon className="muidocs-icon-custom-sort" />
-          <ToolbarSeparator />
+        <ToolbarGroup >
+          <FlatButton className={styles.onlyLargeScreens} label="Tribes" onClick={()=>this.context.router.push('/app')}/>
+          <FlatButton className={styles.onlyLargeScreens} containerElement={<Link to="https://us-west-2.api.scaphold.io/graphql/newGiveFitAlias" target="_blank"/>} label="API"/>
+          <FlatButton className={styles.onlyLargeScreens} label="About Us" />
+          <FontIcon className={styles.onlyLargeScreens} className="muidocs-icon-custom-sort" />
           {
-          this.state.profile ? 
-          <div>
-              <Avatar 
-                style={inlineStyles.avatar} 
-                src={this.state.profile.picture}
-                onClick={()=>this.context.router.push('/profile')} 
-              /> 
-            <IconMenu
-              iconButtonElement={
-                <IconButton touch={true}>
-                  <NavigationExpandMoreIcon />
-                </IconButton>
-              }
-            >
-              <MenuItem 
-                primaryText="Profile"
-                onTouchTap={this.handleClose.bind(this)}
-                onClick={()=>this.context.router.push('/profile')} 
-                />
-              <MenuItem 
-                primaryText="Logout"
-                onClick={this.logout.bind(this)} />
-            </IconMenu>
-            </div> : <RaisedButton label="Login" primary={true} onClick={this.startLogin}/>
+            this.props.profile ?
+            <Avatar
+              style={inlineStyles.avatar}
+              src={profile.picture}
+              onClick={()=>this.context.router.push('/profile')}
+            /> : null
           }
+          <IconMenu
+            iconButtonElement={
+              <IconButton touch={true}>
+                <NavigationExpandMoreIcon />
+              </IconButton>
+            }
+          >
+            <MenuItem
+              primaryText="Profile"
+              onTouchTap={this.handleClose.bind(this)}
+              onClick={()=>this.context.router.push('/profile')}
+              />
+            <MenuItem
+              primaryText="Logout"
+              onClick={this.logout.bind(this)} />
+          </IconMenu>
         </ToolbarGroup>
       </Toolbar>
       </div>
@@ -237,22 +152,4 @@ class LoggedInToolbar extends Component {
       location: T.object,
     };
 
-const LoggedInToolbarWithData =  compose(
-    graphql(LOGIN_USER_WITH_AUTH0_LOCK, {
-      props: ({ mutate }) => ({
-        loginUser: (credential) => mutate({ variables: { credential: credential } })
-      })
-    }),
-    /*graphql(LOGGED_IN_USER, {
-      props: ({ data }) =>  ({
-        loggedInUser: data.viewer ? data.viewer.user : null
-      })
-    }),*/
-    graphql(UPDATE_USER_QUERY, {
-        props: ({ mutate }) => ({
-          updateUser: (user) => mutate({ variables: { user: user }}),
-        })
-    })
-)(LoggedInToolbar);
-
-export default LoggedInToolbarWithData;
+export default LoggedInToolbar;

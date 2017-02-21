@@ -1,6 +1,8 @@
-import React, {Component, PropTypes as T} from 'react'
-import {CardText, Chip, Avatar} from 'material-ui'
-import { Route, Router, Link, pathname, hashHistory } from 'react-router'
+import React, {Component, PropTypes as T} from 'react';
+import {CardText, Chip, Avatar} from 'material-ui';
+import { Route, Router, Link, pathname, hashHistory } from 'react-router';
+import Checkbox from 'material-ui/Checkbox';
+
 
 const inlineStyles = {
   subtitleStyle: {
@@ -8,7 +10,10 @@ const inlineStyles = {
   },
   chip: {
     margin: 4,
-  }
+  },
+   checkbox: {
+    marginBottom: 16,
+  },
 };
 
 class WorkoutPost extends Component{
@@ -40,6 +45,10 @@ class WorkoutPost extends Component{
 						        <p>Date: {this.props.data.node.date}</p>
 						        <p>Time: {this.props.data.node.time}</p>
 						        <p>Description: {this.props.data.node.description}</p>
+						        	<Checkbox
+									   label="RSVP"
+									   style={inlineStyles.checkbox}
+									/>
 						    </div>
 					    }
 			      </CardText>

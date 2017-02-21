@@ -1,16 +1,29 @@
 .workouts{
-  display : flex;
-  flex-wrap: wrap;
   /*trying to break into 3 columns*/
-  -webkit-column-count: 3; /* Chrome, Safari, Opera */
-  -moz-column-count: 3; /* Firefox */
-  column-count: 3;
+  display : flex;
+  flex-wrap : wrap;
 }
 
 .workout{
-  flex : 1;
-  margin: 10px 15px 10px 10px;
+  flex : 0 0 33.33%;
+  padding: 10px 15px 10px 10px;
+  box-sizing :border-box;
 }
+
+@media (max-width : 720px){
+  .workout{
+    flex : 0 0 50%;
+
+  }
+}
+
+@media (max-width : 400px){
+  .workout{
+    flex : 0 0 100%;
+  }
+}
+
+
 .submitButton{
   margin : 12px;
 }
@@ -22,7 +35,6 @@
   position : relative;
   text-align : center;
   max-height : 100%;
-
   &:before {
     content: '';
     position: absolute;
@@ -56,13 +68,7 @@
 
 .subHeading{
   font-style : italic;
- font-weight : normal;
-}
-
-.description{
-  /*font-style : italic;*/
   font-weight : normal;
-  color: white;
 }
 
 .featuredWorkouts{
@@ -70,4 +76,33 @@
   text-align : center;
   margin: 10px 15px 10px 10px;
 
+}
+
+.autocomplete{
+  padding : 16px;
+  font-size : 24px;
+}
+:global(.react-autosuggest__container){
+  position : relative;
+  z-index : 800 !important;
+}
+:global(.react-autosuggest__suggestions-container){
+  position : absolute;
+}
+:global(.react-autosuggest__suggestions-list){
+  list-style : none;
+  margin :0;
+  width : 100%;
+  left : 0;
+  text-align:left;
+  padding : 0;
+}
+:global(.react-autosuggest__suggestion div){
+  padding: 4px 6px;
+  box-sizing : border-box;
+}
+:global(.react-autosuggest__suggestion:first-child div){
+  font-weight :bold;
+  padding : 12px 6px;
+  font-size : 18px;
 }

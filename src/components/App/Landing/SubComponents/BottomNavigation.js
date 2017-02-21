@@ -74,5 +74,3 @@ class BottomNav extends Component {
 }
 
 export default BottomNav;
-
-

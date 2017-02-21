@@ -209,9 +209,3 @@ const WorkoutCreatorWithData = compose(
 )(WorkoutCreator);
 
 export default WorkoutCreatorWithData;
-
-/*export default graphql(CreateChannelQuery, {
-  props: ({ mutate }) => ({
-    createChannel: (channel) => mutate({ variables: { channel: channel }})
-  })
-})(CreateChannel);*/

@@ -18,9 +18,22 @@
 }
 
 /* Small screens */
-@media all and (max-width: 500px) {
+@media all and (max-width: 480px) {
   .navigation {
     /* On small screens, we are no longer using row direction but column */
     flex-direction: column;
+  }
+}
+
+
+@media (min-width : 480px){
+  .iconMenu{
+      display : none !important;
+  }
+}
+
+@media (max-width : 480px){
+  .onlyLargeScreens{
+      display : none !important;
   }
 }

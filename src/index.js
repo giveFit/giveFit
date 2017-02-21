@@ -1,3 +1,5 @@
+require('babel-core/register');
+require('babel-polyfill');
 import React from 'react';
 import { render } from 'react-dom';
 import { browserHistory, IndexRoute, Router, Route, routes, applyRouterMiddleware, hashHistory } from 'react-router';
@@ -30,6 +32,8 @@ import AppLoggedInWithData from './components/App/Feed/AppLoggedIn';
 import HomeLoggedInWithData from './components/App/Landing/HomeLoggedIn';
 //Actually the profile route
 import HomeContainerWithData from './components/App/Home/Home'
+//API
+import GraphiQLModule from './components/App/GraphiQL/GraphiQL';
 
 //const auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain);
 //const auth = new AuthService(__AUTH0_CLIENT_ID__, __AUTH0_DOMAIN__);
@@ -40,18 +44,21 @@ const requireAuth = (nextState, replace) => {
   }
 }
 const client = makeApolloClient(apolloConfig.scapholdUrl);
-console.log('client', client);
+console.log('client', client)
 //Wrap the app with our theme provider
 const Application = () => (
   <MuiThemeProvider muiTheme={muiTheme}>
-    <Router history={browserHistory}>
-      <Route path="/" component={App}>
-        <IndexRoute component={HomeLoggedInWithData}></IndexRoute>
-        <Route path="/app" component={AppLoggedInWithData}></Route>
-        {/*<Route path="/home-logged-in" component={HomeLoggedInWithData}></Route>
-        <Route path="/app-logged-in" component={AppLoggedInWithData}></Route>*/}
-        <Route path="/profile" component={HomeContainerWithData}></Route>
-      </Route>
+    <Router
+      history={browserHistory}
+      routes={routes}
+      render={
+        applyRouterMiddleware()
+      }
+     >
+      <Route path="/" component={HomeLoggedInWithData} />
+      <Route path="/app" component={AppLoggedInWithData} />
+      <Route path="/profile" component={HomeContainerWithData} />
+      <Route path="/graphiql" component={GraphiQLModule} />
     </Router>
   </MuiThemeProvider>
 );
