@@ -9,15 +9,11 @@ import RaisedButton from 'material-ui/RaisedButton';
 import {orange500, blue500, indigo500} from 'material-ui/styles/colors';
 import CircularProgress from 'material-ui/CircularProgress';
 import apolloConfig from '../../../../apolloConfig';
-<<<<<<< HEAD
-import AppLoggedInWithData from '../Feed/AppLoggedIn';
-=======
 
 import FindWorkouts from './FindWorkouts';
 import HomeFeed from './SubComponents/HomeFeed';
 import LoggedInToolbar from '../Header/LoggedInToolbar'
 import MainToolbar from '../../Home/Header/MainToolbar'
->>>>>>> origin/master
 import BottomNav from './SubComponents/BottomNavigation';
 
 const inlineStyles = {
@@ -39,8 +35,8 @@ export class HomeLoggedIn extends React.Component {
     this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain);
     this.auth.on('authenticated', this.onAuthenticated);
     this.auth.on('error', console.log);
-		localStorage.removeItem('__find_workouts_pos');
-		localStorage.removeItem('__find_workouts_address');
+    localStorage.removeItem('__find_workouts_pos');
+    localStorage.removeItem('__find_workouts_address');
   }
 
   onAuthenticated(auth0Profile, tokenPayload) {
@@ -91,21 +87,21 @@ export class HomeLoggedIn extends React.Component {
     entering anything, but still have the value declaration
     below for when i do a location query*/
     /*const {value} = this.refs.textbox.input;*/
-		const fWPosString = localStorage.getItem('__find_workouts_pos');
-		const fWAddress = localStorage.getItem('__find_workouts_address');
-		if(fWPosString){
-			const {lat,lng} = JSON.parse(fWPosString);
-			return this.context.router.push(`/app?lat=${lat}&lng=${lng}`);
-		}
-		if(fWAddress){
-			return this.findWorkoutsComponent.getLatLng(fWAddress).then(results=>{
-				 const {geometry  : {location}} = results[0];
-				 const lat = location.lat(),
-				 				lng = location.lng();
-				this.context.router.push(`/app?lat=${lat}&lng=${lng}`);
-			});
-		}
-		this.context.router.push(`/app`);
+    const fWPosString = localStorage.getItem('__find_workouts_pos');
+    const fWAddress = localStorage.getItem('__find_workouts_address');
+    if(fWPosString){
+      const {lat,lng} = JSON.parse(fWPosString);
+      return this.context.router.push(`/app?lat=${lat}&lng=${lng}`);
+    }
+    if(fWAddress){
+      return this.findWorkoutsComponent.getLatLng(fWAddress).then(results=>{
+         const {geometry  : {location}} = results[0];
+         const lat = location.lat(),
+                lng = location.lng();
+        this.context.router.push(`/app?lat=${lat}&lng=${lng}`);
+      });
+    }
+    this.context.router.push(`/app`);
 
   }
   
@@ -153,18 +149,10 @@ export class HomeLoggedIn extends React.Component {
         <Card className={styles.bannerCard}>
           <CardText>
             <FindWorkouts ref={node=>this.findWorkoutsComponent = node}/>
-						<RaisedButton label="Find My Tribe" secondary={true} className={styles.submitButton} onTouchTap={()=>this.handleSubmit()} />
+            <RaisedButton label="Find My Tribe" secondary={true} className={styles.submitButton} onTouchTap={()=>this.handleSubmit()} />
           </CardText>
-<<<<<<< HEAD
-            <h2 className={styles.description}>Connect with fitness groups right in your community.</h2>
-          </Card>
-          </div>
-=======
         </Card>
->>>>>>> origin/master
         </div>
-        <BottomNav />
-        
       </div>
       <h2 className={styles.featuredWorkouts}>
           <p>Logos</p>
@@ -186,22 +174,22 @@ HomeLoggedIn.contextTypes = {
 
 //Get some WorkoutGroups
 const GET_THROUGH_VIEWER = gql`
-	query GetThroughViewer($first: Int) {
-  	viewer {
-	  	allWorkoutGroups(first: $first) {
-	  		edges {
-	  			node {
-				  id
-				  image
-				  title
-				  lat
-				  lng
-				  avatar
-				  contentSnippet
-	  			}
-	  		}
-	  	}
-	}
+  query GetThroughViewer($first: Int) {
+    viewer {
+      allWorkoutGroups(first: $first) {
+        edges {
+          node {
+          id
+          image
+          title
+          lat
+          lng
+          avatar
+          contentSnippet
+          }
+        }
+      }
+  }
 }
 `;
 

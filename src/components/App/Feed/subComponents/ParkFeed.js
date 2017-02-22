@@ -7,8 +7,6 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import TextField from 'material-ui/TextField';
 import Toggle from 'material-ui/Toggle';
 import { Avatar, Chip } from 'material-ui';
-import ReactPaginate from 'react-paginate';
-
 //svg-icons
 import BookmarkBorder from 'material-ui/svg-icons/action/bookmark-border';
 import Done from 'material-ui/svg-icons/action/done';
@@ -31,31 +29,25 @@ const inlineStyles = {
   },
   chip: {
     margin: 4,
-  },
-  workout : {
-    padding : '20px 12px 10px',
-    boxSizing : 'border-box'
   }
 };
-
-
 
 class ParkFeed extends Component{
   constructor(props, context) {
     console.log('ParkFeed props', props)
     super(props, context);
     this.state = {
-      expanded: true
+      expanded: true,
     };
   }
 
-	static propTypes = {
-		onClick : PropTypes.func.isRequired
-	}
+  static propTypes = {
+    onClick : PropTypes.func.isRequired
+  }
 
-	static defaultProps = {
-		onClick : ()=>{}
-	}
+  static defaultProps = {
+    onClick : ()=>{}
+  }
 
   componentWillReceiveProps(newProps){
     if(newProps.active !== this.props.active && newProps.active === true){
@@ -85,14 +77,11 @@ class ParkFeed extends Component{
     console.log('handling open')
     this.setState({open: true});
   };
-  //handleClose of WorkoutCreator
-  handleClose(){
-    this.setState({open: false});
-  };
+
   render(){
     const {props} = this;
     //console.log('feed props', props)
-    return <Card ref='root' key={props.data.id} className={props.active ? styles.cardActive : ""} onTouchTap={()=>this.props.onClick()}>
+    return <div><Card ref='root' key={props.data.id} className={props.active ? styles.cardActive : ""} onTouchTap={()=>this.props.onClick()}>
       <CardHeader
         title={props.data.googleData.title}
         subtitle={<a href={"http://maps.google.com/?q=" + props.data.googleData.vicinity} target="_blank">{props.data.googleData.vicinity}</a>}
@@ -116,42 +105,6 @@ class ParkFeed extends Component{
         }
       >
         {props.data.googleData.photos ? <img src={props.data.googleData.photos} className={styles.img}/> : <img src="http://lorempixel.com/400/200" />}
-<<<<<<< HEAD
-      </CardMedia>      
-      <Card expanded={this.state.expanded}>
-      <CardText expandable={true}>
-      <Tabs>
-          <Tab label="Calendar">
-            <div>
-              {this.props.data.googleData.workouts.length ? 
-                <div>
-                {this.props.data.googleData.workouts.map((item, index) => (
-                     <div key={index} className={inlineStyles.workout}> {!item ||
-                      (<WorkoutPost
-                        data={item}
-                     />)} </div>
-                ))}
-                </div>
-              : null
-              }
-            </div>
-
-          </Tab>
-          <Tab label="Comments" >
-          <div>
-              <div>
-                <TextField hintText="Add a comment"/>
-              <Comment />
-            </div>
-          </div>
-        </Tab>
-      </Tabs>
-      <CardActions >
-        
-        <WorkoutCreatorWithData data={this.props.data}/> 
-        
-      </CardActions>
-=======
       </CardMedia>
       <CardText>
       {this.state.expanded ? null : <div>Next Workout: <WorkoutPost /></div>}
@@ -187,20 +140,16 @@ class ParkFeed extends Component{
          </div>
         </Tab>
       </Tabs>
->>>>>>> origin/master
       </CardText>
       </Card>
      {/* <CardText>
         <div>Comments</div>
       </CardText>*/}
-<<<<<<< HEAD
-
-=======
       <CardActions >
         <WorkoutCreatorWithData data={this.props.data}/> 
       </CardActions>
->>>>>>> origin/master
     </Card>
+    </div>
   }
 }
 

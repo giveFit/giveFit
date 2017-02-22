@@ -2,6 +2,8 @@ import React, {Component, PropTypes as T} from 'react';
 import {CardText, Chip, Avatar} from 'material-ui';
 import { Route, Router, Link, pathname, hashHistory } from 'react-router';
 import Checkbox from 'material-ui/Checkbox';
+import Snackbar from 'material-ui/Snackbar';
+
 
 
 const inlineStyles = {
@@ -19,11 +21,30 @@ const inlineStyles = {
 class WorkoutPost extends Component{
 	constructor(props){
 		console.log('WorkoutPost props', props)
-		super(props)
+		super(props);
+		this.state = {
+			snack: false,
+			autoHideDuration: 2000,
+			message: 'Event added to your calendar',
+		}
 	}
-	 handleTouchTap(){
+
+	handleRequestClose(){
+	    this.setState({snack: false});
+	};
+	handleSnack(){
+		this.setState({snack: true})
+	}
+	handleTouchTap(){
 		alert('You clicked the Chip.');
 	}
+	handleActionTouchTap(){
+	    this.setState({
+	      snack: false,
+	    });
+		alert('Event removed from your calendar.');
+	};
+
 	render(){
 		return(
 			<div>
@@ -48,12 +69,21 @@ class WorkoutPost extends Component{
 						        	<Checkbox
 									   label="RSVP"
 									   style={inlineStyles.checkbox}
+									   onCheck={this.handleSnack.bind(this)}
 									/>
 						    </div>
 					    }
 			      </CardText>
 					: null
 				}
+			<Snackbar
+		      open={this.state.snack}
+		      message={this.state.message}
+		      action="undo"
+		      autoHideDuration={this.state.autoHideDuration}
+		      onActionTouchTap={this.handleActionTouchTap.bind(this)}
+		      onRequestClose={this.handleRequestClose.bind(this)}
+		    />
 			</div>
 		)
 	}

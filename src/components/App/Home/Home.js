@@ -15,7 +15,8 @@ import ProfileDetails from '../Profile/ProfileDetails';
 import ProfileEdit from '../Profile/ProfileEdit';
 import LoggedInToolbar from '../Header/LoggedInToolbar'
 import apolloConfig from '../../../../apolloConfig';
-import HomeFeed from '../Landing/SubComponents/HomeFeed'
+import HomeFeed from '../Landing/SubComponents/HomeFeed';
+import WorkoutPost from '../Feed/subComponents/WorkoutPost';
 
 /*possible reference: https://github.com/scaphold-io/auth0-lock-playground*/
 export class Home extends React.Component {
@@ -37,17 +38,17 @@ export class Home extends React.Component {
     const workoutGroups=(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ? this.props.data.viewer.allWorkoutGroups.edges : [];
     const workouts=(!this.props.data.loading && this.props.data.viewer.allWorkouts.edges) ? this.props.data.viewer.allWorkouts.edges : [];
     //console.log('profile', profile);
-    const calendar = workoutGroups.length ? <div className={styles.workouts}>
-    {workoutGroups.map((item, index) => (
-         <div key={index} className={styles.workout}> {!item ||
-          (<HomeFeed
-            data={item.node}
+    const calendar = workouts.length ? <div className={styles.workouts}>
+    {workouts.map((item, index) => (
+         <div key={index}> {!item ||
+          (<WorkoutPost
+            data={item}
          />)} </div>
     ))}
     </div> : <CircularProgress size={80} />
     const savedGroups = workoutGroups.length ? <div className={styles.workouts}>
     {workoutGroups.map((item, index) => (
-         <div key={index} className={styles.workout}> {!item ||
+         <div key={index} className={styles.tribe}> {!item ||
           (<HomeFeed
             data={item.node}
          />)} </div>
@@ -65,19 +66,13 @@ export class Home extends React.Component {
           <ProfileDetails profile={profile}></ProfileDetails>
           <ProfileEdit profile={profile} auth={this.props.auth}></ProfileEdit>
           <Tabs>
-          <Tab label="Calendar">
-          
-           {calendar} 
-                
-            
-          </Tab>
-          <Tab label="My Tribes" >
-           
-           {savedGroups}
-
-          </Tab>
-        </Tabs>
-          
+            <Tab label="Calendar">
+              {calendar}   
+            </Tab>
+            <Tab label="My Tribes" >
+              {savedGroups}
+            </Tab>
+        </Tabs> 
         </CardText>
         </Card>
       </div>

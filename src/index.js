@@ -24,7 +24,7 @@ import AuthService from './utils/AuthService';
 //Not logged in Components
 import GridContainerWithData from './components/Home/Feed/GridContainer';
 import LandingPageContainerWithData from './components/Home/Landing/index';
-import App from './app.js'
+
 
 
 //Logged in Components

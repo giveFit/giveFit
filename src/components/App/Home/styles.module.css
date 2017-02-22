@@ -7,7 +7,8 @@
   flex-wrap : wrap;
 }
 
-.workout{
+/*why can't i reassign this to a different name?*/
+.tribe{
   flex : 0 0 33.33%;
   padding: 10px 15px 10px 10px;
   box-sizing :border-box;
