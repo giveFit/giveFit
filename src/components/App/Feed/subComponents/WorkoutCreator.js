@@ -85,7 +85,7 @@ class WorkoutCreator extends Component {
       recurring: this.state.recur,
       parkId: this.props.data.googleData.parkId ? this.props.data.googleData.parkId : undefined,
       //workoutId is the id of the loggedInUser, allowing us to make a connection in our data graph
-      workoutId: this.props.loggedInUser ? this.props.loggedInUser.id : undefined
+      workoutId: this.props.loggedInUser ? this.props.loggedInUser.id : this.auth.getLoggedInUser,
     }).then(({data}) => {
       console.log('submitWorkout data', data)
       that.setState({
@@ -177,7 +177,6 @@ class WorkoutCreator extends Component {
               />
               <TimePicker
                 hintText="Select a time"
-                autoOk={true}
                 onChange={this.onTimeChange.bind(this)}
               /> 
               <Toggle

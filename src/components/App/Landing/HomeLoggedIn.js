@@ -1,5 +1,7 @@
 import React, { PropTypes as T } from 'react';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText, GridList} from 'material-ui/Card';
+import Paper from 'material-ui/Paper';
+import FlatButton from 'material-ui/FlatButton';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import AuthService from 'utils/AuthService';
@@ -19,6 +21,13 @@ import BottomNav from './SubComponents/BottomNavigation';
 const inlineStyles = {
   textFieldStyle: {
     color: indigo500,
+  },
+  paper: {
+    height: 100,
+    width: 100,
+    margin: 5,
+    textAlign: 'center',
+    display: 'inline-block',
   }
 }
 
@@ -155,11 +164,44 @@ export class HomeLoggedIn extends React.Component {
         </div>
       </div>
       <h2 className={styles.featuredWorkouts}>
-          <p>Logos</p>
-          <p>mission</p>
-          <p>features</p>
-          <p>mission</p>
-          <p>search again</p>
+          <CardText>
+            Our community partners
+          </CardText>
+          <Paper style={inlineStyles.paper} zDepth={1} />
+          <Paper style={inlineStyles.paper} zDepth={2} />
+          <Paper style={inlineStyles.paper} zDepth={1} />
+          <Paper style={inlineStyles.paper} zDepth={2} />
+          <Paper style={inlineStyles.paper} zDepth={1} />
+          <Paper style={inlineStyles.paper} zDepth={2} />
+          <Paper style={inlineStyles.paper} zDepth={1} />
+          <CardText>
+            GiveFit takes the pressure out of working out. We help you find likeminded "tribes" 
+            who happen to live nearby. 
+          </CardText>
+        <CardText>
+          GiveFit takes the pressure out of working out. We help you find likeminded "tribes" 
+          who happen to live nearby. 
+        </CardText>
+        <Paper style={inlineStyles.paper} zDepth={1} />
+          <Paper style={inlineStyles.paper} zDepth={2} />
+          <Paper style={inlineStyles.paper} zDepth={1} />
+          <Paper style={inlineStyles.paper} zDepth={2} />
+          <Paper style={inlineStyles.paper} zDepth={1} />
+          <Paper style={inlineStyles.paper} zDepth={2} />
+          <Paper style={inlineStyles.paper} zDepth={1} />
+        <div className={styles.searchAgain}>
+          <div className={styles.bannerInner}>
+            <h1 className={styles.heading}>Find Your Fitness Tribe</h1>
+            <h3 className={styles.subHeading}>Connect with fitness groups right in your community</h3>
+            <Card className={styles.bannerCard}>
+              <CardText>
+                <FindWorkouts ref={node=>this.findWorkoutsComponent = node}/>
+                <RaisedButton label="Find My Tribe" secondary={true} className={styles.submitButton} onTouchTap={()=>this.handleSubmit()} />
+              </CardText>
+            </Card>
+          </div>
+        </div>
+          
       </h2>
       <BottomNav />
       </div>

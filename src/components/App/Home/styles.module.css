@@ -14,7 +14,7 @@
   box-sizing :border-box;
 }
 
-@media (max-width : 720px){
+/*@media (max-width : 720px){
   .workout{
     flex : 0 0 50%;
 
@@ -25,4 +25,4 @@
   .workout{
     flex : 0 0 100%;
   }
-}
+}*/

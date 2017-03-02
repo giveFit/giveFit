@@ -25,7 +25,8 @@ class WorkoutPost extends Component{
 		this.state = {
 			snack: false,
 			autoHideDuration: 2000,
-			message: 'Event added to your calendar',
+			messageTrue: 'Event added to your calendar',
+			messageFalse: 'Event removed from your calendar',
 		}
 	}
 
@@ -33,7 +34,7 @@ class WorkoutPost extends Component{
 	    this.setState({snack: false});
 	};
 	handleSnack(){
-		this.setState({snack: true})
+		this.setState({snack: !this.state.snack})
 	}
 	handleTouchTap(){
 		alert('You clicked the Chip.');
@@ -78,7 +79,7 @@ class WorkoutPost extends Component{
 				}
 			<Snackbar
 		      open={this.state.snack}
-		      message={this.state.message}
+		      message={this.state.messageTrue}
 		      action="undo"
 		      autoHideDuration={this.state.autoHideDuration}
 		      onActionTouchTap={this.handleActionTouchTap.bind(this)}

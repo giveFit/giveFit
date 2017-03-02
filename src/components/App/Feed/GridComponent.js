@@ -24,10 +24,10 @@ const styles = {
   },
   gridList: {
     width: 500,
-    paddingTop:100,
+    paddingTop: 65,
     position : 'relative',
     background : '#e5e5e5',
-    display : 'flex'
+    display : 'flex',
   },
   workout : {
     padding : '20px 12px 10px',

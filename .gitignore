@@ -2,3 +2,4 @@
 .DS_Store
 configKeys.js
 npm-debug.log
+dist

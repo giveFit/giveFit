@@ -30,3 +30,16 @@
 	display : flex;
 	flex-direction : column;
 }
+
+.bottomNav {
+  flex-flow: row wrap;
+  /* This aligns items to the end line on main-axis */
+  display: none;
+  justify-content: flex-end;
+}
+@media all and (max-width: 480px) {
+  .bottomNav {
+    /* On small screens, we are no longer using row direction but column */
+    display: flex !important;
+  }
+}

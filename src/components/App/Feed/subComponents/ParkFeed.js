@@ -7,6 +7,8 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import TextField from 'material-ui/TextField';
 import Toggle from 'material-ui/Toggle';
 import { Avatar, Chip } from 'material-ui';
+import {GridList, GridTile} from 'material-ui/GridList';
+
 //svg-icons
 import BookmarkBorder from 'material-ui/svg-icons/action/bookmark-border';
 import Done from 'material-ui/svg-icons/action/done';
@@ -29,7 +31,12 @@ const inlineStyles = {
   },
   chip: {
     margin: 4,
-  }
+  },
+  gridList: {
+    width: 500,
+    height: 250,
+    overflowY: 'auto',
+  },
 };
 
 class ParkFeed extends Component{
@@ -81,7 +88,7 @@ class ParkFeed extends Component{
   render(){
     const {props} = this;
     //console.log('feed props', props)
-    return <div><Card ref='root' key={props.data.id} className={props.active ? styles.cardActive : ""} onTouchTap={()=>this.props.onClick()}>
+    return <div><Card ref='root' key={props.data.id}>
       <CardHeader
         title={props.data.googleData.title}
         subtitle={<a href={"http://maps.google.com/?q=" + props.data.googleData.vicinity} target="_blank">{props.data.googleData.vicinity}</a>}
@@ -89,6 +96,8 @@ class ParkFeed extends Component{
       {/*would eventually like to add tags*/}
         </CardHeader>
       <CardMedia
+        className={props.active ? styles.cardActive : ""}
+        onTouchTap={()=>this.props.onClick()}
         overlay={
           <CardTitle
             title={props.data.googleData.rating > 0 ? <div> Rating: {props.data.googleData.rating} </div>: <div></div>}
@@ -118,15 +127,26 @@ class ParkFeed extends Component{
       <Tabs >
         <Tab label="Calendar">
           <div>
+          {/*Need to add better logic about rendering only quality posts*/}
             {this.props.data.googleData.workouts.length ? 
+              <GridList
+              cols={1}
+              cellHeight={150}
+              padding={0}
+              style={inlineStyles.gridList}
+              >
               <div>
               {this.props.data.googleData.workouts.map((item, index) => (
-                   <div key={index} className={inlineStyles.workout}> {!item ||
+                  
+                  <div key={index} className={inlineStyles.workout}> {!item ||
                     (<WorkoutPost
                       data={item}
-                   />)} </div>
+                  />)} 
+                  </div>
+                  
               ))}
               </div>
+              </GridList>
             : null
             }
           </div>

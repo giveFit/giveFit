@@ -2,11 +2,12 @@ import React, { Component, PropTypes as T } from 'react';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import GridComponent from './GridComponent';
-import LoggedInToolbar from '../Header/LoggedInToolbar'
+import LoggedInToolbar from '../Header/LoggedInToolbar';
 import apolloConfig from '../../../../apolloConfig';
 //local utils
-import AuthService from 'utils/AuthService'
-import MainToolbar from '../../Home/Header/MainToolbar'
+import AuthService from 'utils/AuthService';
+import MainToolbar from '../../Home/Header/MainToolbar';
+import MobileBottomNav from './subComponents/MobileBottomNav';
 import classes from './styles.module.css';
 
 //Get some WorkoutGroups
@@ -164,6 +165,7 @@ class AppLoggedIn extends Component {
 						}
 					})) : []} 
 				/>
+				<MobileBottomNav className={classes.bottomNav}/>
 				</div>
 
 		)
