@@ -14,10 +14,14 @@ const nearbyIcon = <IconLocationOn />;
  * state (for instance, by the URL).
  */
 class MobileBottomNav extends Component {
-  state = {
-    selectedIndex: 0,
-  };
-
+  constructor(props){
+    super(props);
+    this.state = {
+      selectedIndex: 0,
+    };
+    this.select = this.select.bind(this);
+  }
+  
   select(index){this.setState({selectedIndex: index})};
 
   render() {
@@ -27,12 +31,12 @@ class MobileBottomNav extends Component {
           <BottomNavigationItem
             label="List"
             icon={favoritesIcon}
-            onTouchTap={() => this.select(1).bind(this)}
+            onTouchTap={() => this.select(1)}
           />
           <BottomNavigationItem
             label="Map"
             icon={nearbyIcon}
-            onTouchTap={() => this.select(2).bind(this)}
+            onTouchTap={() => this.select(2)}
           />
         </BottomNavigation>
       </Paper>

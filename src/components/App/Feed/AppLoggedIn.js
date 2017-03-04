@@ -7,8 +7,8 @@ import apolloConfig from '../../../../apolloConfig';
 //local utils
 import AuthService from 'utils/AuthService';
 import MainToolbar from '../../Home/Header/MainToolbar';
-import MobileBottomNav from './subComponents/MobileBottomNav';
 import classes from './styles.module.css';
+import MobileBottomNav from './subComponents/MobileBottomNav';
 
 //Get some WorkoutGroups
 const GET_THROUGH_VIEWER = gql`

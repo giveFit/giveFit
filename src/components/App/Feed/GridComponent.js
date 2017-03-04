@@ -13,8 +13,8 @@ import GroupCreatorWithData from './subComponents/GroupCreator'
 import {searchNearby} from 'utils/googleApiHelpers';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
+import MobileBottomNav from './subComponents/MobileBottomNav';
 import classes from './styles.module.css';
-
 
 const styles = {
   root: {
