@@ -171,6 +171,7 @@ class AppLoggedIn extends Component {
 		)
 	};
 }
+
 AppLoggedIn.propTypes = {
   auth: T.instanceOf(AuthService),
   loginUser: T.func.isRequired

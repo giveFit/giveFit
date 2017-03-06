@@ -14,6 +14,10 @@ import {searchNearby} from 'utils/googleApiHelpers';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import MobileBottomNav from './subComponents/MobileBottomNav';
+//https://mapstyle.withgoogle.com/
+import mapStyles from '../constants/mapStyles.json';
+//can we get some hot icons in here? http://map-icons.com/
+
 import classes from './styles.module.css';
 
 const styles = {
@@ -32,7 +36,7 @@ const styles = {
   workout : {
     padding : '20px 12px 10px',
     boxSizing : 'border-box'
-  }
+  },
 };
 
 class GridComponent extends Component {
@@ -93,6 +97,8 @@ class GridComponent extends Component {
       }
       try{
         //search and add parks to state
+        //add meetup activities as well https://www.npmjs.com/package/meetup-crawler
+        //or https://github.com/jkutianski/meetup-api/tree/0.1.X
        const parksPromise = searchNearby(self.googleMaps, div, parks);
        const gymsPromise = searchNearby(self.googleMaps, div, gyms);
        Promise.all([parksPromise,gymsPromise]).then(([parksResult,gymsResult])=>{
@@ -223,6 +229,7 @@ class GridComponent extends Component {
                  googleMapElement={
                    <GoogleMap
                     ref={(map) => { this._googleMapComponent = map ; } }
+                    defaultOptions={{ styles : mapStyles}}
                     defaultZoom={14}
                     defaultCenter={centerLatLng}
                     onClick={(...args)=>{
@@ -230,12 +237,13 @@ class GridComponent extends Component {
                       return this.geocodeLatLng(...args)
                      }}
                    >
+
                      {parksAndGyms.length ? Object.keys(placeById).map((marker, index) => {
                        return (
                          <Marker
                           key={index}
                           animation={activeIndex===index ? google.maps.Animation.BOUNCE : null}
-                          icon={activeIndex === index ? `http://maps.google.com/mapfiles/ms/icons/yellow-dot.png` :  `http://maps.google.com/mapfiles/ms/icons/red-dot.png`}
+                          icon={activeIndex === index ? `http://maps.google.com/mapfiles/ms/icons/ltblue-dot.png` :  `http://maps.google.com/mapfiles/ms/icons/green.png`}
                            {...placeById[marker].googleData}
                            onClick={()=>this.markerClick(index)}
                            onRightclick={() => console.log(marker,index)} />

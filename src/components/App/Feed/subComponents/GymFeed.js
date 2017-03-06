@@ -104,7 +104,7 @@ class GymFeed extends React.Component{
         {props.data.rating ? <div> Rating: &nbsp {props.data.rating} </div>: <div></div>}
       </CardText>
       <CardText>
-        Is this your gym or studio? Claim it here!
+        Is this your gym or studio? Claim it <a href="mailto:jktunney5@gmail.com?subject=Claim Gym&body=Message" target="_blank">here</a>!
       </CardText>
       <Card expanded={this.state.expanded}>
       <CardText expandable={true}>

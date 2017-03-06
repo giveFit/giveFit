@@ -35,7 +35,7 @@ const styles = {
     display: "inline"
   },
   toolbar: {
-    background: '#D01F3C',
+    background: '#E0E0E2',
     paddingTop: 15
   }
 };
