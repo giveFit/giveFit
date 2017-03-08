@@ -53,10 +53,18 @@ class WorkoutCreator extends Component {
       recur: true,
       title: null,
       description: null,
-      date: null
+      date: null,
+      scapholdUser: null,
     };
     this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain);  
+
   }
+  /*componentDidMount(){
+    var scapholdUser = localStorage.getItem('scapholdUserId') ? this.auth.getLoggedInUser() : null;
+    this.setState({scapholdUser: scapholdUser});
+    console.log('scapholdUser', scapholdUser)
+    console.log('scapholdUser state', this.state.scapholdUser)
+  }*/
 
   handleOpen(){
     console.log('handling open')
@@ -72,7 +80,12 @@ class WorkoutCreator extends Component {
     this.setState({open: false});
   };
   submitWorkout(e){
+    //looking to see if we still have the userId being set in localStorage
+    //This seems to happen if the JWT has not expired for current user, but scaphold can't find the "loggedInUser"
+    var scapholdUser = localStorage.getItem('scapholdUserId') ? this.auth.getLoggedInUser() : null;
     console.log("submitWorkout props", this.props)
+    console.log("submitWorkout scapholdUser local", scapholdUser)
+    console.log("submitWorkout this", this)
     if(e){
       e.preventDefault();
     }
@@ -85,7 +98,7 @@ class WorkoutCreator extends Component {
       recurring: this.state.recur,
       parkId: this.props.data.googleData.parkId ? this.props.data.googleData.parkId : undefined,
       //workoutId is the id of the loggedInUser, allowing us to make a connection in our data graph
-      workoutId: this.props.loggedInUser ? this.props.loggedInUser.id : this.auth.getLoggedInUser,
+      workoutId: this.props.loggedInUser ? this.props.loggedInUser.id : scapholdUser,
     }).then(({data}) => {
       console.log('submitWorkout data', data)
       that.setState({

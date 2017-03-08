@@ -37,6 +37,12 @@ const inlineStyles = {
     height: 250,
     overflowY: 'auto',
   },
+  rating: {
+    float: 'left',
+  },
+  save: {
+    padding: "10px"
+  }
 };
 
 class ParkFeed extends Component{
@@ -100,9 +106,10 @@ class ParkFeed extends Component{
         onTouchTap={()=>this.props.onClick()}
         overlay={
           <CardTitle
+            style={inlineStyles.rating}
             title={props.data.googleData.rating > 0 ? <div> Rating: {props.data.googleData.rating} </div>: <div></div>}
             subtitle={
-              <div> Save:
+              <div className={inlineStyles.save}> Save:
                 <BookmarkBorder
                   color={white}
                   hoverColor={greenA200}
@@ -113,7 +120,7 @@ class ParkFeed extends Component{
           />
         }
       >
-        {props.data.googleData.photos ? <img src={props.data.googleData.photos} className={styles.img}/> : <img src="http://lorempixel.com/400/200" />}
+        {props.data.googleData.photos ? <img src={props.data.googleData.photos} className={styles.img}/> : <img src="https://placehold.it/400x200/ffffff/000000" />}
       </CardMedia>
       <CardText>
       {this.state.expanded ? null : <div>Next Workout: <WorkoutPost /></div>}

@@ -98,7 +98,7 @@ class GymFeed extends React.Component{
           />
         }
       >
-        {props.data.googleData.photos ? <img src={props.data.googleData.photos} className={styles.img}/> : <img src="http://lorempixel.com/400/200" />}
+        {props.data.googleData.photos ? <img src={props.data.googleData.photos} className={styles.img}/> : <img src="https://placehold.it/400x200/ffffff/000000" />}
       </CardMedia>
       <CardText>
         {props.data.rating ? <div> Rating: &nbsp {props.data.rating} </div>: <div></div>}

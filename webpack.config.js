@@ -56,7 +56,7 @@ var config = getConfig({
 				.__app__body__container__left{
 
 				  flex : 1;
-				}
+				} 
 				 </style><script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDaqZIUzhyOdPDlsVjkdLbuWj89F3gNCMg&libraries=places" ></script>`,
         publicPath: isDev ? 'http://localhost:3000/' : '',
         meta: {

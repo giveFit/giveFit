@@ -14,6 +14,8 @@ var options = {
   }  
 };
 
+/*Todo: add a listener to see if the scaphold_user_token is there, do an "updateUser"*/
+
 export default class AuthService extends EventEmitter {
   constructor(clientId, domain) {
     super();

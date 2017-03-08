@@ -17,6 +17,7 @@ import HomeFeed from './SubComponents/HomeFeed';
 import LoggedInToolbar from '../Header/LoggedInToolbar'
 import MainToolbar from '../../Home/Header/MainToolbar'
 import BottomNav from './SubComponents/BottomNavigation';
+//import { GooglePlaceAutocomplete } from "material-ui-places";
 
 const inlineStyles = {
   textFieldStyle: {
