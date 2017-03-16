@@ -170,8 +170,9 @@ class GridComponent extends Component {
         /*need to iterate over workouts, matching them to the place_id, adding 
         them as an array to the placeById*/
         const filteredWorkouts = props.workouts.filter((w)=> {
-          //console.log('filteredWorkouts w', w);
-          return s.place_id == w.node.parkId;
+          console.log('filteredWorkouts w', w);
+          return s.place_id == w.node.parkId && w.node.Workout;
+          /*return s.place_id == w.node.parkId;*/
         })
         placeById[s.place_id] = {
           /*comments: workout.comments,*/
@@ -243,7 +244,7 @@ class GridComponent extends Component {
                          <Marker
                           key={index}
                           animation={activeIndex===index ? google.maps.Animation.BOUNCE : null}
-                          icon={activeIndex === index ? `https://maps.google.com/mapfiles/ms/icons/ltblue-dot.png` :  `https://maps.google.com/mapfiles/ms/icons/pink.png`}
+                          icon={activeIndex === index ? `https://maps.google.com/mapfiles/ms/icons/yellow.png` :  `https://maps.google.com/mapfiles/ms/icons/pink.png`}
                            {...placeById[marker].googleData}
                            onClick={()=>this.markerClick(index)}
                            onRightclick={() => console.log(marker,index)} />

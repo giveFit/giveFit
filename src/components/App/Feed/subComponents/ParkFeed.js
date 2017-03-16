@@ -123,7 +123,6 @@ class ParkFeed extends Component{
         {props.data.googleData.photos ? <img src={props.data.googleData.photos} className={styles.img}/> : <img src="https://placehold.it/400x200/ffffff/000000" />}
       </CardMedia>
       <CardText>
-      {this.state.expanded ? null : <div>Next Workout: <WorkoutPost /></div>}
       
         See below for the calendar of upcoming activities at this location. <br />Post your own activity to share  
         with other tribe members by clicking, "Post an Activity."
@@ -135,7 +134,7 @@ class ParkFeed extends Component{
         <Tab label="Calendar">
           <div>
           {/*Need to add better logic about rendering only quality posts*/}
-            {this.props.data.googleData.workouts.length ? 
+            {(this.props.data.googleData.workouts.length && this.props.data.googleData.workouts[0].node.title) ? 
               <GridList
               cols={1}
               cellHeight={150}
@@ -144,7 +143,7 @@ class ParkFeed extends Component{
               >
               <div>
               {this.props.data.googleData.workouts.map((item, index) => (
-                  
+                  //console.log('googleData workouts', item)
                   <div key={index} className={inlineStyles.workout}> {!item ||
                     (<WorkoutPost
                       data={item}
