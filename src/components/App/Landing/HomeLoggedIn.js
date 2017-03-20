@@ -17,6 +17,7 @@ import HomeFeed from './SubComponents/HomeFeed';
 import LoggedInToolbar from '../Header/LoggedInToolbar'
 import MainToolbar from '../../Home/Header/MainToolbar'
 import BottomNav from './SubComponents/BottomNavigation';
+import Features from './SubComponents/Features';
 //import { GooglePlaceAutocomplete } from "material-ui-places";
 
 const inlineStyles = {
@@ -29,7 +30,18 @@ const inlineStyles = {
     margin: 5,
     textAlign: 'center',
     display: 'inline-block',
-  }
+  },
+  button: {
+    
+    border: 'none',
+    color: 'white',
+    margin: '15px 32px',
+    padding: '15px 32px',
+    textAlign: 'center',
+    textDecoration: 'none',
+    display: 'inline-block',
+    fontSize: '24px',
+}
 }
 
 export class HomeLoggedIn extends React.Component {
@@ -155,16 +167,23 @@ export class HomeLoggedIn extends React.Component {
       <div className={styles.banner}>
       <div className={styles.bannerInner}>
         <h1 className={styles.heading}>Find Your Fitness Tribe</h1>
-        <h3 className={styles.subHeading}>Connect with fitness groups right in your community</h3>
+        <h3 className={styles.subHeading}>Connect with free fitness groups right in your community</h3>
         <Card className={styles.bannerCard}>
           <CardText>
             <FindWorkouts ref={node=>this.findWorkoutsComponent = node}/>
-            <RaisedButton label="Find My Tribe" secondary={true} className={styles.submitButton} onTouchTap={()=>this.handleSubmit()} />
+            <RaisedButton 
+              label="Find My Tribe" 
+              secondary={true} 
+              className={styles.submitButton} 
+              onTouchTap={()=>this.handleSubmit()} 
+              /*style={inlineStyles.button}*/
+            />
           </CardText>
         </Card>
         </div>
       </div>
-      <h2 className={styles.featuredWorkouts}>
+      {/*Using most simple landing page until adding more design*/}
+      {/*<h2 className={styles.featuredWorkouts}>
           <CardText>
             Our community partners
           </CardText>
@@ -203,8 +222,7 @@ export class HomeLoggedIn extends React.Component {
           </div>
         </div>
           
-      </h2>
-      <BottomNav />
+      </h2>*/}
       </div>
     )
   }

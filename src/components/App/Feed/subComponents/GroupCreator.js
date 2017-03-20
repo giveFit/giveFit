@@ -2,6 +2,7 @@ import React, { Component, PropTypes as T } from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
+import IconButton from 'material-ui/IconButton';
 import DatePicker from 'material-ui/DatePicker';
 import TextField from 'material-ui/TextField';
 import GroupAdd from 'material-ui/svg-icons/social/group-add';
@@ -163,12 +164,20 @@ class GroupCreator extends Component {
     return (
       //Need to improve styling a lot here
       <div>
-        <RaisedButton
-          label="Create Your Tribe"
+       {/* <RaisedButton
+          label=""
           labelPosition="before"
           onTouchTap={this.handleOpen.bind(this)}
           icon={<GroupAdd />}
-        />
+        />*/}
+        <IconButton 
+          tooltip="Add Tribe" 
+          touch={true} 
+          tooltipPosition="bottom-left"
+          label=""
+          onTouchTap={this.handleOpen.bind(this)}>
+          <GroupAdd />
+        </IconButton>
         <Dialog
           className = {styles.dialogClassName}
           title="Add your own awesome group"
@@ -178,27 +187,27 @@ class GroupCreator extends Component {
           //onRequestClose={this.submitWorkoutGroup.bind(this)}
         >
          <Card>
-            <ul className={inlineStyles.listStyle}>
-              <li>
+            <div className={inlineStyles.listStyle}>
+              <div>
                 <TextField
                   hintText="Group Title"
                   id="autocomplete"
                   name="groupTitle"
                   onChange={this._handleTitleChange}
                 />
-              </li>
-              <li>
+              </div>
+              <div>
                 <ReactFilepicker apikey={configKeys.FILESTACK_API} onTouchTap={this.addImage} onSuccess={(...args)=>console.log(...args)}/>
-              </li>
-              <li>
+              </div>
+              <div>
                 <TextField
                   hintText="Location"
                   id="autocomplete"
                   onChange={this._handleLocationChange}
                   //onTouchTap={this._handleAutoComplete}
                 />
-              </li>
-          </ul>
+              </div>
+            </div>
           {/*<RaisedButton
             label="Add an Image"
             type="filepicker"

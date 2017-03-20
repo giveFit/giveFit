@@ -135,12 +135,6 @@ class ParkFeed extends Component{
           <div>
           {/*Need to add better logic about rendering only quality posts*/}
             {(this.props.data.googleData.workouts.length && this.props.data.googleData.workouts[0].node.title) ? 
-              <GridList
-              cols={1}
-              cellHeight={150}
-              padding={0}
-              style={inlineStyles.gridList}
-              >
               <div>
               {this.props.data.googleData.workouts.map((item, index) => (
                   //console.log('googleData workouts', item)
@@ -152,7 +146,6 @@ class ParkFeed extends Component{
                   
               ))}
               </div>
-              </GridList>
             : null
             }
           </div>

@@ -3,9 +3,10 @@ import FontIcon from 'material-ui/FontIcon';
 import {BottomNavigation, BottomNavigationItem} from 'material-ui/BottomNavigation';
 import Paper from 'material-ui/Paper';
 import IconLocationOn from 'material-ui/svg-icons/communication/location-on';
+import List from 'material-ui/svg-icons/action/list';
 
 const recentsIcon = <FontIcon className="material-icons">restore</FontIcon>;
-const favoritesIcon = <FontIcon className="material-icons">favorite</FontIcon>;
+const favoritesIcon = <List />;
 const nearbyIcon = <IconLocationOn />;
 
 /**
@@ -22,7 +23,10 @@ class MobileBottomNav extends Component {
     this.select = this.select.bind(this);
   }
   
-  select(index){this.setState({selectedIndex: index})};
+  select(index){
+    console.log('BottomNavigation index', index)
+    this.setState({selectedIndex: index})
+  };
 
   render() {
     return (
@@ -31,12 +35,12 @@ class MobileBottomNav extends Component {
           <BottomNavigationItem
             label="List"
             icon={favoritesIcon}
-            onTouchTap={() => this.select(1)}
+            onTouchTap={() => this.select(0)}
           />
           <BottomNavigationItem
             label="Map"
             icon={nearbyIcon}
-            onTouchTap={() => this.select(2)}
+            onTouchTap={() => this.select(1)}
           />
         </BottomNavigation>
       </Paper>

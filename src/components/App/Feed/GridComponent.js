@@ -244,7 +244,7 @@ class GridComponent extends Component {
                          <Marker
                           key={index}
                           animation={activeIndex===index ? google.maps.Animation.BOUNCE : null}
-                          icon={activeIndex === index ? `https://maps.google.com/mapfiles/ms/icons/yellow.png` :  `https://maps.google.com/mapfiles/ms/icons/pink.png`}
+                          icon={activeIndex === index ? `https://maps.google.com/mapfiles/ms/icons/lightblue.png` :  `https://maps.google.com/mapfiles/ms/icons/pink.png`}
                            {...placeById[marker].googleData}
                            onClick={()=>this.markerClick(index)}
                            onRightclick={() => console.log(marker,index)} />
