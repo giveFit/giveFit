@@ -14,6 +14,7 @@ import {searchNearby} from 'utils/googleApiHelpers';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import MobileBottomNav from './subComponents/MobileBottomNav';
+import ParkContainer from './ParkContainer';
 //https://mapstyle.withgoogle.com/
 import mapStyles from '../constants/mapStyles.json';
 //can we get some hot icons in here? http://map-icons.com/
@@ -167,7 +168,7 @@ class GridComponent extends Component {
       parksAndGyms.forEach(s => {
         /*const place_id = s.place_id*/
         //console.log('each spot', s)
-        /*need to iterate over workouts, matching them to the place_id, adding 
+        /*need to iterate over workouts, matching them to the place_id, adding
         them as an array to the placeById*/
         const filteredWorkouts = props.workouts.filter((w)=> {
           console.log('filteredWorkouts w', w);
@@ -191,30 +192,7 @@ class GridComponent extends Component {
           }
         }
       })
-      //list with google data
-      const gListView = parks.length ?
-                <div style={styles.gridList} >
-                <DayPicker className={classes.stackedTop} profile={props.profile} geocoder={this.geocoder}/>
-                <div className={classes.workoutList}>
-                  { Object.keys(placeById).map((item, index) => (
-                  <div key={index} style={styles.workout}> {!item ||
-                      (placeById[item].googleData.types.indexOf('park') !== -1 ?
-                      <ParkFeed
-                        active={activeIndex===index}
-                        onClick={()=>this.feedItemClick(index)}
-                        data={placeById[item]} />
-                        :
-                      <GymFeed
-                        active={activeIndex===index}
-                        onClick={()=>this.feedItemClick(index)}
-                        data={placeById[item]}
-                     />)}
-                      </div>
-                  ))}
-                  </div> </div> :
-               <Card>
-              <CircularProgress size={80} />
-              </Card>
+
       return (
             <div style={styles.root} className="__app__body__container">
             <section className="__app__body__container__left" ref={(node)=>this.mapSection = node}>
@@ -254,7 +232,12 @@ class GridComponent extends Component {
                  }
                /> : null}
              </section>
-             {gListView}
+             <ParkContainer
+               parks={parks}
+               placeById={placeById}
+               profile={props.profile}
+               activeIndex={activeIndex}
+             />
             </div>
 
         );

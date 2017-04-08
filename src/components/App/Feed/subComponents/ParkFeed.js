@@ -124,9 +124,9 @@ class ParkFeed extends Component{
         {props.data.googleData.photos ? <img src={props.data.googleData.photos} className={styles.img}/> : <img src="https://placehold.it/400x200/ffffff/000000" />}
       </CardMedia>
       <CardText>
-      
+
         Click "View Activities" for the calendar of upcoming activities at this location, or "Post an Activity" to create your own.
-      
+
       </CardText>
       <Card expanded={this.state.expanded}>
       <CardText expandable={true}>
@@ -134,16 +134,16 @@ class ParkFeed extends Component{
         <Tab label="Calendar">
           <div>
           {/*Need to add better logic about rendering only quality posts*/}
-            {(this.props.data.googleData.workouts.length && this.props.data.googleData.workouts[0].node.title) ? 
+            {(this.props.data.googleData.workouts.length && this.props.data.googleData.workouts[0].node.title) ?
               <div>
               {this.props.data.googleData.workouts.map((item, index) => (
                   //console.log('googleData workouts', item)
                   <div key={index} className={inlineStyles.workout}> {!item ||
                     (<WorkoutPost
                       data={item}
-                  />)} 
+                  />)}
                   </div>
-                  
+
               ))}
               </div>
             : null
@@ -166,7 +166,7 @@ class ParkFeed extends Component{
       </CardText>*/}
       <CardActions >
         {!this.state.expanded ? <FlatButton label="View Activities" onTouchTap={this.handleExpand.bind(this)} /> : <FlatButton label="Reduce" onTouchTap={this.handleReduce.bind(this)} />}
-        <WorkoutCreatorWithData data={this.props.data}/> 
+        <WorkoutCreatorWithData data={this.props.data}/>
       </CardActions>
     </Card>
     </div>
