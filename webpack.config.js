@@ -57,7 +57,7 @@ var config = getConfig({
 
 				  flex : 1;
 				} 
-				 </style><script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDaqZIUzhyOdPDlsVjkdLbuWj89F3gNCMg&libraries=places" ></script>`,
+				 </style><script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwOsxUEBGettfG4jFkxFNl2lt3s7dtYPc&libraries=places" ></script>`,
         publicPath: isDev ? 'http://localhost:3000/' : '',
         meta: {
           'name': 'givefit',

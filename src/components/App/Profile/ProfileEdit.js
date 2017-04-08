@@ -20,11 +20,12 @@ export class ProfileEdit extends React.Component {
     const { address } = profile.user_metadata || {}
     return (
       <div className={s.root}>
-          <h3>About Me</h3>
+          {/*<h3>About Me</h3>
             <br />
             <TextField
               hintText="The hint text can be as long as you want, it will wrap."
-            /><br />
+            />*/}
+            <br />
             
           {/*<Form horizontal onSubmit={this.handleSubmit.bind(this)}>
             <FormGroup controlId="address">

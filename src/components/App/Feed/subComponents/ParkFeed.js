@@ -50,7 +50,7 @@ class ParkFeed extends Component{
     console.log('ParkFeed props', props)
     super(props, context);
     this.state = {
-      expanded: true,
+      expanded: false,
     };
   }
 
@@ -70,7 +70,7 @@ class ParkFeed extends Component{
        element.scrollIntoView({block: "end", behavior: "smooth"});
     }
   }
-  handleExpand(){
+  handleExpand(e){
     this.setState({expanded: true});
     console.log('expanded')
   }
@@ -93,6 +93,7 @@ class ParkFeed extends Component{
 
   render(){
     const {props} = this;
+    console.log('this.state', this.state)
     //console.log('feed props', props)
     return <div><Card ref='root' key={props.data.id}>
       <CardHeader
@@ -124,8 +125,7 @@ class ParkFeed extends Component{
       </CardMedia>
       <CardText>
       
-        See below for the calendar of upcoming activities at this location. <br />Post your own activity to share  
-        with other tribe members by clicking, "Post an Activity."
+        Click "View Activities" for the calendar of upcoming activities at this location, or "Post an Activity" to create your own.
       
       </CardText>
       <Card expanded={this.state.expanded}>
@@ -165,6 +165,7 @@ class ParkFeed extends Component{
         <div>Comments</div>
       </CardText>*/}
       <CardActions >
+        {!this.state.expanded ? <FlatButton label="View Activities" onTouchTap={this.handleExpand.bind(this)} /> : <FlatButton label="Reduce" onTouchTap={this.handleReduce.bind(this)} />}
         <WorkoutCreatorWithData data={this.props.data}/> 
       </CardActions>
     </Card>

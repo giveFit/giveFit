@@ -32,7 +32,6 @@ const inlineStyles = {
     display: 'inline-block',
   },
   button: {
-    
     border: 'none',
     color: 'white',
     margin: '15px 32px',
@@ -176,7 +175,7 @@ export class HomeLoggedIn extends React.Component {
               secondary={true} 
               className={styles.submitButton} 
               onTouchTap={()=>this.handleSubmit()} 
-              /*style={inlineStyles.button}*/
+              //style={inlineStyles.button}
             />
           </CardText>
         </Card>

@@ -11,8 +11,8 @@ export class ProfileDetails extends React.Component {
       <div className={s.root}>
           <Avatar src={profile.picture_large} size={120} />        
           <h3><strong>{profile.name}</strong></h3>
-          <p><strong>Created At: </strong> {profile.created_at}</p>
-          <p><strong>Updated At: </strong> {profile.updated_at}</p>
+          {/*<p><strong>Created At: </strong> {profile.created_at}</p>
+          <p><strong>Updated At: </strong> {profile.updated_at}</p>*/}
       </div>
     )
   }

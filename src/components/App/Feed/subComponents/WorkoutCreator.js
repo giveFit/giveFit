@@ -3,6 +3,7 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import DatePicker from 'material-ui/DatePicker';
+import Calendar from 'material-ui/DatePicker/Calendar';
 import TimePicker from 'material-ui/TimePicker';
 import TextField from 'material-ui/TextField';
 import FitnessCenter from 'material-ui/svg-icons/places/fitness-center';
