@@ -6,14 +6,14 @@ import GridList from 'material-ui/GridList'
 import {GoogleMapLoader, GoogleMap, Marker} from 'react-google-maps';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import CircularProgress from 'material-ui/CircularProgress';
-import ParkFeed from './subComponents/ParkFeed';
-import GymFeed from './subComponents/GymFeed';
 import DayPicker from './subComponents/DayPicker';
 import GroupCreatorWithData from './subComponents/GroupCreator'
 import {searchNearby} from 'utils/googleApiHelpers';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import MobileBottomNav from './subComponents/MobileBottomNav';
+import ParkContainer from './ParkContainer';
+import ActivityContainer from './ActivityContainer';
 //https://mapstyle.withgoogle.com/
 import mapStyles from '../constants/mapStyles.json';
 //can we get some hot icons in here? http://map-icons.com/
@@ -41,7 +41,6 @@ const styles = {
 
 class GridComponent extends Component {
     constructor(props){
-      console.log('GridComponent props', props)
       super(props);
       // grab our googleMaps obj from whever she may lay
       var googleMaps = this.props.googleMaps ||
@@ -60,7 +59,8 @@ class GridComponent extends Component {
         parksAndGyms: [],
         markers: [],
         pagination: null,
-        loadedMapData : false
+        loadedMapData : false,
+        openedActivity: ''
       };
       // now grab the services we need
       this.googleMaps = googleMaps;
@@ -115,6 +115,15 @@ class GridComponent extends Component {
 
 
     }
+
+    toggleActivity (parkID = '') {
+      if (parkID === this.state.openedActivity) {
+        parkID = '';
+      }
+
+      this.setState({ openedActivity: parkID });
+    }
+
     /*gets us our map on click location,
     may pass for location queries in the future*/
     geocodeLatLng(obj) {
@@ -153,7 +162,6 @@ class GridComponent extends Component {
     }
     render(){
       const {props} = this;
-      console.log('rerender')
       const {latLng } = props;
       const centerLatLng = {
           lat : latLng ? latLng.lat : 39.2904,
@@ -167,10 +175,9 @@ class GridComponent extends Component {
       parksAndGyms.forEach(s => {
         /*const place_id = s.place_id*/
         //console.log('each spot', s)
-        /*need to iterate over workouts, matching them to the place_id, adding 
+        /*need to iterate over workouts, matching them to the place_id, adding
         them as an array to the placeById*/
         const filteredWorkouts = props.workouts.filter((w)=> {
-          console.log('filteredWorkouts w', w);
           return s.place_id == w.node.parkId && w.node.Workout;
           /*return s.place_id == w.node.parkId;*/
         })
@@ -191,73 +198,59 @@ class GridComponent extends Component {
           }
         }
       })
-      //list with google data
-      const gListView = parks.length ?
-                <div style={styles.gridList} >
-                <DayPicker className={classes.stackedTop} profile={props.profile} geocoder={this.geocoder}/>
-                <div className={classes.workoutList}>
-                  { Object.keys(placeById).map((item, index) => (
-                  <div key={index} style={styles.workout}> {!item ||
-                      (placeById[item].googleData.types.indexOf('park') !== -1 ?
-                      <ParkFeed
-                        active={activeIndex===index}
-                        onClick={()=>this.feedItemClick(index)}
-                        data={placeById[item]} />
-                        :
-                      <GymFeed
-                        active={activeIndex===index}
-                        onClick={()=>this.feedItemClick(index)}
-                        data={placeById[item]}
-                     />)}
-                      </div>
-                  ))}
-                  </div> </div> :
-               <Card>
-              <CircularProgress size={80} />
-              </Card>
+
       return (
-            <div style={styles.root} className="__app__body__container">
-            <section className="__app__body__container__left" ref={(node)=>this.mapSection = node}>
-              { loadedMapData ? <GoogleMapLoader
-                 containerElement={
-                   <div
-                     {...props.containerElementProps}
-                     style={{
-                       height: "100%",
-                     }}
-                   />
-                 }
-                 googleMapElement={
-                   <GoogleMap
-                    ref={(map) => { this._googleMapComponent = map ; } }
-                    defaultOptions={{ styles : mapStyles}}
-                    defaultZoom={14}
-                    defaultCenter={centerLatLng}
-                    onClick={(...args)=>{
-                      console.log("map args", ...args);
-                      return this.geocodeLatLng(...args)
-                     }}
-                   >
+        <div style={styles.root} className="__app__body__container">
+        <section className="__app__body__container__left" ref={(node)=>this.mapSection = node}>
+          { loadedMapData ? <GoogleMapLoader
+             containerElement={
+               <div
+                 {...props.containerElementProps}
+                 style={{
+                   height: "100%",
+                 }}
+               />
+             }
+             googleMapElement={
+               <GoogleMap
+                ref={(map) => { this._googleMapComponent = map ; } }
+                defaultOptions={{ styles : mapStyles}}
+                defaultZoom={14}
+                defaultCenter={centerLatLng}
+                onClick={(...args)=>{
+                  return this.geocodeLatLng(...args)
+                 }}
+               >
 
-                     {parksAndGyms.length ? Object.keys(placeById).map((marker, index) => {
-                       return (
-                         <Marker
-                          key={index}
-                          animation={activeIndex===index ? google.maps.Animation.BOUNCE : null}
-                          icon={activeIndex === index ? `https://maps.google.com/mapfiles/ms/icons/lightblue.png` :  `https://maps.google.com/mapfiles/ms/icons/pink.png`}
-                           {...placeById[marker].googleData}
-                           onClick={()=>this.markerClick(index)}
-                           onRightclick={() => console.log(marker,index)} />
-                       );
-                     }) : null}
-                   </GoogleMap>
-                 }
-               /> : null}
-             </section>
-             {gListView}
-            </div>
-
-        );
+                 {parksAndGyms.length ? Object.keys(placeById).map((marker, index) => {
+                   return (
+                     <Marker
+                      key={index}
+                      animation={activeIndex===index ? google.maps.Animation.BOUNCE : null}
+                      icon={activeIndex === index ? `https://maps.google.com/mapfiles/ms/icons/lightblue.png` :  `https://maps.google.com/mapfiles/ms/icons/pink.png`}
+                       {...placeById[marker].googleData}
+                       onClick={()=>this.markerClick(index)}
+                       onRightclick={() => console.log(marker,index)} />
+                   );
+                 }) : null}
+               </GoogleMap>
+             }
+           /> : null}
+        </section>
+        {this.state.openedActivity
+          && <ActivityContainer
+            workouts={placeById[this.state.openedActivity].googleData.workouts}
+          />
+        }
+        <ParkContainer
+          parks={parks}
+          placeById={placeById}
+          profile={props.profile}
+          activeIndex={activeIndex}
+          toggleActivity={(parkID) => this.toggleActivity(parkID)}
+        />
+        </div>
+      );
     }
 }
 

@@ -43,7 +43,7 @@ const LOGGEDIN_USER_QUERY = gql`
     }
   }
 `
-/*I'll want to create a subscription here, as well as putting through 
+/*I'll want to create a subscription here, as well as putting through
 a groupId to match with whichever group the data is being submitted on*/
 class WorkoutCreator extends Component {
   constructor(props, context) {
@@ -57,7 +57,7 @@ class WorkoutCreator extends Component {
       date: null,
       scapholdUser: null,
     };
-    this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain);  
+    this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain);
 
   }
   /*componentDidMount(){
@@ -146,15 +146,15 @@ class WorkoutCreator extends Component {
     return (
       <div>
         <div>
-        <RaisedButton 
-          label="Post an activity" 
+        <RaisedButton
+          label="Post an activity"
           labelPosition="before"
           onTouchTap={this.handleOpen.bind(this)}
           icon={<FitnessCenter />}
         />
         </div>
         {
-         !this.auth.loggedIn() ? 
+         !this.auth.loggedIn() ?
           <div>
             <Dialog
               title="Please Login to add an activity"
@@ -173,26 +173,26 @@ class WorkoutCreator extends Component {
               open={this.state.open}
               onRequestClose={this.handleClose.bind(this)}
             >
-              <TextField 
-                id="text-field-controlled" 
+              <TextField
+                id="text-field-controlled"
                 hintText="Workout Title"
                 onChange={this.onTitleChange.bind(this)}
               />
-              <TextField 
+              <TextField
                 id="text-field-controlled"
-                hintText="Description" 
+                hintText="Description"
                 onChange={this.onDescriptionChange.bind(this)}
-                
+
               />
-              <DatePicker 
+              <DatePicker
                 id="text-field-controlled"
-                hintText="Select a date" 
+                hintText="Select a date"
                 onChange={this.onDateChange.bind(this)}
               />
               <TimePicker
                 hintText="Select a time"
                 onChange={this.onTimeChange.bind(this)}
-              /> 
+              />
               <Toggle
                 name="recur"
                 value="recur"
@@ -216,7 +216,7 @@ const WorkoutCreatorWithData = compose(
   }),
   graphql(LOGGEDIN_USER_QUERY, {
     props: ({ data }) => ({
-       loggedInUser: data.viewer ? data.viewer.user : null 
+       loggedInUser: data.viewer ? data.viewer.user : null
     })
   }),
 )(WorkoutCreator);

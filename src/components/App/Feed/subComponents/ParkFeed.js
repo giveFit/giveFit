@@ -47,11 +47,7 @@ const inlineStyles = {
 
 class ParkFeed extends Component{
   constructor(props, context) {
-    console.log('ParkFeed props', props)
     super(props, context);
-    this.state = {
-      expanded: false,
-    };
   }
 
   static propTypes = {
@@ -70,14 +66,7 @@ class ParkFeed extends Component{
        element.scrollIntoView({block: "end", behavior: "smooth"});
     }
   }
-  handleExpand(e){
-    this.setState({expanded: true});
-    console.log('expanded')
-  }
-  handleReduce(){
-    this.setState({expanded: false});
-    console.log('reduced')
-  }
+
   handleSave(){
     alert('hey saving')
     //add a mutation here to save to the user's "saved workouts"
@@ -93,8 +82,7 @@ class ParkFeed extends Component{
 
   render(){
     const {props} = this;
-    console.log('this.state', this.state)
-    //console.log('feed props', props)
+
     return <div><Card ref='root' key={props.data.id}>
       <CardHeader
         title={props.data.googleData.title}
@@ -124,49 +112,17 @@ class ParkFeed extends Component{
         {props.data.googleData.photos ? <img src={props.data.googleData.photos} className={styles.img}/> : <img src="https://placehold.it/400x200/ffffff/000000" />}
       </CardMedia>
       <CardText>
-      
+
         Click "View Activities" for the calendar of upcoming activities at this location, or "Post an Activity" to create your own.
-      
+
       </CardText>
-      <Card expanded={this.state.expanded}>
-      <CardText expandable={true}>
-      <Tabs >
-        <Tab label="Calendar">
-          <div>
-          {/*Need to add better logic about rendering only quality posts*/}
-            {(this.props.data.googleData.workouts.length && this.props.data.googleData.workouts[0].node.title) ? 
-              <div>
-              {this.props.data.googleData.workouts.map((item, index) => (
-                  //console.log('googleData workouts', item)
-                  <div key={index} className={inlineStyles.workout}> {!item ||
-                    (<WorkoutPost
-                      data={item}
-                  />)} 
-                  </div>
-                  
-              ))}
-              </div>
-            : null
-            }
-          </div>
-        </Tab>
-        <Tab label="Comments" >
-         <div>
-           <div>
-             <TextField hintText="Add a comment"/>
-             <Comment />
-           </div>
-         </div>
-        </Tab>
-      </Tabs>
-      </CardText>
-      </Card>
-     {/* <CardText>
-        <div>Comments</div>
-      </CardText>*/}
-      <CardActions >
-        {!this.state.expanded ? <FlatButton label="View Activities" onTouchTap={this.handleExpand.bind(this)} /> : <FlatButton label="Reduce" onTouchTap={this.handleReduce.bind(this)} />}
-        <WorkoutCreatorWithData data={this.props.data}/> 
+
+      <CardActions>
+        {<FlatButton
+          label="View Activities"
+          onTouchTap={() => this.props.toggleActivity(this.props.parkID)}
+        />}
+        <WorkoutCreatorWithData data={this.props.data}/>
       </CardActions>
     </Card>
     </div>

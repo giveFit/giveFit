@@ -1,7 +1,7 @@
 import React, { Component, PropTypes as T } from 'react';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
-import GridComponent from './GridComponent';
+import MapContainer from './MapContainer';
 import LoggedInToolbar from '../Header/LoggedInToolbar';
 import apolloConfig from '../../../../apolloConfig';
 //local utils
@@ -145,7 +145,7 @@ class AppLoggedIn extends Component {
 					/>
 				}
 				</div>
-				<GridComponent
+				<MapContainer
 				    latLng = {latLng}
 				    onPlaceSelect={(place)=>{
 				  		this.props.data.refetch({
@@ -163,7 +163,7 @@ class AppLoggedIn extends Component {
 							lat : parseFloat(i.node.lat),
 							lng : parseFloat(i.node.lng)
 						}
-					})) : []} 
+					})) : []}
 				/>
 				<MobileBottomNav className={classes.bottomNav}/>
 				</div>
