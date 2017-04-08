@@ -83,6 +83,7 @@
     "react-addons-test-utils": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-tap-event-plugin": "^2.0.1",
+    "standard": "^10.0.1",
     "webpack": "^1.12.11",
     "webpack-dev-server": "^1.14.1"
   }
