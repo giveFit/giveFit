@@ -3,7 +3,12 @@ import { CardText, Chip, Avatar, Checkbox } from 'material-ui'
 
 const styles = {
   container: {
-
+    position: 'absolute',
+    background: 'white',
+    height: '80%',
+    overflow: 'scroll',
+    top: 0,
+    right: 0
   },
   chip: {
     margin: 4

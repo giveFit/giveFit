@@ -12,6 +12,9 @@ const styles = {
     flex: 1,
     overflowY: 'hidden'
   },
+  containerLeft: {
+    position: 'relative'
+  },
   gridList: {
     width: 500,
     paddingTop: 65,
@@ -165,7 +168,11 @@ class GridComponent extends React.Component {
 
     return (
       <div style={styles.root} className='__app__body__container'>
-        <section className='__app__body__container__left' ref={(node) => this.mapSection = node}>
+        <div
+          style={styles.containerLeft}
+          className='__app__body__container__left'
+          ref={(node) => this.mapSection = node}
+        >
           {loadedMapData &&
             <MapContainer
               mapCenter={mapCenter}
@@ -175,12 +182,12 @@ class GridComponent extends React.Component {
               onMarkerClick={(index) => this.setActiveIndex(index)}
             />
           }
-        </section>
-        {this.state.openedActivity &&
-          <ActivityContainer
-            workouts={indexedPlaces[this.state.openedActivity].googleData.workouts}
-          />
-        }
+          {this.state.openedActivity &&
+            <ActivityContainer
+              workouts={indexedPlaces[this.state.openedActivity].googleData.workouts}
+            />
+          }
+        </div>
         <ParkContainer
           parks={parks}
           placeById={indexedPlaces}
