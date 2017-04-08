@@ -20,7 +20,6 @@ const inlineStyles = {
 
 class WorkoutPost extends Component{
 	constructor(props){
-		console.log('WorkoutPost props', props)
 		super(props);
 		this.state = {
 			snack: false,
@@ -49,18 +48,18 @@ class WorkoutPost extends Component{
 	render(){
 		return(
 			<div>
-				{(this.props.data.node.Workout && this.props.data.node.title) ? 
+				{(this.props.data.node.Workout && this.props.data.node.title) ?
 					<CardText>
 				        <Chip
 				          onTouchTap={()=>this.context.router.push('/profile')}
 				          style={inlineStyles.chip}
-				        >	
-		        		<Avatar 
+				        >
+		        		<Avatar
 			                src={this.props.data.node.Workout.picture}
-			                onClick={()=>this.context.router.push('/profile')} 
+			                onClick={()=>this.context.router.push('/profile')}
 				        />
-				        {this.props.data.node.Workout.nickname}  
-				        </Chip> 
+				        {this.props.data.node.Workout.nickname}
+				        </Chip>
 				        {
 				        	<div>
 					        	<p>Title: {this.props.data.node.title}</p>

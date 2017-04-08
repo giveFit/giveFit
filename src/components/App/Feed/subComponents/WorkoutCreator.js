@@ -47,7 +47,6 @@ const LOGGEDIN_USER_QUERY = gql`
 a groupId to match with whichever group the data is being submitted on*/
 class WorkoutCreator extends Component {
   constructor(props, context) {
-    console.log('WorkoutCreator props', props);
     super(props, context);
     this.state = {
       open: false,

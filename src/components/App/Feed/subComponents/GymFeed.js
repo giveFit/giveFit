@@ -47,7 +47,6 @@ class GymFeed extends React.Component{
   }
   componentWillReceiveProps(newProps){
     if(newProps.active !== this.props.active && newProps.active === true){
-       console.log('i m now active', this.props.data.title);
        const element = findDOMNode(this.refs.root);
        //Scrolls the current element into the visible area of the browser
        element.scrollIntoView({block: "end", behavior: "smooth"});
@@ -76,7 +75,7 @@ class GymFeed extends React.Component{
   };
   render(){
     const {props} = this;
-    //console.log('feed props', props)
+
     return <Card ref='root' key={props.data.id} className={props.active ? styles.cardActive : ""} onTouchTap={()=>this.props.onClick()}>
       <CardHeader
         title={props.data.googleData.title}

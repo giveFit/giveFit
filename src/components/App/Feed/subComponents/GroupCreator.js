@@ -29,7 +29,6 @@ const inlineStyles = {
 class GroupCreator extends Component {
   constructor(props: any) {
     super(props);
-    console.log("GroupCreator props", props)
     this.state = {
       open: false,
       expanded: false,
@@ -170,9 +169,9 @@ class GroupCreator extends Component {
           onTouchTap={this.handleOpen.bind(this)}
           icon={<GroupAdd />}
         />*/}
-        <IconButton 
-          tooltip="Add Tribe" 
-          touch={true} 
+        <IconButton
+          tooltip="Add Tribe"
+          touch={true}
           tooltipPosition="bottom-left"
           label=""
           onTouchTap={this.handleOpen.bind(this)}>

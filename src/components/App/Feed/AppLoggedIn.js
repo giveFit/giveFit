@@ -104,7 +104,6 @@ class AppLoggedIn extends Component {
       const profilePicture = auth0Profile.picture
       const nickname = auth0Profile.nickname
       // Cause a UI update :)
-      console.log('scapholdUserId', scapholdUserId)
       // this.setState({userId: scapholdUserId});
       window.localStorage.setItem('scapholdUserId', JSON.stringify(scapholdUserId))
 
