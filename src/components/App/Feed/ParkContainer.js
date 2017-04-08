@@ -23,7 +23,7 @@ const styles = {
   }
 }
 
-export default class ParkContainer extends Component {
+class ParkContainer extends Component {
   perpareParks () {
     const {
       placeById,
@@ -38,14 +38,14 @@ export default class ParkContainer extends Component {
           (placeById[item].googleData.types.indexOf('park') !== -1
             ? <ParkFeed
               active={activeIndex === index}
-              onClick={() => this.onFeedItemClick(index)}
+              onClick={() => onFeedItemClick(index)}
               data={placeById[item]}
               toggleActivity={toggleActivity}
               parkID={item}
             />
             : <GymFeed
-              active={activeIndex===index}
-              onClick={() => this.onFeedItemClick(index)}
+              active={activeIndex === index}
+              onClick={() => onFeedItemClick(index)}
               data={placeById[item]}
             />
           )}
@@ -75,3 +75,12 @@ export default class ParkContainer extends Component {
     )
   }
 }
+
+ParkContainer.propTypes = {
+  placeById: React.PropTypes.object.isRequired,
+  activeIndex: React.PropTypes.number.isRequired,
+  toggleActivity: React.PropTypes.func.isRequired,
+  onFeedItemClick: React.PropTypes.func.isRequired
+}
+
+export default ParkContainer
