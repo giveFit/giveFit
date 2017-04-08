@@ -1,7 +1,8 @@
 import React, { Component, PropTypes as T } from 'react'
 import { graphql, compose } from 'react-apollo'
 import gql from 'graphql-tag'
-import MapContainer from './MapContainer'
+
+import GridContainer from './GridContainer'
 import LoggedInToolbar from '../Header/LoggedInToolbar'
 import apolloConfig from '../../../../apolloConfig'
 
@@ -136,7 +137,7 @@ class AppLoggedIn extends Component {
             : <LoggedInToolbar auth={this.props} profile={profile}/>
           }
         </div>
-        <MapContainer
+        <GridContainer
           latLng={latLng}
           onPlaceSelect={(place) => {
             this.props.data.refetch({

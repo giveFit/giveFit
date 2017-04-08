@@ -25,7 +25,12 @@ const styles = {
 
 export default class ParkContainer extends Component {
   perpareParks () {
-    const { placeById, activeIndex, toggleActivity } = this.props
+    const {
+      placeById,
+      activeIndex,
+      toggleActivity,
+      onFeedItemClick
+    } = this.props
 
     return Object.keys(placeById).map((item, index) => (
       <div key={index} style={styles.workout}>
@@ -33,14 +38,14 @@ export default class ParkContainer extends Component {
           (placeById[item].googleData.types.indexOf('park') !== -1
             ? <ParkFeed
               active={activeIndex === index}
-              onClick={() => this.feedItemClick(index)}
+              onClick={() => this.onFeedItemClick(index)}
               data={placeById[item]}
               toggleActivity={toggleActivity}
               parkID={item}
             />
             : <GymFeed
               active={activeIndex===index}
-              onClick={() => this.feedItemClick(index)}
+              onClick={() => this.onFeedItemClick(index)}
               data={placeById[item]}
             />
           )}

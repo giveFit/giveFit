@@ -12,11 +12,11 @@ const styles = {
 
 class Activity extends React.Component {
   prepareWorkouts () {
-    return this.props.workouts.map((workout) => {
+    return this.props.workouts.map((workout, index) => {
       workout = workout.node
 
       return (
-        <CardText>
+        <CardText key={`workout-${index}`}>
           <Chip
             onTouchTap={() => this.context.router.push('/profile')}
             style={styles.chip}
