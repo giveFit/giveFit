@@ -1,36 +1,25 @@
 import React from 'react'
 import { CardText, Chip, Avatar, Checkbox } from 'material-ui'
 
-const inlineStyles = {
-  subtitleStyle: {
-    subtitleColor: 'rgba(211, 211, 211)'
+const styles = {
+  container: {
+
   },
   chip: {
     margin: 4
-  },
-  gridList: {
-    width: 500,
-    height: 250,
-    overflowY: 'auto'
-  },
-  rating: {
-    float: 'left'
-  },
-  save: {
-    padding: '10px'
   }
 }
 
-export default class Activity extends React.Component {
+class Activity extends React.Component {
   prepareWorkouts () {
     return this.props.workouts.map((workout) => {
-      workout = workout.node;
+      workout = workout.node
 
       return (
         <CardText>
           <Chip
             onTouchTap={() => this.context.router.push('/profile')}
-            style={inlineStyles.chip}
+            style={styles.chip}
           >
             <Avatar
               src={workout.Workout.picture}
@@ -46,18 +35,27 @@ export default class Activity extends React.Component {
               <p>Description: {workout.description}</p>
             </div>
           }
+          <Checkbox
+            label='RSVP'
+            style={styles}
+            onCheck={() => {}}
+          />
         </CardText>
       )
     })
   }
 
   render () {
-    const { workouts } = this.props
-
     return (
-      <div>
+      <div style={styles.container}>
         {this.prepareWorkouts()}
       </div>
     )
   }
 }
+
+Activity.propTypes = {
+  workouts: React.PropTypes.array.isRequired
+}
+
+export default Activity
