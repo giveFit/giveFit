@@ -1,17 +1,18 @@
-import React, { Component } from 'react';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
-import DatePicker from 'material-ui/DatePicker';
-import Calendar from 'material-ui/DatePicker/Calendar';
-import TimePicker from 'material-ui/TimePicker';
-import TextField from 'material-ui/TextField';
-import FitnessCenter from 'material-ui/svg-icons/places/fitness-center';
-import Toggle from 'material-ui/Toggle';
-import { graphql, compose } from 'react-apollo';
-import gql from 'graphql-tag';
-import apolloConfig from '../../../../../apolloConfig';
-import AuthService from 'utils/AuthService';
+import React from 'react'
+import { graphql, compose } from 'react-apollo'
+import gql from 'graphql-tag'
+
+import Dialog from 'material-ui/Dialog'
+import FlatButton from 'material-ui/FlatButton'
+import RaisedButton from 'material-ui/RaisedButton'
+import DatePicker from 'material-ui/DatePicker'
+import TimePicker from 'material-ui/TimePicker'
+import TextField from 'material-ui/TextField'
+import FitnessCenter from 'material-ui/svg-icons/places/fitness-center'
+import Toggle from 'material-ui/Toggle'
+
+import apolloConfig from '../../../../../apolloConfig'
+import AuthService from 'utils/AuthService'
 
 const CREATE_WORKOUT = gql`
   mutation CreateWorkout($input: CreateWorkoutInput!) {
@@ -45,7 +46,7 @@ const LOGGEDIN_USER_QUERY = gql`
 `
 /*I'll want to create a subscription here, as well as putting through
 a groupId to match with whichever group the data is being submitted on*/
-class WorkoutCreator extends Component {
+class WorkoutCreator extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {

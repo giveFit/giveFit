@@ -1,4 +1,6 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+
 import { CardText, Chip, Avatar, Checkbox } from 'material-ui'
 
 const styles = {
@@ -60,7 +62,7 @@ class Activity extends React.Component {
 }
 
 Activity.propTypes = {
-  workouts: React.PropTypes.array.isRequired
+  workouts: PropTypes.array.isRequired
 }
 
 export default Activity

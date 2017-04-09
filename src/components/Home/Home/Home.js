@@ -1,4 +1,5 @@
-import React, { PropTypes as T } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import RaisedButton from 'material-ui/RaisedButton';
 import AuthService from 'utils/AuthService';
 import gql from 'graphql-tag';
@@ -60,15 +61,15 @@ export class Home extends React.Component {
 }
 
 Home.contextTypes = {
-  router: T.object
-};
+  router: PropTypes.object
+}
 
 Home.propTypes = {
-  auth: T.instanceOf(AuthService),
-  register: T.func.isRequired
-};
+  auth: PropTypes.instanceOf(AuthService),
+  register: PropTypes.func.isRequired
+}
 
-const LOGIN_USER_WITH_AUTH0_LOCK = gql `
+const LOGIN_USER_WITH_AUTH0_LOCK = gql`
   mutation loginUserWithAuth0Lock($data: LoginUserWithAuth0LockInput!) {
     loginUserWithAuth0Lock(input: $data) {
     user{
@@ -84,8 +85,8 @@ const HomeContainerWithData = graphql(LOGIN_USER_WITH_AUTH0_LOCK, {
       variables: {
         data
       }
-    }),
-  }),
-})(Home);
+    })
+  })
+})(Home)
 
-export default HomeContainerWithData;
+export default HomeContainerWithData

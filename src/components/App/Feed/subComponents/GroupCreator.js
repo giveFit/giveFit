@@ -1,4 +1,4 @@
-import React, { Component, PropTypes as T } from 'react';
+import React from 'react'
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -26,7 +26,7 @@ const inlineStyles = {
   }
 }
 
-class GroupCreator extends Component {
+class GroupCreator extends React.Component {
   constructor(props: any) {
     super(props);
     this.state = {

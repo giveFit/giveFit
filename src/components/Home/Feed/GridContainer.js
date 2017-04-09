@@ -1,4 +1,4 @@
-import React, { Component, PropTypes as T } from 'react';
+import React from 'react'
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import GridComponent from './GridComponent';
@@ -18,7 +18,7 @@ class GridContainer extends React.Component {
 	      token: null,
 	    };
 	    this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain);
-      this.onAuthenticated = this.onAuthenticated.bind(this);  
+      this.onAuthenticated = this.onAuthenticated.bind(this);
     	this.auth.on('authenticated', this.onAuthenticated);
     	this.auth.on('error', console.log);
   	}
@@ -151,8 +151,8 @@ const LOGGED_IN_USER = gql`
 
 const GridContainerWithData =  compose(
   graphql(GET_THROUGH_VIEWER, {
-    options: (props) => ({  
-      variables: { first : FIRST } 
+    options: (props) => ({
+      variables: { first : FIRST }
     }),
   }),
   graphql(LOGGED_IN_USER, {

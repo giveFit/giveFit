@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { GoogleMapLoader, GoogleMap, Marker } from 'react-google-maps'
 
 // https://mapstyle.withgoogle.com/
@@ -84,11 +85,11 @@ class MarkerList extends React.Component {
 }
 
 MarkerList.propTypes = {
-  mapCenter: React.PropTypes.object.isRequired,
-  indexedPlaces: React.PropTypes.object.isRequired,
-  activeMarker: React.PropTypes.number.isRequired,
-  geocoder: React.PropTypes.object,
-  onMarkerClick: React.PropTypes.func.isRequired
+  mapCenter: PropTypes.object.isRequired,
+  indexedPlaces: PropTypes.object.isRequired,
+  activeMarker: PropTypes.number.isRequired,
+  geocoder: PropTypes.object,
+  onMarkerClick: PropTypes.func.isRequired
 }
 
 export default MarkerList

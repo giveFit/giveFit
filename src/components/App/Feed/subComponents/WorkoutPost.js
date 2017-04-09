@@ -1,10 +1,9 @@
-import React, {Component, PropTypes as T} from 'react';
-import {CardText, Chip, Avatar} from 'material-ui';
-import { Route, Router, Link, pathname, hashHistory } from 'react-router';
-import Checkbox from 'material-ui/Checkbox';
-import Snackbar from 'material-ui/Snackbar';
+import React from 'react'
+import PropTypes from 'prop-types'
 
-
+import {CardText, Chip, Avatar} from 'material-ui'
+import Checkbox from 'material-ui/Checkbox'
+import Snackbar from 'material-ui/Snackbar'
 
 const inlineStyles = {
   subtitleStyle: {
@@ -18,7 +17,7 @@ const inlineStyles = {
   },
 };
 
-class WorkoutPost extends Component{
+class WorkoutPost extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
@@ -90,7 +89,7 @@ class WorkoutPost extends Component{
 }
 
 WorkoutPost.contextTypes = {
-      router : T.object.isRequired
-    }
+	router: PropTypes.object.isRequired
+}
 
-export default WorkoutPost;
+export default WorkoutPost

@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 
 import { Card } from 'material-ui/Card'
 import CircularProgress from 'material-ui/CircularProgress'
@@ -23,7 +24,7 @@ const styles = {
   }
 }
 
-class ParkContainer extends Component {
+class ParkContainer extends React.Component {
   perpareParks () {
     const {
       placeById,
@@ -77,10 +78,10 @@ class ParkContainer extends Component {
 }
 
 ParkContainer.propTypes = {
-  placeById: React.PropTypes.object.isRequired,
-  activeIndex: React.PropTypes.number.isRequired,
-  toggleActivity: React.PropTypes.func.isRequired,
-  onFeedItemClick: React.PropTypes.func.isRequired
+  placeById: PropTypes.object.isRequired,
+  activeIndex: PropTypes.number.isRequired,
+  toggleActivity: PropTypes.func.isRequired,
+  onFeedItemClick: PropTypes.func.isRequired
 }
 
 export default ParkContainer

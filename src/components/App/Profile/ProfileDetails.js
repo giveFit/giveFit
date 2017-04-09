@@ -1,24 +1,28 @@
-import React, { PropTypes as T } from 'react'
-import Avatar from 'material-ui/Avatar';
+import React from 'react'
+import PropTypes from 'prop-types'
+import Avatar from 'material-ui/Avatar'
 import s from './styles.module.css'
 
 export class ProfileDetails extends React.Component {
-  render(){
+  render () {
     const { profile } = this.props
-    console.log(profile);
     const { address } = profile.user_metadata || {}
+
     return (
       <div className={s.root}>
-          <Avatar src={profile.picture_large} size={120} />        
-          <h3><strong>{profile.name}</strong></h3>
-          {/*<p><strong>Created At: </strong> {profile.created_at}</p>
-          <p><strong>Updated At: </strong> {profile.updated_at}</p>*/}
+        <Avatar src={profile.picture_large} size={120} />
+        <h3><strong>{profile.name}</strong></h3>
+        {/*
+          <p><strong>Created At: </strong> {profile.created_at}</p>
+          <p><strong>Updated At: </strong> {profile.updated_at}</p>
+        */}
       </div>
     )
   }
 }
 
 ProfileDetails.propTypes = {
-    profile: T.object
-  }
-export default ProfileDetails;
+  profile: PropTypes.object
+}
+
+export default ProfileDetails

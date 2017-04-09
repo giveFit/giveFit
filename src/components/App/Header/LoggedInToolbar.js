@@ -1,4 +1,6 @@
-import React, { PropTypes as T, Component } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
+
 import IconMenu from 'material-ui/IconMenu';
 import IconButton from 'material-ui/IconButton';
 import FontIcon from 'material-ui/FontIcon';
@@ -29,7 +31,7 @@ const inlineStyles = {
   }
 };
 
-class LoggedInToolbar extends Component {
+class LoggedInToolbar extends React.Component {
   constructor(props) {
     super(props);
     console.log('LoggedInToolbar props', props)
@@ -92,7 +94,7 @@ class LoggedInToolbar extends Component {
             primaryText="Tribes" />
           <MenuItem
             onTouchTap={this.handleClose.bind(this)}
-            primaryText="API">  
+            primaryText="API">
             <Link to="https://us-west-2.api.scaphold.io/graphql/newGiveFitAlias" target="_blank"/>
           </MenuItem>
           <MenuItem
@@ -144,12 +146,12 @@ class LoggedInToolbar extends Component {
   }
 }
 
-  LoggedInToolbar.contextTypes = {
-      router : T.object.isRequired
-    }
+LoggedInToolbar.contextTypes = {
+  router: PropTypes.object.isRequired
+}
 
-    LoggedInToolbar.propTypes = {
-      location: T.object,
-    };
+LoggedInToolbar.propTypes = {
+  location: PropTypes.object
+}
 
-export default LoggedInToolbar;
+export default LoggedInToolbar

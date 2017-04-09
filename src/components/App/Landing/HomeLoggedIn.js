@@ -1,4 +1,5 @@
-import React, { PropTypes as T } from 'react';
+import React from 'react'
+import PropTypes from 'prop-types'
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText, GridList} from 'material-ui/Card';
 import Paper from 'material-ui/Paper';
 import FlatButton from 'material-ui/FlatButton';
@@ -125,8 +126,8 @@ export class HomeLoggedIn extends React.Component {
     this.context.router.push(`/app`);
 
   }
-  
-  
+
+
   //Need Google maps API here
   handleAutoComplete(){
     /*this.setState({
@@ -170,11 +171,11 @@ export class HomeLoggedIn extends React.Component {
         <Card className={styles.bannerCard}>
           <CardText>
             <FindWorkouts ref={node=>this.findWorkoutsComponent = node}/>
-            <RaisedButton 
-              label="Find My Tribe" 
-              secondary={true} 
-              className={styles.submitButton} 
-              onTouchTap={()=>this.handleSubmit()} 
+            <RaisedButton
+              label="Find My Tribe"
+              secondary={true}
+              className={styles.submitButton}
+              onTouchTap={()=>this.handleSubmit()}
               //style={inlineStyles.button}
             />
           </CardText>
@@ -194,12 +195,12 @@ export class HomeLoggedIn extends React.Component {
           <Paper style={inlineStyles.paper} zDepth={2} />
           <Paper style={inlineStyles.paper} zDepth={1} />
           <CardText>
-            GiveFit takes the pressure out of working out. We help you find likeminded "tribes" 
-            who happen to live nearby. 
+            GiveFit takes the pressure out of working out. We help you find likeminded "tribes"
+            who happen to live nearby.
           </CardText>
         <CardText>
-          GiveFit takes the pressure out of working out. We help you find likeminded "tribes" 
-          who happen to live nearby. 
+          GiveFit takes the pressure out of working out. We help you find likeminded "tribes"
+          who happen to live nearby.
         </CardText>
         <Paper style={inlineStyles.paper} zDepth={1} />
           <Paper style={inlineStyles.paper} zDepth={2} />
@@ -220,7 +221,7 @@ export class HomeLoggedIn extends React.Component {
             </Card>
           </div>
         </div>
-          
+
       </h2>*/}
       </div>
     )
@@ -228,7 +229,7 @@ export class HomeLoggedIn extends React.Component {
 }
 
 HomeLoggedIn.contextTypes = {
-  router: T.object
+  router: PropTypes.object
 };
 
 

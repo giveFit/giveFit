@@ -1,5 +1,7 @@
-import React, { PropTypes, Component } from 'react';
+import React from 'react'
 import {findDOMNode} from 'react-dom';
+import PropTypes from 'prop-types'
+
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -45,7 +47,7 @@ const inlineStyles = {
   }
 };
 
-class ParkFeed extends Component{
+class ParkFeed extends React.Component {
   constructor(props, context) {
     super(props, context);
   }

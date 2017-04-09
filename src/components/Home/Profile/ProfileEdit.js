@@ -1,4 +1,5 @@
-import React, { PropTypes as T } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import AuthService from 'utils/AuthService'
 import TextField from 'material-ui/TextField'
@@ -25,7 +26,7 @@ export class ProfileEdit extends React.Component {
             <TextField
               hintText="The hint text can be as long as you want, it will wrap."
             /><br />
-            
+
           {/*<Form horizontal onSubmit={this.handleSubmit.bind(this)}>
             <FormGroup controlId="address">
               <Col componentClass={ControlLabel} sm={2}>
@@ -41,15 +42,15 @@ export class ProfileEdit extends React.Component {
               </Col>
             </FormGroup>
           </Form>*/}
-        
+
       </div>
     )
   }
 }
 
 ProfileEdit.propTypes = {
-    profile: T.object,
-    auth: T.instanceOf(AuthService)
-  }
+  profile: PropTypes.object,
+  auth: PropTypes.instanceOf(AuthService)
+}
 
-export default ProfileEdit;
+export default ProfileEdit

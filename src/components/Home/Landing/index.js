@@ -1,4 +1,5 @@
-import React, { PropTypes as T } from 'react';
+import React from 'react'
+import PropTypes from 'prop-types'
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText, GridList} from 'material-ui/Card';
 import MainFeed from '../Feed/subComponents/MainFeed';
 import MainToolbar from '../Header/MainToolbar'
@@ -74,41 +75,41 @@ export class LandingPage extends React.Component {
 }
 
 LandingPage.contextTypes = {
-  router: T.object
-};
-
-
-//Get some WorkoutGroups
-const GET_THROUGH_VIEWER = gql`
-	query GetThroughViewer($first: Int) {
-  	viewer {
-	  	allWorkoutGroups(first: $first) {
-	  		edges {
-	  			node {
-				  id
-				  image
-				  title
-				  lat
-				  lng
-				  avatar
-				  contentSnippet
-	  			}
-	  		}
-	  	}
-	}
+  router: PropTypes.object
 }
-`;
 
-//How many WorkoutGroups to return
-const FIRST = 4;
+// Get some WorkoutGroups
+const GET_THROUGH_VIEWER = gql`
+  query GetThroughViewer($first: Int) {
+    viewer {
+      allWorkoutGroups(first: $first) {
+        edges {
+          node {
+          id
+          image
+          title
+          lat
+          lng
+          avatar
+          contentSnippet
+          }
+        }
+      }
+  }
+}
+`
+
+// How many WorkoutGroups to return
+const FIRST = 4
 
 const LandingPageContainerWithData = graphql(GET_THROUGH_VIEWER, {
-	options(props) {
-		return {
-		variables: {
-			first : FIRST
-		}
-	};
-}})(LandingPage);
+  options (props) {
+    return {
+      variables: {
+        first: FIRST
+      }
+    }
+  }
+})(LandingPage)
 
-export default LandingPageContainerWithData;
+export default LandingPageContainerWithData

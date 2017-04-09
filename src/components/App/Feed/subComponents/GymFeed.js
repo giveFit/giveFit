@@ -1,5 +1,6 @@
-import React, { PropTypes } from 'react';
+import React from 'react'
 import {findDOMNode} from 'react-dom';
+import PropTypes from 'prop-types'
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import {Tabs, Tab} from 'material-ui/Tabs';
@@ -29,14 +30,10 @@ const inlineStyles = {
   }
 };
 
-class GymFeed extends React.Component{
-
-	static propTypes = {
-		onClick : PropTypes.func.isRequired
-	}
+class GymFeed extends React.Component {
 
 	static defaultProps = {
-		onClick : ()=>{}
+		onClick : () => {}
 	}
 
   constructor(props, context) {
@@ -132,6 +129,10 @@ class GymFeed extends React.Component{
       </CardActions>
     </Card>
   }
+}
+
+GymFeed.propTypes = {
+  onClick: PropTypes.func.isRequired
 }
 
 export default GymFeed;

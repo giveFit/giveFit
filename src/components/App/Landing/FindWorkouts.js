@@ -1,5 +1,5 @@
 import 'whatwg-fetch';
-import React, {Component} from 'react';
+import React from 'react';
 import Autosuggest from 'react-autosuggest';
 import styles from './styles.module.css';
 import geocodeHelper from '../../../utils/geocodeHelper';
@@ -36,7 +36,7 @@ const renderSuggestion = suggestion => (
 );
 
 
-export default class FindWorkouts extends Component{
+export default class FindWorkouts extends React.Component {
   state = {
     findGroupInputVal : '',
     findGroupSuggestions : [],
@@ -156,7 +156,9 @@ export default class FindWorkouts extends Component{
 
 /*
 Another example:
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+
 import { TextField } from 'material-ui'
 
 export default class AddressAutocomplete extends Component {

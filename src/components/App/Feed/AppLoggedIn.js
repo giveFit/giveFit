@@ -1,4 +1,5 @@
-import React, { Component, PropTypes as T } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import { graphql, compose } from 'react-apollo'
 import gql from 'graphql-tag'
 
@@ -72,7 +73,7 @@ mutation UpdateUser($user: UpdateUserInput!) {
   }
 }`
 
-class AppLoggedIn extends Component {
+class AppLoggedIn extends React.Component {
   constructor (props, context) {
     super(props, context)
 
@@ -168,8 +169,8 @@ class AppLoggedIn extends Component {
 }
 
 AppLoggedIn.propTypes = {
-  auth: T.instanceOf(AuthService),
-  loginUser: T.func.isRequired
+  auth: PropTypes.instanceOf(AuthService),
+  loginUser: PropTypes.func.isRequired
 }
 
 const AppLoggedInWithData = compose(

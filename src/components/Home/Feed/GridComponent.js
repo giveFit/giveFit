@@ -1,4 +1,4 @@
-import React, { PropTypes,Component } from 'react';
+import React from 'react';
 import IconButton from 'material-ui/IconButton';
 import Subheader from 'material-ui/Subheader';
 import StarBorder from 'material-ui/svg-icons/toggle/star-border';
@@ -29,7 +29,7 @@ const styles = {
   }
 };
 
-class GridComponent extends Component {
+class GridComponent extends React.Component {
     constructor(props){
       super(props);
       // grab our googleMaps obj from whever she may lay
@@ -54,7 +54,7 @@ class GridComponent extends Component {
 
 
     }
-    /*Not really liking the yellow dot, may need to reimplement 
+    /*Not really liking the yellow dot, may need to reimplement
     something here if we end up re-implementing the location query*/
    /* geocoder(obj, function(err, latLng){
       if(err){
@@ -63,7 +63,7 @@ class GridComponent extends Component {
 
       }
     })*/
-    
+
     markerClick(index){
       this.setState({activeIndex : index});
     }

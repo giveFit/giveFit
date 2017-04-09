@@ -1,4 +1,5 @@
-import React, { PropTypes as T } from 'react'
+import React from 'react'
+
 import RaisedButton from 'material-ui/RaisedButton';
 import AuthService from 'utils/AuthService';
 import gql from 'graphql-tag';
@@ -122,7 +123,7 @@ query GetThroughViewer($first: Int) {
 const FIRST = 8;
 
 
-const HomeContainerWithData =  compose(
+const HomeContainerWithData = compose(
   graphql(GET_THROUGH_VIEWER, {
     options: (props) => ({
       variables: { first : FIRST }

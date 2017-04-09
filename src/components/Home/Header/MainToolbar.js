@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import IconMenu from 'material-ui/IconMenu'
 import IconButton from 'material-ui/IconButton'
@@ -127,11 +128,11 @@ class MainToolbar extends React.Component {
 }
 
 MainToolbar.contextTypes = {
-  router: React.PropTypes.object.isRequired
+  router: PropTypes.object.isRequired
 }
 
 MainToolbar.propTypes = {
-  location: React.PropTypes.object
+  location: PropTypes.object
 }
 
 export default MainToolbar

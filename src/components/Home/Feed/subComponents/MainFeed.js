@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react'
 import {findDOMNode} from 'react-dom';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
@@ -77,7 +77,7 @@ class MainFeed extends React.Component{
         <div>Comments</div>
       </CardText>*/}
       <CardActions >
-      {this.state.expanded ? <FlatButton label="Reduce" onTouchTap={this.handleReduce.bind(this)} /> : <FlatButton label="See upcoming workouts" onTouchTap={this.handleExpand.bind(this)} /> } 
+      {this.state.expanded ? <FlatButton label="Reduce" onTouchTap={this.handleReduce.bind(this)} /> : <FlatButton label="See upcoming workouts" onTouchTap={this.handleExpand.bind(this)} /> }
       </CardActions>
     </Card>
   }
