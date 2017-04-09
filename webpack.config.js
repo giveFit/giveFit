@@ -56,7 +56,9 @@ var config = getConfig({
 				.__app__body__container__left{
 
 				  flex : 1;
-				} 
+				}
+        </style>
+        <script src="https://use.fontawesome.com/c37c106dc7.js"></script>
 				 </style><script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwOsxUEBGettfG4jFkxFNl2lt3s7dtYPc&libraries=places" ></script>`,
         publicPath: isDev ? 'http://localhost:3000/' : '',
         meta: {
