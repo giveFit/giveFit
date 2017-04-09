@@ -5,6 +5,8 @@ import moment from 'moment'
 
 import { CardText, Chip, Avatar, RaisedButton } from 'material-ui'
 
+import Pagination from './subComponents/Pagination'
+
 const styles = {
   container: {
     position: 'absolute',
@@ -14,7 +16,8 @@ const styles = {
     height: '80%',
     overflow: 'scroll',
     top: 0,
-    right: 0
+    right: 0,
+    minWidth: '50%'
   },
   header: {
     display: 'flex',
@@ -46,7 +49,7 @@ const styles = {
     justifyContent: 'space-between'
   },
   rsvpButton: {
-    margin: '1em 0',
+    margin: '0.5em 0',
     boxShadow: '3px 3px 8px black',
     cursor: 'pointer'
   },
@@ -71,8 +74,26 @@ const styles = {
 }
 
 class Activity extends React.Component {
-  prepareWorkouts () {
+  constructor (props) {
+    super(props)
+
+    this.RESULTS_PER_PAGE = 3
+
+    this.state = {
+      currentPage: 0,
+      resultsPerPage: this.RESULTS_PER_PAGE
+    }
+  }
+
+  // @todo: Make titles, date, time, description required
+  // Date and times should be stored as a unix timestamp
+  WorkoutList () {
+    const { currentPage, resultsPerPage } = this.state
+    const startIndex = currentPage ? currentPage * 5 : 0
+    const endIndex = startIndex + resultsPerPage
+
     return this.props.workouts
+      .slice(startIndex, endIndex)
       // @todo: sort this by date
       .map((workout, index) => {
         workout = workout.node
@@ -90,8 +111,8 @@ class Activity extends React.Component {
                 />
                 <span>{workout.Workout.nickname}</span>
               </Chip>
-              <div style={styles.workoutTitle}>
-                {workout.title}
+              <div className='workout-title' style={styles.workoutTitle}>
+                {workout.title || 'N/A'}
                 <i className='fa fa-pencil' style={styles.editIcon} />
               </div>
             </div>
@@ -107,8 +128,13 @@ class Activity extends React.Component {
                 labelColor={'white'}
                 label='RSVP'
                 style={styles.rsvpButton}
+                onTouchTap={() => console.log('RSVP\'ing to this Place')}
               />
-              <div className='share-button' style={styles.shareButton}>
+              <div
+                className='share-button'
+                style={styles.shareButton}
+                onClick={() => console.log('Sharing to this Place')}
+              >
                 <span>Share</span>
                 <i className='fa fa-share' style={styles.shareIcon} />
               </div>
@@ -118,16 +144,49 @@ class Activity extends React.Component {
       })
   }
 
+  setPage (page) {
+    this.setState({ currentPage: page })
+  }
+
+  nextPage () {
+    this.setState({ currentPage: this.state.currentPage + 1 })
+  }
+
+  previousPage () {
+    const { currentPage } = this.state
+
+    this.setState({ currentPage: (currentPage - 1 < 0) ? 0 : currentPage - 1 })
+  }
+
   render () {
+    // Round Result up because maxPage is number of pages to display all the
+    // results
+    const maxPage = Math.ceil(this.props.workouts.length / this.RESULTS_PER_PAGE)
+
     return (
       <div style={styles.container}>
         <div className='header' style={styles.header}>
-          <i className='fa fa-times' style={{ color: 'white' }} />
+          <i
+            className='fa fa-times'
+            style={{ color: 'white', cursor: 'pointer' }}
+            onClick={() => this.props.closeActivity()}
+          />
           <span style={{ color: '#000032' }}>{this.props.parkTitle}</span>
-          <i className='fa fa-plus' style={{ color: '#75F0BA', fontWeight: 'bold' }}> Add Activity</i>
+          <i
+            className='fa fa-plus'
+            style={{ color: '#75F0BA', fontWeight: 'bold' }}
+            onClick={() => console.log('Add Activity Action')}
+          > Add Activity</i>
         </div>
         <div className='body' style={styles.body}>
-          {this.prepareWorkouts()}
+          <Pagination
+            maxPage={maxPage}
+            currentPage={this.state.currentPage}
+            setPage={(page) => this.setPage(page)}
+            next={() => this.nextPage()}
+            previous={() => this.previousPage()}
+          />
+          {this.WorkoutList()}
         </div>
       </div>
     )
@@ -135,8 +194,10 @@ class Activity extends React.Component {
 }
 
 Activity.propTypes = {
+  openedActivity: PropTypes.string.isRequired,
   parkTitle: PropTypes.string.isRequired,
-  workouts: PropTypes.array.isRequired
+  workouts: PropTypes.array.isRequired,
+  closeActivity: PropTypes.func.isRequired
 }
 
 export default Activity
