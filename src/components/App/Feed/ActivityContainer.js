@@ -16,6 +16,13 @@ const styles = {
     top: 0,
     right: 0
   },
+  header: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    backgroundColor: '#D7546A',
+    border: '2px solid black',
+    padding: '0.2em 0.5em'
+  },
   workoutHeader: {
     display: 'flex'
   },
@@ -65,60 +72,70 @@ const styles = {
 
 class Activity extends React.Component {
   prepareWorkouts () {
-    return this.props.workouts.map((workout, index) => {
-      workout = workout.node
+    return this.props.workouts
+      // @todo: sort this by date
+      .map((workout, index) => {
+        workout = workout.node
 
-      return (
-        <CardText key={`workout-${index}`}>
-          <div className='workout-header' style={styles.workoutHeader}>
-            <Chip
-              onTouchTap={() => this.context.router.push('/profile')}
-              style={styles.chip}
-            >
-              <Avatar
-                src={workout.Workout.picture}
-                onClick={() => this.context.router.push('/profile')}
+        return (
+          <CardText key={`workout-${index}`}>
+            <div className='workout-header' style={styles.workoutHeader}>
+              <Chip
+                onTouchTap={() => this.context.router.push('/profile')}
+                style={styles.chip}
+              >
+                <Avatar
+                  src={workout.Workout.picture}
+                  onClick={() => this.context.router.push('/profile')}
+                />
+                <span>{workout.Workout.nickname}</span>
+              </Chip>
+              <div style={styles.workoutTitle}>
+                {workout.title}
+                <i className='fa fa-pencil' style={styles.editIcon} />
+              </div>
+            </div>
+            <div className='workout-date' style={styles.workoutDate}>
+              {workout.date ? moment(workout.date).format('ddd MMM Do YYYY') : 'N/A'} {workout.time ? moment(workout.time).format('LT') : 'N/A'}
+            </div>
+            <div className='workout-description' style={styles.workoutDescription}>
+              {workout.description}
+            </div>
+            <div className='button-container' style={styles.buttonContainer}>
+              <RaisedButton
+                backgroundColor={'#1F01B9'}
+                labelColor={'white'}
+                label='RSVP'
+                style={styles.rsvpButton}
               />
-              <span>{workout.Workout.nickname}</span>
-            </Chip>
-            <div style={styles.workoutTitle}>
-              {workout.title}
-              <i className='fa fa-pencil' style={styles.editIcon} />
+              <div className='share-button' style={styles.shareButton}>
+                <span>Share</span>
+                <i className='fa fa-share' style={styles.shareIcon} />
+              </div>
             </div>
-          </div>
-          <div className='workout-date' style={styles.workoutDate}>
-            {workout.date ? moment(workout.date).format('ddd MMM Do') : 'N/A'} {workout.time ? moment(workout.time).format('LT') : 'N/A'}
-          </div>
-          <div className='workout-description' style={styles.workoutDescription}>
-            {workout.description}
-          </div>
-          <div className='button-container' style={styles.buttonContainer}>
-            <RaisedButton
-              backgroundColor={'#1F01B9'}
-              labelColor={'white'}
-              label='RSVP'
-              style={styles.rsvpButton}
-            />
-            <div className='share-button' style={styles.shareButton}>
-              <span>Share</span>
-              <i className='fa fa-share' style={styles.shareIcon} />
-            </div>
-          </div>
-        </CardText>
-      )
-    })
+          </CardText>
+        )
+      })
   }
 
   render () {
     return (
       <div style={styles.container}>
-        {this.prepareWorkouts()}
+        <div className='header' style={styles.header}>
+          <i className='fa fa-times' style={{ color: 'white' }} />
+          <span style={{ color: '#000032' }}>{this.props.parkTitle}</span>
+          <i className='fa fa-plus' style={{ color: '#75F0BA', fontWeight: 'bold' }}> Add Activity</i>
+        </div>
+        <div className='body' style={styles.body}>
+          {this.prepareWorkouts()}
+        </div>
       </div>
     )
   }
 }
 
 Activity.propTypes = {
+  parkTitle: PropTypes.string.isRequired,
   workouts: PropTypes.array.isRequired
 }
 
