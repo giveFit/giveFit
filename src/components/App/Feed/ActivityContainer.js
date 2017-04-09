@@ -6,6 +6,7 @@ import moment from 'moment'
 import { CardText, Chip, Avatar, RaisedButton } from 'material-ui'
 
 import Pagination from './subComponents/Pagination'
+import WorkoutCreator from './subComponents/WorkoutCreator'
 
 const styles = {
   container: {
@@ -172,11 +173,7 @@ class Activity extends React.Component {
             onClick={() => this.props.closeActivity()}
           />
           <span style={{ color: '#000032' }}>{this.props.parkTitle}</span>
-          <i
-            className='fa fa-plus'
-            style={{ color: '#75F0BA', fontWeight: 'bold' }}
-            onClick={() => console.log('Add Activity Action')}
-          > Add Activity</i>
+          <WorkoutCreator />
         </div>
         <div className='body' style={styles.body}>
           <Pagination
