@@ -56,7 +56,7 @@ export class Home extends React.Component {
     </div> : <CircularProgress size={80} />
     return (
       <div className={styles.root}>
-        <LoggedInToolbar 
+        <LoggedInToolbar
             auth={this.props}
             profile={profile}
           />
@@ -67,12 +67,12 @@ export class Home extends React.Component {
           <ProfileEdit profile={profile} auth={this.props.auth}></ProfileEdit>
           <Tabs>
             <Tab label="Calendar">
-              {calendar}   
+              {calendar}
             </Tab>
             <Tab label="My Tribes" >
               {savedGroups}
             </Tab>
-        </Tabs> 
+        </Tabs>
         </CardText>
         </Card>
       </div>
