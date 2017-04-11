@@ -84,7 +84,7 @@ class ParkFeed extends React.Component {
   render(){
     const {props} = this;
 
-    return <div><Card ref='root' key={props.data.id}>
+    return <div><Card ref='root' key={props.data.id} className={props.active ? styles.cardActive : ""} onTouchTap={()=>this.props.onClick(this.props.parkID)}>
       <CardHeader
         title={props.data.googleData.title}
         subtitle={<a href={"http://maps.google.com/?q=" + props.data.googleData.vicinity} target="_blank">{props.data.googleData.vicinity}</a>}
@@ -92,8 +92,6 @@ class ParkFeed extends React.Component {
       {/*would eventually like to add tags*/}
         </CardHeader>
       <CardMedia
-        className={props.active ? styles.cardActive : ""}
-        onTouchTap={()=>this.props.onClick()}
         overlay={
           <CardTitle
             style={inlineStyles.rating}
@@ -119,10 +117,6 @@ class ParkFeed extends React.Component {
       </CardText>
 
       <CardActions>
-        {<FlatButton
-          label="View Activities"
-          onTouchTap={() => this.props.toggleActivity(this.props.parkID)}
-        />}
         <WorkoutCreatorWithData data={this.props.data}/>
       </CardActions>
     </Card>
