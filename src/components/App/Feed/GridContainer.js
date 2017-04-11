@@ -236,7 +236,7 @@ class GridComponent extends React.Component {
           },
           rating: parkVenue.rating,
           photos: this.foursquareGetUrl(parkVenue.photos),
-          //vicinity: park.vicinity,
+          vicinity: parkVenue.location.address,
           types: parkVenue.types,
           workouts: filteredWorkouts
         }
