@@ -159,9 +159,15 @@ class GridComponent extends React.Component {
     }
     console.log('setActiveIndex', parkID, index)
 
+    var newIndex
+    if(index == undefined ){
+      newIndex = -1
+    }else{
+      newIndex = index
+    }
     this.setState(
       { openedActivity: parkID,
-        activeIndex: index ? index : -1
+        activeIndex: newIndex
       }
     )
   }
