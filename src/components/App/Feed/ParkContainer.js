@@ -36,7 +36,7 @@ class ParkContainer extends React.Component {
     return Object.keys(placeById).map((item, index) => (
       <div key={index} style={styles.workout}>
         {!item ||
-          (placeById[item].googleData.types.indexOf('park') !== -1
+          (placeById[item].googleData.types.indexOf('Park') !== -1
             ? <ParkFeed
               active={activeIndex === index}
               onClick={(parkID) => onFeedItemClick(index, parkID)}
