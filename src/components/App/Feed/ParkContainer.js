@@ -39,7 +39,7 @@ class ParkContainer extends React.Component {
           (placeById[item].googleData.types.indexOf('park') !== -1
             ? <ParkFeed
               active={activeIndex === index}
-              onClick={() => onFeedItemClick(index)}
+              onClick={(parkID) => onFeedItemClick(index, parkID)}
               data={placeById[item]}
               toggleActivity={toggleActivity}
               parkID={item}

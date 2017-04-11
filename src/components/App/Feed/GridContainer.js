@@ -111,7 +111,7 @@ class GridComponent extends React.Component {
     }
   }
 
-  toggleActivity (parkID = '') {
+  toggleActivity (parkID = '', index) {
     if (parkID === this.state.openedActivity) {
       parkID = ''
     }
@@ -119,8 +119,17 @@ class GridComponent extends React.Component {
     this.setState({ openedActivity: parkID })
   }
 
-  setActiveIndex (index) {
-    this.setState({ activeIndex: index })
+  setActiveIndex (index, parkID = '') {
+    if (parkID === this.state.openedActivity) {
+      parkID = ''
+    }
+    console.log('setActiveIndex', parkID, index)
+    
+    this.setState(
+      { openedActivity: parkID,
+        activeIndex: index ? index : -1
+      }
+    )
   }
 
   render () {
@@ -179,7 +188,7 @@ class GridComponent extends React.Component {
               indexedPlaces={indexedPlaces}
               activeMarker={activeIndex}
               geocoder={this.geocoder}
-              onMarkerClick={(index) => this.setActiveIndex(index)}
+              onMarkerClick={(index, parkID) => this.setActiveIndex(index, parkID)}
             />
           }
           {this.state.openedActivity &&
@@ -187,7 +196,8 @@ class GridComponent extends React.Component {
               openedActivity={this.state.openedActivity}
               parkTitle={indexedPlaces[this.state.openedActivity].googleData.title}
               workouts={indexedPlaces[this.state.openedActivity].googleData.workouts}
-              closeActivity={() => this.toggleActivity()}
+              //closeActivity={() => this.setActiveIndex(index, parkID)}
+              closeActivity={() => this.setActiveIndex()}
             />
           }
         </div>
@@ -197,7 +207,7 @@ class GridComponent extends React.Component {
           profile={profile}
           activeIndex={activeIndex}
           toggleActivity={(parkID) => this.toggleActivity(parkID)}
-          onFeedItemClick={(index) => this.setActiveIndex(index)}
+          onFeedItemClick={(index, parkID) => this.setActiveIndex(index, parkID)}
         />
       </div>
     )

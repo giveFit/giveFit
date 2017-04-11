@@ -72,7 +72,7 @@ class MarkerList extends React.Component {
                     : `https://maps.google.com/mapfiles/ms/icons/pink.png`
                   }
                   {...indexedPlaces[placeID].googleData}
-                  onClick={() => onMarkerClick(index)}
+                  onClick={() => onMarkerClick(index, placeID)}
                   onRightclick={() => console.log(placeID, index)}
                 />
               )
