@@ -158,7 +158,7 @@ class GridComponent extends React.Component {
       parkID = ''
     }
     console.log('setActiveIndex', parkID, index)
-    
+
     this.setState(
       { openedActivity: parkID,
         activeIndex: index ? index : -1
@@ -216,7 +216,7 @@ class GridComponent extends React.Component {
       //     workouts: filteredWorkouts
       //   }
       // }
-      parkVenue.categories = parkVenue.categories.map((a)=>a.name)
+      parkVenue.types = parkVenue.categories.map((a)=>a.name)
 
       //Values need to be reassigned as per the app
       indexedPlaces[parkVenue.id] = {
@@ -231,7 +231,7 @@ class GridComponent extends React.Component {
           rating: parkVenue.rating,
           photos: this.foursquareGetUrl(parkVenue.photos),
           //vicinity: park.vicinity,
-          types: parkVenue.categories,
+          types: parkVenue.types,
           workouts: filteredWorkouts
         }
       }
