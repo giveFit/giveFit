@@ -2,6 +2,8 @@ import React from 'react'
 
 import {searchNearby} from 'utils/googleApiHelpers'
 
+import foursquare from 'utils/foursquareApi'
+
 import ParkContainer from './ParkContainer'
 import ActivityContainer from './ActivityContainer'
 import MapContainer from './MapContainer'
@@ -76,36 +78,68 @@ class GridComponent extends React.Component {
 
     const div = document.createElement('div')
 
+    //Note : This concatincatin logic can be moved to foursquareApi.js to keep it consistent with googleApi
+    const gyms = {
+      ll: centerLatLng.lat.toString().concat(','+centerLatLng.lng.toString()),
+      radius: 5000,
+      query: 'gym',
+      venuePhotos: 1
+    }
+    const parks = {
+      ll: centerLatLng.lat.toString().concat(','+centerLatLng.lng.toString()),
+      radius: 5000,
+      query: 'park',
+      venuePhotos: 1
+    }
+
+
+
     // const {googleMaps} = this.props
+
     // Need to update these searches when a new map center is created
     // baltimore parks search params
-    const parks = {
-      location: centerLatLng,
-      radius: 5000,
-      type: 'park'
-    }
-
-    // baltimore gym search params
-    const gyms = {
-      location: centerLatLng,
-      radius: 5000,
-      type: 'gym'
-    }
+    // const parks = {
+    //   location: centerLatLng,
+    //   radius: 5000,
+    //   type: 'park'
+    // }
+    //
+    // // baltimore gym search params
+    // const gyms = {
+    //   location: centerLatLng,
+    //   radius: 5000,
+    //   type: 'gym'
+    // }
 
     try {
-      // search and add parks to state
-      // add meetup activities as well https://www.npmjs.com/package/meetup-crawler
-      // or https://github.com/jkutianski/meetup-api/tree/0.1.X
-      const parksPromise = searchNearby(this.googleMaps, div, parks)
-      const gymsPromise = searchNearby(this.googleMaps, div, gyms)
-      Promise.all([parksPromise, gymsPromise])
-        .then(([parksResult, gymsResult]) => {
+      //search and add parks to state
+      //add meetup activities as well https://www.npmjs.com/package/meetup-crawler
+      //or https://github.com/jkutianski/meetup-api/tree/0.1.X
+      // const parksPromise = searchNearby(this.googleMaps, div, parks)
+      // const gymsPromise = searchNearby(this.googleMaps, div, gyms)
+      // Promise.all([parksPromise, gymsPromise])
+      //   .then(([parksResult, gymsResult]) => {
+      //     this.setState({
+      //       parks: parksResult,
+      //       parksAndGyms: parksResult.concat(gymsResult),
+      //       loadedMapData: true
+      //     })
+      //   })
+
+
+      //Foursquare api calls
+      const gymsPromise = foursquare.venues.explore(gyms)
+      const parksPromise = foursquare.venues.explore(parks)
+      Promise.all([parksPromise,gymsPromise])
+        .then(([parksResult,gymsResult]) => {
           this.setState({
-            parks: parksResult,
-            parksAndGyms: parksResult.concat(gymsResult),
+            // NOTE: move this traversal to the utils files
+            parks: parksResult.response.groups[0].items,
+            parksAndGyms: parksResult.response.groups[0].items.concat(gymsResult.response.groups[0].items),
             loadedMapData: true
           })
         })
+
     } catch (err) {
       console.log(err)
     }
@@ -121,6 +155,14 @@ class GridComponent extends React.Component {
 
   setActiveIndex (index) {
     this.setState({ activeIndex: index })
+  }
+
+  //Url generator for foursquare
+  foursquareGetUrl(photos){
+    var image = photos.groups && photos.groups[0] && photos.groups[0].items[0]
+    //the original can be edited as required to get the required image dimensions
+    //Read https://developer.foursquare.com/docs/responses/photo
+    return image ? image.prefix + 'original' + image.suffix : null
   }
 
   render () {
@@ -140,27 +182,47 @@ class GridComponent extends React.Component {
     const indexedPlaces = {}
 
     parksAndGyms.forEach((park) => {
+      var parkVenue = park.venue;
       // const place_id = park.place_id
       // console.log('each spot', s)
       // need to iterate over workouts, matching them to the place_id, adding
       // them as an array to the indexedPlaces
       const filteredWorkouts = workouts.filter((workout) => {
-        return park.place_id === workout.node.parkId && workout.node.Workout
+        return parkVenue.id === workout.node.parkId && workout.node.Workout
       })
 
-      indexedPlaces[park.place_id] = {
+      // indexedPlaces[park.place_id] = {
+      //   // comments: workout.comments,
+      //   googleData: {
+      //     parkId: park.place_id,
+      //     title: park.name,
+      //     position: {
+      //       lat: park.geometry.location.lat(),
+      //       lng: park.geometry.location.lng()
+      //     },
+      //     rating: park.rating,
+      //     photos: park.photos ? park.photos[0].getUrl({'maxWidth': 500, 'maxHeight': 750}) : null,
+      //     vicinity: park.vicinity,
+      //     types: park.types,
+      //     workouts: filteredWorkouts
+      //   }
+      // }
+      parkVenue.categories = parkVenue.categories.map((a)=>a.name)
+
+      //Values need to be reassigned as per the app
+      indexedPlaces[parkVenue.id] = {
         // comments: workout.comments,
         googleData: {
-          parkId: park.place_id,
-          title: park.name,
+          parkId: parkVenue.id,
+          title: parkVenue.name,
           position: {
-            lat: park.geometry.location.lat(),
-            lng: park.geometry.location.lng()
+            lat: parkVenue.location.lat,
+            lng: parkVenue.location.lng
           },
-          rating: park.rating,
-          photos: park.photos ? park.photos[0].getUrl({'maxWidth': 500, 'maxHeight': 750}) : null,
-          vicinity: park.vicinity,
-          types: park.types,
+          rating: parkVenue.rating,
+          photos: this.foursquareGetUrl(parkVenue.photos),
+          //vicinity: park.vicinity,
+          types: parkVenue.categories,
           workouts: filteredWorkouts
         }
       }

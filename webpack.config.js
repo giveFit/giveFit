@@ -25,6 +25,7 @@ var config = getConfig({
   isDev: isDev,
   in: join(src, 'index.js'),
   out: dest,
+  devtool: 'source-map',
   devServer: {
     proxy: {
       context: "/api",
