@@ -78,11 +78,11 @@ class GridComponent extends React.Component {
 
     const div = document.createElement('div')
 
-    //Note : This concatincatin logic can be moved to foursquareApi.js to keep it consistent with googleApi
-    const gyms = {
+    //Note : This concatination logic can be moved to foursquareApi.js to keep it consistent with googleApi
+    const recCenters = {
       ll: centerLatLng.lat.toString().concat(','+centerLatLng.lng.toString()),
       radius: 5000,
-      query: 'gym',
+      query: 'rec center',
       venuePhotos: 1
     }
     const parks = {
@@ -128,14 +128,14 @@ class GridComponent extends React.Component {
 
 
       //Foursquare api calls
-      const gymsPromise = foursquare.venues.explore(gyms)
+      const recCentersPromise = foursquare.venues.explore(recCenters)
       const parksPromise = foursquare.venues.explore(parks)
-      Promise.all([parksPromise,gymsPromise])
-        .then(([parksResult,gymsResult]) => {
+      Promise.all([parksPromise,recCentersPromise])
+        .then(([recCentersResult,parksResult]) => {
           this.setState({
             // NOTE: move this traversal to the utils files
             parks: parksResult.response.groups[0].items,
-            parksAndGyms: parksResult.response.groups[0].items.concat(gymsResult.response.groups[0].items),
+            parksAndGyms: parksResult.response.groups[0].items.concat(recCentersResult.response.groups[0].items),
             loadedMapData: true
           })
         })
@@ -197,6 +197,7 @@ class GridComponent extends React.Component {
     const indexedPlaces = {}
 
     parksAndGyms.forEach((park) => {
+      console.log('parksAndGyms', park)
       var parkVenue = park.venue;
       // const place_id = park.place_id
       // console.log('each spot', s)
