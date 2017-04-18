@@ -1,6 +1,7 @@
 import React from 'react'
 import { graphql, compose } from 'react-apollo'
 import gql from 'graphql-tag'
+import ReactFilepicker from 'react-filepicker';
 
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
@@ -11,6 +12,7 @@ import TextField from 'material-ui/TextField'
 import Toggle from 'material-ui/Toggle'
 
 import apolloConfig from '../../../../../apolloConfig'
+import configKeys from '../../../../../configKeys';
 import AuthService from 'utils/AuthService'
 
 const CREATE_WORKOUT = gql`
@@ -65,7 +67,21 @@ class WorkoutCreator extends React.Component {
     console.log('scapholdUser', scapholdUser)
     console.log('scapholdUser state', this.state.scapholdUser)
   }*/
-
+  addImage(){
+    filepicker.pick(
+      {
+        mimetype: 'image/*',
+        container: 'window',
+        services: ['COMPUTER', 'FACEBOOK', 'INSTAGRAM', 'GOOGLE_DRIVE', 'DROPBOX']
+      },
+      function(Blob){
+        console.log(JSON.stringify(Blob));
+      },
+      function(FPError){
+        console.log(FPError.toString());
+      }
+    );
+  };
   handleOpen () {
     this.setState({ open: true })
   }
@@ -146,7 +162,6 @@ class WorkoutCreator extends React.Component {
         onTouchTap={this.submitWorkout.bind(this)}
       />
     ]
-
     return (
       <div>
         <div>
@@ -190,7 +205,14 @@ class WorkoutCreator extends React.Component {
                 id='text-field-controlled'
                 hintText='Description'
                 onChange={this.onDescriptionChange.bind(this)}
-
+              />
+              <div>
+                <ReactFilepicker apikey={configKeys.FILESTACK_API} onTouchTap={this.addImage} onSuccess={(...args)=>console.log(...args)}/>
+              </div>
+              <TextField
+                id='text-field-controlled'
+                hintText='Location'
+                onChange={this.onDescriptionChange.bind(this)}
               />
               <DatePicker
                 id='text-field-controlled'

@@ -83,7 +83,7 @@ class GridComponent extends React.Component {
     const recCenters = {
       ll: centerLatLng.lat.toString().concat(','+centerLatLng.lng.toString()),
       radius: 5000,
-      query: 'gym',
+      query: 'recreation center',
       venuePhotos: 1
     }
     const parks = {
@@ -199,7 +199,7 @@ class GridComponent extends React.Component {
     const indexedPlaces = {}
 
     parksAndGyms.forEach((park) => {
-      console.log('parksAndGyms', park)
+      //console.log('parksAndGyms', park)
       var parkVenue = park.venue;
       // const place_id = park.place_id
       // console.log('each spot', s)
