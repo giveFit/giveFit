@@ -97,6 +97,7 @@ class AppLoggedIn extends React.Component {
     // updateUser/loginUser expects userId, not user_id
     identity.userId = identity.user_id
     delete identity.user_id
+    console.log('auth0Profile', auth0Profile)
 
     // debugger;
     this.props.loginUser({

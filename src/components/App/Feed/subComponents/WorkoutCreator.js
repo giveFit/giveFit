@@ -2,7 +2,6 @@ import React from 'react'
 import { graphql, compose } from 'react-apollo'
 import gql from 'graphql-tag'
 
-
 import Avatar from 'material-ui/Avatar'
 import Chip from 'material-ui/Chip'
 import Checkbox from 'material-ui/Checkbox'
@@ -239,7 +238,6 @@ class WorkoutCreator extends React.Component {
                 id='workout_type'
                 hintText='Type'
                 onChange={(e) => this.onTypeChange(e.target.value)}
-
               />
             </div>
           </div>
@@ -251,7 +249,7 @@ class WorkoutCreator extends React.Component {
                 mimetype: 'image/*',
                 services: ['COMPUTER', 'FACEBOOK', 'INSTAGRAM', 'GOOGLE_DRIVE', 'DROPBOX']
               }}
-              buttonText={`<span><i class='fa fa-plus-circle'></i> 'Add' Picture</span>`}
+              buttonText={`<span><i class='fa fa-plus-circle'></i> Add Picture</span>`}
               onSuccess={(res) => this.handlePictureChange(res.url)}
               buttonClass='add_picture_button'
             />

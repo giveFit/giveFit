@@ -79,10 +79,11 @@ class GridComponent extends React.Component {
     const div = document.createElement('div')
 
     //Note : This concatination logic can be moved to foursquareApi.js to keep it consistent with googleApi
+    //FourSquare category tree: https://developer.foursquare.com/categorytree
     const recCenters = {
       ll: centerLatLng.lat.toString().concat(','+centerLatLng.lng.toString()),
       radius: 5000,
-      query: 'rec center',
+      query: 'recreation center',
       venuePhotos: 1
     }
     const parks = {
@@ -128,6 +129,7 @@ class GridComponent extends React.Component {
 
 
       //Foursquare api calls
+      //Explore: https://developer.foursquare.com/docs/venues/explore
       const recCentersPromise = foursquare.venues.explore(recCenters)
       const parksPromise = foursquare.venues.explore(parks)
       Promise.all([parksPromise,recCentersPromise])
@@ -197,7 +199,7 @@ class GridComponent extends React.Component {
     const indexedPlaces = {}
 
     parksAndGyms.forEach((park) => {
-      console.log('parksAndGyms', park)
+      //console.log('parksAndGyms', park)
       var parkVenue = park.venue;
       // const place_id = park.place_id
       // console.log('each spot', s)
