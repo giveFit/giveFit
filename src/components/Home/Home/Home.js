@@ -6,9 +6,9 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import {Card, CardActions, CardMedia, CardHeader, CardText} from 'material-ui/Card';
 
-import styles from './styles.module.css';
 import ProfileDetails from '../Profile/ProfileDetails';
 import ProfileEdit from '../Profile/ProfileEdit';
+import './styles.css'
 /*possible reference: https://github.com/scaphold-io/auth0-lock-playground*/
 export class Home extends React.Component {
   constructor(props, context) {
@@ -48,7 +48,7 @@ export class Home extends React.Component {
     return (
       <Card>
       <CardText>
-      <div className={styles.root}>
+      <div className='root'>
         <p>Welcome, {profile.given_name}!</p>
         <ProfileDetails profile={profile}></ProfileDetails>
         <ProfileEdit profile={profile} auth={this.props.auth}></ProfileEdit>

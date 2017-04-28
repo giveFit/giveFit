@@ -19,7 +19,9 @@ import ReactFilepicker from 'react-filepicker';
 import configKeys from '../../../../../configKeys';
 import apolloConfig from '../../../../../apolloConfig';
 import AuthService from 'utils/AuthService';
-import styles from '../styles.module.css';
+
+import '../styles.css';
+
 const inlineStyles = {
   listStyle: {
     'list-style-type': 'none'
@@ -178,7 +180,7 @@ class GroupCreator extends React.Component {
           <GroupAdd />
         </IconButton>
         <Dialog
-          className = {styles.dialogClassName}
+          className='dialogClassName'
           title="Add your own awesome group"
           actions={actions}
           modal={false}

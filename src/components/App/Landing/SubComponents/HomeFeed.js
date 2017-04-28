@@ -4,7 +4,7 @@ import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'mat
 import FlatButton from 'material-ui/FlatButton';
 import {Tabs, Tab} from 'material-ui/Tabs';
 
-import styles from '../styles.module.css';
+import '../styles.css'
 
 class MainFeed extends React.Component{
   constructor(props, context) {
@@ -31,7 +31,7 @@ class MainFeed extends React.Component{
   }
   render(){
     const {props} = this;
-    return <Card ref='root' key={props.data.id} className={props.active ? styles.cardActive : ""}>
+    return <Card ref='root' key={props.data.id} className={props.active ? 'cardActive' : ''}>
       <CardHeader
         title={props.data.author}
         avatar={props.data.avatar}
@@ -44,7 +44,7 @@ class MainFeed extends React.Component{
                   />
                 }
       >
-        <img src={props.data.image} className={styles.img}/>
+        <img src={props.data.image} className='img' />
       </CardMedia>
       <CardText>{props.data.contentSnippet} </CardText>
       <Card expanded={this.state.expanded}>
@@ -52,7 +52,7 @@ class MainFeed extends React.Component{
       <Tabs >
           <Tab label="Workouts" >
            <div>
-             <h2 className={styles.headline}>Tab One</h2>
+             <h2 className='headline'>Tab One</h2>
              <p>
                This is an example tab.
              </p>
@@ -64,7 +64,7 @@ class MainFeed extends React.Component{
           </Tab>
           <Tab label="Comments" >
            <div>
-             <h2 style={styles.headline}>Tab Two</h2>
+             <h2 className='headline'>Tab Two</h2>
              <p>
                This is another example tab.
              </p>

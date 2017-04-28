@@ -7,7 +7,6 @@ import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import AuthService from 'utils/AuthService';
 import TextField from 'material-ui/TextField';
-import styles from './styles.module.css';
 import RaisedButton from 'material-ui/RaisedButton';
 import {orange500, blue500, indigo500} from 'material-ui/styles/colors';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -20,6 +19,8 @@ import MainToolbar from '../../Home/Header/MainToolbar'
 import BottomNav from './SubComponents/BottomNavigation';
 import Features from './SubComponents/Features';
 //import { GooglePlaceAutocomplete } from "material-ui-places";
+
+import './styles.css'
 
 const inlineStyles = {
   textFieldStyle: {
@@ -144,16 +145,16 @@ export class HomeLoggedIn extends React.Component {
     //console.log('HomeLoggedIn profile', profile)
     const workouts=(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ? this.props.data.viewer.allWorkoutGroups.edges : [];
     //console.log('profile', profile);
-    const listView = workouts.length ? <div className={styles.workouts}>
+    const listView = workouts.length ? <div className='workouts'>
     {workouts.map((item, index) => (
-         <div key={index} className={styles.workout}> {!item ||
+         <div key={index} className='workout'> {!item ||
           (<HomeFeed
             data={item.node}
          />)} </div>
     ))}
     </div> : <CircularProgress size={80} />
     return (
-      <div className={styles.root}>
+      <div className='root'>
       { !this.auth.loggedIn() ?
           <MainToolbar
             auth={this.props}
@@ -164,17 +165,17 @@ export class HomeLoggedIn extends React.Component {
             userId={this.state.userId}
           />
       }
-      <div className={styles.banner}>
-      <div className={styles.bannerInner}>
-        <h1 className={styles.heading}>Find Your Fitness Tribe</h1>
-        <h3 className={styles.subHeading}>Connect with free fitness groups right in your community</h3>
-        <Card className={styles.bannerCard}>
+      <div className='banner'>
+      <div className='bannerInner'>
+        <h1 className='heading'>Find Your Fitness Tribe</h1>
+        <h3 className='subHeading'>Connect with free fitness groups right in your community</h3>
+        <Card className='bannerCard'>
           <CardText>
             <FindWorkouts ref={node=>this.findWorkoutsComponent = node}/>
             <RaisedButton
               label="Find My Tribe"
               secondary={true}
-              className={styles.submitButton}
+              className='submitButton'
               onTouchTap={()=>this.handleSubmit()}
               //style={inlineStyles.button}
             />
@@ -183,7 +184,7 @@ export class HomeLoggedIn extends React.Component {
         </div>
       </div>
       {/*Using most simple landing page until adding more design*/}
-      {/*<h2 className={styles.featuredWorkouts}>
+      {/*<h2 className='featuredWorkouts'>
           <CardText>
             Our community partners
           </CardText>
@@ -209,14 +210,14 @@ export class HomeLoggedIn extends React.Component {
           <Paper style={inlineStyles.paper} zDepth={1} />
           <Paper style={inlineStyles.paper} zDepth={2} />
           <Paper style={inlineStyles.paper} zDepth={1} />
-        <div className={styles.searchAgain}>
-          <div className={styles.bannerInner}>
-            <h1 className={styles.heading}>Find Your Fitness Tribe</h1>
-            <h3 className={styles.subHeading}>Connect with fitness groups right in your community</h3>
-            <Card className={styles.bannerCard}>
+        <div className='searchAgain'>
+          <div className='bannerInner'>
+            <h1 className='heading'>Find Your Fitness Tribe</h1>
+            <h3 className='subHeading'>Connect with fitness groups right in your community</h3>
+            <Card className='bannerCard'>
               <CardText>
                 <FindWorkouts ref={node=>this.findWorkoutsComponent = node}/>
-                <RaisedButton label="Find My Tribe" secondary={true} className={styles.submitButton} onTouchTap={()=>this.handleSubmit()} />
+                <RaisedButton label="Find My Tribe" secondary={true} className='submitButton' onTouchTap={()=>this.handleSubmit()} />
               </CardText>
             </Card>
           </div>

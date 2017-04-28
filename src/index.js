@@ -12,7 +12,6 @@ import apolloConfig from '../apolloConfig'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 
-import './styles/base.css'
 import theme from './theme'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 
@@ -27,6 +26,8 @@ import HomeContainerWithData from './components/App/Home/Home'
 
 // API
 import GraphiQLModule from './components/App/GraphiQL/GraphiQL'
+
+import 'styles/base.css'
 
 const muiTheme = getMuiTheme(theme)
 
@@ -62,11 +63,9 @@ const Application = () => (
   </MuiThemeProvider>
 )
 
-const mountNode = document.querySelector('#root')
-
 render(
   <ApolloProvider client={client}>
     <Application />
   </ApolloProvider>,
-  mountNode
+  document.querySelector('#root')
 )

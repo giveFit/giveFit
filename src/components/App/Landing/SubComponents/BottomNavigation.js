@@ -3,7 +3,6 @@ import FontIcon from 'material-ui/FontIcon';
 import {BottomNavigation, BottomNavigationItem} from 'material-ui/BottomNavigation';
 import Paper from 'material-ui/Paper';
 import IconLocationOn from 'material-ui/svg-icons/communication/location-on';
-//import styles from './styles.modules.css'
 
 const recentsIcon = <FontIcon className="material-icons">restore</FontIcon>;
 const favoritesIcon = <FontIcon className="material-icons">favorite</FontIcon>;
@@ -21,9 +20,9 @@ class BottomNav extends Component {
       selectedIndex: 0,
     };
     this.select = this.select.bind(this);
-  }  
-  
-  
+  }
+
+
 
   select(index){this.setState({selectedIndex: index})};
 
@@ -46,7 +45,7 @@ class BottomNav extends Component {
                           <a target="_blank" href="https://twitter.com/give_fit">
                             <img width="30" height="30" src="https://storage.googleapis.com/gd-newsletter/shared-assets/social-twitter.png" alt="Twitter" />
                           </a>
-                        </td> 
+                        </td>
                       </tr>
                       <tr>
                         <td>

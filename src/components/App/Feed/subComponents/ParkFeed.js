@@ -24,8 +24,7 @@ import WorkoutCreatorWithData from './WorkoutCreator';
 import WorkoutCreator from './WorkoutCreator';
 import WorkoutPost from './WorkoutPost';
 
-//styles module
-import styles from '../styles.module.css';
+import '../styles.css';
 
 const inlineStyles = {
   subtitleStyle: {
@@ -54,7 +53,7 @@ class ParkFeed extends React.Component {
 
   static propTypes = {
     onClick : PropTypes.func.isRequired
-  }
+  };
 
   static defaultProps = {
     onClick : ()=>{}
@@ -84,7 +83,7 @@ class ParkFeed extends React.Component {
   render(){
     const {props} = this;
 
-    return <div><Card ref='root' key={props.data.id} className={props.active ? styles.cardActive : ""} onTouchTap={()=>this.props.onClick(this.props.parkID)}>
+    return <div><Card ref='root' key={props.data.id} className={props.active ? 'cardActive' : ''} onTouchTap={()=>this.props.onClick(this.props.parkID)}>
       <CardHeader
         title={props.data.googleData.title}
         subtitle={<a href={"http://maps.google.com/?q=" + props.data.googleData.vicinity} target="_blank">{props.data.googleData.vicinity}</a>}
@@ -108,7 +107,7 @@ class ParkFeed extends React.Component {
           />
         }
       >
-        {props.data.googleData.photos ? <img src={props.data.googleData.photos} className={styles.img}/> : <img src="https://placehold.it/400x200/ffffff/000000" />}
+        {props.data.googleData.photos ? <img src={props.data.googleData.photos} className='img'/> : <img src="https://placehold.it/400x200/ffffff/000000" />}
       </CardMedia>
       <CardText>
 

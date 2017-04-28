@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import RaisedButton from 'material-ui/RaisedButton'
 
 import AuthService from 'utils/AuthService'
-import styles from './styles.module.css'
+import './styles.css'
 
 /*
   1. Obtain access token from Facebook client SDK, send GraphQL request
@@ -26,7 +26,7 @@ export class Login extends React.Component {
     const { auth } = this.props
 
     return (
-      <div className={styles.root}>
+      <div className='root'>
         <h2>Login</h2>
         <div>
           <RaisedButton onClick={auth.login.bind(this)}>Login</RaisedButton>

@@ -6,7 +6,6 @@ import gql from 'graphql-tag';
 import { graphql, compose } from 'react-apollo';
 import {Card, CardActions, CardMedia, CardHeader, CardText} from 'material-ui/Card';
 import {Tabs, Tab} from 'material-ui/Tabs';
-import styles from './styles.module.css';
 import CircularProgress from 'material-ui/CircularProgress';
 import TextField from 'material-ui/TextField';
 import Comment from 'material-ui/svg-icons/communication/comment';
@@ -18,6 +17,8 @@ import LoggedInToolbar from '../Header/LoggedInToolbar'
 import apolloConfig from '../../../../apolloConfig';
 import HomeFeed from '../Landing/SubComponents/HomeFeed';
 import WorkoutPost from '../Feed/subComponents/WorkoutPost';
+
+import './styles.css'
 
 /*possible reference: https://github.com/scaphold-io/auth0-lock-playground*/
 export class Home extends React.Component {
@@ -39,7 +40,7 @@ export class Home extends React.Component {
     const workoutGroups=(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ? this.props.data.viewer.allWorkoutGroups.edges : [];
     const workouts=(!this.props.data.loading && this.props.data.viewer.allWorkouts.edges) ? this.props.data.viewer.allWorkouts.edges : [];
     //console.log('profile', profile);
-    const calendar = workouts.length ? <div className={styles.workouts}>
+    const calendar = workouts.length ? <div className='workouts'>
     {workouts.map((item, index) => (
          <div key={index}> {!item ||
           (<WorkoutPost
@@ -47,16 +48,16 @@ export class Home extends React.Component {
          />)} </div>
     ))}
     </div> : <CircularProgress size={80} />
-    const savedGroups = workoutGroups.length ? <div className={styles.workouts}>
+    const savedGroups = workoutGroups.length ? <div className='workouts'>
     {workoutGroups.map((item, index) => (
-         <div key={index} className={styles.tribe}> {!item ||
+         <div key={index} className='tribe'> {!item ||
           (<HomeFeed
             data={item.node}
          />)} </div>
     ))}
     </div> : <CircularProgress size={80} />
     return (
-      <div className={styles.root}>
+      <div className='root'>
         <LoggedInToolbar
             auth={this.props}
             profile={profile}

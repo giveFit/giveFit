@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Avatar from 'material-ui/Avatar'
-import s from './styles.module.css'
+import './styles.css'
 
 export class ProfileDetails extends React.Component {
   render () {
@@ -9,7 +9,7 @@ export class ProfileDetails extends React.Component {
     const { address } = profile.user_metadata || {}
 
     return (
-      <div className={s.root}>
+      <div className='root'>
         <Avatar src={profile.picture_large} size={120} />
         <h3><strong>{profile.name}</strong></h3>
         {/*

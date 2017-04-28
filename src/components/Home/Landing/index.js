@@ -8,10 +8,10 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import AuthService from 'utils/AuthService';
 import TextField from 'material-ui/TextField';
-import styles from './styles.module.css';
 import RaisedButton from 'material-ui/RaisedButton';
 import {orange500, blue500} from 'material-ui/styles/colors';
 
+import './styles.css'
 
 const inlineStyles = {
   textFieldStyle: {
@@ -30,22 +30,22 @@ export class LandingPage extends React.Component {
   render(){
     const workouts=(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ? this.props.data.viewer.allWorkoutGroups.edges : [];
     console.log('workouts', workouts);
-    const listView = workouts.length ? <div className={styles.workouts}>
+    const listView = workouts.length ? <div className='workouts'>
     {workouts.map((item, index) => (
-         <div key={index} className={styles.workout}> {!item ||
+         <div key={index} className='workout'> {!item ||
           (<MainFeed
             data={item.node}
          />)} </div>
     ))}
     </div>: <h4> Loading... </h4>
     return (
-      <div className={styles.root}>
+      <div className='root'>
       <MainToolbar auth={this.props}/>
-      <div className={styles.banner}>
-      <div className={styles.bannerInner}>
-        <h1 className={styles.heading}>Find Your Fitness Tribe</h1>
-        <h3 className={styles.subHeading}>Starting in Baltimore</h3>
-        <Card className={styles.bannerCard}>
+      <div className='banner'>
+      <div className='bannerInner'>
+        <h1 className='heading'>Find Your Fitness Tribe</h1>
+        <h3 className='subHeading'>Starting in Baltimore</h3>
+        <Card className='bannerCard'>
           <CardText>
             <TextField
              hintText="Start typing here.."
@@ -58,7 +58,7 @@ export class LandingPage extends React.Component {
                }
              }}
            />
-           <RaisedButton label="Search for Workouts" secondary={true} className={styles.submitButton} onTouchTap={()=>this.handleSubmit()} />
+           <RaisedButton label="Search for Workouts" secondary={true} className='submitButton' onTouchTap={()=>this.handleSubmit()} />
            <br />
         </CardText>
         </Card>

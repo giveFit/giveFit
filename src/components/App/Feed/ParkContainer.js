@@ -8,21 +8,7 @@ import ParkFeed from './subComponents/ParkFeed'
 import GymFeed from './subComponents/GymFeed'
 import DayPicker from './subComponents/DayPicker'
 
-import classes from './styles.module.css'
-
-const styles = {
-  gridList: {
-    width: 500,
-    paddingTop: 65,
-    position: 'relative',
-    background: '#e5e5e5',
-    display: 'flex'
-  },
-  workout: {
-    padding: '20px 12px 10px',
-    boxSizing: 'border-box'
-  }
-}
+import './styles.css'
 
 class ParkContainer extends React.Component {
   perpareParks () {
@@ -34,7 +20,7 @@ class ParkContainer extends React.Component {
     } = this.props
 
     return Object.keys(placeById).map((item, index) => (
-      <div key={index} style={styles.workout}>
+      <div key={index} className='workout'>
         {!item ||
           (placeById[item].googleData.types.indexOf('Park') !== -1
             ? <ParkFeed
@@ -67,9 +53,9 @@ class ParkContainer extends React.Component {
 
     return (
       // list with google data
-      <div style={styles.gridList} >
-        <DayPicker className={classes.stackedTop} profile={profile} geocoder={this.geocoder}/>
-        <div className={classes.workoutList}>
+      <div className='gridList' >
+        <DayPicker className='stackedTop' profile={profile} geocoder={this.geocoder} />
+        <div className='workoutList'>
           {this.perpareParks(parks)}
         </div>
       </div>

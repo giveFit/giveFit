@@ -14,7 +14,7 @@ import AuthService from 'utils/AuthService'
 
 import { Link } from 'react-router'
 
-import styles from './styles.module.css'
+import './styles.css'
 
 const inlineStyles = {
   title: {
@@ -73,7 +73,7 @@ class MainToolbar extends React.Component {
           <ToolbarGroup>
             <FontIcon className='muidocs-icon-custom-sort' />
             <IconMenu
-              className={styles.iconMenu}
+              className='iconMenu'
               iconButtonElement={
                 <IconButton touch={true} onTouchTap={this.handleToggle.bind(this)}>
                   <Hamburger />
@@ -109,9 +109,9 @@ class MainToolbar extends React.Component {
               onClick={() => this.context.router.push('/')}
             />
           </ToolbarGroup>
-          <ToolbarGroup className={styles.onlyLargeScreens}>
+          <ToolbarGroup className='onlyLargeScreens'>
             <FlatButton label='Tribes' onClick={() => this.context.router.push('/app')} />
-            <FlatButton className={styles.onlyLargeScreens} containerElement={<Link to='https://us-west-2.api.scaphold.io/graphql/newGiveFitAlias' target='_blank' />} label='API' />
+            <FlatButton className='onlyLargeScreens' containerElement={<Link to='https://us-west-2.api.scaphold.io/graphql/newGiveFitAlias' target='_blank' />} label='API' />
             <FlatButton label='About Us' onClick={() => this.context.router.push('/about-us')} />
             <FontIcon className='muidocs-icon-custom-sort' />
             <ToolbarSeparator />

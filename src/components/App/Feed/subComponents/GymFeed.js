@@ -18,8 +18,7 @@ import {blue500, red500, greenA200, white} from 'material-ui/styles/colors';
 //Local components
 import WorkoutCreator from './WorkoutCreator';
 
-//styles module
-import styles from '../styles.module.css';
+import '../styles.css';
 
 const inlineStyles = {
   subtitleStyle: {
@@ -73,7 +72,7 @@ class GymFeed extends React.Component {
   render(){
     const {props} = this;
 
-    return <Card ref='root' key={props.data.id} className={props.active ? styles.cardActive : ""} onTouchTap={()=>this.props.onClick()}>
+    return <Card ref='root' key={props.data.id} className={props.active ? 'cardActive' : ''} onTouchTap={()=>this.props.onClick()}>
       <CardHeader
         title={props.data.googleData.title}
         //avatar={props.data.avatar}
@@ -94,7 +93,7 @@ class GymFeed extends React.Component {
           />
         }
       >
-        {props.data.googleData.photos ? <img src={props.data.googleData.photos} className={styles.img}/> : <img src="https://placehold.it/400x200/ffffff/000000" />}
+        {props.data.googleData.photos ? <img src={props.data.googleData.photos} className='img' /> : <img src="https://placehold.it/400x200/ffffff/000000" />}
       </CardMedia>
       <CardText>
         {props.data.rating ? <div> Rating: &nbsp {props.data.rating} </div>: <div></div>}

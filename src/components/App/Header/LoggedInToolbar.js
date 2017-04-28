@@ -14,22 +14,14 @@ import mui, { Drawer, MenuItem, Styles, RaisedButton, FlatButton, Avatar } from 
 import PersonAdd from 'material-ui/svg-icons/social/person-add';
 import Comment from 'material-ui/svg-icons/communication/comment';
 import GroupAdd from 'material-ui/svg-icons/social/group-add';
-import styles from './styles.module.css';
+
 import apolloConfig from '../../../../apolloConfig';
 import AuthService from 'utils/AuthService'
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import MainToolbar from '../../Home/Header/MainToolbar'
 
-const inlineStyles = {
-  title: {
-    cursor: 'pointer',
-  },
-  avatar: {
-    margin: '10px 10px 10px 10px',
-    cursor: 'pointer'
-  }
-};
+import './styles.css'
 
 class LoggedInToolbar extends React.Component {
   constructor(props) {
@@ -77,7 +69,7 @@ class LoggedInToolbar extends React.Component {
         <ToolbarGroup>
           <FontIcon className="muidocs-icon-custom-sort" />
           <IconMenu
-            className={styles.iconMenu}
+            className='iconMenu'
             iconButtonElement={
               <IconButton touch={true} onTouchTap={this.handleToggle.bind(this)}>
                 <Hamburger />
@@ -106,19 +98,19 @@ class LoggedInToolbar extends React.Component {
             primaryText="Add a Group"
             leftIcon={<GroupAdd />} />
           </IconMenu>
-          <ToolbarTitle style={inlineStyles.title} text="givefit"
+          <ToolbarTitle className='title' text='givefit'
             onClick={()=>this.context.router.push('/')}
           />
         </ToolbarGroup>
         <ToolbarGroup >
-          <FlatButton className={styles.onlyLargeScreens} label="Tribes" onClick={()=>this.context.router.push('/app')}/>
-          <FlatButton className={styles.onlyLargeScreens} containerElement={<Link to="https://us-west-2.api.scaphold.io/graphql/newGiveFitAlias" target="_blank"/>} label="API"/>
-          <FlatButton className={styles.onlyLargeScreens} label="About Us" />
-          <FontIcon className={styles.onlyLargeScreens} className="muidocs-icon-custom-sort" />
+          <FlatButton className='onlyLargeScreens' label="Tribes" onClick={()=>this.context.router.push('/app')}/>
+          <FlatButton className='onlyLargeScreens' containerElement={<Link to="https://us-west-2.api.scaphold.io/graphql/newGiveFitAlias" target="_blank"/>} label="API"/>
+          <FlatButton className='onlyLargeScreens' label="About Us" />
+          <FontIcon className='onlyLargeScreens' className="muidocs-icon-custom-sort" />
           {
             this.props.profile ?
             <Avatar
-              style={inlineStyles.avatar}
+              className='avatar'
               src={profile.picture}
               onClick={()=>this.context.router.push('/profile')}
             /> : null

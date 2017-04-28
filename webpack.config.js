@@ -1,66 +1,51 @@
-const NODE_ENV = process.env.NODE_ENV;
-const dotenv = require('dotenv');
-const scapholdUrl = require('./apolloConfig').scapholdUrl;
-const proxy = require('http-proxy-middleware');
-const configKeys = require('./configKeys');
+const getConfig = require('hjs-webpack')
+const webpack = require('webpack')
+const path = require('path')
+const dotenv = require('dotenv')
 
+const apolloConfig = require('./apolloConfig')
+const isDevelopment = process.env.NODE_ENV === 'development'
 
-const webpack = require('webpack');
-const path    = require('path'),
-      join    = path.join,
-      resolve = path.resolve;
+const envVariables = dotenv.config()
 
-const getConfig = require('hjs-webpack');
+const config = getConfig({
+  // entry point for the app
+  in: path.join(__dirname, 'src/index.js'),
 
-const isDev  = NODE_ENV === 'development';
-const isTest = NODE_ENV === 'test';
+  // Name or full path of output directory
+  // commonly named `www` or `public`. This
+  // is where your fully static site should
+  // end up for simple deployment.
+  out: path.join(__dirname, 'dist'),
 
-const root    = resolve(__dirname);
-const src     = join(root, 'src');
-const modules = join(root, 'node_modules');
-const dest    = join(root, 'dist');
-
-var config = getConfig({
-  isDev: isDev,
-  in: join(src, 'index.js'),
-  out: dest,
+  // This will destroy and re-create your
+  // `out` folder before building so you always
+  // get a fresh folder. Usually you want this
+  // but since it's destructive we make it
+  // false by default
+  clearBeforeBuild: true,
   devtool: 'source-map',
   devServer: {
     proxy: {
-      context: "/api",
+      context: '/api',
       options: {
-        target: scapholdUrl,
+        target: apolloConfig.scapholdUrl,
         pathRewrite: {
-          "^/api": ""
+          '^/api': ''
         }
       }
     }
   },
+
   html: function (context) {
     return {
       'index.html': context.defaultTemplate({
         title: 'givefit',
-        head: `<style> html,body, #root { width: 100%; height : 100%;  }  .__app__main{
-				  display : flex;
-				  flex-direction : column;
-				  height : 100%;
-				}
-				.__app__header{
-				}
-				.__app__body__container{
-				  display : flex;
-				  flex : 1;
-				  height : 100%;
-
-				}
-				.__app__body__container__left{
-
-				  flex : 1;
-				}
-        </style>
-        <script src="https://use.fontawesome.com/c37c106dc7.js"></script>
-				 </style><script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwOsxUEBGettfG4jFkxFNl2lt3s7dtYPc&libraries=places" ></script>`,
-        publicPath: isDev ? 'http://localhost:3000/' : '',
+        head: `
+          <script src="https://use.fontawesome.com/c37c106dc7.js"></script>
+          </style><script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwOsxUEBGettfG4jFkxFNl2lt3s7dtYPc&libraries=places" ></script>
+        `,
+        publicPath: isDevelopment ? 'http://localhost:3000/' : '',
         meta: {
           'name': 'givefit',
           'description': 'Find your free fitness community'
@@ -68,100 +53,26 @@ var config = getConfig({
       })
     }
   }
-});
+})
 
-// ENV variables
-const dotEnvVars = dotenv.config();
-const environmentEnv = dotenv.config({
-  path: join(root, 'config', `${NODE_ENV}.config.js`),
-  silent: true,
-});
-const envVariables =
-    Object.assign({}, dotEnvVars, environmentEnv);
-
-const defines =
+// Set Env Variables
+config.plugins.push(new webpack.DefinePlugin(
   Object.keys(envVariables)
-  .reduce((memo, key) => {
-    const val = JSON.stringify(envVariables[key]);
-    memo[`__${key.toUpperCase()}__`] = val;
-    return memo;
-  }, {
-    __NODE_ENV__: JSON.stringify(NODE_ENV)
-  });
+    .reduce((memo, key) => {
+      const val = JSON.stringify(envVariables[key])
 
-config.plugins = [
-  new webpack.DefinePlugin(defines)
-].concat(config.plugins);
-// END ENV variables
+      memo[`__${key.toUpperCase()}__`] = val
 
-// CSS modules
-const cssModulesNames = `${isDev ? '[path][name]__[local]__' : ''}[hash:base64:5]`;
+      return memo
+    }, {
+      __NODE_ENV__: JSON.stringify(process.env.NODE_ENV)
+    })
+  )
+)
 
-const matchCssLoaders = /(^|!)(css-loader)($|!)/;
+config.resolve.root = [
+  path.join(__dirname, 'src'),
+  path.join(__dirname, 'node_modules')
+]
 
-const findLoader = (loaders, match) => {
-  const found = loaders.filter(l => l && l.loader && l.loader.match(match))
-  return found ? found[0] : null;
-}
-// existing css loader
-const cssloader =
-  findLoader(config.module.loaders, matchCssLoaders);
-
-const newloader = Object.assign({}, cssloader, {
-  test: /\.module\.css$/,
-  include: [src],
-  loader: cssloader.loader.replace(matchCssLoaders, `$1$2?modules&localIdentName=${cssModulesNames}$3`)
-})
-config.module.loaders.push(newloader);
-cssloader.test = new RegExp(`^(?!.*(module|bootstrap)).*${cssloader.test.source}`)
-cssloader.loader = newloader.loader
-
-config.module.loaders.push({
-  test: /bootstrap\.css$/,
-  include: [modules],
-  loader: 'style-loader!css-loader'
-})
-
-// postcss
-config.postcss = [].concat([
-  require('precss')({}),
-  require('autoprefixer')({}),
-  require('cssnano')({})
-])
-// END postcss
-
-// Roots
-config.resolve.root = [src, modules]
-config.resolve.alias = {
-  'css': join(src, 'styles'),
-  'containers': join(src, 'containers'),
-  'components': join(src, 'components'),
-  'utils': join(src, 'utils'),
-  'styles': join(src, 'styles')
-}
-// end Roots
-
-// Testing
-if (isTest) {
-  config.externals = {
-    'react/addons': true,
-    'react/lib/ReactContext': true,
-    'react/lib/ExecutionEnvironment': true,
-  }
-  config.module.noParse = /[/\\]sinon\.js/;
-  config.resolve.alias['sinon'] = 'sinon/pkg/sinon';
-
-  config.plugins = config.plugins.filter(p => {
-    const name = p.constructor.toString();
-    const fnName = name.match(/^function (.*)\((.*\))/)
-
-    const idx = [
-      'DedupePlugin',
-      'UglifyJsPlugin'
-    ].indexOf(fnName[1]);
-    return idx < 0;
-  })
-}
-// End Testing
-
-module.exports = config;
+module.exports = config

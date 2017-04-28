@@ -1,8 +1,9 @@
 import 'whatwg-fetch';
 import React from 'react';
 import Autosuggest from 'react-autosuggest';
-import styles from './styles.module.css';
 import geocodeHelper from '../../../utils/geocodeHelper';
+import './styles.css'
+
 const getSuggestions = (value) => {
   //console.log('value',value);
   const inputValue = value.trim().toLowerCase();
@@ -138,7 +139,7 @@ export default class FindWorkouts extends React.Component {
      placeholder: 'Enter a location',
      value : findGroupInputVal,
      onChange: this.onSuggestionTextChange,
-     className : styles.autocomplete
+     className : 'autocomplete'
    };
 
     return <Autosuggest

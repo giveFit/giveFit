@@ -3,10 +3,10 @@ import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import AuthService from 'utils/AuthService'
 import TextField from 'material-ui/TextField'
-import s from './styles.module.css'
+import './styles.css'
 
 export class ProfileEdit extends React.Component {
-  handleSubmit(e){
+  handleSubmit (e) {
     e.preventDefault()
     const { profile, auth } = this.props
     auth.updateProfile(profile.user_id, {
@@ -16,11 +16,11 @@ export class ProfileEdit extends React.Component {
     })
   }
 
-  render(){
+  render () {
     const { profile } = this.props
     const { address } = profile.user_metadata || {}
     return (
-      <div className={s.root}>
+      <div className='root'>
           <h3>About Me</h3>
             <br />
             <TextField

@@ -9,8 +9,9 @@ import apolloConfig from '../../../../apolloConfig'
 
 import AuthService from 'utils/AuthService'
 import MainToolbar from '../../Home/Header/MainToolbar'
-import classes from './styles.module.css'
 import MobileBottomNav from './subComponents/MobileBottomNav'
+
+import './styles.css'
 
 // Get some WorkoutGroups
 const GET_THROUGH_VIEWER = gql`
@@ -162,7 +163,7 @@ class AppLoggedIn extends React.Component {
             : []
           }
         />
-        <MobileBottomNav className={classes.bottomNav} />
+        <MobileBottomNav className='bottomNav' />
       </div>
     )
   }

@@ -3,11 +3,20 @@
   flex-flow: row wrap;
   /* This aligns items to the end line on main-axis */
   justify-content: flex-end;
-  background-color: #2F2D2E; 
+  background-color: #2F2D2E;
 }
 
 .avatar {
     margin: 10px 15px 10px 10px;
+}
+
+.title {
+  cursor: 'pointer';
+};
+
+.avatar {
+  margin: 10px 10px 10px 10px;
+  cursor: pointer;
 }
 
 /* Medium screens */
