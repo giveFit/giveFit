@@ -21,8 +21,8 @@ class DayPicker extends React.Component {
     return (
       <div className={props.className || ''}>
         <Tabs>
-          <Tab label='Tribes' />
           <Tab label='Activities' />
+          <Tab label='Groups' />
         </Tabs>
       </div>
     )
