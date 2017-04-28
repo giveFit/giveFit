@@ -2,27 +2,36 @@ import React from 'react'
 import { graphql, compose } from 'react-apollo'
 import gql from 'graphql-tag'
 
+
+import Avatar from 'material-ui/Avatar'
+import Chip from 'material-ui/Chip'
+import Checkbox from 'material-ui/Checkbox'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import RaisedButton from 'material-ui/RaisedButton'
-import DatePicker from 'material-ui/DatePicker'
-import TimePicker from 'material-ui/TimePicker'
 import TextField from 'material-ui/TextField'
-import Toggle from 'material-ui/Toggle'
+import Datetime from 'react-datetime'
+import ReactFilepicker from 'react-filepicker'
 
 import apolloConfig from '../../../../../apolloConfig'
+import configKeys from '../../../../../configKeys'
 import AuthService from 'utils/AuthService'
+
+import './styles.css'
+import 'react-datetime/css/react-datetime.css'
 
 const CREATE_WORKOUT = gql`
   mutation CreateWorkout($input: CreateWorkoutInput!) {
     createWorkout(input: $input){
       changedWorkout{
         title,
-        date,
-        time,
+        type,
+        startDateTime,
+        endDateTime,
         description,
-        recurring,
+        requestTrainer,
         parkId,
+        pictureURL,
         Workout{
           nickname,
           username,
@@ -32,6 +41,7 @@ const CREATE_WORKOUT = gql`
     }
   }
 `
+
 const LOGGEDIN_USER_QUERY = gql`
   query LoggedInUser{
     viewer{
@@ -43,34 +53,45 @@ const LOGGEDIN_USER_QUERY = gql`
     }
   }
 `
-/*I'll want to create a subscription here, as well as putting through
-a groupId to match with whichever group the data is being submitted on*/
+// I'll want to create a subscription here, as well as putting through
+// a groupId to match with whichever group the data is being submitted on
 class WorkoutCreator extends React.Component {
   constructor (props, context) {
     super(props, context)
 
     this.state = {
-      open: false,
-      recur: true,
       title: null,
+      type: null,
+      startDateTime: null,
+      endDateTime: null,
       description: null,
-      date: null,
-      scapholdUser: null
+      pictureURL: null,
+      requestTrainer: false,
+      parkId: null,
+      open: false,
+      scapholdUser: null,
+      userProfile: {}
     }
-    this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain);
+
+    this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain)
   }
-  /*componentDidMount(){
-    var scapholdUser = localStorage.getItem('scapholdUserId') ? this.auth.getLoggedInUser() : null;
-    this.setState({scapholdUser: scapholdUser});
-    console.log('scapholdUser', scapholdUser)
-    console.log('scapholdUser state', this.state.scapholdUser)
-  }*/
+
+  componentDidMount () {
+    const scapholdUser = window.localStorage.getItem('scapholdUserId') ? this.auth.getLoggedInUser() : null
+    const userProfile = JSON.parse(window.localStorage.getItem('user_profile'))
+
+    console.log(userProfile)
+    this.setState({
+      scapholdUser,
+      userProfile
+    })
+  }
 
   handleOpen () {
     this.setState({ open: true })
   }
 
-  //event recurring?
+  // event requestTrainer?
   handleToggle (event, toggled) {
     this.setState({
       [event.target.name]: toggled
@@ -92,19 +113,23 @@ class WorkoutCreator extends React.Component {
 
     this.props.createWorkout({
       title: this.state.title,
+      type: this.state.type,
+      startDateTime: this.state.startDateTime,
+      endDateTime: this.state.endDateTime,
       description: this.state.description,
-      date: this.state.date,
-      time: this.state.time,
-      recurring: this.state.recur,
+      requestTrainer: this.state.requestTrainer,
+      pictureURL: this.state.pictureURL,
       parkId: this.props.data.googleData.parkId ? this.props.data.googleData.parkId : undefined,
       // workoutId is the id of the loggedInUser, allowing us to make a connection in our data graph
       workoutId: this.props.loggedInUser ? this.props.loggedInUser.id : scapholdUser,
     }).then(({data}) => {
       this.setState({
         open: false,
-        recur: true,
+        requestTrainer: true,
         title: undefined,
+        type: undefined,
         description: undefined,
+        pictureURL: undefined,
         date: null,
         time: null
       })
@@ -113,10 +138,24 @@ class WorkoutCreator extends React.Component {
     })
   }
 
-  onTitleChange (event) {
-    this.setState({
-      title: event.target.value
-    })
+  onTitleChange (title) {
+    this.setState({ title })
+  }
+
+  onTypeChange (type) {
+    this.setState({ type })
+  }
+
+  handlePictureChange (pictureURL) {
+    this.setState({ pictureURL })
+  }
+
+  handleRequestTrainerToggle () {
+    this.setState({ requestTrainer: !this.state.requestTrainer })
+  }
+
+  onDescriptionChange (description) {
+    this.setState({ description })
   }
 
   onDateChange (event, date) {
@@ -131,12 +170,6 @@ class WorkoutCreator extends React.Component {
     })
   }
 
-  onDescriptionChange (event) {
-    this.setState({
-      description: event.target.value
-    })
-  }
-
   render () {
     const actions = [
       <FlatButton
@@ -147,70 +180,109 @@ class WorkoutCreator extends React.Component {
       />
     ]
 
-    return (
-      <div>
+    if (!this.auth.loggedIn()) {
+      return (
         <div>
-          <RaisedButton
-            label={<i
-              className='fa fa-plus'
-              style={{ color: '#75F0BA', fontWeight: 'bold' }}
-            >
-               Add Activity
-            </i>}
-            labelPosition='before'
-            backgroundColor={'white'}
-            onTouchTap={() => this.handleOpen()}
+          <Dialog
+            title='Please Login to add an activity'
+            actions={actions}
+            modal={false}
+            open={this.state.open}
+            onRequestClose={this.submitWorkout.bind(this)}
           />
         </div>
-        {
-          !this.auth.loggedIn()
-          ? <div>
-            <Dialog
-              title='Please Login to add an activity'
-              actions={actions}
-              modal={false}
-              open={this.state.open}
-              onRequestClose={this.submitWorkout.bind(this)}
-            />
-          </div>
-          : <div>
-            <Dialog
-              title='Get in the mix by adding a workout'
-              actions={actions}
-              modal={false}
-              open={this.state.open}
-              onRequestClose={this.handleClose.bind(this)}
-            >
+      )
+    }
+
+    return (
+      <div>
+        <RaisedButton
+          label={<i
+            className='fa fa-plus'
+            style={{ color: '#75F0BA', fontWeight: 'bold' }}
+          >
+             Add Activity
+          </i>}
+          labelPosition='before'
+          backgroundColor={'white'}
+          onTouchTap={() => this.handleOpen()}
+        />
+        <Dialog
+          style={{ zIndex: 0 }}
+          actions={actions}
+          modal={false}
+          open={this.state.open}
+          onRequestClose={this.handleClose.bind(this)}
+        >
+          <div className='top_level_container'>
+            <div className='profile_chip_container'>
+              <Chip
+                className='profile_chip'
+                onTouchTap={() => this.context.router.push('/profile')}
+                // style={inlineStyles.chip}
+              >
+                <Avatar
+                  src={this.state.userProfile.picture}
+                  onClick={() => this.context.router.push('/profile')}
+                />
+                {this.state.userProfile.nickname}
+              </Chip>
+            </div>
+
+            <div className='title_and_type_container'>
               <TextField
-                id='text-field-controlled'
+                id='workout_title'
                 hintText='Workout Title'
-                onChange={this.onTitleChange.bind(this)}
+                onChange={(e) => this.onTitleChange(e.target.value)}
               />
               <TextField
-                id='text-field-controlled'
-                hintText='Description'
-                onChange={this.onDescriptionChange.bind(this)}
+                id='workout_type'
+                hintText='Type'
+                onChange={(e) => this.onTypeChange(e.target.value)}
 
               />
-              <DatePicker
-                id='text-field-controlled'
-                hintText='Select a date'
-                onChange={this.onDateChange.bind(this)}
-              />
-              <TimePicker
-                hintText='Select a time'
-                onChange={this.onTimeChange.bind(this)}
-              />
-              <Toggle
-                name='recur'
-                value='recur'
-                label='Recurring?'
-                toggled={this.state.recur}
-                onToggle={this.handleToggle.bind(this)}
-              />
-            </Dialog>
+            </div>
           </div>
-        }
+
+          <div className='add_picture_container'>
+            <ReactFilepicker
+              apikey={configKeys.FILESTACK_API}
+              options={{
+                mimetype: 'image/*',
+                services: ['COMPUTER', 'FACEBOOK', 'INSTAGRAM', 'GOOGLE_DRIVE', 'DROPBOX']
+              }}
+              buttonText={`<span><i class='fa fa-plus-circle'></i> 'Add' Picture</span>`}
+              onSuccess={(res) => this.handlePictureChange(res.url)}
+              buttonClass='add_picture_button'
+            />
+            {this.state.pictureURL &&
+              <img
+                src={this.state.pictureURL}
+                className='workout_picture'
+              />
+            }
+          </div>
+
+          <div className='time_and_location_container'>
+            <span>Pick a Start Time <i className='fa fa-clock-o' /></span>
+            <span>Pick an End Time <i className='fa fa-clock-o' /></span>
+            <span>Choose Location <i className='fa fa-map-marker' /></span>
+          </div>
+
+          <Checkbox
+            name='requestTrainer'
+            label='Request Trainer for this activity'
+            className='request_trainer'
+            checked={this.state.requestTrainer}
+            onCheck={() => this.handleRequestTrainerToggle()}
+          />
+
+          <TextField
+            id='workout_description'
+            hintText='Optional Description'
+            onChange={(e) => this.onDescriptionChange(e.target.value)}
+          />
+        </Dialog>
       </div>
     )
   }
