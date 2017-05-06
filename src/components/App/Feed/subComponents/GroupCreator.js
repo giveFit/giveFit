@@ -10,7 +10,7 @@ import Toggle from 'material-ui/Toggle';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import Comment from 'material-ui/svg-icons/communication/comment';
 import WorkoutPost from './WorkoutPost';
-import WorkoutCreator from './WorkoutCreator';
+import WorkoutCreator from './WorkoutCreator/index';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import AddAPhoto from 'material-ui/svg-icons/image/add-a-photo';
 import { graphql, compose } from 'react-apollo';

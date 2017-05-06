@@ -4,18 +4,20 @@ import gql from 'graphql-tag'
 
 import Avatar from 'material-ui/Avatar'
 import Chip from 'material-ui/Chip'
-import Checkbox from 'material-ui/Checkbox'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import RaisedButton from 'material-ui/RaisedButton'
-import TextField from 'material-ui/TextField'
-import Datetime from 'react-datetime'
-import ReactFilepicker from 'react-filepicker'
-import SelectField from 'material-ui/SelectField'
-import MenuItem from 'material-ui/MenuItem'
 
-import apolloConfig from '../../../../../apolloConfig'
-import configKeys from '../../../../../configKeys'
+import FieldTitle from './fields/title'
+import FieldType from './fields/type'
+import FieldPictureURL from './fields/pictureURL'
+import FieldStartDateTime from './fields/StartDateTime'
+import FieldEndDateTime from './fields/EndDateTime'
+import FieldLocation from './fields/location'
+import FieldRequestTrainer from './fields/requestTrainer'
+import FieldDescription from './fields/description'
+
+import apolloConfig from '../../../../../../apolloConfig'
 import AuthService from 'utils/AuthService'
 
 import 'react-datetime/css/react-datetime.css'
@@ -137,7 +139,7 @@ class WorkoutCreator extends React.Component {
         time: null
       })
     }).catch((error) => {
-      console.error('error in form', error)
+      console.log('error in form', error)
     })
   }
 
@@ -179,12 +181,12 @@ class WorkoutCreator extends React.Component {
     })
   }
 
-  handleStartTime (moment) {
+  handleStartDateTime (moment) {
     this.setState({
       startDateTime: moment.toDate()
     })
   }
-  handleEndTime (moment) {
+  handleDateEndTime (moment) {
     this.setState({
       endDateTime: moment.toDate()
     })
@@ -244,36 +246,13 @@ class WorkoutCreator extends React.Component {
           </div>
 
           <div className='title_and_type_container'>
-            <TextField
-              id='workout_title'
-              hintText='Workout Title'
-              onChange={(e) => this.onTitleChange(e.target.value)}
-            />
-            <SelectField
-              floatingLabelText='Type'
-              value={this.state.type}
-              onChange={(e, index, value) => this.onTypeChange(value)}
-            >
-              <MenuItem value={'Walk'} primaryText='Walk' />
-              <MenuItem value={'Yoga'} primaryText='Yoga' />
-              <MenuItem value={'Bootcamp'} primaryText='Bootcamp' />
-              <MenuItem value={'Zumba'} primaryText='Zumba' />
-              <MenuItem value={'Dance'} primaryText='Dance' />
-            </SelectField>
+            <FieldTitle onChange={(value) => this.onTitleChange(value)} />
+            <FieldType onChange={(value) => this.onTypeChange(value)} value={this.state.type} />
           </div>
         </div>
 
         <div className='add_picture_container'>
-          <ReactFilepicker
-            apikey={configKeys.FILESTACK_API}
-            options={{
-              mimetype: 'image/*',
-              services: ['COMPUTER', 'FACEBOOK', 'INSTAGRAM', 'GOOGLE_DRIVE', 'DROPBOX']
-            }}
-            buttonText={`<span><i class='fa fa-plus-circle'></i> Add Picture</span>`}
-            onSuccess={(res) => this.handlePictureChange(res.url)}
-            buttonClass='add_picture_button'
-          />
+          <FieldPictureURL onChange={(url) => this.handlePictureChange(url)} />
           {this.state.pictureURL &&
             <img
               src={this.state.pictureURL}
@@ -283,45 +262,21 @@ class WorkoutCreator extends React.Component {
         </div>
 
         <div className='time_and_location_container'>
-          <div className='start-time'>
-            <span> Pick a Start Time <i className='fa fa-clock-o' /></span>
-            <Datetime
-              onChange={(moment) => this.handleStartTime(moment)}
-              className='date-time'
-            />
-          </div>
-          <div className='end-time'>
-            <span> Pick an End Time <i className='fa fa-clock-o' /></span>
-            <Datetime
-              onChange={(moment) => this.handleEndTime(moment)}
-              className='date-time'
-            />
-          </div>
-          <div>
-            <span> Choose Location <i className='fa fa-map-marker' /></span>
-            <SelectField
-              fullWidth
-              value={this.state.parkId}
-              onChange={(e, index, value) => this.onLocationChange(value)}
-            >
-              {this.places.map((place) => <MenuItem value={place.id} primaryText={place.title} />)}
-            </SelectField>
-          </div>
+          <FieldStartDateTime onChange={(moment) => this.handleStartDateTime(moment)} />
+          <FieldEndDateTime onChange={(moment) => this.handleStartDateTime(moment)} />
+          <FieldLocation
+            onChange={(value) => this.onLocationChange(value)}
+            places={this.places}
+            parkId={this.state.parkId}
+          />
         </div>
 
-        <Checkbox
-          name='requestTrainer'
-          label='Request Trainer for this activity'
-          className='request_trainer'
-          checked={this.state.requestTrainer}
+        <FieldRequestTrainer
           onCheck={() => this.handleRequestTrainerToggle()}
+          requestTrainer={this.state.requestTrainer}
         />
 
-        <TextField
-          id='workout_description'
-          hintText='Optional Description'
-          onChange={(e) => this.onDescriptionChange(e.target.value)}
-        />
+        <FieldDescription onChange={(value) => this.onDescriptionChange(value)} />
       </Dialog>
     )
   }
