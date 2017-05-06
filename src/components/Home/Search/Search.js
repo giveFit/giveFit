@@ -1,11 +1,10 @@
-import React from 'react';
-import AutoComplete from 'material-ui/AutoComplete';
+import React from 'react'
+import AutoComplete from 'material-ui/AutoComplete'
 
-const dataSource2 = ['yoga', 'thai-chi', 'running'];
+const dataSource2 = ['yoga', 'thai-chi', 'running']
 
 export default class Search extends React.Component {
-
-  /*constructor(props) {
+  /* constructor(props) {
     super(props);
     this.state = {
       dataSource: [],
@@ -20,9 +19,9 @@ export default class Search extends React.Component {
         value + value,
       ],
     });
-  }*/
+  } */
 
-  render() {
+  render () {
     return (
       <div>
         <AutoComplete
@@ -32,6 +31,6 @@ export default class Search extends React.Component {
           dataSource={dataSource2}
         />
       </div>
-    );
+    )
   }
 }

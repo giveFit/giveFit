@@ -10,52 +10,52 @@ const inlineStyles = {
     subtitleColor: 'rgba(211, 211, 211)'
   },
   chip: {
-    margin: 4,
+    margin: 4
   },
-   checkbox: {
-    marginBottom: 16,
-  },
-};
+  checkbox: {
+    marginBottom: 16
+  }
+}
 
 class WorkoutPost extends React.Component {
-	constructor(props){
-		super(props);
-		this.state = {
-			snack: false,
-			autoHideDuration: 2000,
-			messageTrue: 'Event added to your calendar',
-			messageFalse: 'Event removed from your calendar',
-		}
-	}
+  constructor (props) {
+    super(props)
+    this.state = {
+      snack: false,
+      autoHideDuration: 2000,
+      messageTrue: 'Event added to your calendar',
+      messageFalse: 'Event removed from your calendar'
+    }
+  }
 
-	handleRequestClose(){
-	    this.setState({snack: false});
-	};
-	handleSnack(){
-		this.setState({snack: !this.state.snack})
-	}
-	handleTouchTap(){
-		alert('You clicked the Chip.');
-	}
-	handleActionTouchTap(){
+  handleRequestClose () {
+	    this.setState({snack: false})
+  };
+  handleSnack () {
+    this.setState({snack: !this.state.snack})
+  }
+  handleTouchTap () {
+    alert('You clicked the Chip.')
+  }
+  handleActionTouchTap () {
 	    this.setState({
-	      snack: false,
-	    });
-		alert('Event removed from your calendar.');
-	};
+	      snack: false
+	    })
+    alert('Event removed from your calendar.')
+  };
 
-	render(){
-		return(
+  render () {
+    return (
 			<div>
-				{(this.props.data.node.Workout && this.props.data.node.title) ?
-					<CardText>
+				{(this.props.data.node.Workout && this.props.data.node.title)
+					? <CardText>
 				        <Chip
-				          onTouchTap={()=>this.context.router.push('/profile')}
+				          onTouchTap={() => this.context.router.push('/profile')}
 				          style={inlineStyles.chip}
 				        >
 		        		<Avatar
 			                src={this.props.data.node.Workout.picture}
-			                onClick={()=>this.context.router.push('/profile')}
+			                onClick={() => this.context.router.push('/profile')}
 				        />
 				        {this.props.data.node.Workout.nickname}
 				        </Chip>
@@ -84,12 +84,12 @@ class WorkoutPost extends React.Component {
 		      onRequestClose={this.handleRequestClose.bind(this)}
 		    />
 			</div>
-		)
-	}
+    )
+  }
 }
 
 WorkoutPost.contextTypes = {
-	router: PropTypes.object.isRequired
+  router: PropTypes.object.isRequired
 }
 
 export default WorkoutPost

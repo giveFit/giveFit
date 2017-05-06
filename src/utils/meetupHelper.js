@@ -1,140 +1,139 @@
-var querystring = require('querystring');
-var https = require('https');
-var jf = require('jsonfile');
-var moment = require('moment');
-var argv = require('minimist')(process.argv.slice(2));
-var config = require('./meetupConfig');
+var querystring = require('querystring')
+var https = require('https')
+var jf = require('jsonfile')
+var moment = require('moment')
+var argv = require('minimist')(process.argv.slice(2))
+var config = require('./meetupConfig')
 
 // private
 
-function requestJson(url) {
+function requestJson (url) {
   return new Promise(function (resolve, reject) {
     https.get(url, function (res) {
-      var buffer = [];
-      res.on('data', Array.prototype.push.bind(buffer));
+      var buffer = []
+      res.on('data', Array.prototype.push.bind(buffer))
       res.on('end', function () {
-        var text = buffer.join('');
-        var json = JSON.parse(text);
+        var text = buffer.join('')
+        var json = JSON.parse(text)
 
         if (res.statusCode < 400) {
-          resolve(json);
+          resolve(json)
         } else {
-          console.error('Err! HTTP status code:', res.statusCode, url);
-          reject(Error(text));
+          console.error('Err! HTTP status code:', res.statusCode, url)
+          reject(Error(text))
         }
-      });
+      })
     }).on('error', function (err) {
-      console.error('Err! HTTP request failed:', err.message, url);
-      reject(err);
-    });
-  });
+      console.error('Err! HTTP request failed:', err.message, url)
+      reject(err)
+    })
+  })
 }
 
-function isValidGroup(row) {
-  var blacklistGroups = config.blacklistGroups || [];
-  var blacklistWords = config.blacklistWords || [];
-  var blacklistRE = new RegExp(blacklistWords.join('|'), 'i');
+function isValidGroup (row) {
+  var blacklistGroups = config.blacklistGroups || []
+  var blacklistWords = config.blacklistWords || []
+  var blacklistRE = new RegExp(blacklistWords.join('|'), 'i')
 
   return blacklistWords.length === 0 ? true : !row.name.match(blacklistRE) &&
-         !blacklistGroups.some(function(id) { return row.id === id }) &&
-         row.country === (config.meetupParams.country || row.country);
+         !blacklistGroups.some(function (id) { return row.id === id }) &&
+         row.country === (config.meetupParams.country || row.country)
 }
 
-
-function saveToJson(data) {
-  var outputFile = argv['o'] || config.outfile;
+function saveToJson (data) {
+  var outputFile = argv['o'] || config.outfile
 
   if (outputFile) {
-    jf.writeFile(outputFile, data, function(err) {
-      if (err) console.error(err);
+    jf.writeFile(outputFile, data, function (err) {
+      if (err) console.error(err)
     })
   } else {
-    process.stdout.write(JSON.stringify(data));
+    process.stdout.write(JSON.stringify(data))
   }
 }
 
-function waitAllPromises(arr) {
-  if (arr.length === 0) return resolve([]);
+function waitAllPromises (arr) {
+  if (arr.length === 0) return resolve([])
 
   return new Promise(function (resolve, reject) {
-    var numResolved = 0;
-    function save(i, val) {
+    var numResolved = 0
+    function save (i, val) {
       arr[i] = val
       if (++numResolved === arr.length) {
-        resolve(arr);
+        resolve(arr)
       }
     }
 
-    arr.forEach(function(item, i) {
-      item.then(function(val) {
-        save(i, val);
-      }).catch(function(err) {
-        save(i, {'error': err}); // resolve errors
-      });
-    });
-  });
+    arr.forEach(function (item, i) {
+      item.then(function (val) {
+        save(i, val)
+      }).catch(function (err) {
+        save(i, {'error': err}) // resolve errors
+      })
+    })
+  })
 }
 
 // omitted the last two arguments to the reduce function since they are not being used.
-function addEvent(events, event) {
+function addEvent (events, event) {
   if (!(event.next_event && event.next_event.time)) {
-    return events;
+    return events
   }
 
-  var entry = event.next_event;
+  var entry = event.next_event
 
-  entry.group_name = event.name;
-  entry.group_url = event.link;
-  entry.url = 'http://meetup.com/' + event.urlname + '/events/' + entry.id;
-  entry.formatted_time = moment.utc(entry.time + entry.utc_offset).format('DD MMM, ddd, h:mm a');
-  events.push(entry);
+  entry.group_name = event.name
+  entry.group_url = event.link
+  entry.url = 'http://meetup.com/' + event.urlname + '/events/' + entry.id
+  entry.formatted_time = moment.utc(entry.time + entry.utc_offset).format('DD MMM, ddd, h:mm a')
+  events.push(entry)
 
-  return events;
+  return events
 }
 
 // public
 
-function getAllMeetupEvents() { //regardless of venue
+function getAllMeetupEvents () { // regardless of venue
   var url = 'https://api.meetup.com/2/groups?' +
-    querystring.stringify(config.meetupParams);
+    querystring.stringify(config.meetupParams)
 
-  return requestJson(url).then(function(data) {
-    return data.results.filter(isValidGroup).reduce(addEvent, []);
-  }).catch(function(err) {
-    console.error('Error getAllMeetupEvents():' + err);
-  });
+  return requestJson(url).then(function (data) {
+    return data.results.filter(isValidGroup).reduce(addEvent, [])
+  }).catch(function (err) {
+    console.error('Error getAllMeetupEvents():' + err)
+  })
 }
 
-function getMeetupEvents() { //events with venues
-  return getAllMeetupEvents().then(function(events) {
-    var venues = events.map(function(event) {
-      return requestJson('https://api.meetup.com/2/event/'
-        + event.id
-        + '?fields=venue_visibility&key='
-        + config.meetupParams.key);
-    });
+function getMeetupEvents () { // events with venues
+  return getAllMeetupEvents().then(function (events) {
+    var venues = events.map(function (event) {
+      return requestJson('https://api.meetup.com/2/event/' +
+        event.id +
+        '?fields=venue_visibility&key=' +
+        config.meetupParams.key)
+    })
 
-    return waitAllPromises(venues).then(function(venues) {
-      var eventsWithVenues = events.filter(function(evt, i) {
+    return waitAllPromises(venues).then(function (venues) {
+      var eventsWithVenues = events.filter(function (evt, i) {
         return venues[i].hasOwnProperty('venue') ||
-          venues[i].venue_visibility === 'members';
-      });
+          venues[i].venue_visibility === 'members'
+      })
 
-      saveToJson(eventsWithVenues);
-      return eventsWithVenues;
-    }).catch(function(err) {
-      console.error('Error getMeetupEvents(): ' + err);
-    });
-  });
+      saveToJson(eventsWithVenues)
+      return eventsWithVenues
+    }).catch(function (err) {
+      console.error('Error getMeetupEvents(): ' + err)
+    })
+  })
 }
 
-getMeetupEvents();
+getMeetupEvents()
 
 module.exports = {
   getAllMeetupEvents: getAllMeetupEvents,
   getMeetupEvents: getMeetupEvents
 }
-/*const got = require('got')
+/* const got = require('got')
 
 module.exports = function (options) {
   // options.key => API key
@@ -191,4 +190,4 @@ function getMeetups (options) {
       radius: options.radius
     }
   }).then(res => JSON.parse(res.body))
-}*/
+} */

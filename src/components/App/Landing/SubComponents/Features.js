@@ -1,10 +1,10 @@
-import React from 'react';
+import React from 'react'
 import { AutoRotatingCarousel, Slide } from 'material-auto-rotating-carousel'
 import { green400, green600, blue400, blue600, red400, red600 } from 'material-ui/styles/colors'
 
 export default class Features extends React.Component {
-	render(){
-		return(
+  render () {
+    return (
 			<div>
 		      <AutoRotatingCarousel
 		        label="Get started"
@@ -34,6 +34,6 @@ export default class Features extends React.Component {
 		        />
 		      </AutoRotatingCarousel>
 		    </div>
-		)
-	}
+    )
+  }
 }

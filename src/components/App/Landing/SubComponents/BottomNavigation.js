@@ -1,12 +1,12 @@
-import React, {Component, Link} from 'react';
-import FontIcon from 'material-ui/FontIcon';
-import {BottomNavigation, BottomNavigationItem} from 'material-ui/BottomNavigation';
-import Paper from 'material-ui/Paper';
-import IconLocationOn from 'material-ui/svg-icons/communication/location-on';
+import React, {Component, Link} from 'react'
+import FontIcon from 'material-ui/FontIcon'
+import {BottomNavigation, BottomNavigationItem} from 'material-ui/BottomNavigation'
+import Paper from 'material-ui/Paper'
+import IconLocationOn from 'material-ui/svg-icons/communication/location-on'
 
-const recentsIcon = <FontIcon className="material-icons">restore</FontIcon>;
-const favoritesIcon = <FontIcon className="material-icons">favorite</FontIcon>;
-const nearbyIcon = <IconLocationOn />;
+const recentsIcon = <FontIcon className="material-icons">restore</FontIcon>
+const favoritesIcon = <FontIcon className="material-icons">favorite</FontIcon>
+const nearbyIcon = <IconLocationOn />
 
 /**
  * A simple example of `BottomNavigation`, with three labels and icons
@@ -14,19 +14,17 @@ const nearbyIcon = <IconLocationOn />;
  * state (for instance, by the URL).
  */
 class BottomNav extends Component {
-  constructor(props){
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
-      selectedIndex: 0,
-    };
-    this.select = this.select.bind(this);
+      selectedIndex: 0
+    }
+    this.select = this.select.bind(this)
   }
 
+  select (index) { this.setState({selectedIndex: index}) };
 
-
-  select(index){this.setState({selectedIndex: index})};
-
-  render() {
+  render () {
     return (
       <Paper zDepth={1}>
         <div>
@@ -68,8 +66,8 @@ class BottomNav extends Component {
                   </h4>
         </div>
       </Paper>
-    );
+    )
   }
 }
 
-export default BottomNav;
+export default BottomNav

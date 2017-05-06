@@ -1,36 +1,36 @@
-import React from 'react';
-import {findDOMNode} from 'react-dom';
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
-import {Tabs, Tab} from 'material-ui/Tabs';
+import React from 'react'
+import {findDOMNode} from 'react-dom'
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
+import FlatButton from 'material-ui/FlatButton'
+import {Tabs, Tab} from 'material-ui/Tabs'
 
 import '../styles.css'
 
-class MainFeed extends React.Component{
-  constructor(props, context) {
-    super(props, context);
+class MainFeed extends React.Component {
+  constructor (props, context) {
+    super(props, context)
     this.state = {
-      expanded: false,
-    };
-  }
-  componentWillReceiveProps(newProps){
-    if(newProps.active !== this.props.active && newProps.active === true){
-       console.log('i m now active', this.props.data.title);
-       const element = findDOMNode(this.refs.root);
-       //Scrolls the current element into the visible area of the browser
-       element.scrollIntoView({block: "end", behavior: "smooth"});
+      expanded: false
     }
   }
-  handleExpand(){
-    this.setState({expanded: true});
+  componentWillReceiveProps (newProps) {
+    if (newProps.active !== this.props.active && newProps.active === true) {
+      console.log('i m now active', this.props.data.title)
+      const element = findDOMNode(this.refs.root)
+       // Scrolls the current element into the visible area of the browser
+      element.scrollIntoView({block: 'end', behavior: 'smooth'})
+    }
+  }
+  handleExpand () {
+    this.setState({expanded: true})
     console.log('expanded')
   }
-  handleReduce(){
-    this.setState({expanded: false});
+  handleReduce () {
+    this.setState({expanded: false})
     console.log('reduced')
   }
-  render(){
-    const {props} = this;
+  render () {
+    const {props} = this
     return <Card ref='root' key={props.data.id} className={props.active ? 'cardActive' : ''}>
       <CardHeader
         title={props.data.author}
@@ -40,7 +40,7 @@ class MainFeed extends React.Component{
           overlay={
                   <CardTitle
                     title={props.data.title}
-                    /*subtitle={props.data.date}*/
+                    /* subtitle={props.data.date} */
                   />
                 }
       >
@@ -75,7 +75,7 @@ class MainFeed extends React.Component{
       </Card>
      {/* <CardText>
         <div>Comments</div>
-      </CardText>*/}
+      </CardText> */}
       <CardActions >
       {this.state.expanded ? <FlatButton label="Reduce" onTouchTap={this.handleReduce.bind(this)} /> : <FlatButton label="See upcoming workouts" onTouchTap={this.handleExpand.bind(this)} /> }
       </CardActions>
@@ -83,6 +83,4 @@ class MainFeed extends React.Component{
   }
 }
 
-
-
-export default MainFeed;
+export default MainFeed

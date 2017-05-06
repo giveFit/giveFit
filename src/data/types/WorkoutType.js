@@ -1,7 +1,7 @@
-var graphql = require('graphql');
-var ObjectType = graphql.GraphQLObjectType;
-var StringType = graphql.GraphQLString;
-var NonNull = graphql.GraphQLNonNull;
+var graphql = require('graphql')
+var ObjectType = graphql.GraphQLObjectType
+var StringType = graphql.GraphQLString
+var NonNull = graphql.GraphQLNonNull
 
 const WorkoutType = new ObjectType({
   name: 'Workout',
@@ -18,9 +18,9 @@ const WorkoutType = new ObjectType({
     avatar: { type: StringType},
     id: { type: StringType},
     lat: { type: StringType},
-    lng: { type: StringType},
-    
-  },
-});
+    lng: { type: StringType}
 
-module.exports = WorkoutType;
+  }
+})
+
+module.exports = WorkoutType

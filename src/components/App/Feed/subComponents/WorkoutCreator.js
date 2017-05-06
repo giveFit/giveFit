@@ -120,7 +120,7 @@ class WorkoutCreator extends React.Component {
       pictureURL: this.state.pictureURL,
       parkId: this.props.data.googleData.parkId ? this.props.data.googleData.parkId : undefined,
       // workoutId is the id of the loggedInUser, allowing us to make a connection in our data graph
-      workoutId: this.props.loggedInUser ? this.props.loggedInUser.id : scapholdUser,
+      workoutId: this.props.loggedInUser ? this.props.loggedInUser.id : scapholdUser
     }).then(({data}) => {
       this.setState({
         open: false,

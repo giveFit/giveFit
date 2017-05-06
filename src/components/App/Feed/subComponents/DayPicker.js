@@ -31,7 +31,7 @@ class DayPicker extends React.Component {
 
 export default DayPicker
 
- {/*<DropDownMenu value={this.state.value} onChange={this.handleChange.bind(this)}>
+{ /* <DropDownMenu value={this.state.value} onChange={this.handleChange.bind(this)}>
                   <MenuItem value={1} primaryText="All Tribes" />
                   <MenuItem value={2} primaryText="Community-based" />
                   <MenuItem value={3} primaryText="Gyms" />
@@ -43,4 +43,4 @@ export default DayPicker
                 <GroupCreatorWithData
               geocoder={props.geocoder}
               profile={props.profile}
-            />*/}
+/> */ }

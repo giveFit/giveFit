@@ -60,7 +60,7 @@ class GridComponent extends React.Component {
     this.geocoder = new googleMaps.Geocoder()
     // this.placesService = new googleMaps.PlacesService(map)
     this.clickMarker = null
-    this.infowindow = new googleMaps.InfoWindow
+    this.infowindow = new googleMaps.InfoWindow()
   }
 
   /*
@@ -78,22 +78,20 @@ class GridComponent extends React.Component {
 
     const div = document.createElement('div')
 
-    //Note : This concatination logic can be moved to foursquareApi.js to keep it consistent with googleApi
-    //FourSquare category tree: https://developer.foursquare.com/categorytree
+    // Note : This concatination logic can be moved to foursquareApi.js to keep it consistent with googleApi
+    // FourSquare category tree: https://developer.foursquare.com/categorytree
     const recCenters = {
-      ll: centerLatLng.lat.toString().concat(','+centerLatLng.lng.toString()),
+      ll: centerLatLng.lat.toString().concat(',' + centerLatLng.lng.toString()),
       radius: 5000,
       query: 'recreation center',
       venuePhotos: 1
     }
     const parks = {
-      ll: centerLatLng.lat.toString().concat(','+centerLatLng.lng.toString()),
+      ll: centerLatLng.lat.toString().concat(',' + centerLatLng.lng.toString()),
       radius: 5000,
       query: 'park',
       venuePhotos: 1
     }
-
-
 
     // const {googleMaps} = this.props
 
@@ -113,9 +111,9 @@ class GridComponent extends React.Component {
     // }
 
     try {
-      //search and add parks to state
-      //add meetup activities as well https://www.npmjs.com/package/meetup-crawler
-      //or https://github.com/jkutianski/meetup-api/tree/0.1.X
+      // search and add parks to state
+      // add meetup activities as well https://www.npmjs.com/package/meetup-crawler
+      // or https://github.com/jkutianski/meetup-api/tree/0.1.X
       // const parksPromise = searchNearby(this.googleMaps, div, parks)
       // const gymsPromise = searchNearby(this.googleMaps, div, gyms)
       // Promise.all([parksPromise, gymsPromise])
@@ -127,13 +125,12 @@ class GridComponent extends React.Component {
       //     })
       //   })
 
-
-      //Foursquare api calls
-      //Explore: https://developer.foursquare.com/docs/venues/explore
+      // Foursquare api calls
+      // Explore: https://developer.foursquare.com/docs/venues/explore
       const recCentersPromise = foursquare.venues.explore(recCenters)
       const parksPromise = foursquare.venues.explore(parks)
-      Promise.all([parksPromise,recCentersPromise])
-        .then(([recCentersResult,parksResult]) => {
+      Promise.all([parksPromise, recCentersPromise])
+        .then(([recCentersResult, parksResult]) => {
           this.setState({
             // NOTE: move this traversal to the utils files
             parks: parksResult.response.groups[0].items,
@@ -141,7 +138,6 @@ class GridComponent extends React.Component {
             loadedMapData: true
           })
         })
-
     } catch (err) {
       console.log(err)
     }
@@ -162,9 +158,9 @@ class GridComponent extends React.Component {
     console.log('setActiveIndex', parkID, index)
 
     var newIndex
-    if(index == undefined ){
+    if (index == undefined) {
       newIndex = -1
-    }else{
+    } else {
       newIndex = index
     }
     this.setState(
@@ -174,11 +170,11 @@ class GridComponent extends React.Component {
     )
   }
 
-  //Url generator for foursquare
-  foursquareGetUrl(photos){
+  // Url generator for foursquare
+  foursquareGetUrl (photos) {
     var image = photos.groups && photos.groups[0] && photos.groups[0].items[0]
-    //the original can be edited as required to get the required image dimensions
-    //Read https://developer.foursquare.com/docs/responses/photo
+    // the original can be edited as required to get the required image dimensions
+    // Read https://developer.foursquare.com/docs/responses/photo
     return image ? image.prefix + 'original' + image.suffix : null
   }
 
@@ -199,8 +195,8 @@ class GridComponent extends React.Component {
     const indexedPlaces = {}
 
     parksAndGyms.forEach((park) => {
-      //console.log('parksAndGyms', park)
-      var parkVenue = park.venue;
+      // console.log('parksAndGyms', park)
+      var parkVenue = park.venue
       // const place_id = park.place_id
       // console.log('each spot', s)
       // need to iterate over workouts, matching them to the place_id, adding
@@ -225,9 +221,9 @@ class GridComponent extends React.Component {
       //     workouts: filteredWorkouts
       //   }
       // }
-      parkVenue.types = parkVenue.categories.map((a)=>a.name)
+      parkVenue.types = parkVenue.categories.map((a) => a.name)
 
-      //Values need to be reassigned as per the app
+      // Values need to be reassigned as per the app
       indexedPlaces[parkVenue.id] = {
         // comments: workout.comments,
         googleData: {
@@ -267,7 +263,7 @@ class GridComponent extends React.Component {
               openedActivity={this.state.openedActivity}
               parkTitle={indexedPlaces[this.state.openedActivity].googleData.title}
               workouts={indexedPlaces[this.state.openedActivity].googleData.workouts}
-              //closeActivity={() => this.setActiveIndex(index, parkID)}
+              // closeActivity={() => this.setActiveIndex(index, parkID)}
               closeActivity={() => this.setActiveIndex()}
             />
           }

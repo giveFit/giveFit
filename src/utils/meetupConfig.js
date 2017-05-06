@@ -1,4 +1,4 @@
-/*module.exports = {
+/* module.exports = {
   meetupParams: {
     key: 192c28437134c7c189514125b6414,
     country: 'SG',
@@ -13,4 +13,4 @@
   blacklistWords: ['business', 'networking'],
 
   outfile: 'events.json'
-};*/
+}; */

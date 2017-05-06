@@ -1,35 +1,35 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText, GridList} from 'material-ui/Card';
-import MainFeed from '../Feed/subComponents/MainFeed';
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText, GridList} from 'material-ui/Card'
+import MainFeed from '../Feed/subComponents/MainFeed'
 import MainToolbar from '../Header/MainToolbar'
 
-import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
-import AuthService from 'utils/AuthService';
-import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
-import {orange500, blue500} from 'material-ui/styles/colors';
+import { graphql } from 'react-apollo'
+import gql from 'graphql-tag'
+import AuthService from 'utils/AuthService'
+import TextField from 'material-ui/TextField'
+import RaisedButton from 'material-ui/RaisedButton'
+import {orange500, blue500} from 'material-ui/styles/colors'
 
 import './styles.css'
 
 const inlineStyles = {
   textFieldStyle: {
-    color: orange500,
+    color: orange500
   }
 }
 
 export class LandingPage extends React.Component {
-  handleSubmit(){
-    /*I want users to be able to press the button without
+  handleSubmit () {
+    /* I want users to be able to press the button without
     entering anything, but still have the value declaration
-    below for when i do a location query*/
-    /*const {value} = this.refs.textbox.input;*/
-    this.context.router.push('/app');
+    below for when i do a location query */
+    /* const {value} = this.refs.textbox.input; */
+    this.context.router.push('/app')
   }
-  render(){
-    const workouts=(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ? this.props.data.viewer.allWorkoutGroups.edges : [];
-    console.log('workouts', workouts);
+  render () {
+    const workouts = (!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ? this.props.data.viewer.allWorkoutGroups.edges : []
+    console.log('workouts', workouts)
     const listView = workouts.length ? <div className='workouts'>
     {workouts.map((item, index) => (
          <div key={index} className='workout'> {!item ||
@@ -37,7 +37,7 @@ export class LandingPage extends React.Component {
             data={item.node}
          />)} </div>
     ))}
-    </div>: <h4> Loading... </h4>
+    </div> : <h4> Loading... </h4>
     return (
       <div className='root'>
       <MainToolbar auth={this.props}/>
@@ -52,13 +52,13 @@ export class LandingPage extends React.Component {
              floatingLabelText="Search by location or type of workout"
              ref="textbox"
              textareaStyle={inlineStyles.textFieldStyle}
-             onKeyDown={(e)=>{
-               if(e.which===13){
-                 this.handleSubmit();
+             onKeyDown={(e) => {
+               if (e.which === 13) {
+                 this.handleSubmit()
                }
              }}
            />
-           <RaisedButton label="Search for Workouts" secondary={true} className='submitButton' onTouchTap={()=>this.handleSubmit()} />
+           <RaisedButton label="Search for Workouts" secondary={true} className='submitButton' onTouchTap={() => this.handleSubmit()} />
            <br />
         </CardText>
         </Card>

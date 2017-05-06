@@ -1,12 +1,10 @@
-/*import {
-  blue200, blue500, blue800, blue900, 
+/* import {
+  blue200, blue500, blue800, blue900,
   cyan700,
   pinkA200,
   grey100, grey300, grey400, grey500, grey700, grey900,
   white, darkBlack, fullBlack,
 } from 'material-ui/styles/colors';
-
-
 
 export default {
   palette: {
@@ -23,7 +21,7 @@ export default {
     pickerHeaderColor: blue500,
     shadowColor: fullBlack,
   },
-};*/
+}; */
 
 // @flow weak
 
@@ -40,7 +38,6 @@ import {
 } from 'material-ui/styles/colors'
 import { fade } from 'material-ui/utils/colorManipulator'
 
-
 export default {
   spacing: {
     iconSize: 24,
@@ -53,7 +50,7 @@ export default {
     desktopDropDownMenuFontSize: 15,
     desktopLeftNavMenuItemHeight: 48,
     desktopSubheaderHeight: 48,
-    desktopToolbarHeight: 56,
+    desktopToolbarHeight: 56
   },
   fontFamily: 'Roboto, sans-serif',
   palette: {
@@ -67,10 +64,10 @@ export default {
     alternateTextColor: white,
     canvasColor: white,
     borderColor: grey300,
-    disabledColor: fade( darkBlack, 0.3 ),
-    pickerHeaderColor: blue500,
+    disabledColor: fade(darkBlack, 0.3),
+    pickerHeaderColor: blue500
   },
   avatar: {
-    borderColor: white,
-  },
+    borderColor: white
+  }
 }

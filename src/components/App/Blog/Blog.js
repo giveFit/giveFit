@@ -1,14 +1,14 @@
-import React from 'react';
-import BlogList from './subComponents/gridList';
+import React from 'react'
+import BlogList from './subComponents/gridList'
 
 class Blog extends React.Component {
-  render() {
+  render () {
     return (
       <div>
         <BlogList />
       </div>
     )
   }
-} 
+}
 
-export default Blog;
+export default Blog

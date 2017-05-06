@@ -27,7 +27,7 @@ export class ProfileEdit extends React.Component {
               hintText="The hint text can be as long as you want, it will wrap."
             /><br />
 
-          {/*<Form horizontal onSubmit={this.handleSubmit.bind(this)}>
+          {/* <Form horizontal onSubmit={this.handleSubmit.bind(this)}>
             <FormGroup controlId="address">
               <Col componentClass={ControlLabel} sm={2}>
                 Address
@@ -41,7 +41,7 @@ export class ProfileEdit extends React.Component {
                 <Button type="submit">Save</Button>
               </Col>
             </FormGroup>
-          </Form>*/}
+          </Form> */}
 
       </div>
     )

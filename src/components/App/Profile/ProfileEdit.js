@@ -6,7 +6,7 @@ import TextField from 'material-ui/TextField'
 import './styles.css'
 
 export class ProfileEdit extends React.Component {
-  handleSubmit(e){
+  handleSubmit (e) {
     e.preventDefault()
     const { profile, auth } = this.props
     auth.updateProfile(profile.user_id, {
@@ -16,19 +16,19 @@ export class ProfileEdit extends React.Component {
     })
   }
 
-  render(){
+  render () {
     const { profile } = this.props
     const { address } = profile.user_metadata || {}
     return (
       <div className='root'>
-          {/*<h3>About Me</h3>
+          {/* <h3>About Me</h3>
             <br />
             <TextField
               hintText="The hint text can be as long as you want, it will wrap."
-            />*/}
+            /> */}
             <br />
 
-          {/*<Form horizontal onSubmit={this.handleSubmit.bind(this)}>
+          {/* <Form horizontal onSubmit={this.handleSubmit.bind(this)}>
             <FormGroup controlId="address">
               <Col componentClass={ControlLabel} sm={2}>
                 Address
@@ -42,7 +42,7 @@ export class ProfileEdit extends React.Component {
                 <Button type="submit">Save</Button>
               </Col>
             </FormGroup>
-          </Form>*/}
+          </Form> */}
 
       </div>
     )

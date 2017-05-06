@@ -6,7 +6,7 @@ const styles = {
     margin: '1em'
   },
   pager: {
-    display: 'flex',
+    display: 'flex'
   },
   button: {
     border: '2px solid #efefef',
@@ -32,7 +32,7 @@ class Pagination extends React.Component {
     if (this.props.currentPage > 0) {
       previous = <span onClick={this.props.previous} className='previous'><button style={styles.button}>Back</button></span>
     }
-    if (this.props.currentPage !== (this.props.maxPage -1)) {
+    if (this.props.currentPage !== (this.props.maxPage - 1)) {
       next = <span onClick={this.props.next} className='next'><button style={styles.button}>Next</button></span>
     }
 
