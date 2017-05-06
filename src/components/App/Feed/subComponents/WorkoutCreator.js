@@ -16,8 +16,8 @@ import apolloConfig from '../../../../../apolloConfig'
 import configKeys from '../../../../../configKeys'
 import AuthService from 'utils/AuthService'
 
-import './styles.css'
 import 'react-datetime/css/react-datetime.css'
+import './styles.css'
 
 const CREATE_WORKOUT = gql`
   mutation CreateWorkout($input: CreateWorkoutInput!) {
@@ -79,7 +79,6 @@ class WorkoutCreator extends React.Component {
     const scapholdUser = window.localStorage.getItem('scapholdUserId') ? this.auth.getLoggedInUser() : null
     const userProfile = JSON.parse(window.localStorage.getItem('user_profile'))
 
-    console.log(userProfile)
     this.setState({
       scapholdUser,
       userProfile
@@ -101,14 +100,10 @@ class WorkoutCreator extends React.Component {
     this.setState({open: false})
   }
 
-  submitWorkout (e) {
+  createWorkout () {
     // looking to see if we still have the userId being set in localStorage
     // This seems to happen if the JWT has not expired for current user, but scaphold can't find the "loggedInUser"
-    var scapholdUser = window.localStorage.getItem('scapholdUserId') ? this.auth.getLoggedInUser() : null
-
-    if (e) {
-      e.preventDefault()
-    }
+    var scapholdUserId = this.auth.getLoggedInUser()
 
     this.props.createWorkout({
       title: this.state.title,
@@ -120,7 +115,7 @@ class WorkoutCreator extends React.Component {
       pictureURL: this.state.pictureURL,
       parkId: this.props.data.googleData.parkId ? this.props.data.googleData.parkId : undefined,
       // workoutId is the id of the loggedInUser, allowing us to make a connection in our data graph
-      workoutId: this.props.loggedInUser ? this.props.loggedInUser.id : scapholdUser
+      workoutId: this.props.loggedInUser ? this.props.loggedInUser.id : scapholdUserId
     }).then(({data}) => {
       this.setState({
         open: false,
@@ -169,30 +164,160 @@ class WorkoutCreator extends React.Component {
     })
   }
 
-  render () {
-    const actions = [
-      <FlatButton
-        label='Ok'
-        primary={true}
-        keyboardFocused={true}
-        onTouchTap={this.submitWorkout.bind(this)}
+  openStartTime () {
+    return (
+      <Datetime
       />
-    ]
+    )
+  }
+  openEndTime () {
+    return (
+      <Datetime
+      />
+    )
+  }
+  openLocation () {
+    return (
+      <Datetime
+      />
+    )
+  }
 
-    if (!this.auth.loggedIn()) {
-      return (
-        <div>
-          <Dialog
-            title='Please Login to add an activity'
-            actions={actions}
-            modal={false}
-            open={this.state.open}
-            onRequestClose={this.submitWorkout.bind(this)}
+  handleStartTime (moment) {
+    this.setState({
+      startDateTime: moment.toDate()
+    })
+  }
+  handleEndTime (moment) {
+    this.setState({
+      endDateTime: moment.toDate()
+    })
+  }
+
+  notLoggedInDialog () {
+    return (
+      <div>
+        <Dialog
+          title='Please Login to add an activity'
+          actions={[
+            <FlatButton
+              label='Ok'
+              primary
+              keyboardFocused
+              onTouchTap={() => this.handleClose()}
+            />
+          ]}
+          modal={false}
+          open={this.state.open}
+          onRequestClose={() => this.handleClose()}
+        />
+      </div>
+    )
+  }
+
+  loggedInDialog () {
+    return (
+      <Dialog
+        style={{ zIndex: 0 }}
+        actions={[
+          <FlatButton
+            label='Ok'
+            primary
+            keyboardFocused
+            onTouchTap={() => this.createWorkout()}
           />
-        </div>
-      )
-    }
+        ]}
+        autoScrollBodyContent
+        modal={false}
+        open={this.state.open}
+        onRequestClose={this.handleClose.bind(this)}
+      >
+        <div className='top_level_container'>
+          <div className='profile_chip_container'>
+            <Chip
+              className='profile_chip'
+              onTouchTap={() => this.context.router.push('/profile')}
+              // style={inlineStyles.chip}
+            >
+              <Avatar
+                src={this.state.userProfile.picture}
+                onClick={() => this.context.router.push('/profile')}
+              />
+              {this.state.userProfile.nickname}
+            </Chip>
+          </div>
 
+          <div className='title_and_type_container'>
+            <TextField
+              id='workout_title'
+              hintText='Workout Title'
+              onChange={(e) => this.onTitleChange(e.target.value)}
+            />
+            <TextField
+              id='workout_type'
+              hintText='Type'
+              onChange={(e) => this.onTypeChange(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <div className='add_picture_container'>
+          <ReactFilepicker
+            apikey={configKeys.FILESTACK_API}
+            options={{
+              mimetype: 'image/*',
+              services: ['COMPUTER', 'FACEBOOK', 'INSTAGRAM', 'GOOGLE_DRIVE', 'DROPBOX']
+            }}
+            buttonText={`<span><i class='fa fa-plus-circle'></i> Add Picture</span>`}
+            onSuccess={(res) => this.handlePictureChange(res.url)}
+            buttonClass='add_picture_button'
+          />
+          {this.state.pictureURL &&
+            <img
+              src={this.state.pictureURL}
+              className='workout_picture'
+            />
+          }
+        </div>
+
+        <div className='time_and_location_container'>
+          <div>
+            <span> Pick a Start Time <i className='fa fa-clock-o' /></span>
+            <Datetime
+              onChange={(moment) => this.handleStartTime(moment)}
+              className='date-time'
+            />
+          </div>
+          <div>
+            <span> Pick an End Time <i className='fa fa-clock-o' /></span>
+            <Datetime
+              onChange={(moment) => this.handleEndTime(moment)}
+              className='date-time'
+            />
+          </div>
+          <div>
+            <span> Choose Location <i className='fa fa-map-marker' /></span>
+          </div>
+        </div>
+
+        <Checkbox
+          name='requestTrainer'
+          label='Request Trainer for this activity'
+          className='request_trainer'
+          checked={this.state.requestTrainer}
+          onCheck={() => this.handleRequestTrainerToggle()}
+        />
+
+        <TextField
+          id='workout_description'
+          hintText='Optional Description'
+          onChange={(e) => this.onDescriptionChange(e.target.value)}
+        />
+      </Dialog>
+    )
+  }
+
+  render () {
     return (
       <div>
         <RaisedButton
@@ -206,81 +331,10 @@ class WorkoutCreator extends React.Component {
           backgroundColor={'white'}
           onTouchTap={() => this.handleOpen()}
         />
-        <Dialog
-          style={{ zIndex: 0 }}
-          actions={actions}
-          modal={false}
-          open={this.state.open}
-          onRequestClose={this.handleClose.bind(this)}
-        >
-          <div className='top_level_container'>
-            <div className='profile_chip_container'>
-              <Chip
-                className='profile_chip'
-                onTouchTap={() => this.context.router.push('/profile')}
-                // style={inlineStyles.chip}
-              >
-                <Avatar
-                  src={this.state.userProfile.picture}
-                  onClick={() => this.context.router.push('/profile')}
-                />
-                {this.state.userProfile.nickname}
-              </Chip>
-            </div>
-
-            <div className='title_and_type_container'>
-              <TextField
-                id='workout_title'
-                hintText='Workout Title'
-                onChange={(e) => this.onTitleChange(e.target.value)}
-              />
-              <TextField
-                id='workout_type'
-                hintText='Type'
-                onChange={(e) => this.onTypeChange(e.target.value)}
-              />
-            </div>
-          </div>
-
-          <div className='add_picture_container'>
-            <ReactFilepicker
-              apikey={configKeys.FILESTACK_API}
-              options={{
-                mimetype: 'image/*',
-                services: ['COMPUTER', 'FACEBOOK', 'INSTAGRAM', 'GOOGLE_DRIVE', 'DROPBOX']
-              }}
-              buttonText={`<span><i class='fa fa-plus-circle'></i> Add Picture</span>`}
-              onSuccess={(res) => this.handlePictureChange(res.url)}
-              buttonClass='add_picture_button'
-            />
-            {this.state.pictureURL &&
-              <img
-                src={this.state.pictureURL}
-                className='workout_picture'
-              />
-            }
-          </div>
-
-          <div className='time_and_location_container'>
-            <span>Pick a Start Time <i className='fa fa-clock-o' /></span>
-            <span>Pick an End Time <i className='fa fa-clock-o' /></span>
-            <span>Choose Location <i className='fa fa-map-marker' /></span>
-          </div>
-
-          <Checkbox
-            name='requestTrainer'
-            label='Request Trainer for this activity'
-            className='request_trainer'
-            checked={this.state.requestTrainer}
-            onCheck={() => this.handleRequestTrainerToggle()}
-          />
-
-          <TextField
-            id='workout_description'
-            hintText='Optional Description'
-            onChange={(e) => this.onDescriptionChange(e.target.value)}
-          />
-        </Dialog>
+        {this.auth.loggedIn()
+          ? this.loggedInDialog()
+          : this.notLoggedInDialog()
+        }
       </div>
     )
   }
