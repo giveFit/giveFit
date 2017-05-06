@@ -11,6 +11,8 @@ import RaisedButton from 'material-ui/RaisedButton'
 import TextField from 'material-ui/TextField'
 import Datetime from 'react-datetime'
 import ReactFilepicker from 'react-filepicker'
+import SelectField from 'material-ui/SelectField'
+import MenuItem from 'material-ui/MenuItem'
 
 import apolloConfig from '../../../../../apolloConfig'
 import configKeys from '../../../../../configKeys'
@@ -72,12 +74,23 @@ class WorkoutCreator extends React.Component {
       userProfile: {}
     }
 
+    this.places = []
+
     this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain)
   }
 
   componentDidMount () {
     const scapholdUser = window.localStorage.getItem('scapholdUserId') ? this.auth.getLoggedInUser() : null
     const userProfile = JSON.parse(window.localStorage.getItem('user_profile'))
+
+    this.places = Object.keys(this.props.indexedPlaces).map((placeID) => {
+      const place = this.props.indexedPlaces[placeID].googleData
+
+      return {
+        title: place.title,
+        id: place.parkId
+      }
+    })
 
     this.setState({
       scapholdUser,
@@ -101,10 +114,6 @@ class WorkoutCreator extends React.Component {
   }
 
   createWorkout () {
-    // looking to see if we still have the userId being set in localStorage
-    // This seems to happen if the JWT has not expired for current user, but scaphold can't find the "loggedInUser"
-    var scapholdUserId = this.auth.getLoggedInUser()
-
     this.props.createWorkout({
       title: this.state.title,
       type: this.state.type,
@@ -113,9 +122,9 @@ class WorkoutCreator extends React.Component {
       description: this.state.description,
       requestTrainer: this.state.requestTrainer,
       pictureURL: this.state.pictureURL,
-      parkId: this.props.data.googleData.parkId ? this.props.data.googleData.parkId : undefined,
+      parkId: this.state.parkId,
       // workoutId is the id of the loggedInUser, allowing us to make a connection in our data graph
-      workoutId: this.props.loggedInUser ? this.props.loggedInUser.id : scapholdUserId
+      workoutId: this.state.scapholdUser
     }).then(({data}) => {
       this.setState({
         open: false,
@@ -154,33 +163,20 @@ class WorkoutCreator extends React.Component {
 
   onDateChange (event, date) {
     this.setState({
-      date: date
+      date
     })
   }
 
   onTimeChange (event, time) {
     this.setState({
-      time: time
+      time
     })
   }
 
-  openStartTime () {
-    return (
-      <Datetime
-      />
-    )
-  }
-  openEndTime () {
-    return (
-      <Datetime
-      />
-    )
-  }
-  openLocation () {
-    return (
-      <Datetime
-      />
-    )
+  onLocationChange (parkId) {
+    this.setState({
+      parkId
+    })
   }
 
   handleStartTime (moment) {
@@ -253,11 +249,17 @@ class WorkoutCreator extends React.Component {
               hintText='Workout Title'
               onChange={(e) => this.onTitleChange(e.target.value)}
             />
-            <TextField
-              id='workout_type'
-              hintText='Type'
-              onChange={(e) => this.onTypeChange(e.target.value)}
-            />
+            <SelectField
+              floatingLabelText='Type'
+              value={this.state.type}
+              onChange={(e, index, value) => this.onTypeChange(value)}
+            >
+              <MenuItem value={'Walk'} primaryText='Walk' />
+              <MenuItem value={'Yoga'} primaryText='Yoga' />
+              <MenuItem value={'Bootcamp'} primaryText='Bootcamp' />
+              <MenuItem value={'Zumba'} primaryText='Zumba' />
+              <MenuItem value={'Dance'} primaryText='Dance' />
+            </SelectField>
           </div>
         </div>
 
@@ -281,14 +283,14 @@ class WorkoutCreator extends React.Component {
         </div>
 
         <div className='time_and_location_container'>
-          <div>
+          <div className='start-time'>
             <span> Pick a Start Time <i className='fa fa-clock-o' /></span>
             <Datetime
               onChange={(moment) => this.handleStartTime(moment)}
               className='date-time'
             />
           </div>
-          <div>
+          <div className='end-time'>
             <span> Pick an End Time <i className='fa fa-clock-o' /></span>
             <Datetime
               onChange={(moment) => this.handleEndTime(moment)}
@@ -297,6 +299,13 @@ class WorkoutCreator extends React.Component {
           </div>
           <div>
             <span> Choose Location <i className='fa fa-map-marker' /></span>
+            <SelectField
+              fullWidth
+              value={this.state.parkId}
+              onChange={(e, index, value) => this.onLocationChange(value)}
+            >
+              {this.places.map((place) => <MenuItem value={place.id} primaryText={place.title} />)}
+            </SelectField>
           </div>
         </div>
 

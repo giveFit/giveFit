@@ -108,7 +108,9 @@ class Activity extends React.Component {
             onClick={() => this.props.closeActivity()}
           />
           <span style={{ color: '#000032' }}>{this.props.parkTitle}</span>
-          <WorkoutCreator />
+          <WorkoutCreator
+            indexedPlaces={this.props.indexedPlaces}
+          />
         </div>
         <div className='body'>
           <Pagination

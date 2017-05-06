@@ -21,7 +21,6 @@ import {blue500, red500, greenA200, white} from 'material-ui/styles/colors';
 
 //Local components
 import WorkoutCreatorWithData from './WorkoutCreator';
-import WorkoutCreator from './WorkoutCreator';
 import WorkoutPost from './WorkoutPost';
 
 import '../styles.css';
@@ -116,7 +115,7 @@ class ParkFeed extends React.Component {
       </CardText>
 
       <CardActions>
-        <WorkoutCreatorWithData data={this.props.data}/>
+        <WorkoutCreatorWithData data={this.props.data} />
       </CardActions>
     </Card>
     </div>

@@ -260,6 +260,7 @@ class GridComponent extends React.Component {
           }
           {this.state.openedActivity &&
             <ActivityContainer
+              indexedPlaces={indexedPlaces}
               openedActivity={this.state.openedActivity}
               parkTitle={indexedPlaces[this.state.openedActivity].googleData.title}
               workouts={indexedPlaces[this.state.openedActivity].googleData.workouts}
