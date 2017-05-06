@@ -8,71 +8,7 @@ import { CardText, Chip, Avatar, RaisedButton } from 'material-ui'
 import Pagination from './subComponents/Pagination'
 import WorkoutCreator from './subComponents/WorkoutCreator'
 
-const styles = {
-  container: {
-    position: 'absolute',
-    border: '3px solid #efefef',
-    margin: '0.2em',
-    background: 'white',
-    height: '80%',
-    overflow: 'scroll',
-    top: 0,
-    right: 0,
-    minWidth: '50%'
-  },
-  header: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    backgroundColor: '#D7546A',
-    border: '2px solid black',
-    padding: '0.2em 0.5em'
-  },
-  workoutHeader: {
-    display: 'flex'
-  },
-  workoutTitle: {
-    display: 'flex',
-    flexGrow: 1,
-    alignItems: 'center',
-    paddingLeft: '1em',
-    justifyContent: 'space-between'
-  },
-  workoutDate: {
-    color: 'grey',
-    padding: '1em 1em 1em 0'
-  },
-  workoutDescription: {
-    borderBottom: '2px solid #efefef'
-  },
-  buttonContainer: {
-    borderBottom: '2px solid #efefef',
-    display: 'flex',
-    justifyContent: 'space-between'
-  },
-  rsvpButton: {
-    margin: '0.5em 0',
-    boxShadow: '3px 3px 8px black',
-    cursor: 'pointer'
-  },
-  shareButton: {
-    alignItems: 'center',
-    display: 'flex',
-    cursor: 'pointer'
-  },
-  shareIcon: {
-    fontSize: '2em',
-    paddingLeft: '0.5em'
-  },
-  editIcon: {
-    color: 'grey',
-    paddingLeft: '0.4em',
-    fontSize: '1.2em',
-    cursor: 'pointer'
-  },
-  chip: {
-    margin: 4
-  }
-}
+import './ActivityContainer.css'
 
 class Activity extends React.Component {
   constructor (props) {
@@ -101,10 +37,10 @@ class Activity extends React.Component {
 
         return (
           <CardText key={`workout-${index}`}>
-            <div className='workout-header' style={styles.workoutHeader}>
+            <div className='workout-header'>
               <Chip
                 onTouchTap={() => this.context.router.push('/profile')}
-                style={styles.chip}
+                className='chip'
               >
                 <Avatar
                   src={workout.Workout.picture}
@@ -112,32 +48,31 @@ class Activity extends React.Component {
                 />
                 <span>{workout.Workout.nickname}</span>
               </Chip>
-              <div className='workout-title' style={styles.workoutTitle}>
+              <div className='workout-title'>
                 {workout.title || 'N/A'}
-                <i className='fa fa-pencil' style={styles.editIcon} />
+                <i className='fa fa-pencil edit-icon' />
               </div>
             </div>
-            <div className='workout-date' style={styles.workoutDate}>
+            <div className='workout-date'>
               {workout.date ? moment(workout.date).format('ddd MMM Do YYYY') : 'N/A'} {workout.time ? moment(workout.time).format('LT') : 'N/A'}
             </div>
-            <div className='workout-description' style={styles.workoutDescription}>
+            <div className='workout-description'>
               {workout.description}
             </div>
-            <div className='button-container' style={styles.buttonContainer}>
+            <div className='button-container'>
               <RaisedButton
                 backgroundColor={'#1F01B9'}
                 labelColor={'white'}
                 label='RSVP'
-                style={styles.rsvpButton}
+                className='rsvp-button'
                 onTouchTap={() => console.log('RSVP\'ing to this Place')}
               />
               <div
                 className='share-button'
-                style={styles.shareButton}
                 onClick={() => console.log('Sharing to this Place')}
               >
                 <span>Share</span>
-                <i className='fa fa-share' style={styles.shareIcon} />
+                <i className='fa fa-share share-icon' />
               </div>
             </div>
           </CardText>
@@ -165,8 +100,8 @@ class Activity extends React.Component {
     const maxPage = Math.ceil(this.props.workouts.length / this.RESULTS_PER_PAGE)
 
     return (
-      <div style={styles.container}>
-        <div className='header' style={styles.header}>
+      <div className='container'>
+        <div className='header'>
           <i
             className='fa fa-times'
             style={{ color: 'white', cursor: 'pointer' }}
@@ -175,7 +110,7 @@ class Activity extends React.Component {
           <span style={{ color: '#000032' }}>{this.props.parkTitle}</span>
           <WorkoutCreator />
         </div>
-        <div className='body' style={styles.body}>
+        <div className='body'>
           <Pagination
             maxPage={maxPage}
             currentPage={this.state.currentPage}
