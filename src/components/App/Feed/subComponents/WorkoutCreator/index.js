@@ -16,6 +16,7 @@ import FieldEndDateTime from './fields/EndDateTime'
 import FieldLocation from './fields/location'
 import FieldRequestTrainer from './fields/requestTrainer'
 import FieldDescription from './fields/description'
+import FieldEmail from './fields/email'
 
 import apolloConfig from '../../../../../../apolloConfig'
 import AuthService from 'utils/AuthService'
@@ -35,6 +36,7 @@ const CREATE_WORKOUT = gql`
         requestTrainer,
         parkId,
         pictureURL,
+        userEmail,
         Workout{
           nickname,
           username,
@@ -73,6 +75,7 @@ class WorkoutCreator extends React.Component {
       parkId: null,
       open: false,
       scapholdUser: null,
+      userEmail: null,
       userProfile: {}
     }
 
@@ -125,18 +128,21 @@ class WorkoutCreator extends React.Component {
       requestTrainer: this.state.requestTrainer,
       pictureURL: this.state.pictureURL,
       parkId: this.state.parkId,
+      userEmail: this.state.userEmail,
       // workoutId is the id of the loggedInUser, allowing us to make a connection in our data graph
       workoutId: this.state.scapholdUser
     }).then(({data}) => {
       this.setState({
         open: false,
-        requestTrainer: true,
+        requestTrainer: undefined,
         title: undefined,
         type: undefined,
         description: undefined,
         pictureURL: undefined,
-        date: null,
-        time: null
+        userEmail: undefined,
+        startDateTime: null,
+        endDateTime: null,
+        parkId: null
       })
     }).catch((error) => {
       console.log('error in form', error)
@@ -186,9 +192,16 @@ class WorkoutCreator extends React.Component {
       startDateTime: moment.toDate()
     })
   }
+
   handleDateEndTime (moment) {
     this.setState({
       endDateTime: moment.toDate()
+    })
+  }
+
+  handleUserEmailChange (userEmail) {
+    this.setState({
+      userEmail
     })
   }
 
@@ -271,10 +284,16 @@ class WorkoutCreator extends React.Component {
           />
         </div>
 
-        <FieldRequestTrainer
-          onCheck={() => this.handleRequestTrainerToggle()}
-          requestTrainer={this.state.requestTrainer}
-        />
+        <div className='request-trainer-container'>
+          <FieldRequestTrainer
+            onCheck={() => this.handleRequestTrainerToggle()}
+            requestTrainer={this.state.requestTrainer}
+          />
+
+          {this.state.requestTrainer &&
+            <FieldEmail onChange={(value) => this.handleUserEmailChange(value)} />
+          }
+        </div>
 
         <FieldDescription onChange={(value) => this.onDescriptionChange(value)} />
       </Dialog>

@@ -11,7 +11,15 @@ export default ({ onChange, places, parkId }) => {
         value={parkId}
         onChange={(e, index, value) => onChange(value)}
       >
-        {places.map((place) => <MenuItem value={place.id} primaryText={place.title} />)}
+        {places.map((place) => {
+          return (
+            <MenuItem
+              key={`location-${place.id}`}
+              value={place.id}
+              primaryText={place.title}
+            />
+          )
+        })}
       </SelectField>
     </div>
   )

@@ -67,9 +67,15 @@
 }
 
 .request_trainer {
-  padding: 1em;
+  padding: 0.5em;
 }
 
-.date-time {
+.request-trainer-container {
+  display: flex;
+  flex-direction: column;
+}
 
+.user_email {
+  padding: 0 1em;
+  width: 60%!important;
 }
