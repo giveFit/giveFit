@@ -62,8 +62,8 @@ class WorkoutPost extends React.Component {
 				        {
 				        	<div>
 					        	<p>Title: {this.props.data.node.title}</p>
-						        <p>Date: {this.props.data.node.date.substr(0, 10)}</p>
-						        <p>Time: {this.props.data.node.time.substr(11, 5)}</p>
+						        <p>Date: {this.props.data.node.startDateTime.substr(0, 10)}</p>
+						        <p>Time: {this.props.data.node.startDateTime.substr(11, 5)}</p>
 						        <p>Description: {this.props.data.node.description}</p>
 						        	<Checkbox
 									   label="RSVP"

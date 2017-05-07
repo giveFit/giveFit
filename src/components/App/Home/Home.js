@@ -35,24 +35,16 @@ export class Home extends React.Component {
     this.props.route.auth.logout()
     this.context.router.push('/')
   }
+
   render () {
     const profile = this.auth.getProfile()
-    const workoutGroups = (!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ? this.props.data.viewer.allWorkoutGroups.edges : []
-    const workouts = (!this.props.data.loading && this.props.data.viewer.allWorkouts.edges) ? this.props.data.viewer.allWorkouts.edges : []
+    const workouts = (!this.props.data.loading && this.props.data.getUser.Workout.edges) ? this.props.data.getUser.Workout.edges : []
     // console.log('profile', profile);
     const calendar = workouts.length ? <div className='workouts'>
     {workouts.map((item, index) => (
          <div key={index}> {!item ||
           (<WorkoutPost
             data={item}
-         />)} </div>
-    ))}
-    </div> : <CircularProgress size={80} />
-    const savedGroups = workoutGroups.length ? <div className='workouts'>
-    {workoutGroups.map((item, index) => (
-         <div key={index} className='tribe'> {!item ||
-          (<HomeFeed
-            data={item.node}
          />)} </div>
     ))}
     </div> : <CircularProgress size={80} />
@@ -79,17 +71,20 @@ export class Home extends React.Component {
   }
 }
 
-const GET_THROUGH_VIEWER = gql`
-query GetThroughViewer($first: Int) {
-  viewer {
-    allWorkouts {
-      edges {
-        node {
+const GET_USER_WORKOUTS = gql`
+  query GetUserWorkouts($id:ID!, $first: Int!) {
+  getUser(id: $id) {
+    id
+    Workout(first: $first) { 
+      edges{
+        node{
           id
           parkId
           title
           description
-          Workout {
+          startDateTime
+          endDateTime
+          Workout{
             nickname
             username
             picture
@@ -97,32 +92,23 @@ query GetThroughViewer($first: Int) {
         }
       }
     }
-    allWorkoutGroups(first: $first) {
-      edges {
-        node {
-          id
-          image
-          title
-          lat
-          lng
-          avatar
-          contentSnippet
-        }
-      }
-    }
   }
-}
+}  
 `
-
-// How many WorkoutGroups to return
-const FIRST = 8
+const FIRST = 1
+const ID = 'VXNlcjoyNQ=='
 
 const HomeContainerWithData = compose(
-  graphql(GET_THROUGH_VIEWER, {
+  graphql(GET_USER_WORKOUTS, {
     options: (props) => ({
-      variables: { first: FIRST }
+      variables: {id: ID, first: FIRST}
     })
   })
+  /*graphql(GET_USER_WORKOUTS, {
+    props: ({ query }) => ({
+      getUserWorkouts: (ID, FIRST) => query({ variables: {id: ID, first: FIRST} })
+    })
+  })*/
 )(Home)
 
 export default HomeContainerWithData
