@@ -20,12 +20,10 @@ query GetThroughViewer($first: Int) {
     allWorkouts {
       edges {
         node {
-          parkId,
-          title,
-          date,
-          time,
-          description,
-          recurring,
+          id
+          parkId
+          title
+          description
           Workout {
             nickname
             username
@@ -48,7 +46,8 @@ query GetThroughViewer($first: Int) {
       }
     }
   }
-}`
+}
+`
 
 // How many WorkoutGroups to return
 const FIRST = 8

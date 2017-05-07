@@ -182,8 +182,11 @@ class GridComponent extends React.Component {
     const {
       latLng,
       workouts,
+      workoutGroups,
       profile
     } = this.props
+
+    console.log('workoutGroups', workoutGroups);
     const mapCenter = {
       lat: latLng ? latLng.lat : 39.2904,
       lng: latLng ? latLng.lng : -76.6122

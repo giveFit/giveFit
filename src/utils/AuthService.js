@@ -48,17 +48,17 @@ export default class AuthService extends EventEmitter {
   }
 
   logout () {
-    localStorage.clear()
+    window.localStorage.clear()
     // emit an event to clear profile from state
     this.emit('loggedOut')
   }
 
   setProfile (profile) {
-    localStorage.setItem('user_profile', JSON.stringify(profile))
+    window.localStorage.setItem('user_profile', JSON.stringify(profile))
   }
 
   getProfile () {
-    return JSON.parse(localStorage.getItem('user_profile'))
+    return JSON.parse(window.localStorage.getItem('user_profile'))
   }
 
   loggedIn () {
@@ -69,16 +69,16 @@ export default class AuthService extends EventEmitter {
   setToken (idToken) {
     // Saves user token to localStorage
     console.log('setting idToken/scaphold_user_token', idToken)
-    localStorage.setItem('scaphold_user_token', idToken)
+    window.localStorage.setItem('scaphold_user_token', idToken)
   }
 
   getToken () {
     // Retrieves the user token from localStorage
-    return localStorage.getItem('scaphold_user_token')
+    return window.localStorage.getItem('scaphold_user_token')
   }
 
   getLoggedInUser () {
     // Retrieves the user token from localStorage
-    return localStorage.getItem('scapholdUserId')
+    return window.localStorage.getItem('scapholdUserId')
   }
 }

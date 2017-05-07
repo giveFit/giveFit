@@ -71,9 +71,6 @@ export class Home extends React.Component {
             <Tab label="Calendar">
               {calendar}
             </Tab>
-            <Tab label="My Tribes" >
-              {savedGroups}
-            </Tab>
         </Tabs>
         </CardText>
         </Card>
@@ -84,27 +81,25 @@ export class Home extends React.Component {
 
 const GET_THROUGH_VIEWER = gql`
 query GetThroughViewer($first: Int) {
-    viewer {
+  viewer {
     allWorkouts {
-        edges {
-            node {
-                parkId,
-                title,
-                date,
-                time,
-                description,
-                recurring,
-                Workout{
-                  nickname
-                  username
-                  picture
-              }
+      edges {
+        node {
+          id
+          parkId
+          title
+          description
+          Workout {
+            nickname
+            username
+            picture
           }
         }
       }
-      allWorkoutGroups(first: $first) {
-        edges {
-          node {
+    }
+    allWorkoutGroups(first: $first) {
+      edges {
+        node {
           id
           image
           title
@@ -112,10 +107,10 @@ query GetThroughViewer($first: Int) {
           lng
           avatar
           contentSnippet
-          }
         }
       }
     }
+  }
 }
 `
 
