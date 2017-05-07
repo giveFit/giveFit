@@ -16,7 +16,7 @@ import Comment from 'material-ui/svg-icons/communication/comment';
 import {blue500, red500, greenA200, white} from 'material-ui/styles/colors';
 
 //Local components
-import WorkoutCreator from './WorkoutCreator';
+import WorkoutCreator from './WorkoutCreator/index';
 
 import '../styles.css';
 

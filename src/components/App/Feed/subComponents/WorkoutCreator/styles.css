@@ -11,7 +11,7 @@
 }
 
 .title_and_type_container {
-  height: 10em;
+  height: 12em;
   display: flex;
   flex-direction: column;
   width: 80%;
@@ -49,16 +49,33 @@
   padding: 1em;
 }
 
+.start-time, .end-time {
+  width: 14em;
+}
+
 .time_and_location_container span {
   color: white;
-  cursor: pointer;
-  padding: 0 1em;
+  padding: 0 0.5em;
 }
 
 .time_and_location_container span i {
   font-size: 1.4em;
 }
 
+.time_and_location_container .date-time {
+  padding: 0 0.5em;
+}
+
 .request_trainer {
-  padding: 1em;
+  padding: 0.5em;
+}
+
+.request-trainer-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.user_email {
+  padding: 0 1em;
+  width: 60%!important;
 }
