@@ -38,7 +38,7 @@ export class Home extends React.Component {
 
   render () {
     const profile = this.auth.getProfile()
-    const workouts = (!this.props.data.loading && this.props.data.getUser.Workout.edges) ? this.props.data.getUser.Workout.edges : []
+    const workouts = (!this.props.data.loading && this.props.data.viewer.user.Workout.edges) ? this.props.data.viewer.user.Workout.edges : []
     // console.log('profile', profile);
     const calendar = workouts.length ? <div className='workouts'>
     {workouts.map((item, index) => (
@@ -72,11 +72,11 @@ export class Home extends React.Component {
 }
 
 const GET_USER_WORKOUTS = gql`
-  query GetUserWorkouts($id:ID!, $first: Int!) {
-  getUser(id: $id) {
-    id
-    Workout(first: $first) { 
-      edges{
+query GetUserWorkouts($first: Int){
+  viewer{
+    user{
+      Workout(first:$first){
+       edges{
         node{
           id
           parkId
@@ -90,25 +90,20 @@ const GET_USER_WORKOUTS = gql`
             picture
           }
         }
+      } 
       }
     }
   }
-}  
+}
 `
-const FIRST = 1
-const ID = 'VXNlcjoyNQ=='
+const FIRST = 10
 
 const HomeContainerWithData = compose(
   graphql(GET_USER_WORKOUTS, {
     options: (props) => ({
-      variables: {id: ID, first: FIRST}
+      variables: {first: FIRST}
     })
   })
-  /*graphql(GET_USER_WORKOUTS, {
-    props: ({ query }) => ({
-      getUserWorkouts: (ID, FIRST) => query({ variables: {id: ID, first: FIRST} })
-    })
-  })*/
 )(Home)
 
 export default HomeContainerWithData
