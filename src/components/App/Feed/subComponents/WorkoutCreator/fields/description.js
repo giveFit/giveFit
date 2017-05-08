@@ -5,7 +5,7 @@ export default ({ onChange }) => {
   return (
     <TextField
       id='workout_description'
-      hintText='Optional Description'
+      hintText='Description'
       onChange={(e) => onChange(e.target.value)}
     />
   )
