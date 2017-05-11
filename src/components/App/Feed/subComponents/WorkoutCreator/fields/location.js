@@ -2,13 +2,14 @@ import React from 'react'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 
-export default ({ onChange, places, parkId }) => {
+export default ({ onChange, places, parkId, errorText = null }) => {
   return (
     <div>
       <span> Choose Location <i className='fa fa-map-marker' /></span>
       <SelectField
         fullWidth
         value={parkId}
+        errorText={errorText}
         onChange={(e, index, value) => onChange(value)}
       >
         {places.map((place) => {

@@ -2,11 +2,12 @@ import React from 'react'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 
-export default ({ onChange, value }) => {
+export default ({ onChange, value, errorText = null }) => {
   return (
     <SelectField
       floatingLabelText='Type'
       value={value}
+      errorText={errorText}
       onChange={(e, index, value) => onChange(value)}
     >
       <MenuItem value={'Walk'} primaryText='Walk' />

@@ -76,7 +76,8 @@ class WorkoutCreator extends React.Component {
       open: false,
       scapholdUser: null,
       userEmail: null,
-      userProfile: {}
+      userProfile: {},
+      errors: {}
     }
 
     this.places = []
@@ -145,7 +146,17 @@ class WorkoutCreator extends React.Component {
         parkId: null
       })
     }).catch((error) => {
-      console.log('error in form', error)
+      console.log(error)
+
+      const errors = error.toString().split('\n')
+
+      for (let i = 1; i < errors.length; i++) {
+        const fieldName = errors[i].split('"')[1]
+
+        errors[fieldName] = 'This field is required'
+      }
+
+      this.setState({ errors })
     })
   }
 
@@ -193,7 +204,7 @@ class WorkoutCreator extends React.Component {
     })
   }
 
-  handleDateEndTime (moment) {
+  handleEndDateTime (moment) {
     this.setState({
       endDateTime: moment.toDate()
     })
@@ -248,7 +259,6 @@ class WorkoutCreator extends React.Component {
             <Chip
               className='profile_chip'
               onTouchTap={() => this.context.router.push('/profile')}
-              // style={inlineStyles.chip}
             >
               <Avatar
                 src={this.state.userProfile.picture}
@@ -259,13 +269,13 @@ class WorkoutCreator extends React.Component {
           </div>
 
           <div className='title_and_type_container'>
-            <FieldTitle onChange={(value) => this.onTitleChange(value)} />
-            <FieldType onChange={(value) => this.onTypeChange(value)} value={this.state.type} />
+            <FieldTitle onChange={(value) => this.onTitleChange(value)} errorText={this.state.errors.title} />
+            <FieldType onChange={(value) => this.onTypeChange(value)} value={this.state.type} errorText={this.state.errors.type} />
           </div>
         </div>
 
         <div className='add_picture_container'>
-          <FieldPictureURL onChange={(url) => this.handlePictureChange(url)} />
+          <FieldPictureURL onChange={(url) => this.handlePictureChange(url)} errorText={this.state.errors.pictureURL} />
           {this.state.pictureURL &&
             <img
               src={this.state.pictureURL}
@@ -275,12 +285,13 @@ class WorkoutCreator extends React.Component {
         </div>
 
         <div className='time_and_location_container'>
-          <FieldStartDateTime onChange={(moment) => this.handleStartDateTime(moment)} />
-          <FieldEndDateTime onChange={(moment) => this.handleStartDateTime(moment)} />
+          <FieldStartDateTime onChange={(moment) => this.handleStartDateTime(moment)} errorText={this.state.errors.startDateTime} />
+          <FieldEndDateTime onChange={(moment) => this.handleEndDateTime(moment)} errorText={this.state.errors.endDateTime} />
           <FieldLocation
             onChange={(value) => this.onLocationChange(value)}
             places={this.places}
             parkId={this.state.parkId}
+            errorText={this.state.errors.parkId}
           />
         </div>
 
@@ -288,14 +299,15 @@ class WorkoutCreator extends React.Component {
           <FieldRequestTrainer
             onCheck={() => this.handleRequestTrainerToggle()}
             requestTrainer={this.state.requestTrainer}
+            errorText={this.state.errors.requestTrainer}
           />
 
           {this.state.requestTrainer &&
-            <FieldEmail onChange={(value) => this.handleUserEmailChange(value)} />
+            <FieldEmail onChange={(value) => this.handleUserEmailChange(value)} errorText={this.state.errors.email} />
           }
         </div>
 
-        <FieldDescription onChange={(value) => this.onDescriptionChange(value)} />
+        <FieldDescription onChange={(value) => this.onDescriptionChange(value)} errorText={this.state.errors.description} />
       </Dialog>
     )
   }
