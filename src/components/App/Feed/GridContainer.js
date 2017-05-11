@@ -190,6 +190,7 @@ class GridComponent extends React.Component {
     } = this.props
 
     console.log('workoutGroups', workoutGroups);
+    console.log('workouts', workouts)
     const mapCenter = {
       lat: latLng ? latLng.lat : 39.2904,
       lng: latLng ? latLng.lng : -76.6122
@@ -208,7 +209,10 @@ class GridComponent extends React.Component {
       // need to iterate over workouts, matching them to the place_id, adding
       // them as an array to the indexedPlaces
       const filteredWorkouts = workouts.filter((workout) => {
-        return parkVenue.id === workout.node.parkId && workout.node.Workout
+        console.log('workout.node.parkId', workout.node.parkId)
+        //console.log('workout.node.Workout', workout.node.Workout)
+        console.log('parkVenue.id', parkVenue.id)
+        return parkVenue.id === workout.node.parkId
       })
 
       // indexedPlaces[park.place_id] = {
@@ -227,9 +231,10 @@ class GridComponent extends React.Component {
       //     workouts: filteredWorkouts
       //   }
       // }
-      parkVenue.types = parkVenue.categories.map((a) => a.name)
+      // parkVenue.types = parkVenue.categories.map((a) => a.name)
 
       // Values need to be reassigned as per the app
+      console.log('filteredWorkouts', filteredWorkouts)
       indexedPlaces[parkVenue.id] = {
         // comments: workout.comments,
         googleData: {
@@ -242,7 +247,7 @@ class GridComponent extends React.Component {
           rating: parkVenue.rating,
           photos: this.foursquareGetUrl(parkVenue.photos),
           vicinity: parkVenue.location.address,
-          types: parkVenue.types,
+          //types: parkVenue.types,
           workouts: filteredWorkouts
         }
       }

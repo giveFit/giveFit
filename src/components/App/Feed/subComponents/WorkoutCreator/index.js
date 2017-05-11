@@ -86,8 +86,10 @@ class WorkoutCreator extends React.Component {
   }
 
   componentDidMount () {
+    console.log('indexedPlaces', this.props.indexedPlaces)
     const scapholdUser = window.localStorage.getItem('scapholdUserId') ? this.auth.getLoggedInUser() : null
     const userProfile = JSON.parse(window.localStorage.getItem('user_profile'))
+    console.log('userProfile')
 
     this.places = Object.keys(this.props.indexedPlaces).map((placeID) => {
       const place = this.props.indexedPlaces[placeID].googleData
