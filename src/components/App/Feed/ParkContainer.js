@@ -6,7 +6,6 @@ import CircularProgress from 'material-ui/CircularProgress'
 
 import ParkFeed from './subComponents/ParkFeed'
 import GymFeed from './subComponents/GymFeed'
-import DayPicker from './subComponents/DayPicker'
 
 import './styles.css'
 
@@ -41,7 +40,7 @@ class ParkContainer extends React.Component {
   }
 
   render () {
-    const { parks, profile } = this.props
+    const { parks } = this.props
 
     if (!parks.length) {
       return (
@@ -53,11 +52,8 @@ class ParkContainer extends React.Component {
 
     return (
       // list with google data
-      <div className='gridList' >
-        <DayPicker className='stackedTop' profile={profile} geocoder={this.geocoder} />
-        <div className='workoutList'>
-          {this.perpareParks(parks)}
-        </div>
+      <div className='workoutList'>
+        {this.perpareParks(parks)}
       </div>
     )
   }

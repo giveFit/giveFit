@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { Tab, Tabs } from 'material-ui'
+
 import {searchNearby} from 'utils/googleApiHelpers'
 
 import foursquare from 'utils/foursquareApi'
@@ -7,6 +9,7 @@ import foursquare from 'utils/foursquareApi'
 import ParkContainer from './ParkContainer'
 import ActivityContainer from './ActivityContainer'
 import MapContainer from './MapContainer'
+import WorkoutCreator from './subComponents/WorkoutCreator/index'
 
 const styles = {
   root: {
@@ -272,14 +275,28 @@ class GridComponent extends React.Component {
             />
           }
         </div>
-        <ParkContainer
-          parks={parks}
-          placeById={indexedPlaces}
-          profile={profile}
-          activeIndex={activeIndex}
-          toggleActivity={(parkID) => this.toggleActivity(parkID)}
-          onFeedItemClick={(index, parkID) => this.setActiveIndex(index, parkID)}
-        />
+
+        <div className='gridList' >
+          <div>
+            <Tabs>
+              <Tab label='Activities' />
+              <Tab label='Groups' />
+            </Tabs>
+
+            <WorkoutCreator
+              indexedPlaces={indexedPlaces}
+            />
+          </div>
+
+          <ParkContainer
+            parks={parks}
+            placeById={indexedPlaces}
+            profile={profile}
+            activeIndex={activeIndex}
+            toggleActivity={(parkID) => this.toggleActivity(parkID)}
+            onFeedItemClick={(index, parkID) => this.setActiveIndex(index, parkID)}
+          />
+        </div>
       </div>
     )
   }

@@ -1,3 +1,16 @@
+.workout-creator {
+  background-color: #CE1F3C;
+  padding: 0.25em;
+  text-align: right;
+  border: 2px solid black;
+}
+
+.add-activity {
+  border: none;
+  border-radius: 0;
+  box-shadow: none!important;
+}
+
 .top_level_container {
   width: 100%;
   box-sizing: border-box;

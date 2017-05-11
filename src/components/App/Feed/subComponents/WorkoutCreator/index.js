@@ -314,7 +314,7 @@ class WorkoutCreator extends React.Component {
 
   render () {
     return (
-      <div>
+      <div className='workout-creator'>
         <RaisedButton
           label={<i
             className='fa fa-plus'
@@ -322,8 +322,9 @@ class WorkoutCreator extends React.Component {
           >
              Add Activity
           </i>}
+          className='add-activity'
           labelPosition='before'
-          backgroundColor={'white'}
+          backgroundColor='#CE1F3C'
           onTouchTap={() => this.handleOpen()}
         />
         {this.auth.loggedIn()
