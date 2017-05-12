@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import {CardText, Chip, Avatar} from 'material-ui'
+import {CardText, Chip, Avatar, Card} from 'material-ui'
 import Checkbox from 'material-ui/Checkbox'
 import Snackbar from 'material-ui/Snackbar'
 
@@ -35,20 +35,20 @@ class WorkoutPost extends React.Component {
     this.setState({snack: !this.state.snack})
   }
   handleTouchTap () {
-    alert('You clicked the Chip.')
+    window.alert('You clicked the Chip.')
   }
   handleActionTouchTap () {
-	    this.setState({
-	      snack: false
-	    })
-    alert('Event removed from your calendar.')
+  	this.setState({snack: false})
+    window.alert('Event removed from your calendar.')
   };
 
   render () {
-    return (
-			<div>
-				{(this.props.data.node.Workout && this.props.data.node.title)
-					? <CardText>
+
+	return (
+    	<div>
+			{(this.props.data.node.Workout && this.props.data.node.title) ? 
+				<Card>
+					<CardText>
 				        <Chip
 				          onTouchTap={() => this.context.router.push('/profile')}
 				          style={inlineStyles.chip}
@@ -73,17 +73,18 @@ class WorkoutPost extends React.Component {
 						    </div>
 					    }
 			      </CardText>
-					: null
-				}
-			<Snackbar
-		      open={this.state.snack}
-		      message={this.state.messageTrue}
-		      action="undo"
-		      autoHideDuration={this.state.autoHideDuration}
-		      onActionTouchTap={this.handleActionTouchTap.bind(this)}
-		      onRequestClose={this.handleRequestClose.bind(this)}
-		    />
-			</div>
+			      </Card>
+				: null
+			}
+		<Snackbar
+	      open={this.state.snack}
+	      message={this.state.messageTrue}
+	      action="undo"
+	      autoHideDuration={this.state.autoHideDuration}
+	      onActionTouchTap={this.handleActionTouchTap.bind(this)}
+	      onRequestClose={this.handleRequestClose.bind(this)}
+	    />
+		</div>
     )
   }
 }

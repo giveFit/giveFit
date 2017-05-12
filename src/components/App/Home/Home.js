@@ -98,10 +98,20 @@ query GetUserWorkouts($first: Int){
 `
 const FIRST = 10
 
+var today = new Date()
+
+const WHERE = {
+  'where': {
+    'endDateTime': {
+      'gte': today
+    }
+  }
+}
+
 const HomeContainerWithData = compose(
   graphql(GET_USER_WORKOUTS, {
     options: (props) => ({
-      variables: {first: FIRST}
+      variables: {first: FIRST, where: WHERE}
     })
   })
 )(Home)

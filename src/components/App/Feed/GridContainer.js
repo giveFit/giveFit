@@ -189,7 +189,7 @@ class GridComponent extends React.Component {
       profile
     } = this.props
 
-    console.log('workoutGroups', workoutGroups);
+    console.log('workoutGroups', workoutGroups)
     console.log('workouts', workouts)
     const mapCenter = {
       lat: latLng ? latLng.lat : 39.2904,
@@ -202,16 +202,10 @@ class GridComponent extends React.Component {
     const indexedPlaces = {}
 
     parksAndGyms.forEach((park) => {
-      // console.log('parksAndGyms', park)
       var parkVenue = park.venue
-      // const place_id = park.place_id
-      // console.log('each spot', s)
       // need to iterate over workouts, matching them to the place_id, adding
       // them as an array to the indexedPlaces
       const filteredWorkouts = workouts.filter((workout) => {
-        console.log('workout.node.parkId', workout.node.parkId)
-        //console.log('workout.node.Workout', workout.node.Workout)
-        console.log('parkVenue.id', parkVenue.id)
         return parkVenue.id === workout.node.parkId
       })
 
@@ -247,7 +241,7 @@ class GridComponent extends React.Component {
           rating: parkVenue.rating,
           photos: this.foursquareGetUrl(parkVenue.photos),
           vicinity: parkVenue.location.address,
-          //types: parkVenue.types,
+          // types: parkVenue.types,
           workouts: filteredWorkouts
         }
       }
