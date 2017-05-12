@@ -72,10 +72,10 @@ export class Home extends React.Component {
 }
 
 const GET_USER_WORKOUTS = gql`
-query GetUserWorkouts($first: Int){
+query GetUserWorkouts($first: Int, $where: WorkoutWhereArgs!, $orderBy:[WorkoutOrderByArgs!]){
   viewer{
     user{
-      Workout(first:$first){
+      Workout(first:$first, where: $where, orderBy: $orderBy){
        edges{
         node{
           id
@@ -98,20 +98,23 @@ query GetUserWorkouts($first: Int){
 `
 const FIRST = 10
 
-var today = new Date()
+var today = new Date().toString()
 
 const WHERE = {
-  'where': {
-    'endDateTime': {
-      'gte': today
-    }
+  'endDateTime': {
+    'gte': today
   }
+}
+
+const ORDERBY = {
+  'field': 'startDateTime',
+  'direction': 'ASC'
 }
 
 const HomeContainerWithData = compose(
   graphql(GET_USER_WORKOUTS, {
     options: (props) => ({
-      variables: {first: FIRST, where: WHERE}
+      variables: {first: FIRST, where: WHERE, orderBy: ORDERBY}
     })
   })
 )(Home)
