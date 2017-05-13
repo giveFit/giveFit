@@ -1,7 +1,3 @@
-.root {
-  text-align: center;
-}
-
 .workouts {
   /*trying to break into 3 columns*/
   display : flex;

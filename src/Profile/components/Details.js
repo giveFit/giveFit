@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Avatar from 'material-ui/Avatar'
 
-import './styles.css'
+import './Details.css'
 
 export class ProfileDetails extends React.Component {
   render () {

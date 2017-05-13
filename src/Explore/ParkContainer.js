@@ -4,8 +4,8 @@ import PropTypes from 'prop-types'
 import { Card } from 'material-ui/Card'
 import CircularProgress from 'material-ui/CircularProgress'
 
-import ParkFeed from './subComponents/ParkFeed'
-import GymFeed from './subComponents/GymFeed'
+import ParkFeed from './components/ParkFeed'
+import GymFeed from './components/GymFeed'
 
 import './styles.css'
 

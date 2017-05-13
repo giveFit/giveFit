@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 
-import './styles.css'
+import './Edit.css'
 
 export class ProfileEdit extends React.Component {
   handleSubmit (e) {
@@ -21,7 +21,7 @@ export class ProfileEdit extends React.Component {
     const { address } = profile.user_metadata || {}
 
     return (
-      <div className='root'>
+      <div className='edit'>
           {/* <h3>About Me</h3>
             <br />
             <TextField

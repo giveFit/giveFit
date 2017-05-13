@@ -13,15 +13,14 @@ import injectTapEventPlugin from 'react-tap-event-plugin'
 
 import { browserHistory, Router } from 'react-router'
 
-import App from 'App/index'
+import App from 'App/'
 
 // Logged in Components
-import Landing from './components/App/Landing/index'
-import Feed from './components/App/Feed/index'
-// Actually the profile route
-import Profile from './components/App/Profile/index'
+import Home from 'Home/'
+import Explore from 'Explore/'
+import Profile from 'Profile/'
 
-import 'styles/index.css'
+import './base.css'
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
@@ -31,9 +30,9 @@ const customTheme = getMuiTheme(muiTheme)
 const routes = {
   path: '/',
   component: App,
-  indexRoute: { component: Landing },
+  indexRoute: { component: Home },
   childRoutes: [
-    { path: 'app', component: Feed },
+    { path: 'explore', component: Explore },
     { path: 'profile', component: Profile },
   ],
 }

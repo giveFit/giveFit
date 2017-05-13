@@ -5,7 +5,7 @@ import { browserHistory } from 'react-router'
 
 var options = {
   /* auth: {
-      redirectUrl: 'http://localhost:3000/app'
+      redirectUrl: 'http://localhost:3000/explore'
   }, */
   theme: {
     primaryColor: '#CF1F3C',

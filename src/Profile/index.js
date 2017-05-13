@@ -1,16 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { graphql, compose } from 'react-apollo'
-import { GET_USER_WORKOUTS } from './query'
+import { GET_USER_WORKOUTS } from './gql'
 
 import { Card, CardText } from 'material-ui/Card'
 import { Tabs, Tab } from 'material-ui/Tabs'
 import CircularProgress from 'material-ui/CircularProgress'
 
-import ProfileDetails from './SubComponents/Details'
-import ProfileEdit from './SubComponents/Edit'
+import ProfileDetails from './components/Details'
+import ProfileEdit from './components/Edit'
 
-import WorkoutPost from '../Feed/subComponents/WorkoutPost'
+import WorkoutPost from 'components/App/Feed/subComponents/WorkoutPost'
 
 import './styles.css'
 
@@ -44,7 +44,7 @@ class Profile extends React.Component {
             <ProfileEdit profile={profile} auth={this.props.auth} />
             <Tabs>
               <Tab label="Calendar">
-                {workouts.length ? this.prepareCalendar(workouts) : <CircularProgress size={80} />}
+                {workouts.length ? this.prepareCalendar(workouts) : <CircularProgress size={8} />}
               </Tab>
             </Tabs>
           </CardText>

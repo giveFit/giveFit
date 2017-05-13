@@ -9,7 +9,7 @@ import foursquare from 'utils/foursquareApi'
 import ParkContainer from './ParkContainer'
 import ActivityContainer from './ActivityContainer'
 import MapContainer from './MapContainer'
-import WorkoutCreator from './subComponents/WorkoutCreator/index'
+import WorkoutCreator from './components/WorkoutCreator/index'
 
 import './GridContainer.css'
 

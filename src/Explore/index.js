@@ -4,7 +4,7 @@ import { graphql, compose } from 'react-apollo'
 import gql from 'graphql-tag'
 
 import GridContainer from './GridContainer'
-import apolloConfig from '../../../../apolloConfig'
+import apolloConfig from '../../apolloConfig'
 
 import AuthService from 'utils/AuthService'
 

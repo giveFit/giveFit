@@ -3,7 +3,6 @@ import Autosuggest from 'react-autosuggest'
 import geocodeHelper from 'utils/geocodeHelper'
 
 import 'whatwg-fetch'
-import './styles.css'
 
 const getSuggestions = (value) => {
   const inputValue = value.trim().toLowerCase()

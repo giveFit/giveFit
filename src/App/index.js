@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { graphql, compose } from 'react-apollo'
 
 import AuthService from 'utils/AuthService'
-import { LOGIN_USER_WITH_AUTH0_LOCK, UPDATE_USER_QUERY } from './query'
+import { LOGIN_USER_WITH_AUTH0_LOCK, UPDATE_USER_QUERY } from './gql'
 
 import apolloConfig from '../../apolloConfig'
 
@@ -88,7 +88,9 @@ class App extends React.Component {
         <div id='body' className='__app__body__container'>
           {this.renderChildren(profile)}
         </div>
-        <Footer />
+        <Footer
+          pathname={this.props.location.pathname}
+        />
       </div>
     )
   }

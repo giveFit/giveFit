@@ -5,8 +5,8 @@ import moment from 'moment'
 
 import { CardText, Chip, Avatar, RaisedButton } from 'material-ui'
 
-import Pagination from './subComponents/Pagination'
-import WorkoutCreator from './subComponents/WorkoutCreator/index'
+import Pagination from './components/Pagination'
+import WorkoutCreator from './components/WorkoutCreator/index'
 
 import './ActivityContainer.css'
 

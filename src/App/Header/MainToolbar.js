@@ -60,7 +60,7 @@ class MainToolbar extends React.Component {
                 primaryText='Home' />
               <MenuItem
                 onTouchTap={this.handleClose.bind(this)}
-                onClick={() => this.context.router.push('/app')}
+                onClick={() => this.context.router.push('/explore')}
                 primaryText='Groups' />
               <MenuItem
                 onTouchTap={this.handleClose.bind(this)}
@@ -84,7 +84,7 @@ class MainToolbar extends React.Component {
             />
           </ToolbarGroup>
           <ToolbarGroup className='onlyLargeScreens'>
-            <FlatButton label='Groups' onClick={() => this.context.router.push('/app')} />
+            <FlatButton label='Groups' onClick={() => this.context.router.push('/explore')} />
             <FlatButton className='onlyLargeScreens' containerElement={<Link to='https://us-west-2.api.scaphold.io/graphql/newGiveFitAlias' target='_blank' />} label='API' />
             <FlatButton label='About Us' onClick={() => this.context.router.push('/about-us')} />
             <FontIcon className='muidocs-icon-custom-sort' />

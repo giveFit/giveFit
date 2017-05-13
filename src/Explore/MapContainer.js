@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { GoogleMapLoader, GoogleMap, Marker } from 'react-google-maps'
 
 // https://mapstyle.withgoogle.com/
-import mapStyles from '../constants/mapStyles.json'
+import mapStyles from './mapStyles.json'
 // can we get some hot icons in here? http://map-icons.com/
 
 class MarkerList extends React.Component {

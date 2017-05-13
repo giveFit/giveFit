@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactFilepicker from 'react-filepicker'
 
-import configKeys from '../../../../../../../configKeys'
+import configKeys from '../../../../../configKeys'
 
 export default ({ onChange }) => {
   return (
