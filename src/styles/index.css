@@ -24,11 +24,23 @@ html, body, #root {
 }
 
 .__app__body__container {
-  display : flex;
-  flex : 1;
-  height : 100%;
+  display: flex;
+  flex: 1;
+  height: 100%;
+  width: 100%;
+}
+
+.__app__body__container > div {
+  width: 100%;
 }
 
 .__app__body__container__left {
   flex : 1;
+}
+
+@media all and (max-width: 480px) {
+  .__app__footer div {
+    /* On small screens, we are no longer using row direction but column */
+    display: flex !important;
+  }
 }

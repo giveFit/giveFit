@@ -1,8 +1,9 @@
 {
-  "extends": "standard",
+  "extends": ["standard", "plugin:react/recommended"],
   "plugins": [
     "standard",
-    "promise"
+    "promise",
+    "react"
   ],
   "rules": {
     "comma-dangle": [2, "always-multiline"]

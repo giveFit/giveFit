@@ -1,6 +1,29 @@
-.root{
-  text-align: left;
+.root {
+  text-align: center;
 }
-.avatar{
-  width: 80%;
+
+.workouts {
+  /*trying to break into 3 columns*/
+  display : flex;
+  flex-wrap : wrap;
 }
+
+/*why can't i reassign this to a different name?*/
+.tribe {
+  flex : 0 0 33.33%;
+  padding: 10px 15px 10px 10px;
+  box-sizing :border-box;
+}
+
+/*@media (max-width : 720px){
+  .workout{
+    flex : 0 0 50%;
+
+  }
+}
+
+@media (max-width : 400px){
+  .workout{
+    flex : 0 0 100%;
+  }
+}*/

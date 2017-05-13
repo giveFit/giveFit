@@ -11,27 +11,7 @@ import ActivityContainer from './ActivityContainer'
 import MapContainer from './MapContainer'
 import WorkoutCreator from './subComponents/WorkoutCreator/index'
 
-const styles = {
-  root: {
-    display: 'flex',
-    flex: 1,
-    overflowY: 'hidden',
-  },
-  containerLeft: {
-    position: 'relative',
-  },
-  gridList: {
-    width: 500,
-    paddingTop: 65,
-    position: 'relative',
-    background: '#e5e5e5',
-    display: 'flex',
-  },
-  workout: {
-    padding: '20px 12px 10px',
-    boxSizing: 'border-box',
-  },
-}
+import './GridContainer.css'
 
 class GridComponent extends React.Component {
   constructor (props) {
@@ -158,7 +138,6 @@ class GridComponent extends React.Component {
     if (parkID === this.state.openedActivity) {
       parkID = ''
     }
-    console.log('setActiveIndex', parkID, index)
 
     var newIndex
     if (index == undefined) {
@@ -189,8 +168,6 @@ class GridComponent extends React.Component {
       profile,
     } = this.props
 
-    console.log('workoutGroups', workoutGroups)
-    console.log('workouts', workouts)
     const mapCenter = {
       lat: latLng ? latLng.lat : 39.2904,
       lng: latLng ? latLng.lng : -76.6122,
@@ -226,9 +203,8 @@ class GridComponent extends React.Component {
       //   }
       // }
       // parkVenue.types = parkVenue.categories.map((a) => a.name)
-
       // Values need to be reassigned as per the app
-      console.log('filteredWorkouts', filteredWorkouts)
+
       indexedPlaces[parkVenue.id] = {
         // comments: workout.comments,
         googleData: {
@@ -248,12 +224,8 @@ class GridComponent extends React.Component {
     })
 
     return (
-      <div style={styles.root} className='__app__body__container'>
-        <div
-          style={styles.containerLeft}
-          className='__app__body__container__left'
-          ref={(node) => this.mapSection = node}
-        >
+      <div className='__app__grid__container'>
+        <div className='__app__body__container__left'>
           {loadedMapData &&
             <MapContainer
               mapCenter={mapCenter}

@@ -1,13 +1,9 @@
 import React from 'react'
-import FontIcon from 'material-ui/FontIcon'
-import {BottomNavigation, BottomNavigationItem} from 'material-ui/BottomNavigation'
+
+import { BottomNavigation, BottomNavigationItem } from 'material-ui/BottomNavigation'
 import Paper from 'material-ui/Paper'
 import IconLocationOn from 'material-ui/svg-icons/communication/location-on'
 import List from 'material-ui/svg-icons/action/list'
-
-const recentsIcon = <FontIcon className='material-icons'>restore</FontIcon>
-const favoritesIcon = <List />
-const nearbyIcon = <IconLocationOn />
 
 /**
  * A simple example of `BottomNavigation`, with three labels and icons
@@ -21,7 +17,6 @@ class MobileBottomNav extends React.Component {
     this.state = {
       selectedIndex: 0,
     }
-    this.select = this.select.bind(this)
   }
 
   select (index) {
@@ -34,12 +29,12 @@ class MobileBottomNav extends React.Component {
         <BottomNavigation selectedIndex={this.state.selectedIndex}>
           <BottomNavigationItem
             label='List'
-            icon={favoritesIcon}
+            icon={<List />}
             onTouchTap={() => this.select(0)}
           />
           <BottomNavigationItem
             label='Map'
-            icon={nearbyIcon}
+            icon={<IconLocationOn />}
             onTouchTap={() => this.select(1)}
           />
         </BottomNavigation>

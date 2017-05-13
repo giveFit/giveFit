@@ -9,21 +9,12 @@ import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui
 import { MenuItem, RaisedButton, FlatButton } from 'material-ui'
 import PersonAdd from 'material-ui/svg-icons/social/person-add'
 
-import apolloConfig from '../../../../apolloConfig'
+import apolloConfig from '../../../apolloConfig'
 import AuthService from 'utils/AuthService'
 
 import { Link } from 'react-router'
 
-import './styles.css'
-
-const inlineStyles = {
-  title: {
-    cursor: 'pointer',
-  },
-  avatar: {
-    margin: '10px 10px 10px 10px',
-  },
-}
+import './MainToolbar.css'
 
 class MainToolbar extends React.Component {
   constructor (props) {
@@ -32,8 +23,6 @@ class MainToolbar extends React.Component {
     this.state = {
       value: 3,
       open: false,
-      // @todo: is this needed?
-      // profile: props.auth.getProfile()
     }
     this.startLogin = this.startLogin.bind(this)
     this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain)
@@ -43,30 +32,15 @@ class MainToolbar extends React.Component {
     this.auth.login()
   }
 
-  handleChange (event, index, value) {
-    this.setState({value})
-  }
-
   handleToggle () {
-    this.setState({open: !this.state.open})
+    this.setState({ open: !this.state.open })
   }
 
   handleClose () {
-    this.setState({open: false})
-  }
-
-  handleTouchTap () {
-    this.context.router.push('/')
-  }
-
-  logout () {
-    this.auth.logout()
-    this.context.router.push('/')
+    this.setState({ open: false })
   }
 
   render () {
-    const { profile } = this.props
-
     return (
       <div>
         <Toolbar>
@@ -87,7 +61,7 @@ class MainToolbar extends React.Component {
               <MenuItem
                 onTouchTap={this.handleClose.bind(this)}
                 onClick={() => this.context.router.push('/app')}
-                primaryText='Tribes' />
+                primaryText='Groups' />
               <MenuItem
                 onTouchTap={this.handleClose.bind(this)}
                 primaryText='API' >
@@ -104,13 +78,13 @@ class MainToolbar extends React.Component {
                 leftIcon={<PersonAdd />} />
             </IconMenu>
             <ToolbarTitle
-              style={inlineStyles.title}
+              className='title'
               text='givefit'
               onClick={() => this.context.router.push('/')}
             />
           </ToolbarGroup>
           <ToolbarGroup className='onlyLargeScreens'>
-            <FlatButton label='Tribes' onClick={() => this.context.router.push('/app')} />
+            <FlatButton label='Groups' onClick={() => this.context.router.push('/app')} />
             <FlatButton className='onlyLargeScreens' containerElement={<Link to='https://us-west-2.api.scaphold.io/graphql/newGiveFitAlias' target='_blank' />} label='API' />
             <FlatButton label='About Us' onClick={() => this.context.router.push('/about-us')} />
             <FontIcon className='muidocs-icon-custom-sort' />
@@ -129,10 +103,6 @@ class MainToolbar extends React.Component {
 
 MainToolbar.contextTypes = {
   router: PropTypes.object.isRequired,
-}
-
-MainToolbar.propTypes = {
-  location: PropTypes.object,
 }
 
 export default MainToolbar

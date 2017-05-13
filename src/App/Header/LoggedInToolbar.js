@@ -6,33 +6,21 @@ import IconButton from 'material-ui/IconButton'
 import FontIcon from 'material-ui/FontIcon'
 import NavigationExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-more'
 import Hamburger from 'material-ui/svg-icons/navigation/menu'
-import DropDownMenu from 'material-ui/DropDownMenu'
-import { Route, Router, Link, pathname, hashHistory } from 'react-router'
-import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar'
-import getMuiTheme from 'material-ui/styles/getMuiTheme'
-import mui, { Drawer, MenuItem, Styles, RaisedButton, FlatButton, Avatar } from 'material-ui'
-import PersonAdd from 'material-ui/svg-icons/social/person-add'
-import Comment from 'material-ui/svg-icons/communication/comment'
+import { Link, hashHistory } from 'react-router'
+import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar'
+import { MenuItem, FlatButton, Avatar } from 'material-ui'
 import GroupAdd from 'material-ui/svg-icons/social/group-add'
 
-import apolloConfig from '../../../../apolloConfig'
-import AuthService from 'utils/AuthService'
-import { graphql, compose } from 'react-apollo'
-import gql from 'graphql-tag'
-import MainToolbar from '../../Home/Header/MainToolbar'
-
-import './styles.css'
+import './LoggedInToolbar.css'
 
 class LoggedInToolbar extends React.Component {
   constructor (props) {
     super(props)
-    console.log('LoggedInToolbar props', props)
+
     this.state = {
       value: 3,
       open: false,
-      /* profile: props.auth.getProfile(), */
     }
-    this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain)
   }
 
   handleChange (event, index, value) {
@@ -40,8 +28,7 @@ class LoggedInToolbar extends React.Component {
   };
 
   handleToggle () {
-    this.setState({open: !this.state.open})
-    console.log('open')
+    this.setState({ open: !this.state.open })
   }
 
   handleClose () {
@@ -53,16 +40,15 @@ class LoggedInToolbar extends React.Component {
   }
 
   logout () {
-    console.log('did the logout')
-    this.auth.logout()
+    this.props.auth.logout()
     this.context.router.push('/')
   }
   goToWorkouts () {
     hashHistory.push('/app')
   }
   render () {
-    // console.log('LoggedInToolbar this', this)
     const { profile } = this.props
+
     return (
       <div>
        <Toolbar>
@@ -71,7 +57,7 @@ class LoggedInToolbar extends React.Component {
           <IconMenu
             className='iconMenu'
             iconButtonElement={
-              <IconButton touch={true} onTouchTap={this.handleToggle.bind(this)}>
+              <IconButton touch={true} onTouchTap={() => this.handleToggle()}>
                 <Hamburger />
               </IconButton>
             }
@@ -79,24 +65,29 @@ class LoggedInToolbar extends React.Component {
           <MenuItem
             onTouchTap={this.handleClose.bind(this)}
             onClick={() => this.context.router.push('/')}
-            primaryText="Home" />
+            primaryText="Home"
+          />
           <MenuItem
             onTouchTap={this.handleClose.bind(this)}
             onClick={() => this.context.router.push('/app')}
-            primaryText="Groups" />
+            primaryText="Groups"
+          />
           <MenuItem
             onTouchTap={this.handleClose.bind(this)}
-            primaryText="API">
+            primaryText="API"
+          >
             <Link to="https://us-west-2.api.scaphold.io/graphql/newGiveFitAlias" target="_blank"/>
           </MenuItem>
           <MenuItem
             onTouchTap={this.handleClose.bind(this)}
             onClick={() => this.context.router.push('/about-us')}
-            primaryText="About Us" />
+            primaryText="About Us"
+          />
           <MenuItem
             onTouchTap={this.handleClose.bind(this)}
             primaryText="Add a Group"
-            leftIcon={<GroupAdd />} />
+            leftIcon={<GroupAdd />}
+          />
           </IconMenu>
           <ToolbarTitle className='title' text='givefit'
             onClick={() => this.context.router.push('/')}
@@ -106,15 +97,12 @@ class LoggedInToolbar extends React.Component {
           <FlatButton className='onlyLargeScreens' label="Groups" onClick={() => this.context.router.push('/app')}/>
           <FlatButton className='onlyLargeScreens' containerElement={<Link to="https://us-west-2.api.scaphold.io/graphql/newGiveFitAlias" target="_blank"/>} label="API"/>
           <FlatButton className='onlyLargeScreens' label="About Us" />
-          <FontIcon className='onlyLargeScreens' className="muidocs-icon-custom-sort" />
-          {
-            this.props.profile
-            ? <Avatar
-              className='avatar'
-              src={profile.picture}
-              onClick={() => this.context.router.push('/profile')}
-            /> : null
-          }
+          <FontIcon className='onlyLargeScreens muidocs-icon-custom-sort' />
+          <Avatar
+            className='avatar'
+            src={profile.picture}
+            onClick={() => this.context.router.push('/profile')}
+          />
           <IconMenu
             iconButtonElement={
               <IconButton touch={true}>
@@ -143,7 +131,8 @@ LoggedInToolbar.contextTypes = {
 }
 
 LoggedInToolbar.propTypes = {
-  location: PropTypes.object,
+  profile: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired,
 }
 
 export default LoggedInToolbar

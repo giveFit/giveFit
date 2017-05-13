@@ -1,0 +1,15 @@
+.title {
+  cursor: 'pointer',
+};
+
+@media (min-width : 480px) {
+  .iconMenu {
+      display : none !important;
+  }
+}
+
+@media (max-width : 480px) {
+  .onlyLargeScreen s{
+      display : none !important;
+  }
+}

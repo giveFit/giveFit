@@ -1,71 +1,52 @@
 import 'babel-core/register'
 import 'babel-polyfill'
 import React from 'react'
-import { render } from 'react-dom'
-import { browserHistory, Router, Route, routes, applyRouterMiddleware } from 'react-router'
-
-// Local import
-import makeApolloClient from '../apollo'
-import apolloConfig from '../apolloConfig'
-
-// Material UI qualms
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
-import getMuiTheme from 'material-ui/styles/getMuiTheme'
-
-import theme from './theme'
-import injectTapEventPlugin from 'react-tap-event-plugin'
+import ReactDOM from 'react-dom'
 
 import { ApolloProvider } from 'react-apollo'
+import apolloClient from './apollo'
+
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import getMuiTheme from 'material-ui/styles/getMuiTheme'
+import muiTheme from './muiTheme'
+import injectTapEventPlugin from 'react-tap-event-plugin'
+
+import { browserHistory, Router } from 'react-router'
+
+import App from 'App/index'
 
 // Logged in Components
-import AppLoggedInWithData from './components/App/Feed/AppLoggedIn'
-import HomeLoggedInWithData from './components/App/Landing/HomeLoggedIn'
-
+import Landing from './components/App/Landing/index'
+import Feed from './components/App/Feed/index'
 // Actually the profile route
-import HomeContainerWithData from './components/App/Home/Home'
+import Profile from './components/App/Profile/index'
 
-// API
-import GraphiQLModule from './components/App/GraphiQL/GraphiQL'
+import 'styles/index.css'
 
-import 'styles/base.css'
-
-const muiTheme = getMuiTheme(theme)
-
+// Needed for onTouchTap
+// http://stackoverflow.com/a/34015469/988941
 injectTapEventPlugin()
 
-// @todo: is this needed? this isn't being called anywhere
-// const auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain);
-// const auth = new AuthService(__AUTH0_CLIENT_ID__, __AUTH0_DOMAIN__);
-// onEnter callback to validate authentication in private routes
-// const requireAuth = (nextState, replace) => {
-//   if (!auth.loggedIn()) {
-//     replace({ pathname: '/login' })
-//   }
-// }
+const customTheme = getMuiTheme(muiTheme)
+const routes = {
+  path: '/',
+  component: App,
+  indexRoute: { component: Landing },
+  childRoutes: [
+    { path: 'app', component: Feed },
+    { path: 'profile', component: Profile },
+  ],
+}
 
-const client = makeApolloClient(apolloConfig.scapholdUrl)
-
-// Wrap the app with our theme provider
 const Application = () => (
-  <MuiThemeProvider muiTheme={muiTheme}>
-    <Router
-      history={browserHistory}
-      routes={routes}
-      render={
-        applyRouterMiddleware()
-      }
-     >
-      <Route path='/' component={HomeLoggedInWithData} />
-      <Route path='/app' component={AppLoggedInWithData} />
-      <Route path='/profile' component={HomeContainerWithData} />
-      <Route path='/graphiql' component={GraphiQLModule} />
-    </Router>
+  <MuiThemeProvider muiTheme={customTheme}>
+    <Router history={browserHistory} routes={routes} />
   </MuiThemeProvider>
 )
 
-render(
-  <ApolloProvider client={client}>
+ReactDOM.render(
+  <ApolloProvider client={apolloClient()}>
     <Application />
   </ApolloProvider>,
-  document.querySelector('#root')
+  document.getElementById('root')
 )

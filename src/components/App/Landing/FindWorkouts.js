@@ -1,157 +1,163 @@
-import 'whatwg-fetch';
-import React from 'react';
-import Autosuggest from 'react-autosuggest';
-import geocodeHelper from '../../../utils/geocodeHelper';
+import React from 'react'
+import Autosuggest from 'react-autosuggest'
+import geocodeHelper from 'utils/geocodeHelper'
+
+import 'whatwg-fetch'
 import './styles.css'
 
 const getSuggestions = (value) => {
-  //console.log('value',value);
-  const inputValue = value.trim().toLowerCase();
-  const inputLength = inputValue.length;
-  if(inputLength < 1){
-    return Promise.resolve([]);
-  }else{
-    try{
-			return new Promise((resolve,reject)=>{
-				var service = new google.maps.places.AutocompleteService();
-				service.getQueryPredictions({ input: inputValue }, (predictions,status)=>{
-					if (status != google.maps.places.PlacesServiceStatus.OK) {
-						 return reject(status);
-					}
-					 return resolve(predictions);
-				});
-			});
-    } catch(err){
-      return Promise.resolve([]);
+  const inputValue = value.trim().toLowerCase()
+  const inputLength = inputValue.length
+
+  if (inputLength < 1) {
+    return Promise.resolve([])
+  } else {
+    try {
+      return new Promise((resolve, reject) => {
+        var service = new window.google.maps.places.AutocompleteService()
+
+        service.getQueryPredictions({ input: inputValue }, (predictions, status) => {
+          if (status != window.google.maps.places.PlacesServiceStatus.OK) {
+            return reject(status)
+          }
+          return resolve(predictions)
+        })
+      })
+    } catch (err) {
+      return Promise.resolve([])
     }
   }
-};
+}
 
-const getSuggestionValue = suggestion => suggestion.description;
-
+const getSuggestionValue = suggestion => suggestion.description
 
 const renderSuggestion = suggestion => (
-  <div style={{background : 'white'}}>
+  <div style={{background: 'white'}}>
     {suggestion.description}
   </div>
-);
-
+)
 
 export default class FindWorkouts extends React.Component {
-  state = {
-    findGroupInputVal : '',
-    findGroupSuggestions : [],
-		pos : null
-    //hintText: "Enter a location"
-  }
-  onSuggestionTextChange = (event, { newValue }) => {
-    //console.log('newValue',newValue);
-    this.setState({
-      findGroupInputVal: newValue
-    });
-  };
+  constructor (props) {
+    super(props)
 
-  onSuggestionsFetchRequested = ({value}) => {
-    if(value.length<1){
-      return;
+    this.state = {
+      findGroupInputVal: '',
+      findGroupSuggestions: [],
+      pos: null,
     }
-        //console.log('value',value);
-    const findGroupSuggestions =  getSuggestions(value).then(res=>{
-      console.log(res);
-      this.setState({
-        findGroupSuggestions : [
-          {
-            description : 'Use my location'
-          },
-          ...res
-        ]
-      });
-    }).catch(err=>{
-      this.setState({
-        findGroupSuggestions : [
-          {
-            description : 'Use my location'
-          },
-        ]
-      });
-    });
+  }
 
-  };
+  onSuggestionTextChange (event, { newValue }) {
+    this.setState({
+      findGroupInputVal: newValue,
+    })
+  }
+
+  onSuggestionsFetchRequested ({value}) {
+    if (value.length < 1) {
+      return
+    }
+    const findGroupSuggestions = getSuggestions(value)
+      .then((res) => {
+        this.setState({
+          findGroupSuggestions: [
+            {
+              description: 'Use my location',
+            },
+            ...res,
+          ],
+        })
+      })
+      .catch((err) => {
+        this.setState({
+          findGroupSuggestions: [{
+            description: 'Use my location',
+          }],
+        })
+      })
+  }
 
   // Autosuggest will call this function every time you need to clear suggestions.
-  onSuggestionsClearRequested = () => {
+  onSuggestionsClearRequested () {
     this.setState({
-      findGroupSuggestions: []
-    });
-  };
-
-  onSuggestionSelected = (e, {suggestionIndex,suggestionValue})=>{
-    if(suggestionIndex == 0){
-      //Get my location
-      if (navigator.geolocation) {
-					setTimeout(()=>{
-						this.component.input.value = 'Loading...';
-					});
-					this.component.input.setAttribute(`disabled`,`disabled`);
-					navigator.geolocation.getCurrentPosition((position)=>{
-						const lat = parseFloat(position.coords.latitude) ,
-						lng = parseFloat(position.coords.longitude);
-            var latlng = {lat,lng};
-
-           	geocodeHelper({'location': latlng}).then(results => {
-							localStorage.removeItem('__find_workouts_address');
-							localStorage.setItem('__find_workouts_pos', JSON.stringify(latlng));
-							this.setState({
-								findGroupInputVal : results[0].formatted_address,
-								pos : {
-									lat,
-									lng
-								}
-							}, ()=>{
-									this.component.input.removeAttribute(`disabled`);
-							});
-						}).catch(err=>{
-							this.component.input.removeAttribute(`disabled`);
-						});
-
-          }, function() {
-						this.component.input.removeAttribute(`disabled`);
-            console.log('your browser does not support geo location');
-          });
-        } else {
-          // Browser doesn't support Geolocation
-					this.component.input.removeAttribute(`disabled`);
-          console.log('your browser does not support geo location');
-        }
-    }else{
-			localStorage.removeItem('__find_workouts_pos');
-			localStorage.setItem('__find_workouts_address',suggestionValue);
-		}
+      findGroupSuggestions: [],
+    })
   }
 
-	getLatLng=(address)=>{
-		return geocodeHelper({address});
+  onSuggestionSelected (e, {suggestionIndex, suggestionValue}) {
+    if (suggestionIndex == 0) {
+      // Get my location
+      if (navigator.geolocation) {
+        setTimeout(() => {
+          this.component.input.value = 'Loading...'
+        })
 
-	}
-  render(){
-    const { findGroupInputVal, findGroupSuggestions } = this.state;
+        this.component.input.setAttribute(`disabled`, `disabled`)
+
+        navigator.geolocation.getCurrentPosition((position) => {
+          const lat = parseFloat(position.coords.latitude)
+          const lng = parseFloat(position.coords.longitude)
+          var latlng = { lat, lng }
+
+          geocodeHelper({'location': latlng})
+            .then((results) => {
+              window.localStorage.removeItem('__find_workouts_address')
+              window.localStorage.setItem('__find_workouts_pos', JSON.stringify(latlng))
+
+              this.setState({
+                findGroupInputVal: results[0].formatted_address,
+                pos: {
+                  lat,
+                  lng,
+                },
+              }, () => {
+                this.component.input.removeAttribute(`disabled`)
+              })
+            })
+            .catch((err) => {
+              this.component.input.removeAttribute(`disabled`)
+            })
+        }, () => {
+          this.component.input.removeAttribute(`disabled`)
+        })
+      } else {
+        // Browser doesn't support Geolocation
+        this.component.input.removeAttribute(`disabled`)
+      }
+    } else {
+      window.localStorage.removeItem('__find_workouts_pos')
+      window.localStorage.setItem('__find_workouts_address', suggestionValue)
+    }
+  }
+
+  getLatLng (address) {
+    return geocodeHelper({address})
+  }
+
+  render () {
+    const { findGroupInputVal, findGroupSuggestions } = this.state
     const inputProps = {
-     placeholder: 'Enter a location',
-     value : findGroupInputVal,
-     onChange: this.onSuggestionTextChange,
-     className : 'autocomplete'
-   };
+      placeholder: 'Enter a location',
+      value: findGroupInputVal,
+      onChange: this.onSuggestionTextChange,
+      className: 'autocomplete',
+    }
 
-    return <Autosuggest
-      ref={node=>this.component = node}
-      suggestions={findGroupSuggestions}
-      onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-      onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-      getSuggestionValue={getSuggestionValue}
-      onSuggestionSelected={this.onSuggestionSelected}
-      renderSuggestion={renderSuggestion}
-      inputProps={inputProps}
-    />
+    return (
+      <Autosuggest
+        ref={(node) => {
+          this.component = node
+        }}
+        suggestions={findGroupSuggestions}
+        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+        onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+        getSuggestionValue={getSuggestionValue}
+        onSuggestionSelected={this.onSuggestionSelected}
+        renderSuggestion={renderSuggestion}
+        inputProps={inputProps}
+      />
+    )
   }
 }
 
@@ -221,4 +227,4 @@ export default class AddressAutocomplete extends Component {
       />
     )
   }
-}*/
+} */

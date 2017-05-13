@@ -4,12 +4,9 @@ import { graphql, compose } from 'react-apollo'
 import gql from 'graphql-tag'
 
 import GridContainer from './GridContainer'
-import LoggedInToolbar from '../Header/LoggedInToolbar'
 import apolloConfig from '../../../../apolloConfig'
 
 import AuthService from 'utils/AuthService'
-import MainToolbar from '../../Home/Header/MainToolbar'
-import MobileBottomNav from './subComponents/MobileBottomNav'
 
 import './styles.css'
 
@@ -132,13 +129,7 @@ class AppLoggedIn extends React.Component {
     }
 
     return (
-      <div className='__app__main'>
-        <div className='__app__header'>
-          {!this.auth.loggedIn()
-            ? <MainToolbar auth={this.props} />
-            : <LoggedInToolbar auth={this.props} profile={profile}/>
-          }
-        </div>
+      <div>
         <GridContainer
           latLng={latLng}
           onPlaceSelect={(place) => {
@@ -163,7 +154,6 @@ class AppLoggedIn extends React.Component {
             : []
           }
         />
-        <MobileBottomNav className='bottomNav' />
       </div>
     )
   }

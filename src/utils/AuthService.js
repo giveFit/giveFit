@@ -27,12 +27,12 @@ export default class AuthService extends EventEmitter {
   }
 
   _doAuthentication (tokenPaylod) {
-    console.log('the lock widget authenticated', tokenPaylod)
     this.lock.getUserInfo(tokenPaylod.accessToken, (error, profile) => {
       if (error) {
         this.emit('error', error)
         return
       }
+
       this.setProfile(profile)
       this.emit('authenticated', profile, tokenPaylod)
       // browserHistory.replace('/home-logged-in')

@@ -1,14 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
-import AuthService from 'utils/AuthService'
-import TextField from 'material-ui/TextField'
+
 import './styles.css'
 
 export class ProfileEdit extends React.Component {
   handleSubmit (e) {
     e.preventDefault()
     const { profile, auth } = this.props
+
     auth.updateProfile(profile.user_id, {
       user_metadata: {
         address: ReactDOM.findDOMNode(this.refs.address).value,
@@ -19,6 +19,7 @@ export class ProfileEdit extends React.Component {
   render () {
     const { profile } = this.props
     const { address } = profile.user_metadata || {}
+
     return (
       <div className='root'>
           {/* <h3>About Me</h3>
@@ -50,8 +51,8 @@ export class ProfileEdit extends React.Component {
 }
 
 ProfileEdit.propTypes = {
-  profile: PropTypes.object,
-  auth: PropTypes.instanceOf(AuthService),
+  profile: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired,
 }
 
 export default ProfileEdit

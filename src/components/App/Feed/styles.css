@@ -47,10 +47,3 @@
   padding: 20px 12px 10px;
   box-sizing: border-box;
 }
-
-@media all and (max-width: 480px) {
-  .bottomNav {
-    /* On small screens, we are no longer using row direction but column */
-    display: flex !important;
-  }
-}
