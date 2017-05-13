@@ -10,7 +10,7 @@ import CircularProgress from 'material-ui/CircularProgress'
 import ProfileDetails from './components/Details'
 import ProfileEdit from './components/Edit'
 
-import WorkoutPost from 'components/App/Feed/subComponents/WorkoutPost'
+import WorkoutPost from 'Explore/components/WorkoutPost'
 
 import './styles.css'
 
