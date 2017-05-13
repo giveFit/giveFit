@@ -2,40 +2,6 @@ import React from 'react'
 import Autosuggest from 'react-autosuggest'
 import geocodeHelper from 'utils/geocodeHelper'
 
-import 'whatwg-fetch'
-
-const getSuggestions = (value) => {
-  const inputValue = value.trim().toLowerCase()
-  const inputLength = inputValue.length
-
-  if (inputLength < 1) {
-    return Promise.resolve([])
-  } else {
-    try {
-      return new Promise((resolve, reject) => {
-        var service = new window.google.maps.places.AutocompleteService()
-
-        service.getQueryPredictions({ input: inputValue }, (predictions, status) => {
-          if (status != window.google.maps.places.PlacesServiceStatus.OK) {
-            return reject(status)
-          }
-          return resolve(predictions)
-        })
-      })
-    } catch (err) {
-      return Promise.resolve([])
-    }
-  }
-}
-
-const getSuggestionValue = suggestion => suggestion.description
-
-const renderSuggestion = suggestion => (
-  <div style={{background: 'white'}}>
-    {suggestion.description}
-  </div>
-)
-
 export default class FindWorkouts extends React.Component {
   constructor (props) {
     super(props)
@@ -53,11 +19,28 @@ export default class FindWorkouts extends React.Component {
     })
   }
 
-  onSuggestionsFetchRequested ({value}) {
-    if (value.length < 1) {
+  getSuggestions (inputValue) {
+    return new Promise((resolve, reject) => {
+      const service = new window.google.maps.places.AutocompleteService()
+
+      service.getQueryPredictions({ input: inputValue }, (predictions, status) => {
+        if (status !== window.google.maps.places.PlacesServiceStatus.OK) {
+          return reject(status)
+        }
+
+        return resolve(predictions)
+      })
+    })
+  }
+
+  onSuggestionsFetchRequested ({ value }) {
+    const inputValue = value.trim().toLowerCase()
+
+    if (inputValue.length < 1) {
       return
     }
-    const findGroupSuggestions = getSuggestions(value)
+
+    this.getSuggestions(value)
       .then((res) => {
         this.setState({
           findGroupSuggestions: [
@@ -69,6 +52,8 @@ export default class FindWorkouts extends React.Component {
         })
       })
       .catch((err) => {
+        console.log(err)
+
         this.setState({
           findGroupSuggestions: [{
             description: 'Use my location',
@@ -84,7 +69,7 @@ export default class FindWorkouts extends React.Component {
     })
   }
 
-  onSuggestionSelected (e, {suggestionIndex, suggestionValue}) {
+  onSuggestionSelected (e, { suggestionIndex, suggestionValue }) {
     if (suggestionIndex == 0) {
       // Get my location
       if (navigator.geolocation) {
@@ -139,9 +124,15 @@ export default class FindWorkouts extends React.Component {
     const inputProps = {
       placeholder: 'Enter a location',
       value: findGroupInputVal,
-      onChange: this.onSuggestionTextChange,
+      onChange: (...args) => this.onSuggestionTextChange(...args),
       className: 'autocomplete',
     }
+
+    const renderSuggestion = (suggestion) => (
+      <div style={{background: 'white'}}>
+        {suggestion.description}
+      </div>
+    )
 
     return (
       <Autosuggest
@@ -149,10 +140,10 @@ export default class FindWorkouts extends React.Component {
           this.component = node
         }}
         suggestions={findGroupSuggestions}
-        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-        onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-        getSuggestionValue={getSuggestionValue}
-        onSuggestionSelected={this.onSuggestionSelected}
+        onSuggestionsFetchRequested={(...args) => this.onSuggestionsFetchRequested(...args)}
+        onSuggestionsClearRequested={() => this.onSuggestionsClearRequested()}
+        getSuggestionValue={(suggestion) => suggestion.description}
+        onSuggestionSelected={(...args) => this.onSuggestionSelected(...args)}
         renderSuggestion={renderSuggestion}
         inputProps={inputProps}
       />

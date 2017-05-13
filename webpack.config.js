@@ -58,7 +58,7 @@ config.plugins.push(new webpack.DefinePlugin(
       const val = JSON.stringify(envVariables[key])
 
       memo[`__${key.toUpperCase()}__`] = val
-
+console.log(memo)
       return memo
     }, {
       __NODE_ENV__: JSON.stringify(process.env.NODE_ENV),
@@ -66,7 +66,7 @@ config.plugins.push(new webpack.DefinePlugin(
   )
 )
 
-config.resolve.root = [
+config.resolve.modules = [
   path.join(__dirname, 'src'),
   path.join(__dirname, 'node_modules'),
 ]
