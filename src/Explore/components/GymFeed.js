@@ -30,17 +30,14 @@ const inlineStyles = {
 };
 
 class GymFeed extends React.Component {
-
-	static defaultProps = {
-		onClick : () => {}
-	}
-
-  constructor(props, context) {
+  constructor (props, context) {
     super(props, context);
+
     this.state = {
       expanded: false
     };
   }
+
   componentWillReceiveProps(newProps){
     if(newProps.active !== this.props.active && newProps.active === true){
        const element = findDOMNode(this.refs.root);
