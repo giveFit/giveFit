@@ -8,7 +8,7 @@ import FindWorkouts from './components/FindWorkouts'
 
 import './styles.css'
 
-class HomeLoggedIn extends React.Component {
+class Home extends React.Component {
   quickEnter () {
     // I want users to be able to press the button without entering anything,
     // but still have the value declaration below for when i do a location query
@@ -78,11 +78,11 @@ class HomeLoggedIn extends React.Component {
   }
 }
 
-HomeLoggedIn.contextTypes = {
+Home.contextTypes = {
   router: PropTypes.object.isRequired,
 }
 
-export default HomeLoggedIn
+export default Home
 
 // import Paper from 'material-ui/Paper'
 // Using most simple landing page until adding more design

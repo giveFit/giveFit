@@ -4,10 +4,10 @@ import PropTypes from 'prop-types'
 import { Card } from 'material-ui/Card'
 import CircularProgress from 'material-ui/CircularProgress'
 
-import ParkFeed from './components/ParkFeed'
-import GymFeed from './components/GymFeed'
+import ParkFeed from '../components/ParkFeed'
+import GymFeed from '../components/GymFeed'
 
-import './styles.css'
+import '../styles.css'
 
 class ParkContainer extends React.Component {
   perpareParks () {

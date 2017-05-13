@@ -6,9 +6,9 @@ import {searchNearby} from 'utils/googleApiHelpers'
 
 import foursquare from 'utils/foursquareApi'
 
-import ParkContainer from './ParkContainer'
+import ParkContainer from './Feed/ParkContainer'
 import ActivityContainer from './ActivityContainer'
-import MapContainer from './MapContainer'
+import MapContainer from './Map/index'
 import WorkoutCreator from './components/WorkoutCreator/index'
 
 import './GridContainer.css'
