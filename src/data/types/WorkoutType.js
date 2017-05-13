@@ -18,9 +18,9 @@ const WorkoutType = new ObjectType({
     avatar: { type: StringType},
     id: { type: StringType},
     lat: { type: StringType},
-    lng: { type: StringType}
+    lng: { type: StringType},
 
-  }
+  },
 })
 
 module.exports = WorkoutType

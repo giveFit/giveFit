@@ -7,14 +7,14 @@ import Snackbar from 'material-ui/Snackbar'
 
 const inlineStyles = {
   subtitleStyle: {
-    subtitleColor: 'rgba(211, 211, 211)'
+    subtitleColor: 'rgba(211, 211, 211)',
   },
   chip: {
-    margin: 4
+    margin: 4,
   },
   checkbox: {
-    marginBottom: 16
-  }
+    marginBottom: 16,
+  },
 }
 
 class WorkoutPost extends React.Component {
@@ -24,7 +24,7 @@ class WorkoutPost extends React.Component {
       snack: false,
       autoHideDuration: 2000,
       messageTrue: 'Event added to your calendar',
-      messageFalse: 'Event removed from your calendar'
+      messageFalse: 'Event removed from your calendar',
     }
   }
 
@@ -43,11 +43,10 @@ class WorkoutPost extends React.Component {
   };
 
   render () {
-
-	return (
+    return (
     	<div>
-			{(this.props.data.node.Workout && this.props.data.node.title) ? 
-				<Card>
+			{(this.props.data.node.Workout && this.props.data.node.title)
+				? <Card>
 					<CardText>
 				        <Chip
 				          onTouchTap={() => this.context.router.push('/profile')}
@@ -90,7 +89,7 @@ class WorkoutPost extends React.Component {
 }
 
 WorkoutPost.contextTypes = {
-  router: PropTypes.object.isRequired
+  router: PropTypes.object.isRequired,
 }
 
 export default WorkoutPost

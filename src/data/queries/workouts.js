@@ -35,7 +35,7 @@ const workouts = {
       })
       return {
         origins: [latLng],
-        destinations: workoutsArray
+        destinations: workoutsArray,
       }
     }
 
@@ -64,7 +64,7 @@ const workouts = {
     }
 		// WorkoutList Call
     return getFilteredWorkouts(WorkoutList)
-  }
+  },
 }
 
 module.exports = workouts

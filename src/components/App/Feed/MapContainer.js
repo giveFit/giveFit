@@ -16,7 +16,7 @@ class MarkerList extends React.Component {
     // var latlngStr = input.split(',', 2);
     var latlng = {
       lat: obj.latLng.lat(),
-      lng: obj.latLng.lng()
+      lng: obj.latLng.lng(),
     }
 
     this.props.geocoder.geocode({'location': obj.latLng}, (results, status) => {
@@ -28,7 +28,7 @@ class MarkerList extends React.Component {
           // this.infowindow.setContent(results[1].formatted_address)
           this.props.onPlaceSelect({
             coordinates: latlng,
-            address: results[1].formatted_address
+            address: results[1].formatted_address,
           })
           // this.infowindow.open(map, marker)
         } else {
@@ -45,7 +45,7 @@ class MarkerList extends React.Component {
       mapCenter,
       indexedPlaces,
       activeMarker,
-      onMarkerClick
+      onMarkerClick,
     } = this.props
 
     return (
@@ -89,7 +89,7 @@ MarkerList.propTypes = {
   indexedPlaces: PropTypes.object.isRequired,
   activeMarker: PropTypes.number.isRequired,
   geocoder: PropTypes.object,
-  onMarkerClick: PropTypes.func.isRequired
+  onMarkerClick: PropTypes.func.isRequired,
 }
 
 export default MarkerList

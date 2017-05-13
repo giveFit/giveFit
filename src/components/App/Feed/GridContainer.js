@@ -15,22 +15,22 @@ const styles = {
   root: {
     display: 'flex',
     flex: 1,
-    overflowY: 'hidden'
+    overflowY: 'hidden',
   },
   containerLeft: {
-    position: 'relative'
+    position: 'relative',
   },
   gridList: {
     width: 500,
     paddingTop: 65,
     position: 'relative',
     background: '#e5e5e5',
-    display: 'flex'
+    display: 'flex',
   },
   workout: {
     padding: '20px 12px 10px',
-    boxSizing: 'border-box'
-  }
+    boxSizing: 'border-box',
+  },
 }
 
 class GridComponent extends React.Component {
@@ -55,7 +55,7 @@ class GridComponent extends React.Component {
       markers: [],
       pagination: null,
       loadedMapData: false,
-      openedActivity: ''
+      openedActivity: '',
     }
 
     // now grab the services we need
@@ -76,7 +76,7 @@ class GridComponent extends React.Component {
     const { latLng } = this.props
     const centerLatLng = {
       lat: latLng ? latLng.lat : 39.2904,
-      lng: latLng ? latLng.lng : -76.6122
+      lng: latLng ? latLng.lng : -76.6122,
     }
 
     const div = document.createElement('div')
@@ -87,13 +87,13 @@ class GridComponent extends React.Component {
       ll: centerLatLng.lat.toString().concat(',' + centerLatLng.lng.toString()),
       radius: 5000,
       query: 'recreation center',
-      venuePhotos: 1
+      venuePhotos: 1,
     }
     const parks = {
       ll: centerLatLng.lat.toString().concat(',' + centerLatLng.lng.toString()),
       radius: 5000,
       query: 'park',
-      venuePhotos: 1
+      venuePhotos: 1,
     }
 
     // const {googleMaps} = this.props
@@ -138,7 +138,7 @@ class GridComponent extends React.Component {
             // NOTE: move this traversal to the utils files
             parks: parksResult.response.groups[0].items,
             parksAndGyms: parksResult.response.groups[0].items.concat(recCentersResult.response.groups[0].items),
-            loadedMapData: true
+            loadedMapData: true,
           })
         })
     } catch (err) {
@@ -168,7 +168,7 @@ class GridComponent extends React.Component {
     }
     this.setState(
       { openedActivity: parkID,
-        activeIndex: newIndex
+        activeIndex: newIndex,
       }
     )
   }
@@ -186,14 +186,14 @@ class GridComponent extends React.Component {
       latLng,
       workouts,
       workoutGroups,
-      profile
+      profile,
     } = this.props
 
     console.log('workoutGroups', workoutGroups)
     console.log('workouts', workouts)
     const mapCenter = {
       lat: latLng ? latLng.lat : 39.2904,
-      lng: latLng ? latLng.lng : -76.6122
+      lng: latLng ? latLng.lng : -76.6122,
     }
 
     const { loadedMapData } = this.state
@@ -236,14 +236,14 @@ class GridComponent extends React.Component {
           title: parkVenue.name,
           position: {
             lat: parkVenue.location.lat,
-            lng: parkVenue.location.lng
+            lng: parkVenue.location.lng,
           },
           rating: parkVenue.rating,
           photos: this.foursquareGetUrl(parkVenue.photos),
           vicinity: parkVenue.location.address,
           // types: parkVenue.types,
-          workouts: filteredWorkouts
-        }
+          workouts: filteredWorkouts,
+        },
       }
     })
 

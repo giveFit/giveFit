@@ -3,15 +3,15 @@ import PropTypes from 'prop-types'
 
 const styles = {
   container: {
-    margin: '1em'
+    margin: '1em',
   },
   pager: {
-    display: 'flex'
+    display: 'flex',
   },
   button: {
     border: '2px solid #efefef',
-    background: 'none'
-  }
+    background: 'none',
+  },
 }
 
 class Pagination extends React.Component {
@@ -68,7 +68,7 @@ Pagination.propTypes = {
 
   setPage: PropTypes.func.isRequired,
   next: PropTypes.func.isRequired,
-  previous: PropTypes.func.isRequired
+  previous: PropTypes.func.isRequired,
 }
 
 export default Pagination

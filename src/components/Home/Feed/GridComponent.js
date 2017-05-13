@@ -15,18 +15,18 @@ const styles = {
   root: {
     display: 'flex',
     flexWrap: 'wrap',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
   },
   gridList: {
     width: 500,
     height: height,
     overflowY: 'auto',
-    background: '#e5e5e5'
+    background: '#e5e5e5',
   },
   workout: {
     padding: '20px 12px 10px',
-    boxSizing: 'border-box'
-  }
+    boxSizing: 'border-box',
+  },
 }
 
 class GridComponent extends React.Component {
@@ -44,7 +44,7 @@ class GridComponent extends React.Component {
       return
     }
     this.state = {
-      activeIndex: -1
+      activeIndex: -1,
     }
       // now grab the services we need
     this.googleMaps = googleMaps
@@ -103,7 +103,7 @@ class GridComponent extends React.Component {
                    <div
                      {...props.containerElementProps}
                      style={{
-                       height: height
+                       height: height,
                      }}
                    />
                  }

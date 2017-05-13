@@ -15,7 +15,7 @@ export class Home extends React.Component {
     super(props, context)
     this.state = {
       profile: props.auth.getProfile(),
-      token: props.auth.getToken()
+      token: props.auth.getToken(),
     }
 
     props.auth.on('profile_updated', (newProfile) => {
@@ -25,7 +25,7 @@ export class Home extends React.Component {
       console.log('token', access_token)
       console.log('identity', identity)
       this.props.register({
-        identity, access_token
+        identity, access_token,
       }).then(({ data }) => {
         console.log('got data', data)
       }).catch((error) => {
@@ -33,7 +33,7 @@ export class Home extends React.Component {
       })
       console.log('what do we have', newProfile)
       this.setState({
-        profile: newProfile
+        profile: newProfile,
       })
     })
   }
@@ -61,12 +61,12 @@ export class Home extends React.Component {
 }
 
 Home.contextTypes = {
-  router: PropTypes.object
+  router: PropTypes.object,
 }
 
 Home.propTypes = {
   auth: PropTypes.instanceOf(AuthService),
-  register: PropTypes.func.isRequired
+  register: PropTypes.func.isRequired,
 }
 
 const LOGIN_USER_WITH_AUTH0_LOCK = gql`
@@ -83,10 +83,10 @@ const HomeContainerWithData = graphql(LOGIN_USER_WITH_AUTH0_LOCK, {
   props: ({ mutate }) => ({
     register: (data) => mutate({
       variables: {
-        data
-      }
-    })
-  })
+        data,
+      },
+    }),
+  }),
 })(Home)
 
 export default HomeContainerWithData

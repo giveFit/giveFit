@@ -15,8 +15,8 @@ import './styles.css'
 
 const inlineStyles = {
   textFieldStyle: {
-    color: orange500
-  }
+    color: orange500,
+  },
 }
 
 export class LandingPage extends React.Component {
@@ -75,7 +75,7 @@ export class LandingPage extends React.Component {
 }
 
 LandingPage.contextTypes = {
-  router: PropTypes.object
+  router: PropTypes.object,
 }
 
 // Get some WorkoutGroups
@@ -106,10 +106,10 @@ const LandingPageContainerWithData = graphql(GET_THROUGH_VIEWER, {
   options (props) {
     return {
       variables: {
-        first: FIRST
-      }
+        first: FIRST,
+      },
     }
-  }
+  },
 })(LandingPage)
 
 export default LandingPageContainerWithData

@@ -31,10 +31,10 @@ const config = getConfig({
       options: {
         target: apolloConfig.scapholdUrl,
         pathRewrite: {
-          '^/api': ''
-        }
-      }
-    }
+          '^/api': '',
+        },
+      },
+    },
   },
 
   html: function (context) {
@@ -48,11 +48,11 @@ const config = getConfig({
         publicPath: isDevelopment ? 'http://localhost:3000/' : '',
         meta: {
           'name': 'givefit',
-          'description': 'Find your free fitness community'
-        }
-      })
+          'description': 'Find your free fitness community',
+        },
+      }),
     }
-  }
+  },
 })
 
 // Set Env Variables
@@ -65,14 +65,14 @@ config.plugins.push(new webpack.DefinePlugin(
 
       return memo
     }, {
-      __NODE_ENV__: JSON.stringify(process.env.NODE_ENV)
+      __NODE_ENV__: JSON.stringify(process.env.NODE_ENV),
     })
   )
 )
 
 config.resolve.root = [
   path.join(__dirname, 'src'),
-  path.join(__dirname, 'node_modules')
+  path.join(__dirname, 'node_modules'),
 ]
 
 module.exports = config

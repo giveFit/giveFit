@@ -13,7 +13,7 @@ module.exports = function (obj, callback) {
         var marker = new google.maps.Marker({
           position: latlng,
           icon: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
-          map: map
+          map: map,
         })
         if (this.clickMarker) {
           this.clickMarker.setMap(null)
@@ -22,7 +22,7 @@ module.exports = function (obj, callback) {
         this.infowindow.setContent(results[1].formatted_address)
         this.props.onPlaceSelect({
           coordinates: latlng,
-          address: results[1].formatted_address
+          address: results[1].formatted_address,
         })
         this.infowindow.open(map, marker)
       } else {

@@ -18,7 +18,7 @@ class Activity extends React.Component {
 
     this.state = {
       currentPage: 0,
-      resultsPerPage: this.RESULTS_PER_PAGE
+      resultsPerPage: this.RESULTS_PER_PAGE,
     }
   }
 
@@ -131,7 +131,7 @@ Activity.propTypes = {
   openedActivity: PropTypes.string.isRequired,
   parkTitle: PropTypes.string.isRequired,
   workouts: PropTypes.array.isRequired,
-  closeActivity: PropTypes.func.isRequired
+  closeActivity: PropTypes.func.isRequired,
 }
 
 export default Activity

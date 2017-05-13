@@ -23,14 +23,14 @@ function makeApolloClient (scapholdUrl) {
         // console.log('assumes we have logged in and stored the returned user token in local storage', req.options.headers.Authorization)
       }
       next()
-    }
+    },
   }])
   const wsClient = new Client(websocketUrl)
   const networkInterfaceWithSubscriptions = addGraphQLSubscriptions(networkInterface, wsClient)
 
   const clientGraphql = new ApolloClient({
     networkInterface: networkInterfaceWithSubscriptions,
-    initialState: {}
+    initialState: {},
   })
   return clientGraphql
 }

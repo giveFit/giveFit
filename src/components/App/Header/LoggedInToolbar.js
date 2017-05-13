@@ -29,7 +29,7 @@ class LoggedInToolbar extends React.Component {
     console.log('LoggedInToolbar props', props)
     this.state = {
       value: 3,
-      open: false
+      open: false,
       /* profile: props.auth.getProfile(), */
     }
     this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain)
@@ -139,11 +139,11 @@ class LoggedInToolbar extends React.Component {
 }
 
 LoggedInToolbar.contextTypes = {
-  router: PropTypes.object.isRequired
+  router: PropTypes.object.isRequired,
 }
 
 LoggedInToolbar.propTypes = {
-  location: PropTypes.object
+  location: PropTypes.object,
 }
 
 export default LoggedInToolbar

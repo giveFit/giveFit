@@ -102,20 +102,20 @@ var today = new Date().toString()
 
 const WHERE = {
   'endDateTime': {
-    'gte': today
-  }
+    'gte': today,
+  },
 }
 
 const ORDERBY = {
   'field': 'startDateTime',
-  'direction': 'ASC'
+  'direction': 'ASC',
 }
 
 const HomeContainerWithData = compose(
   graphql(GET_USER_WORKOUTS, {
     options: (props) => ({
-      variables: {first: FIRST, where: WHERE, orderBy: ORDERBY}
-    })
+      variables: {first: FIRST, where: WHERE, orderBy: ORDERBY},
+    }),
   })
 )(Home)
 

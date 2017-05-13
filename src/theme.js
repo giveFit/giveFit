@@ -34,7 +34,7 @@ import {
   grey300,
   lightBlack,
   purpleA200,
-  white
+  white,
 } from 'material-ui/styles/colors'
 import { fade } from 'material-ui/utils/colorManipulator'
 
@@ -50,7 +50,7 @@ export default {
     desktopDropDownMenuFontSize: 15,
     desktopLeftNavMenuItemHeight: 48,
     desktopSubheaderHeight: 48,
-    desktopToolbarHeight: 56
+    desktopToolbarHeight: 56,
   },
   fontFamily: 'Roboto, sans-serif',
   palette: {
@@ -65,9 +65,9 @@ export default {
     canvasColor: white,
     borderColor: grey300,
     disabledColor: fade(darkBlack, 0.3),
-    pickerHeaderColor: blue500
+    pickerHeaderColor: blue500,
   },
   avatar: {
-    borderColor: white
-  }
+    borderColor: white,
+  },
 }

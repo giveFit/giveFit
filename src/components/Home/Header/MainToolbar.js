@@ -18,11 +18,11 @@ import './styles.css'
 
 const inlineStyles = {
   title: {
-    cursor: 'pointer'
+    cursor: 'pointer',
   },
   avatar: {
-    margin: '10px 10px 10px 10px'
-  }
+    margin: '10px 10px 10px 10px',
+  },
 }
 
 class MainToolbar extends React.Component {
@@ -31,7 +31,7 @@ class MainToolbar extends React.Component {
 
     this.state = {
       value: 3,
-      open: false
+      open: false,
       // @todo: is this needed?
       // profile: props.auth.getProfile()
     }
@@ -128,11 +128,11 @@ class MainToolbar extends React.Component {
 }
 
 MainToolbar.contextTypes = {
-  router: PropTypes.object.isRequired
+  router: PropTypes.object.isRequired,
 }
 
 MainToolbar.propTypes = {
-  location: PropTypes.object
+  location: PropTypes.object,
 }
 
 export default MainToolbar

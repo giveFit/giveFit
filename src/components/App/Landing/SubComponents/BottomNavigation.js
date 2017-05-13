@@ -17,7 +17,7 @@ class BottomNav extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      selectedIndex: 0
+      selectedIndex: 0,
     }
     this.select = this.select.bind(this)
   }

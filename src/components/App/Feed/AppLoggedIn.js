@@ -81,7 +81,7 @@ class AppLoggedIn extends React.Component {
       profile: null,
       token: null,
       user: null,
-      loggedInToolbar: false
+      loggedInToolbar: false,
     }
 
     this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain)
@@ -101,7 +101,7 @@ class AppLoggedIn extends React.Component {
     // debugger;
     this.props.loginUser({
       identity: identity,
-      access_token: tokenPayload.accessToken
+      access_token: tokenPayload.accessToken,
     }).then(res => {
       const scapholdUserId = res.data.loginUserWithAuth0Lock.user.id
       const profilePicture = auth0Profile.picture
@@ -113,7 +113,7 @@ class AppLoggedIn extends React.Component {
       return this.props.updateUser({
         id: scapholdUserId,
         picture: profilePicture,
-        nickname: nickname
+        nickname: nickname,
       })
     }).catch(err => {
       console.log(`Error updating user: ${err.message}`)
@@ -127,7 +127,7 @@ class AppLoggedIn extends React.Component {
     if (this.props.location.query.lat && this.props.location.query.lng) {
       latLng = {
         lat: parseFloat(this.props.location.query.lat),
-        lng: parseFloat(this.props.location.query.lng)
+        lng: parseFloat(this.props.location.query.lng),
       }
     }
 
@@ -143,7 +143,7 @@ class AppLoggedIn extends React.Component {
           latLng={latLng}
           onPlaceSelect={(place) => {
             this.props.data.refetch({
-              latLng: place.address
+              latLng: place.address,
             })
 
             return null
@@ -157,8 +157,8 @@ class AppLoggedIn extends React.Component {
               // title : i.node.title,
               position: {
                 lat: parseFloat(i.node.lat),
-                lng: parseFloat(i.node.lng)
-              }
+                lng: parseFloat(i.node.lng),
+              },
             }))
             : []
           }
@@ -171,24 +171,24 @@ class AppLoggedIn extends React.Component {
 
 AppLoggedIn.propTypes = {
   auth: PropTypes.instanceOf(AuthService),
-  loginUser: PropTypes.func.isRequired
+  loginUser: PropTypes.func.isRequired,
 }
 
 const AppLoggedInWithData = compose(
   graphql(GET_THROUGH_VIEWER, {
     options: (props) => ({
-      variables: { first: FIRST }
-    })
+      variables: { first: FIRST },
+    }),
   }),
   graphql(LOGIN_USER_WITH_AUTH0_LOCK, {
     props: ({ mutate }) => ({
-      loginUser: (credential) => mutate({ variables: { credential: credential } })
-    })
+      loginUser: (credential) => mutate({ variables: { credential: credential } }),
+    }),
   }),
   graphql(UPDATE_USER_QUERY, {
     props: ({ mutate }) => ({
-      updateUser: (user) => mutate({variables: { user: user }})
-    })
+      updateUser: (user) => mutate({variables: { user: user }}),
+    }),
   })
 )(AppLoggedIn)
 

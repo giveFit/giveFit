@@ -9,7 +9,7 @@ export default ({ onChange }) => {
       apikey={configKeys.FILESTACK_API}
       options={{
         mimetype: 'image/*',
-        services: ['COMPUTER', 'FACEBOOK', 'INSTAGRAM', 'GOOGLE_DRIVE', 'DROPBOX']
+        services: ['COMPUTER', 'FACEBOOK', 'INSTAGRAM', 'GOOGLE_DRIVE', 'DROPBOX'],
       }}
       buttonText={`<span><i class='fa fa-plus-circle'></i> Add Picture</span>`}
       onSuccess={(res) => onChange(res.url)}

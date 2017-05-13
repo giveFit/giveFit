@@ -20,6 +20,6 @@ export class ProfileDetails extends React.Component {
 }
 
 ProfileDetails.propTypes = {
-  profile: PropTypes.object
+  profile: PropTypes.object,
 }
 export default ProfileDetails

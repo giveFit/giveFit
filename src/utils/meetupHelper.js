@@ -131,7 +131,7 @@ getMeetupEvents()
 
 module.exports = {
   getAllMeetupEvents: getAllMeetupEvents,
-  getMeetupEvents: getMeetupEvents
+  getMeetupEvents: getMeetupEvents,
 }
 /* const got = require('got')
 

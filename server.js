@@ -1,14 +1,14 @@
-var argv = require('yargs').argv;
-var path = require('path');
+var argv = require('yargs').argv
+var path = require('path')
 
-var webpackConfig = require('./webpack.config');
+var webpackConfig = require('./webpack.config')
 
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
     basePath: '',
     frameworks: ['mocha', 'chai'],
     files: [
-      'tests.webpack.js'
+      'tests.webpack.js',
     ],
 
     preprocessors: {
@@ -18,7 +18,7 @@ module.exports = function(config) {
 
     webpack: webpackConfig,
     webpackServer: {
-      noInfo: true
+      noInfo: true,
     },
 
     plugins: [
@@ -27,7 +27,7 @@ module.exports = function(config) {
       'karma-webpack',
       'karma-phantomjs-launcher',
       'karma-spec-reporter',
-      'karma-sourcemap-loader'
+      'karma-sourcemap-loader',
     ],
 
     reporters: ['spec'],
@@ -35,6 +35,6 @@ module.exports = function(config) {
     colors: true,
     logLevel: config.LOG_INFO,
     browsers: ['PhantomJS'],
-    singleRun: !argv.watch
+    singleRun: !argv.watch,
   })
-};
+}

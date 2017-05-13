@@ -24,14 +24,14 @@ import './styles.css'
 
 const inlineStyles = {
   textFieldStyle: {
-    color: indigo500
+    color: indigo500,
   },
   paper: {
     height: 100,
     width: 100,
     margin: 5,
     textAlign: 'center',
-    display: 'inline-block'
+    display: 'inline-block',
   },
   button: {
     border: 'none',
@@ -41,8 +41,8 @@ const inlineStyles = {
     textAlign: 'center',
     textDecoration: 'none',
     display: 'inline-block',
-    fontSize: '24px'
-  }
+    fontSize: '24px',
+  },
 }
 
 export class HomeLoggedIn extends React.Component {
@@ -52,7 +52,7 @@ export class HomeLoggedIn extends React.Component {
     this.state = {
       profile: null,
       token: null,
-      userId: null
+      userId: null,
     }
     this.onAuthenticated = this.onAuthenticated.bind(this)
     this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain)
@@ -73,7 +73,7 @@ export class HomeLoggedIn extends React.Component {
     this.setState({profile: auth0Profile})
     this.props.loginUser({
       identity: identity,
-      access_token: tokenPayload.accessToken
+      access_token: tokenPayload.accessToken,
     }).then(res => {
       console.log('authentication response', res)
       const scapholdUserId = res.data.loginUserWithAuth0Lock.user.id
@@ -86,7 +86,7 @@ export class HomeLoggedIn extends React.Component {
       return that.props.updateUser({
         id: scapholdUserId,
         picture: profilePicture,
-        nickname: nickname
+        nickname: nickname,
       })
     }).catch(err => {
       console.log(`Error updating user: ${err.message}`)
@@ -133,7 +133,7 @@ export class HomeLoggedIn extends React.Component {
     }) */
     new google.maps.places.Autocomplete(
     (document.getElementById('autocomplete')), {
-      types: ['geocode']
+      types: ['geocode'],
     })
   }
   render () {
@@ -227,7 +227,7 @@ export class HomeLoggedIn extends React.Component {
 }
 
 HomeLoggedIn.contextTypes = {
-  router: PropTypes.object
+  router: PropTypes.object,
 }
 
 // Get some WorkoutGroups
@@ -279,8 +279,8 @@ mutation UpdateUser($user: UpdateUserInput!) {
 const HomeLoggedInWithData = compose(
   graphql(GET_THROUGH_VIEWER, {
     options: (props) => ({
-      variables: { first: FIRST }
-    })
+      variables: { first: FIRST },
+    }),
   }),
   /* graphql(LOGGED_IN_USER, {
     props: ({ data }) =>  ({
@@ -289,13 +289,13 @@ const HomeLoggedInWithData = compose(
   }), */
   graphql(LOGIN_USER_WITH_AUTH0_LOCK, {
     props: ({ mutate }) => ({
-      loginUser: (credential) => mutate({ variables: { credential: credential } })
-    })
+      loginUser: (credential) => mutate({ variables: { credential: credential } }),
+    }),
   }),
   graphql(UPDATE_USER_QUERY, {
     props: ({ mutate }) => ({
-      updateUser: (user) => mutate({ variables: { user: user }})
-    })
+      updateUser: (user) => mutate({ variables: { user: user }}),
+    }),
   })
 )(HomeLoggedIn)
 

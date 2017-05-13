@@ -18,7 +18,7 @@ export class Login extends React.Component {
     super(props, context)
     this.state = {
       profile: props.auth.getProfile(),
-      token: props.auth.getToken()
+      token: props.auth.getToken(),
     }
   }
   render () {
@@ -36,11 +36,11 @@ export class Login extends React.Component {
 }
 
 Login.contextTypes = {
-  router: PropTypes.object
+  router: PropTypes.object,
 }
 
 Login.propTypes = {
-  auth: PropTypes.instanceOf(AuthService)
+  auth: PropTypes.instanceOf(AuthService),
 }
 
 export default Login

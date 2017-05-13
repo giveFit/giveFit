@@ -10,9 +10,9 @@ function graphQLFetcher (graphQLParams) {
     method: 'post',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': localStorage.scaphold_user_token ? 'Bearer ' + localStorage.scaphold_user_token : ''
+      'Authorization': localStorage.scaphold_user_token ? 'Bearer ' + localStorage.scaphold_user_token : '',
     },
-    body: JSON.stringify(graphQLParams)
+    body: JSON.stringify(graphQLParams),
   }).then(response => response.json())
 }
 

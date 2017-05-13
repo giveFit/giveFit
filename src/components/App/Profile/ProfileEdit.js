@@ -11,8 +11,8 @@ export class ProfileEdit extends React.Component {
     const { profile, auth } = this.props
     auth.updateProfile(profile.user_id, {
       user_metadata: {
-        address: ReactDOM.findDOMNode(this.refs.address).value
-      }
+        address: ReactDOM.findDOMNode(this.refs.address).value,
+      },
     })
   }
 
@@ -51,7 +51,7 @@ export class ProfileEdit extends React.Component {
 
 ProfileEdit.propTypes = {
   profile: PropTypes.object,
-  auth: PropTypes.instanceOf(AuthService)
+  auth: PropTypes.instanceOf(AuthService),
 }
 
 export default ProfileEdit

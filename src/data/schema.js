@@ -10,9 +10,9 @@ const schema = new Schema({
   query: new ObjectType({
     name: 'Query',
     fields: {
-      workouts
-    }
-  })
+      workouts,
+    },
+  }),
 })
 
 module.exports = schema

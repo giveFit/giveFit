@@ -77,7 +77,7 @@ class WorkoutCreator extends React.Component {
       scapholdUser: null,
       userEmail: null,
       userProfile: {},
-      errors: {}
+      errors: {},
     }
 
     this.places = []
@@ -96,13 +96,13 @@ class WorkoutCreator extends React.Component {
 
       return {
         title: place.title,
-        id: place.parkId
+        id: place.parkId,
       }
     })
 
     this.setState({
       scapholdUser,
-      userProfile
+      userProfile,
     })
   }
 
@@ -113,7 +113,7 @@ class WorkoutCreator extends React.Component {
   // event requestTrainer?
   handleToggle (event, toggled) {
     this.setState({
-      [event.target.name]: toggled
+      [event.target.name]: toggled,
     })
   }
 
@@ -133,7 +133,7 @@ class WorkoutCreator extends React.Component {
       parkId: this.state.parkId,
       userEmail: this.state.userEmail,
       // workoutId is the id of the loggedInUser, allowing us to make a connection in our data graph
-      workoutId: this.state.scapholdUser
+      workoutId: this.state.scapholdUser,
     }).then(({data}) => {
       this.setState({
         open: false,
@@ -145,7 +145,7 @@ class WorkoutCreator extends React.Component {
         userEmail: undefined,
         startDateTime: null,
         endDateTime: null,
-        parkId: null
+        parkId: null,
       })
     }).catch((error) => {
       console.log(error)
@@ -184,37 +184,37 @@ class WorkoutCreator extends React.Component {
 
   onDateChange (event, date) {
     this.setState({
-      date
+      date,
     })
   }
 
   onTimeChange (event, time) {
     this.setState({
-      time
+      time,
     })
   }
 
   onLocationChange (parkId) {
     this.setState({
-      parkId
+      parkId,
     })
   }
 
   handleStartDateTime (moment) {
     this.setState({
-      startDateTime: moment.toDate()
+      startDateTime: moment.toDate(),
     })
   }
 
   handleEndDateTime (moment) {
     this.setState({
-      endDateTime: moment.toDate()
+      endDateTime: moment.toDate(),
     })
   }
 
   handleUserEmailChange (userEmail) {
     this.setState({
-      userEmail
+      userEmail,
     })
   }
 
@@ -229,7 +229,7 @@ class WorkoutCreator extends React.Component {
               primary
               keyboardFocused
               onTouchTap={() => this.handleClose()}
-            />
+            />,
           ]}
           modal={false}
           open={this.state.open}
@@ -249,7 +249,7 @@ class WorkoutCreator extends React.Component {
             primary
             keyboardFocused
             onTouchTap={() => this.createWorkout()}
-          />
+          />,
         ]}
         autoScrollBodyContent
         modal={false}
@@ -341,13 +341,13 @@ class WorkoutCreator extends React.Component {
 const WorkoutCreatorWithData = compose(
   graphql(CREATE_WORKOUT, {
     props: ({ mutate }) => ({
-      createWorkout: (input) => mutate({ variables: { input: input } })
-    })
+      createWorkout: (input) => mutate({ variables: { input: input } }),
+    }),
   }),
   graphql(LOGGEDIN_USER_QUERY, {
     props: ({ data }) => ({
-      loggedInUser: data.viewer ? data.viewer.user : null
-    })
+      loggedInUser: data.viewer ? data.viewer.user : null,
+    }),
   })
 )(WorkoutCreator)
 

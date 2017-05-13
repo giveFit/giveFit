@@ -15,7 +15,7 @@ class GridContainer extends React.Component {
 	    super(props, context)
 	    this.state = {
 	      profile: null,
-	      token: null
+	      token: null,
 	    }
 	    this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain)
     this.onAuthenticated = this.onAuthenticated.bind(this)
@@ -31,7 +31,7 @@ class GridContainer extends React.Component {
     // debugger;
     this.props.loginUser({
       identity: identity,
-      access_token: tokenPayload.accessToken
+      access_token: tokenPayload.accessToken,
     }).then(res => {
     	console.log('are we getting a res from the gridcontainer', res)
       const scapholdUserId = res.data.loginUserWithAuth0Lock.user.id
@@ -40,7 +40,7 @@ class GridContainer extends React.Component {
       return that.props.updateUser({
         id: scapholdUserId,
         picture: profilePicture,
-        nickname: nickname
+        nickname: nickname,
       })
       // Cause a UI update :)
       this.setState({})
@@ -54,7 +54,7 @@ class GridContainer extends React.Component {
   		const opts = {
   			location: map.center,
   			radius: '500',
-  			types: ['cafe']
+  			types: ['cafe'],
   		}
     searchNearby(google, map, opts)
 			.then((results, pagination) => {
@@ -74,7 +74,7 @@ class GridContainer extends React.Component {
   console.log(place)
   console.log(this.props)
   this.props.data.refetch({
-    latLng: place.address
+    latLng: place.address,
   })
   return null
 }}
@@ -83,8 +83,8 @@ class GridContainer extends React.Component {
   title: i.node.title,
   position: {
     lat: parseFloat(i.node.lat),
-    lng: parseFloat(i.node.lng)
-  }
+    lng: parseFloat(i.node.lng),
+  },
 })) : []} />
 		</div>
     )
@@ -152,23 +152,23 @@ const LOGGED_IN_USER = gql`
 const GridContainerWithData = compose(
   graphql(GET_THROUGH_VIEWER, {
     options: (props) => ({
-      variables: { first: FIRST }
-    })
+      variables: { first: FIRST },
+    }),
   }),
   graphql(LOGGED_IN_USER, {
     props: ({ data }) => ({
-      loggedInUser: data.viewer ? data.viewer.user : null
-    })
+      loggedInUser: data.viewer ? data.viewer.user : null,
+    }),
   }),
   graphql(LOGIN_USER_WITH_AUTH0_LOCK, {
     props: ({ mutate }) => ({
-      loginUser: (credential) => mutate({ variables: { credential: credential } })
-    })
+      loginUser: (credential) => mutate({ variables: { credential: credential } }),
+    }),
   }),
   graphql(UPDATE_USER_QUERY, {
     props: ({ mutate }) => ({
-      updateUser: (user) => mutate({ variables: { user: user }})
-    })
+      updateUser: (user) => mutate({ variables: { user: user }}),
+    }),
   })
 )(GridContainer)
 

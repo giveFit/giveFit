@@ -15,7 +15,7 @@ class ParkContainer extends React.Component {
       placeById,
       activeIndex,
       toggleActivity,
-      onFeedItemClick
+      onFeedItemClick,
     } = this.props
 
     return Object.keys(placeById).map((item, index) => (
@@ -56,7 +56,7 @@ ParkContainer.propTypes = {
   placeById: PropTypes.object.isRequired,
   activeIndex: PropTypes.number.isRequired,
   toggleActivity: PropTypes.func.isRequired,
-  onFeedItemClick: PropTypes.func.isRequired
+  onFeedItemClick: PropTypes.func.isRequired,
 }
 
 export default ParkContainer
