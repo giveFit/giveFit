@@ -8,7 +8,9 @@
     "start-client": "webpack-dev-server -d --hot --inline --no-info --port 3000",
     "start-server": "nodemon server.js",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "lint": "eslint ./ --cache --quiet --ext .js",
+    "lint-fix": "eslint ./ --cache --quiet --ext .js --fix"
   },
   "author": "",
   "license": "ISC",
@@ -16,6 +18,7 @@
     "apollo-client": "^0.5.0",
     "apollo-server": "^0.2.5",
     "auth0-lock": "^10.9.2",
+    "babel-eslint": "^7.2.3",
     "babel-plugin-transform-runtime": "^6.22.0",
     "babel-polyfill": "^6.22.0",
     "babel-preset-stage-2": "^6.22.0",
@@ -71,7 +74,6 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
     "prop-types": "^15.5.4",
-    "standard": "^10.0.1",
     "webpack": "^1.12.11",
     "webpack-dev-server": "^1.14.1"
   }
