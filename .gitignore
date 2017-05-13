@@ -1,6 +1,9 @@
 node_modules/
 storybook-static/
 dist/
-.DS_Store
+
 configKeys.js
+
+.DS_Store
+.eslintcache
 npm-debug.log
