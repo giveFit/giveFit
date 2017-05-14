@@ -1,6 +1,7 @@
 import React from 'react'
 import { graphql, compose } from 'react-apollo'
-import gql from 'graphql-tag'
+
+import { CREATE_WORKOUT, LOGGEDIN_USER_QUERY } from './gql'
 
 import Avatar from 'material-ui/Avatar'
 import Chip from 'material-ui/Chip'
@@ -17,46 +18,13 @@ import FieldLocation from './fields/location'
 import FieldRequestTrainer from './fields/requestTrainer'
 import FieldDescription from './fields/description'
 import FieldEmail from './fields/email'
+import FieldRecurring from './fields/recurring'
 
 import AuthService from 'utils/AuthService'
 
 import 'react-datetime/css/react-datetime.css'
 import './styles.css'
 
-const CREATE_WORKOUT = gql`
-  mutation CreateWorkout($input: CreateWorkoutInput!) {
-    createWorkout(input: $input){
-      changedWorkout{
-        title,
-        type,
-        startDateTime,
-        endDateTime,
-        description,
-        requestTrainer,
-        parkId,
-        pictureURL,
-        userEmail,
-        Workout{
-          nickname,
-          username,
-          picture
-        }
-      }
-    }
-  }
-`
-
-const LOGGEDIN_USER_QUERY = gql`
-  query LoggedInUser{
-    viewer{
-      user{
-        id
-        username
-        nickname
-      }
-    }
-  }
-`
 // I'll want to create a subscription here, as well as putting through
 // a groupId to match with whichever group the data is being submitted on
 class WorkoutCreator extends React.Component {
@@ -75,6 +43,7 @@ class WorkoutCreator extends React.Component {
       open: false,
       scapholdUser: null,
       userEmail: null,
+      recurring: false,
       userProfile: {},
       errors: {},
     }
@@ -131,20 +100,22 @@ class WorkoutCreator extends React.Component {
       pictureURL: this.state.pictureURL,
       parkId: this.state.parkId,
       userEmail: this.state.userEmail,
+      recurring: this.state.recurring,
       // workoutId is the id of the loggedInUser, allowing us to make a connection in our data graph
       workoutId: this.state.scapholdUser,
     }).then(({data}) => {
       this.setState({
         open: false,
-        requestTrainer: undefined,
-        title: undefined,
-        type: undefined,
-        description: undefined,
-        pictureURL: undefined,
-        userEmail: undefined,
+        requestTrainer: false,
+        title: null,
+        type: null,
+        description: null,
+        pictureURL: null,
+        userEmail: null,
         startDateTime: null,
         endDateTime: null,
         parkId: null,
+        recurring: false,
       })
     }).catch((error) => {
       console.log(error)
@@ -215,6 +186,10 @@ class WorkoutCreator extends React.Component {
     this.setState({
       userEmail,
     })
+  }
+
+  handleRecurringToggle () {
+    this.setState({ recurring: !this.state.recurring })
   }
 
   notLoggedInDialog () {
@@ -308,7 +283,15 @@ class WorkoutCreator extends React.Component {
           }
         </div>
 
-        <FieldDescription onChange={(value) => this.onDescriptionChange(value)} errorText={this.state.errors.description} />
+        <FieldDescription
+          onChange={(value) => this.onDescriptionChange(value)}
+          errorText={this.state.errors.description}
+        />
+        <FieldRecurring
+          onCheck={() => this.handleRecurringToggle()}
+          recurring={this.state.recurring}
+          errorText={this.state.errors.description}
+        />
       </Dialog>
     )
   }
