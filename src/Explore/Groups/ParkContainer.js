@@ -1,20 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { Card } from 'material-ui/Card'
-import CircularProgress from 'material-ui/CircularProgress'
+import GymFeed from './GymFeed'
 
-import ParkFeed from '../components/ParkFeed'
-import GymFeed from '../components/GymFeed'
-
-import '../styles.css'
+import './ParkContainer.css'
 
 class ParkContainer extends React.Component {
   perpareParks () {
     const {
       placeById,
       activeIndex,
-      toggleActivity,
       onFeedItemClick,
     } = this.props
 
@@ -33,20 +28,9 @@ class ParkContainer extends React.Component {
   }
 
   render () {
-    const { parks } = this.props
-
-    if (!parks.length) {
-      return (
-        <Card>
-          <CircularProgress size={80} />
-        </Card>
-      )
-    }
-
     return (
-      // list with google data
-      <div className='workoutList'>
-        {this.perpareParks(parks)}
+      <div className='__workout__list'>
+        {this.perpareParks()}
       </div>
     )
   }
@@ -55,7 +39,6 @@ class ParkContainer extends React.Component {
 ParkContainer.propTypes = {
   placeById: PropTypes.object.isRequired,
   activeIndex: PropTypes.number.isRequired,
-  toggleActivity: PropTypes.func.isRequired,
   onFeedItemClick: PropTypes.func.isRequired,
 }
 

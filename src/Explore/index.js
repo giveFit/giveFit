@@ -34,7 +34,7 @@ class Explore extends React.Component {
     }
 
     return (
-      <div>
+      <div className='explore_container'>
         <GridContainer
           centerLatLng={this.centerLatLng}
           onPlaceSelect={(place) => {

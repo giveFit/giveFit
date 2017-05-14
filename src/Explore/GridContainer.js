@@ -5,12 +5,10 @@ import { Tab, Tabs } from 'material-ui'
 
 import foursquare from 'utils/foursquareApi'
 
-import ParkContainer from './Feed/ParkContainer'
+import ParkContainer from './Groups/ParkContainer'
 import ActivityContainer from './ActivityContainer'
 import MapContainer from './Map/index'
-import WorkoutCreator from './components/WorkoutCreator/index'
-
-import './GridContainer.css'
+import AddActivity from './components/WorkoutCreator/index'
 
 class GridComponent extends React.Component {
   constructor (props) {
@@ -24,7 +22,6 @@ class GridComponent extends React.Component {
     }
 
     this.state = {
-      parks: [],
       parksAndGyms: [],
       loadedMapData: false,
       activeIndex: -1,
@@ -85,14 +82,6 @@ class GridComponent extends React.Component {
     }
   }
 
-  toggleActivity (parkID = '', index) {
-    if (parkID === this.state.openedActivity) {
-      parkID = ''
-    }
-
-    this.setState({ openedActivity: parkID })
-  }
-
   setActiveIndex (index, parkID = '') {
     if (parkID === this.state.openedActivity) {
       parkID = ''
@@ -115,7 +104,7 @@ class GridComponent extends React.Component {
 
   render () {
     const { centerLatLng, workouts, profile, onPlaceSelect } = this.props
-    const { loadedMapData, activeIndex, parks, parksAndGyms } = this.state
+    const { loadedMapData, activeIndex, parksAndGyms } = this.state
 
     // Build placeById object
     const indexedPlaces = {}
@@ -147,7 +136,7 @@ class GridComponent extends React.Component {
     })
 
     return (
-      <div className='__app__grid__container'>
+      <div className='__app__body__container'>
         <div className='__app__body__container__left'>
           {loadedMapData &&
             <MapContainer
@@ -170,26 +159,21 @@ class GridComponent extends React.Component {
           }
         </div>
 
-        <div className='gridList' >
-          <div>
-            <Tabs>
-              <Tab label='Activities' />
-              <Tab label='Groups' />
-            </Tabs>
-
-            <WorkoutCreator
-              indexedPlaces={indexedPlaces}
-            />
-          </div>
-
-          <ParkContainer
-            parks={parks}
-            placeById={indexedPlaces}
-            profile={profile}
-            activeIndex={activeIndex}
-            toggleActivity={(parkID) => this.toggleActivity(parkID)}
-            onFeedItemClick={(index, parkID) => this.setActiveIndex(index, parkID)}
-          />
+        <div className='__grid__list' >
+          <Tabs className='__tabs__container'>
+            <Tab label='Activities'>
+              <AddActivity indexedPlaces={indexedPlaces} />
+            </Tab>
+            <Tab label='Groups'>
+              <AddActivity indexedPlaces={indexedPlaces} />
+              <ParkContainer
+                placeById={indexedPlaces}
+                profile={profile}
+                activeIndex={activeIndex}
+                onFeedItemClick={(index, parkID) => this.setActiveIndex(index, parkID)}
+              />
+            </Tab>
+          </Tabs>
         </div>
       </div>
     )
