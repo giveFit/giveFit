@@ -322,13 +322,8 @@ class WorkoutCreator extends React.Component {
 
 const WorkoutCreatorWithData = compose(
   graphql(CREATE_WORKOUT, {
-    props: ({ mutate }) => ({
+    props: ({ mutate }) => ({  
       createWorkout: (input) => mutate({ variables: { input: input } }),
-    }),
-  }),
-  graphql(LOGGEDIN_USER_QUERY, {
-    props: ({ data }) => ({
-      loggedInUser: data.viewer ? data.viewer.user : null,
     }),
   })
 )(WorkoutCreator)

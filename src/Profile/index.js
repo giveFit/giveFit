@@ -31,7 +31,7 @@ class Profile extends React.Component {
     const { profile } = this.props
     const { loading, viewer } = this.props.data
 
-    const workouts = !loading && viewer.user.Workout.edges
+    const workouts = !loading
       ? viewer.user.Workout.edges
       : []
 

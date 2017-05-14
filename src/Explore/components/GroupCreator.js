@@ -285,11 +285,6 @@ const GroupCreatorWithData = compose(
       variables: { first : FIRST }
     }),
   }),
-  graphql(LOGGED_IN_USER, {
-    props: ({ data }) => ({
-      scapholdViewerUser: data.viewer ? data.viewer.user : null
-    })
-  }),
   graphql(CREATE_WORKOUT_GROUP, {
     props: ({ mutate }) => ({
       createWorkoutGroup: (input) => mutate({ variables: { input: input } })
