@@ -7,7 +7,7 @@ import MobileBottomNav from './MobileBottomNav'
 class Footer extends React.Component {
   render () {
     return (
-      <div id='Footer' className='__app__footer'>
+      <div id='footer' className='__app__footer'>
         {this.props.pathname === '/explore' && <MobileBottomNav />}
       </div>
     )

@@ -1,0 +1,61 @@
+.__activities {
+  background: white;
+}
+
+.__workout__header {
+  display: flex;
+}
+
+.__workout__title {
+  display: flex;
+  flex-grow: 1;
+  padding-left: 1em;
+  flex-direction: column;
+}
+
+.__workout__image__container {
+  position: relative;
+  padding-top: 0.5em;
+}
+
+.__workout__information {
+  box-sizing: border-box;
+  width: 100%;
+  background-color: rgba(178, 47, 52, 0.6);
+  position: absolute;
+  bottom: 0.2em;
+  color: white;
+  padding: 1em;
+  display: flex;
+  justify-content: space-between;
+}
+
+.__workout__description {
+  border-bottom: 2px solid #efefef;
+}
+
+.__description_container {
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+}
+
+.__description_container div:first-child {
+  padding-bottom: 1em;
+}
+
+.__rsvp__button {
+  margin: 0.5em 0;
+  box-shadow: 3px 3px 8px black;
+  cursor: pointer;
+}
+
+.__share__icon {
+  font-size: 2em;
+  padding-left: 0.5em;
+  cursor: pointer;
+}
+
+.__chip {
+  margin: 4;
+}

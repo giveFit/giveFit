@@ -5,7 +5,9 @@ import { Tab, Tabs } from 'material-ui'
 
 import foursquare from 'utils/foursquareApi'
 
-import ParkContainer from './Groups/ParkContainer'
+import Groups from './Groups/ParkContainer'
+import Activities from './Activities/'
+
 import ActivityContainer from './ActivityContainer'
 import MapContainer from './Map/index'
 import AddActivity from './components/WorkoutCreator/index'
@@ -163,10 +165,13 @@ class GridComponent extends React.Component {
           <Tabs className='__tabs__container'>
             <Tab label='Activities'>
               <AddActivity indexedPlaces={indexedPlaces} />
+              <Activities
+                workouts={workouts}
+              />
             </Tab>
             <Tab label='Groups'>
               <AddActivity indexedPlaces={indexedPlaces} />
-              <ParkContainer
+              <Groups
                 placeById={indexedPlaces}
                 profile={profile}
                 activeIndex={activeIndex}
