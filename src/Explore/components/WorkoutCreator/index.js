@@ -54,10 +54,8 @@ class WorkoutCreator extends React.Component {
   }
 
   componentDidMount () {
-    console.log('indexedPlaces', this.props.indexedPlaces)
     const scapholdUser = window.localStorage.getItem('scapholdUserId') ? this.auth.getLoggedInUser() : null
     const userProfile = JSON.parse(window.localStorage.getItem('user_profile'))
-    console.log('userProfile')
 
     this.places = Object.keys(this.props.indexedPlaces).map((placeID) => {
       const place = this.props.indexedPlaces[placeID].googleData
@@ -199,6 +197,7 @@ class WorkoutCreator extends React.Component {
           title='Please Login to add an activity'
           actions={[
             <FlatButton
+              key='notLoggedInDialog'
               label='Ok'
               primary
               keyboardFocused
@@ -219,6 +218,7 @@ class WorkoutCreator extends React.Component {
         style={{ zIndex: 0 }}
         actions={[
           <FlatButton
+            key='loggedInDialog'
             label='Ok'
             primary
             keyboardFocused

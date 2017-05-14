@@ -12,8 +12,6 @@ class MarkerList extends React.Component {
   geocodeLatLng (obj) {
     const { map } = this._googleMapComponent.props
 
-    // var input = "40,-90";
-    // var latlngStr = input.split(',', 2);
     var latlng = {
       lat: obj.latLng.lat(),
       lng: obj.latLng.lng(),
@@ -90,6 +88,7 @@ MarkerList.propTypes = {
   activeMarker: PropTypes.number.isRequired,
   geocoder: PropTypes.object,
   onMarkerClick: PropTypes.func.isRequired,
+  onPlaceSelect: PropTypes.func.isRequired,
 }
 
 export default MarkerList

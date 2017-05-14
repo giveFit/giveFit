@@ -12,15 +12,13 @@ class Explore extends React.Component {
   constructor (props, context) {
     super(props, context)
 
-    this.latLng = null
+    this.centerLatLng = null
 
     const { query } = this.props.location
 
-    if (query.lat && query.lng) {
-      this.latLng = {
-        lat: parseFloat(query.lat),
-        lng: parseFloat(query.lng),
-      }
+    this.centerLatLng = {
+      lat: query.lat ? parseFloat(query.lat) : 39.2904,
+      lng: query.lng ? parseFloat(query.lng) : -76.6122,
     }
   }
 
@@ -31,14 +29,14 @@ class Explore extends React.Component {
     let workouts = []
 
     if (!loading) {
-      workouts = viewer.allworkouts || []
-      workoutGroups = viewer.allWorkoutGroups || []
+      workouts = viewer.allWorkouts.edges || []
+      workoutGroups = viewer.allWorkoutGroups.edges || []
     }
 
     return (
       <div>
         <GridContainer
-          latLng={this.latLng}
+          centerLatLng={this.centerLatLng}
           onPlaceSelect={(place) => {
             data.refetch({
               latLng: place.address,
@@ -49,13 +47,6 @@ class Explore extends React.Component {
           profile={profile}
           workoutGroups={workoutGroups}
           workouts={workouts}
-          markers={workoutGroups.map((workout) => ({
-            // title : workout.node.title,
-            position: {
-              lat: parseFloat(workout.node.lat),
-              lng: parseFloat(workout.node.lng),
-            },
-          }))}
         />
       </div>
     )

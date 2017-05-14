@@ -1,8 +1,7 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import { Tab, Tabs } from 'material-ui'
-
-import {searchNearby} from 'utils/googleApiHelpers'
 
 import foursquare from 'utils/foursquareApi'
 
@@ -25,12 +24,10 @@ class GridComponent extends React.Component {
     }
 
     this.state = {
-      activeIndex: -1,
       parks: [],
       parksAndGyms: [],
-      markers: [],
-      pagination: null,
       loadedMapData: false,
+      activeIndex: -1,
       openedActivity: '',
     }
 
@@ -48,11 +45,7 @@ class GridComponent extends React.Component {
     http://stackoverflow.com/questions/19625228/google-maps-api-multiple-keywords-in-place-searches
   */
   componentDidMount () {
-    const { latLng } = this.props
-    const centerLatLng = {
-      lat: latLng ? latLng.lat : 39.2904,
-      lng: latLng ? latLng.lng : -76.6122,
-    }
+    const { centerLatLng } = this.props
 
     // Note : This concatination logic can be moved to foursquareApi.js to keep it consistent with googleApi
     // FourSquare category tree: https://developer.foursquare.com/categorytree
@@ -69,48 +62,21 @@ class GridComponent extends React.Component {
       venuePhotos: 1,
     }
 
-    // const {googleMaps} = this.props
-
-    // Need to update these searches when a new map center is created
-    // baltimore parks search params
-    // const parks = {
-    //   location: centerLatLng,
-    //   radius: 5000,
-    //   type: 'park'
-    // }
-    //
-    // // baltimore gym search params
-    // const gyms = {
-    //   location: centerLatLng,
-    //   radius: 5000,
-    //   type: 'gym'
-    // }
-
     try {
-      // search and add parks to state
-      // add meetup activities as well https://www.npmjs.com/package/meetup-crawler
-      // or https://github.com/jkutianski/meetup-api/tree/0.1.X
-      // const parksPromise = searchNearby(this.googleMaps, div, parks)
-      // const gymsPromise = searchNearby(this.googleMaps, div, gyms)
-      // Promise.all([parksPromise, gymsPromise])
-      //   .then(([parksResult, gymsResult]) => {
-      //     this.setState({
-      //       parks: parksResult,
-      //       parksAndGyms: parksResult.concat(gymsResult),
-      //       loadedMapData: true
-      //     })
-      //   })
-
       // Foursquare api calls
       // Explore: https://developer.foursquare.com/docs/venues/explore
       const recCentersPromise = foursquare.venues.explore(recCenters)
       const parksPromise = foursquare.venues.explore(parks)
+
       Promise.all([parksPromise, recCentersPromise])
         .then(([recCentersResult, parksResult]) => {
+          const recCenterItems = recCentersResult.response.groups[0].items
+          const parksResultItems = parksResult.response.groups[0].items
+
           this.setState({
             // NOTE: move this traversal to the utils files
-            parks: parksResult.response.groups[0].items,
-            parksAndGyms: parksResult.response.groups[0].items.concat(recCentersResult.response.groups[0].items),
+            parks: parksResultItems,
+            parksAndGyms: parksResultItems.concat(recCenterItems),
             loadedMapData: true,
           })
         })
@@ -132,17 +98,11 @@ class GridComponent extends React.Component {
       parkID = ''
     }
 
-    var newIndex
-    if (index == undefined) {
-      newIndex = -1
-    } else {
-      newIndex = index
-    }
-    this.setState(
-      { openedActivity: parkID,
-        activeIndex: newIndex,
-      }
-    )
+    var activeIndex = index === undefined ? -1 : index
+
+    this.setState({ openedActivity: parkID,
+      activeIndex,
+    })
   }
 
   // Url generator for foursquare
@@ -154,20 +114,9 @@ class GridComponent extends React.Component {
   }
 
   render () {
-    const {
-      latLng,
-      workouts,
-      workoutGroups,
-      profile,
-    } = this.props
+    const { centerLatLng, workouts, profile, onPlaceSelect } = this.props
+    const { loadedMapData, activeIndex, parks, parksAndGyms } = this.state
 
-    const mapCenter = {
-      lat: latLng ? latLng.lat : 39.2904,
-      lng: latLng ? latLng.lng : -76.6122,
-    }
-
-    const { loadedMapData } = this.state
-    const { activeIndex, parks, parksAndGyms, markers } = this.state
     // Build placeById object
     const indexedPlaces = {}
 
@@ -178,25 +127,6 @@ class GridComponent extends React.Component {
       const filteredWorkouts = workouts.filter((workout) => {
         return parkVenue.id === workout.node.parkId
       })
-
-      // indexedPlaces[park.place_id] = {
-      //   // comments: workout.comments,
-      //   googleData: {
-      //     parkId: park.place_id,
-      //     title: park.name,
-      //     position: {
-      //       lat: park.geometry.location.lat(),
-      //       lng: park.geometry.location.lng()
-      //     },
-      //     rating: park.rating,
-      //     photos: park.photos ? park.photos[0].getUrl({'maxWidth': 500, 'maxHeight': 750}) : null,
-      //     vicinity: park.vicinity,
-      //     types: park.types,
-      //     workouts: filteredWorkouts
-      //   }
-      // }
-      // parkVenue.types = parkVenue.categories.map((a) => a.name)
-      // Values need to be reassigned as per the app
 
       indexedPlaces[parkVenue.id] = {
         // comments: workout.comments,
@@ -221,11 +151,12 @@ class GridComponent extends React.Component {
         <div className='__app__body__container__left'>
           {loadedMapData &&
             <MapContainer
-              mapCenter={mapCenter}
+              mapCenter={centerLatLng}
               indexedPlaces={indexedPlaces}
               activeMarker={activeIndex}
               geocoder={this.geocoder}
               onMarkerClick={(index, parkID) => this.setActiveIndex(index, parkID)}
+              onPlaceSelect={onPlaceSelect}
             />
           }
           {this.state.openedActivity &&
@@ -263,6 +194,14 @@ class GridComponent extends React.Component {
       </div>
     )
   }
+}
+
+GridComponent.propTypes = {
+  centerLatLng: PropTypes.object.isRequired,
+  workouts: PropTypes.array.isRequired,
+  workoutGroups: PropTypes.array.isRequired,
+  profile: PropTypes.object.isRequired,
+  onPlaceSelect: PropTypes.func.isRequired,
 }
 
 export default GridComponent
