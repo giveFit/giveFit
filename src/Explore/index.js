@@ -22,43 +22,40 @@ class Explore extends React.Component {
         lng: parseFloat(query.lng),
       }
     }
-
-    this.state = {
-      profile: null,
-      token: null,
-      user: null,
-      loggedInToolbar: false,
-    }
   }
 
   render () {
-    const { profile } = this.props
+    const { profile, data } = this.props
+    const { loading, viewer } = data
+    let workoutGroups = []
+    let workouts = []
+
+    if (!loading) {
+      workouts = viewer.allworkouts || []
+      workoutGroups = viewer.allWorkoutGroups || []
+    }
 
     return (
       <div>
         <GridContainer
           latLng={this.latLng}
           onPlaceSelect={(place) => {
-            this.props.data.refetch({
+            data.refetch({
               latLng: place.address,
             })
 
             return null
           }}
           profile={profile}
-          user={this.state.user}
-          workoutGroups={(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges) ? this.props.data.viewer.allWorkoutGroups.edges : []}
-          workouts={(!this.props.data.loading && this.props.data.viewer.allWorkouts.edges) ? this.props.data.viewer.allWorkouts.edges : []}
-          markers={(!this.props.data.loading && this.props.data.viewer.allWorkoutGroups.edges)
-            ? this.props.data.viewer.allWorkoutGroups.edges.map((i, index) => ({
-              // title : i.node.title,
-              position: {
-                lat: parseFloat(i.node.lat),
-                lng: parseFloat(i.node.lng),
-              },
-            }))
-            : []
-          }
+          workoutGroups={workoutGroups}
+          workouts={workouts}
+          markers={workoutGroups.map((workout) => ({
+            // title : workout.node.title,
+            position: {
+              lat: parseFloat(workout.node.lat),
+              lng: parseFloat(workout.node.lng),
+            },
+          }))}
         />
       </div>
     )

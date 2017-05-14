@@ -12,16 +12,15 @@ class App extends React.Component {
   constructor (props, context) {
     super(props, context)
 
-    this.state = {
-      profile: null,
-      token: null,
-      userId: null,
-    }
-
     this.onAuthenticated = this.onAuthenticated.bind(this)
     this.auth = new AuthService(process.env.AUTH0_CLIENT_ID, process.env.AUTH0_DOMAIN)
     this.auth.on('authenticated', this.onAuthenticated)
     this.auth.on('error', console.log)
+
+    this.state = {
+      profile: this.auth.getProfile(),
+      userId: JSON.parse(window.localStorage.getItem('scapholdUserId')),
+    }
 
     window.localStorage.removeItem('__find_workouts_pos')
     window.localStorage.removeItem('__find_workouts_address')
@@ -38,25 +37,25 @@ class App extends React.Component {
     identity.userId = identity.user_id
     delete identity.user_id
 
-    this.setState({
-      profile: auth0Profile,
-    })
-
     this.props.loginUser({
       identity: identity,
       access_token: tokenPayload.accessToken,
     })
-      .then(res => {
+      .then((res) => {
         const scapholdUserId = res.data.loginUserWithAuth0Lock.user.id
-        const profilePicture =  auth0Profile.picture
-        const nickname = auth0Profile.nickname
+
+        this.setState({
+          profile: auth0Profile,
+          userId: scapholdUserId,
+        })
+
         // Cause a UI update :)
         window.localStorage.setItem('scapholdUserId', JSON.stringify(scapholdUserId))
 
-        return this.props.updateUser({
+        this.props.updateUser({
           id: scapholdUserId,
-          picture: profilePicture,
-          nickname: nickname,
+          picture: auth0Profile.picture,
+          nickname: auth0Profile.nickname,
         })
       })
       .catch(err => {
@@ -64,27 +63,27 @@ class App extends React.Component {
       })
   }
 
-  renderChildren (profile) {
+  renderChildren (profile, userId) {
     return React.Children.map(this.props.children, (child) => {
       return React.cloneElement(child, {
         profile,
+        userId,
         auth: this.auth,
       })
     })
   }
 
   render () {
-    const profile = this.auth.getProfile()
+    const { profile, userId } = this.state
 
     return (
       <div id='app' className='__app__main'>
         <Header
           auth={this.auth}
           profile={profile}
-          userId={this.state.userId}
         />
         <div id='body' className='__app__body__container'>
-          {this.renderChildren(profile)}
+          {this.renderChildren(profile, userId)}
         </div>
         <Footer
           pathname={this.props.location.pathname}
@@ -97,6 +96,8 @@ class App extends React.Component {
 App.propTypes = {
   children: PropTypes.element.isRequired,
   location: PropTypes.object.isRequired,
+  loginUser: PropTypes.func.isRequired,
+  updateUser: PropTypes.func.isRequired,
 }
 
 App.contextTypes = {

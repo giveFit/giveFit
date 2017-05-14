@@ -24,7 +24,7 @@ class MainToolbar extends React.Component {
   }
 
   startLogin () {
-    this.auth.login()
+    this.props.auth.login()
   }
 
   handleToggle () {
@@ -94,6 +94,10 @@ class MainToolbar extends React.Component {
       </div>
     )
   }
+}
+
+MainToolbar.propTypes = {
+  auth: PropTypes.object.isRequired,
 }
 
 MainToolbar.contextTypes = {

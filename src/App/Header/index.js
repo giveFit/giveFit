@@ -12,7 +12,6 @@ class Header extends React.Component {
           ? <MainToolbar auth={this.props.auth} />
           : <LoggedInToolbar
               auth={this.props.auth}
-              userId={this.props.userId}
               profile={this.props.profile}
             />
         }
@@ -23,7 +22,6 @@ class Header extends React.Component {
 
 Header.propTypes = {
   auth: PropTypes.object,
-  userId: PropTypes.string,
   profile: PropTypes.object,
 }
 
