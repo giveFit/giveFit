@@ -169,7 +169,7 @@ class GridComponent extends React.Component {
                 workouts={workouts}
               />
             </Tab>
-            <Tab label='Groups'>
+            <Tab label='Workout Locations'>
               <AddActivity indexedPlaces={indexedPlaces} />
               <Groups
                 placeById={indexedPlaces}

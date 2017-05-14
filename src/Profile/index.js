@@ -67,8 +67,8 @@ const ProfileWithData = compose(
         first: 10,
         where: {
           endDateTime: {
-            gte: new Date().toString(),
-          },
+            gte: new Date().toString()
+          }
         },
         orderBy: {
           field: 'startDateTime',
