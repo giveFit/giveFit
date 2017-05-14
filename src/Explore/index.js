@@ -8,9 +8,20 @@ import GridContainer from './GridContainer'
 
 import './styles.css'
 
-class App extends React.Component {
+class Explore extends React.Component {
   constructor (props, context) {
     super(props, context)
+
+    this.latLng = null
+
+    const { query } = this.props.location
+
+    if (query.lat && query.lng) {
+      this.latLng = {
+        lat: parseFloat(query.lat),
+        lng: parseFloat(query.lng),
+      }
+    }
 
     this.state = {
       profile: null,
@@ -22,19 +33,11 @@ class App extends React.Component {
 
   render () {
     const { profile } = this.props
-    let latLng = null
-
-    if (this.props.location.query.lat && this.props.location.query.lng) {
-      latLng = {
-        lat: parseFloat(this.props.location.query.lat),
-        lng: parseFloat(this.props.location.query.lng),
-      }
-    }
 
     return (
       <div>
         <GridContainer
-          latLng={latLng}
+          latLng={this.latLng}
           onPlaceSelect={(place) => {
             this.props.data.refetch({
               latLng: place.address,
@@ -62,17 +65,19 @@ class App extends React.Component {
   }
 }
 
-App.propTypes = {
+Explore.propTypes = {
+  location: PropTypes.object.isRequired,
+  data: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
   profile: PropTypes.object.isRequired,
 }
 
-const AppWithData = compose(
+const ExploreWithData = compose(
   graphql(GET_THROUGH_VIEWER, {
     options: (props) => ({
       variables: { first: 8 },
     }),
   })
-)(App)
+)(Explore)
 
-export default AppWithData
+export default ExploreWithData

@@ -18,7 +18,6 @@ import FieldRequestTrainer from './fields/requestTrainer'
 import FieldDescription from './fields/description'
 import FieldEmail from './fields/email'
 
-import apolloConfig from '../../../../apolloConfig'
 import AuthService from 'utils/AuthService'
 
 import 'react-datetime/css/react-datetime.css'
@@ -82,7 +81,7 @@ class WorkoutCreator extends React.Component {
 
     this.places = []
 
-    this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain)
+    this.auth = new AuthService(process.env.AUTH0_CLIENT_ID, process.env.AUTH0_DOMAIN)
   }
 
   componentDidMount () {

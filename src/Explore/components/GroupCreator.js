@@ -16,8 +16,7 @@ import AddAPhoto from 'material-ui/svg-icons/image/add-a-photo';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import ReactFilepicker from 'react-filepicker';
-import configKeys from '../../../../../configKeys';
-import apolloConfig from '../../../../../apolloConfig';
+
 import AuthService from 'utils/AuthService';
 
 import '../styles.css';
@@ -47,7 +46,7 @@ class GroupCreator extends React.Component {
     this._handleAutoComplete = this._handleAutoComplete.bind(this);
     this.addImage = this.addImage.bind(this);
     this.submitWorkoutGroup = this.submitWorkoutGroup.bind(this);
-    this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain);
+    this.auth = new AuthService(process.env.AUTH0_CLIENT_ID, process.env.AUTH0_DOMAIN);
   };
   handleOpen(){
     console.log('handling open')
@@ -198,7 +197,7 @@ class GroupCreator extends React.Component {
                 />
               </div>
               <div>
-                <ReactFilepicker apikey={configKeys.FILESTACK_API} onTouchTap={this.addImage} onSuccess={(...args)=>console.log(...args)}/>
+                <ReactFilepicker apikey={process.env.FILESTACK_API} onTouchTap={this.addImage} onSuccess={(...args)=>console.log(...args)}/>
               </div>
               <div>
                 <TextField

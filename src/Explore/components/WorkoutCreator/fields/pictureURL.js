@@ -1,12 +1,10 @@
 import React from 'react'
 import ReactFilepicker from 'react-filepicker'
 
-import configKeys from '../../../../../configKeys'
-
 export default ({ onChange }) => {
   return (
     <ReactFilepicker
-      apikey={configKeys.FILESTACK_API}
+      apikey={process.env.FILESTACK_API}
       options={{
         mimetype: 'image/*',
         services: ['COMPUTER', 'FACEBOOK', 'INSTAGRAM', 'GOOGLE_DRIVE', 'DROPBOX'],

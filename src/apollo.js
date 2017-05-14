@@ -1,8 +1,6 @@
 import { SubscriptionClient, addGraphQLSubscriptions } from 'subscriptions-transport-ws'
 import ApolloClient, { createNetworkInterface } from 'apollo-client'
 
-import { scapholdUrl } from '../apolloConfig'
-
 /*
   Creates a subscription ready Apollo Client instance
   Note that scaphldUrl expects the url without the http:// or wss://
@@ -11,7 +9,7 @@ import { scapholdUrl } from '../apolloConfig'
 export default () => {
   // Create regular NetworkInterface by using apollo-client's API:
   const networkInterface = createNetworkInterface({
-    uri: `https://${scapholdUrl}`,
+    uri: `https://${process.env.SCAPHOLD_URL}`,
   })
 
   networkInterface.use([{
@@ -29,7 +27,7 @@ export default () => {
   }])
 
   // Create WebSocket client
-  const wsClient = new SubscriptionClient(`wss://${scapholdUrl}`, {
+  const wsClient = new SubscriptionClient(`wss://${process.env.SCAPHOLD_URL}`, {
     reconnect: true,
   })
 

@@ -9,9 +9,6 @@ import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui
 import { MenuItem, RaisedButton, FlatButton } from 'material-ui'
 import PersonAdd from 'material-ui/svg-icons/social/person-add'
 
-import apolloConfig from '../../../apolloConfig'
-import AuthService from 'utils/AuthService'
-
 import { Link } from 'react-router'
 
 import './MainToolbar.css'
@@ -24,8 +21,6 @@ class MainToolbar extends React.Component {
       value: 3,
       open: false,
     }
-    this.startLogin = this.startLogin.bind(this)
-    this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain)
   }
 
   startLogin () {
@@ -73,7 +68,7 @@ class MainToolbar extends React.Component {
                 primaryText='About Us' />
               <MenuItem
                 onTouchTap={this.handleClose.bind(this)}
-                onClick={this.startLogin}
+                onClick={() => this.startLogin()}
                 primaryText='Log in'
                 leftIcon={<PersonAdd />} />
             </IconMenu>
@@ -92,7 +87,7 @@ class MainToolbar extends React.Component {
             <RaisedButton
               label='Login'
               primary={true}
-              onClick={this.startLogin}
+              onClick={() => this.startLogin()}
             />
           </ToolbarGroup>
         </Toolbar>

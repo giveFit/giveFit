@@ -17,13 +17,9 @@ class GridComponent extends React.Component {
   constructor (props) {
     super(props)
 
-    // grab our googleMaps obj from whever she may lay
-    var googleMaps = this.props.googleMaps ||
-      (window.google && // eslint-disable-line no-extra-parens
-        window.google.maps) ||
-      this.googleMaps
+    this.googleMaps = window.google.maps
 
-    if (!googleMaps) {
+    if (!this.googleMaps) {
       console.error('Google map api was not found in the page.')
       return
     }
@@ -38,17 +34,16 @@ class GridComponent extends React.Component {
       openedActivity: '',
     }
 
-    // now grab the services we need
-    this.googleMaps = googleMaps
-    this.geocoder = new googleMaps.Geocoder()
-    // this.placesService = new googleMaps.PlacesService(map)
-    this.clickMarker = null
-    this.infowindow = new googleMaps.InfoWindow()
+    this.geocoder = new this.googleMaps.Geocoder()
   }
 
   /*
     Working on Google API for location fetching
-    This google apis return the places in sets of 20, the maximum number of places that an api can fetch is 60. If you carefully observe the response of the google places api, it has a parameter called next_pagetoken. So the second time you hit the API u need to pass this next_pagetoken to fetch the next set of schools.@ChithriAjay
+    This google apis return the places in sets of 20, the maximum number of
+    places that an api can fetch is 60. If you carefully observe the response of
+    the google places api, it has a parameter called next_pagetoken.
+    So the second time you hit the API u need to pass this next_pagetoken to
+    fetch the next set of schools.@ChithriAjay
     how to do multiple types
     http://stackoverflow.com/questions/19625228/google-maps-api-multiple-keywords-in-place-searches
   */
@@ -58,8 +53,6 @@ class GridComponent extends React.Component {
       lat: latLng ? latLng.lat : 39.2904,
       lng: latLng ? latLng.lng : -76.6122,
     }
-
-    const div = document.createElement('div')
 
     // Note : This concatination logic can be moved to foursquareApi.js to keep it consistent with googleApi
     // FourSquare category tree: https://developer.foursquare.com/categorytree
@@ -241,7 +234,6 @@ class GridComponent extends React.Component {
               openedActivity={this.state.openedActivity}
               parkTitle={indexedPlaces[this.state.openedActivity].googleData.title}
               workouts={indexedPlaces[this.state.openedActivity].googleData.workouts}
-              // closeActivity={() => this.setActiveIndex(index, parkID)}
               closeActivity={() => this.setActiveIndex()}
             />
           }

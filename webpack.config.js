@@ -3,10 +3,9 @@ const webpack = require('webpack')
 const path = require('path')
 const dotenv = require('dotenv')
 
-const apolloConfig = require('./apolloConfig')
 const isDevelopment = process.env.NODE_ENV === 'development'
 
-const envVariables = dotenv.config()
+const envVariables = dotenv.config().parsed
 
 const config = getConfig({
   // entry point for the app
@@ -25,7 +24,7 @@ const config = getConfig({
     proxy: {
       context: '/api',
       options: {
-        target: apolloConfig.scapholdUrl,
+        target: envVariables.SCAPHOLD_URL,
         pathRewrite: {
           '^/api': '',
         },
@@ -52,19 +51,16 @@ const config = getConfig({
 })
 
 // Set Env Variables
-config.plugins.push(new webpack.DefinePlugin(
-  Object.keys(envVariables)
-    .reduce((memo, key) => {
-      const val = JSON.stringify(envVariables[key])
-
-      memo[`__${key.toUpperCase()}__`] = val
-console.log(memo)
-      return memo
-    }, {
-      __NODE_ENV__: JSON.stringify(process.env.NODE_ENV),
-    })
-  )
-)
+config.plugins.push(new webpack.DefinePlugin({
+  'process.env': {
+    __NODE_ENV__: JSON.stringify(process.env.NODE_ENV),
+    AUTH0_CLIENT_ID: JSON.stringify(envVariables.AUTH0_CLIENT_ID),
+    AUTH0_DOMAIN: JSON.stringify(envVariables.AUTH0_DOMAIN),
+    FILESTACK_API: JSON.stringify(envVariables.FILESTACK_API),
+    GOOGLE_API: JSON.stringify(envVariables.GOOGLE_API),
+    SCAPHOLD_URL: JSON.stringify(envVariables.SCAPHOLD_URL),
+  },
+}))
 
 config.resolve.modules = [
   path.join(__dirname, 'src'),

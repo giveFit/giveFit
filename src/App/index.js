@@ -5,8 +5,6 @@ import { graphql, compose } from 'react-apollo'
 import AuthService from 'utils/AuthService'
 import { LOGIN_USER_WITH_AUTH0_LOCK, UPDATE_USER_QUERY } from './gql'
 
-import apolloConfig from '../../apolloConfig'
-
 import Header from './Header/index'
 import Footer from './Footer/index'
 
@@ -21,7 +19,7 @@ class App extends React.Component {
     }
 
     this.onAuthenticated = this.onAuthenticated.bind(this)
-    this.auth = new AuthService(apolloConfig.auth0ClientId, apolloConfig.auth0Domain)
+    this.auth = new AuthService(process.env.AUTH0_CLIENT_ID, process.env.AUTH0_DOMAIN)
     this.auth.on('authenticated', this.onAuthenticated)
     this.auth.on('error', console.log)
 
