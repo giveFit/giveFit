@@ -1,7 +1,9 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+
 import Checkbox from 'material-ui/Checkbox'
 
-export default ({ onCheck, recurring }) => {
+const Recurring = ({ onCheck, recurring }) => {
   return (
     <div>
       <Checkbox
@@ -14,3 +16,10 @@ export default ({ onCheck, recurring }) => {
     </div>
   )
 }
+
+Recurring.propTypes = {
+  onCheck: PropTypes.func.isRequired,
+  recurring: PropTypes.bool.isRequired,
+}
+
+export default Recurring

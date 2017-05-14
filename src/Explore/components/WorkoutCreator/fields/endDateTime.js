@@ -1,7 +1,9 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+
 import Datetime from 'react-datetime'
 
-export default ({ onChange }) => {
+const EndDateTime = ({ onChange }) => {
   return (
     <div className='end-time'>
       <span> Pick an End Time <i className='fa fa-clock-o' /></span>
@@ -12,3 +14,9 @@ export default ({ onChange }) => {
     </div>
   )
 }
+
+EndDateTime.propTypes = {
+  onChange: PropTypes.func.isRequired,
+}
+
+export default EndDateTime

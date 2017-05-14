@@ -1,7 +1,9 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+
 import Checkbox from 'material-ui/Checkbox'
 
-export default ({ onCheck, requestTrainer }) => {
+const RequestTrainer = ({ onCheck, requestTrainer }) => {
   return (
     <div>
       <Checkbox
@@ -14,3 +16,10 @@ export default ({ onCheck, requestTrainer }) => {
     </div>
   )
 }
+
+RequestTrainer.propTypes = {
+  onCheck: PropTypes.func.isRequired,
+  requestTrainer: PropTypes.bool.isRequired,
+}
+
+export default RequestTrainer

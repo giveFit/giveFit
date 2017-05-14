@@ -1,7 +1,9 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+
 import Datetime from 'react-datetime'
 
-export default ({ onChange }) => {
+const StartDateTime = ({ onChange }) => {
   return (
     <div className='start-time'>
       <span> Pick a Start Time <i className='fa fa-clock-o' /></span>
@@ -12,3 +14,9 @@ export default ({ onChange }) => {
     </div>
   )
 }
+
+StartDateTime.propTypes = {
+  onChange: PropTypes.func.isRequired,
+}
+
+export default StartDateTime

@@ -1,7 +1,9 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+
 import TextField from 'material-ui/TextField'
 
-export default ({ onChange, errorText = null }) => {
+const Email = ({ onChange, errorText = null }) => {
   return (
     <TextField
       className='user_email'
@@ -11,3 +13,10 @@ export default ({ onChange, errorText = null }) => {
     />
   )
 }
+
+Email.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  errorText: PropTypes.string,
+}
+
+export default Email

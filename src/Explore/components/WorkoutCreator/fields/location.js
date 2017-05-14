@@ -1,8 +1,10 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 
-export default ({ onChange, places, parkId, errorText = null }) => {
+const Location = ({ onChange, places, parkId, errorText = null }) => {
   return (
     <div>
       <span> Choose Location <i className='fa fa-map-marker' /></span>
@@ -25,3 +27,12 @@ export default ({ onChange, places, parkId, errorText = null }) => {
     </div>
   )
 }
+
+Location.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  places: PropTypes.array.isRequired,
+  parkId: PropTypes.string,
+  errorText: PropTypes.string,
+}
+
+export default Location

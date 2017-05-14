@@ -1,8 +1,10 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 
-export default ({ onChange, value, errorText = null }) => {
+const Type = ({ onChange, value, errorText = null }) => {
   return (
     <SelectField
       floatingLabelText='Type'
@@ -18,3 +20,10 @@ export default ({ onChange, value, errorText = null }) => {
     </SelectField>
   )
 }
+
+Type.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  errorText: PropTypes.string,
+}
+
+export default Type

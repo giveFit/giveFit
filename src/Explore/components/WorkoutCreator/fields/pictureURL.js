@@ -1,7 +1,9 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+
 import ReactFilepicker from 'react-filepicker'
 
-export default ({ onChange }) => {
+const PictureURL = ({ onChange }) => {
   return (
     <ReactFilepicker
       apikey={process.env.FILESTACK_API}
@@ -15,3 +17,9 @@ export default ({ onChange }) => {
     />
   )
 }
+
+PictureURL.propTypes = {
+  onChange: PropTypes.func.isRequired,
+}
+
+export default PictureURL
