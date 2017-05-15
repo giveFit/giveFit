@@ -189,7 +189,7 @@ GridComponent.propTypes = {
   centerLatLng: PropTypes.object.isRequired,
   workouts: PropTypes.array.isRequired,
   workoutGroups: PropTypes.array.isRequired,
-  profile: PropTypes.object.isRequired,
+  //profile: PropTypes.object.isRequired,
   onPlaceSelect: PropTypes.func.isRequired,
 }
 

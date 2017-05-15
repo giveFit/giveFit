@@ -2,8 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { graphql, compose } from 'react-apollo'
 
-import { GET_THROUGH_VIEWER } from './gql'
-
+//import { GET_THROUGH_VIEWER } from './gql'
+import gql from 'graphql-tag'
 import GridContainer from './GridContainer'
 
 import './styles.css'
@@ -30,7 +30,6 @@ class Explore extends React.Component {
 
     if (!loading) {
       workouts = viewer.allWorkouts.edges || []
-      workoutGroups = viewer.allWorkoutGroups.edges || []
     }
 
     return (
@@ -53,19 +52,40 @@ class Explore extends React.Component {
   }
 }
 
+const GET_THROUGH_VIEWER = gql`
+  query GetThroughViewer{
+  viewer {
+    allWorkouts {
+      edges {
+        node {
+          id
+          parkId
+          title
+          description
+          pictureURL
+          startDateTime
+          endDateTime
+          requestTrainer
+          recurring
+          type
+          Workout {
+            nickname
+            username
+            picture
+          }
+        }
+      }
+    }
+  }
+}`
+
 Explore.propTypes = {
   location: PropTypes.object.isRequired,
   data: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
-  profile: PropTypes.object.isRequired,
+  //profile: PropTypes.object.isRequired,
 }
 
-const ExploreWithData = compose(
-  graphql(GET_THROUGH_VIEWER, {
-    options: (props) => ({
-      variables: { first: 8 },
-    }),
-  })
-)(Explore)
+const ExploreWithData = graphql(GET_THROUGH_VIEWER)(Explore)
 
 export default ExploreWithData
