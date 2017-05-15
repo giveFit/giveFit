@@ -19,6 +19,7 @@ import App from 'App/'
 import Home from 'Home/'
 import Explore from 'Explore/'
 import Profile from 'Profile/'
+import NewYork from 'NewYork/'
 
 import './base.css'
 
@@ -34,6 +35,7 @@ const routes = {
   childRoutes: [
     { path: 'explore', component: Explore },
     { path: 'profile', component: Profile },
+    { path: 'new-york', component: NewYork },
   ],
 }
 
