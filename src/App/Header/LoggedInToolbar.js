@@ -70,7 +70,7 @@ class LoggedInToolbar extends React.Component {
           <MenuItem
             onTouchTap={this.handleClose.bind(this)}
             onClick={() => this.context.router.push('/explore')}
-            primaryText="Groups"
+            primaryText="Workouts"
           />
           <MenuItem
             onTouchTap={this.handleClose.bind(this)}
@@ -94,7 +94,7 @@ class LoggedInToolbar extends React.Component {
           />
         </ToolbarGroup>
         <ToolbarGroup >
-          <FlatButton className='onlyLargeScreens' label="Groups" onClick={() => this.context.router.push('/explore')}/>
+          <FlatButton className='onlyLargeScreens' label="Workouts" onClick={() => this.context.router.push('/explore')}/>
           <FlatButton className='onlyLargeScreens' containerElement={<Link to="https://us-west-2.api.scaphold.io/graphql/newGiveFitAlias" target="_blank"/>} label="API"/>
           <FlatButton className='onlyLargeScreens' label="About Us" />
           <FontIcon className='onlyLargeScreens muidocs-icon-custom-sort' />

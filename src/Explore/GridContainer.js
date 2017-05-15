@@ -162,14 +162,14 @@ class GridComponent extends React.Component {
         </div>
 
         <div className='__grid__list' >
-          <Tabs className='__tabs__container'>
-            <Tab label='Activities'>
+          {/*<Tabs className='__tabs__container'>
+            <Tab label='Activities'>*/}
               <AddActivity indexedPlaces={indexedPlaces} />
               <Activities
                 workouts={workouts}
               />
-            </Tab>
-            <Tab label='Locations'>
+            {/*</Tab>*/}
+            {/*<Tab label='Locations'>
               <AddActivity indexedPlaces={indexedPlaces} />
               <Groups
                 placeById={indexedPlaces}
@@ -178,7 +178,7 @@ class GridComponent extends React.Component {
                 onFeedItemClick={(index, parkID) => this.setActiveIndex(index, parkID)}
               />
             </Tab>
-          </Tabs>
+          </Tabs>*/}
         </div>
       </div>
     )
