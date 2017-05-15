@@ -2,8 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { graphql, compose } from 'react-apollo'
 
-//import { GET_THROUGH_VIEWER } from './gql'
-import gql from 'graphql-tag'
+import { GET_THROUGH_VIEWER } from './gql'
 import GridContainer from './GridContainer'
 
 import './styles.css'
@@ -52,32 +51,6 @@ class Explore extends React.Component {
   }
 }
 
-const GET_THROUGH_VIEWER = gql`
-  query GetThroughViewer{
-  viewer {
-    allWorkouts {
-      edges {
-        node {
-          id
-          parkId
-          title
-          description
-          pictureURL
-          startDateTime
-          endDateTime
-          requestTrainer
-          recurring
-          type
-          Workout {
-            nickname
-            username
-            picture
-          }
-        }
-      }
-    }
-  }
-}`
 
 Explore.propTypes = {
   location: PropTypes.object.isRequired,

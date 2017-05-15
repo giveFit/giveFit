@@ -230,6 +230,8 @@ class WorkoutCreator extends React.Component {
         open={this.state.open}
         onRequestClose={this.handleClose.bind(this)}
       >
+      { this.state.userProfile ? 
+        <div>
         <div className='top_level_container'>
           <div className='profile_chip_container'>
             <Chip
@@ -237,7 +239,7 @@ class WorkoutCreator extends React.Component {
               onTouchTap={() => this.context.router.push('/profile')}
             >
               <Avatar
-                src={this.state.userProfile.picture}
+                src={this.state.userProfile.picture }
                 onClick={() => this.context.router.push('/profile')}
               />
               {this.state.userProfile.nickname}
@@ -292,6 +294,9 @@ class WorkoutCreator extends React.Component {
           recurring={this.state.recurring}
           errorText={this.state.errors.description}
         />
+      </div>
+      : null
+      }
       </Dialog>
     )
   }
