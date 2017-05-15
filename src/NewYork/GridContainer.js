@@ -150,15 +150,6 @@ class GridComponent extends React.Component {
               onPlaceSelect={onPlaceSelect}
             />
           }
-          {this.state.openedActivity &&
-            <ActivityContainer
-              indexedPlaces={indexedPlaces}
-              openedActivity={this.state.openedActivity}
-              parkTitle={indexedPlaces[this.state.openedActivity].googleData.title}
-              workouts={indexedPlaces[this.state.openedActivity].googleData.workouts}
-              closeActivity={() => this.setActiveIndex()}
-            />
-          }
         </div>
 
         <div className='__grid__list' >
