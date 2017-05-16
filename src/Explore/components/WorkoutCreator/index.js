@@ -13,8 +13,9 @@ import RaisedButton from 'material-ui/RaisedButton'
 import FieldTitle from './fields/title'
 import FieldType from './fields/type'
 import FieldPictureURL from './fields/pictureURL'
-import FieldStartDateTime from './fields/StartDateTime'
-import FieldEndDateTime from './fields/EndDateTime'
+import FieldDate from './fields/Date'
+import FieldStartTime from './fields/StartTime'
+import FieldEndTime from './fields/EndTime'
 import FieldLocation from './fields/location'
 import FieldRequestTrainer from './fields/requestTrainer'
 import FieldDescription from './fields/description'
@@ -23,7 +24,6 @@ import FieldRecurring from './fields/recurring'
 
 import AuthService from 'utils/AuthService'
 
-import 'react-datetime/css/react-datetime.css'
 import './styles.css'
 
 // I'll want to create a subscription here, as well as putting through
@@ -169,6 +169,27 @@ class WorkoutCreator extends React.Component {
     })
   }
 
+  handleDate (moment) {
+    const date = moment.toDate()
+    let startDateTime = this.state.startDateTime || new Date()
+    let endDateTime = this.state.endDateTime || new Date()
+
+    startDateTime = new Date(
+      date.getFullYear(), date.getMonth(), date.getDate(),
+      startDateTime.getHours(), startDateTime.getMinutes(),
+    )
+
+    endDateTime = new Date(
+      date.getFullYear(), date.getMonth(), date.getDate(),
+      startDateTime.getHours(), startDateTime.getMinutes(),
+    )
+
+    this.setState({
+      startDateTime,
+      endDateTime,
+    })
+  }
+
   handleStartDateTime (moment) {
     this.setState({
       startDateTime: moment.toDate(),
@@ -231,73 +252,80 @@ class WorkoutCreator extends React.Component {
         open={this.state.open}
         onRequestClose={this.handleClose.bind(this)}
       >
-      { this.state.userProfile ?
         <div>
-        <div className='top_level_container'>
-          <div className='profile_chip_container'>
-            <Chip
-              className='profile_chip'
-              onTouchTap={() => this.context.router.push('/profile')}
-            >
-              <Avatar
-                src={this.state.userProfile.picture }
-                onClick={() => this.context.router.push('/profile')}
+          <div className='top_level_container'>
+            <div className='profile_chip_container'>
+              <Chip
+                className='profile_chip'
+                onTouchTap={() => this.context.router.push('/profile')}
+              >
+                <Avatar
+                  src={this.state.userProfile.picture }
+                  onClick={() => this.context.router.push('/profile')}
+                />
+                {this.state.userProfile.nickname}
+              </Chip>
+            </div>
+
+            <div className='title_and_type_container'>
+              <FieldTitle onChange={(value) => this.onTitleChange(value)} errorText={this.state.errors.title} />
+              <FieldType onChange={(value) => this.onTypeChange(value)} value={this.state.type} errorText={this.state.errors.type} />
+            </div>
+          </div>
+
+          <div className='add_picture_container'>
+            <FieldPictureURL onChange={(url) => this.handlePictureChange(url)} errorText={this.state.errors.pictureURL} />
+            {this.state.pictureURL &&
+              <img
+                src={this.state.pictureURL}
+                className='workout_picture'
               />
-              {this.state.userProfile.nickname}
-            </Chip>
+            }
           </div>
 
-          <div className='title_and_type_container'>
-            <FieldTitle onChange={(value) => this.onTitleChange(value)} errorText={this.state.errors.title} />
-            <FieldType onChange={(value) => this.onTypeChange(value)} value={this.state.type} errorText={this.state.errors.type} />
-          </div>
-        </div>
-
-        <div className='add_picture_container'>
-          <FieldPictureURL onChange={(url) => this.handlePictureChange(url)} errorText={this.state.errors.pictureURL} />
-          {this.state.pictureURL &&
-            <img
-              src={this.state.pictureURL}
-              className='workout_picture'
+          <div className='time_and_location_container'>
+            <FieldDate
+              onChange={(moment) => this.handleDate(moment)}
+              errorText={this.state.errors.startDateTime}
             />
-          }
-        </div>
+            <FieldStartTime
+              onChange={(moment) => this.handleStartDateTime(moment)}
+              errorText={this.state.errors.startDateTime}
+            />
+            <FieldEndTime
+              onChange={(moment) => this.handleEndDateTime(moment)}
+              errorText={this.state.errors.endDateTime}
+            />
+            <FieldLocation
+              onChange={(value) => this.onLocationChange(value)}
+              places={this.places}
+              parkId={this.state.parkId}
+              errorText={this.state.errors.parkId}
+            />
+          </div>
 
-        <div className='time_and_location_container'>
-          <FieldStartDateTime onChange={(moment) => this.handleStartDateTime(moment)} errorText={this.state.errors.startDateTime} />
-          <FieldEndDateTime onChange={(moment) => this.handleEndDateTime(moment)} errorText={this.state.errors.endDateTime} />
-          <FieldLocation
-            onChange={(value) => this.onLocationChange(value)}
-            places={this.places}
-            parkId={this.state.parkId}
-            errorText={this.state.errors.parkId}
+          <div className='request-trainer-container'>
+            <FieldRequestTrainer
+              onCheck={() => this.handleRequestTrainerToggle()}
+              requestTrainer={this.state.requestTrainer}
+              errorText={this.state.errors.requestTrainer}
+            />
+
+            {this.state.requestTrainer &&
+              <FieldEmail onChange={(value) => this.handleUserEmailChange(value)} errorText={this.state.errors.email} />
+            }
+          </div>
+
+          <FieldDescription
+            onChange={(value) => this.onDescriptionChange(value)}
+            errorText={this.state.errors.description}
+          />
+          <FieldRecurring
+            onCheck={() => this.handleRecurringToggle()}
+            recurring={this.state.recurring}
+            errorText={this.state.errors.description}
           />
         </div>
-
-        <div className='request-trainer-container'>
-          <FieldRequestTrainer
-            onCheck={() => this.handleRequestTrainerToggle()}
-            requestTrainer={this.state.requestTrainer}
-            errorText={this.state.errors.requestTrainer}
-          />
-
-          {this.state.requestTrainer &&
-            <FieldEmail onChange={(value) => this.handleUserEmailChange(value)} errorText={this.state.errors.email} />
-          }
-        </div>
-
-        <FieldDescription
-          onChange={(value) => this.onDescriptionChange(value)}
-          errorText={this.state.errors.description}
-        />
-        <FieldRecurring
-          onCheck={() => this.handleRecurringToggle()}
-          recurring={this.state.recurring}
-          errorText={this.state.errors.description}
-        />
-      </div>
-      : null
-      }
       </Dialog>
     )
   }
@@ -317,7 +345,7 @@ class WorkoutCreator extends React.Component {
           backgroundColor='#CE1F3C'
           onTouchTap={() => this.handleOpen()}
         />
-        {this.auth.loggedIn()
+        {this.auth.loggedIn() && this.state.userProfile
           ? this.loggedInDialog()
           : this.notLoggedInDialog()
         }

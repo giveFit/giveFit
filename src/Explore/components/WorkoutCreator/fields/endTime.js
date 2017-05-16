@@ -1,22 +1,24 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import moment from 'moment'
 
-import Datetime from 'react-datetime'
+import TimePicker from 'material-ui/TimePicker'
 
-const EndDateTime = ({ onChange }) => {
+const EndTime = ({ onChange }) => {
   return (
     <div className='end-time'>
       <span> Pick an End Time <i className='fa fa-clock-o' /></span>
-      <Datetime
-        onChange={(moment) => onChange(moment)}
+      <TimePicker
+        hintText='End Time'
         className='date-time'
+        onChange={(event, time) => onChange(moment(time))}
       />
     </div>
   )
 }
 
-EndDateTime.propTypes = {
+EndTime.propTypes = {
   onChange: PropTypes.func.isRequired,
 }
 
-export default EndDateTime
+export default EndTime

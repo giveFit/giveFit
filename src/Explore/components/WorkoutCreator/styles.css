@@ -58,6 +58,7 @@
 .time_and_location_container {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   background: #CF2A27;
   padding: 1em;
 }
