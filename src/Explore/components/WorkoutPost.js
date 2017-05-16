@@ -29,61 +29,64 @@ class WorkoutPost extends React.Component {
   }
 
   handleRequestClose () {
-	    this.setState({snack: false})
-  };
+    this.setState({snack: false})
+  }
+
   handleSnack () {
     this.setState({snack: !this.state.snack})
   }
+
   handleTouchTap () {
     window.alert('You clicked the Chip.')
   }
+
   handleActionTouchTap () {
-  	this.setState({snack: false})
+    this.setState({snack: false})
     window.alert('Event removed from your calendar.')
-  };
+  }
 
   render () {
     return (
-    	<div>
-			{(this.props.data.node.Workout && this.props.data.node.title)
-				? <Card>
-					<CardText>
-				        <Chip
-				          onTouchTap={() => this.context.router.push('/profile')}
-				          style={inlineStyles.chip}
-				        >
-		        		<Avatar
-			                src={this.props.data.node.Workout.picture}
-			                onClick={() => this.context.router.push('/profile')}
-				        />
-				        {this.props.data.node.Workout.nickname}
-				        </Chip>
-				        {
-				        	<div>
-					        	<p>Title: {this.props.data.node.title}</p>
-						        <p>Date: {this.props.data.node.startDateTime.substr(0, 10)}</p>
-						        <p>Time: {this.props.data.node.startDateTime.substr(11, 5)}</p>
-						        <p>Description: {this.props.data.node.description}</p>
-						        	<Checkbox
-									   label="RSVP"
-									   style={inlineStyles.checkbox}
-									   onCheck={this.handleSnack.bind(this)}
-									/>
-						    </div>
-					    }
-			      </CardText>
-			      </Card>
-				: null
-			}
-		<Snackbar
-	      open={this.state.snack}
-	      message={this.state.messageTrue}
-	      action="undo"
-	      autoHideDuration={this.state.autoHideDuration}
-	      onActionTouchTap={this.handleActionTouchTap.bind(this)}
-	      onRequestClose={this.handleRequestClose.bind(this)}
-	    />
-		</div>
+      <div>
+      {(this.props.data.node.Workout && this.props.data.node.title)
+        ? <Card>
+          <CardText>
+                <Chip
+                  onTouchTap={() => this.context.router.push('/profile')}
+                  style={inlineStyles.chip}
+                >
+                <Avatar
+                      src={this.props.data.node.Workout.picture}
+                      onClick={() => this.context.router.push('/profile')}
+                />
+                {this.props.data.node.Workout.nickname}
+                </Chip>
+                {
+                  <div>
+                    <p>Title: {this.props.data.node.title}</p>
+                    <p>Date: {this.props.data.node.startDateTime.substr(0, 10)}</p>
+                    <p>Time: {this.props.data.node.startDateTime.substr(11, 5)}</p>
+                    <p>Description: {this.props.data.node.description}</p>
+                      <Checkbox
+                     label="RSVP"
+                     style={inlineStyles.checkbox}
+                     onCheck={this.handleSnack.bind(this)}
+                  />
+                </div>
+              }
+            </CardText>
+            </Card>
+        : null
+      }
+    <Snackbar
+        open={this.state.snack}
+        message={this.state.messageTrue}
+        action="undo"
+        autoHideDuration={this.state.autoHideDuration}
+        onActionTouchTap={this.handleActionTouchTap.bind(this)}
+        onRequestClose={this.handleRequestClose.bind(this)}
+      />
+    </div>
     )
   }
 }

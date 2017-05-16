@@ -10,7 +10,7 @@ import Activities from './Activities/'
 
 // import ActivityContainer from './ActivityContainer'
 import MapContainer from './Map/index'
-import AddActivity from './components/WorkoutCreator/index'
+import AddActivity from './AddActivity/index'
 
 class GridComponent extends React.Component {
   constructor (props) {
@@ -33,6 +33,16 @@ class GridComponent extends React.Component {
     this.geocoder = new this.googleMaps.Geocoder()
   }
 
+  componentDidMount () {
+    this.fetchParks()
+  }
+
+  componentDidUpdate (prevProps, prevState) {
+    if (prevProps.workouts.length !== this.props.workouts.length) {
+      this.fetchParks()
+    }
+  }
+
   /*
     Working on Google API for location fetching
     This google apis return the places in sets of 20, the maximum number of
@@ -43,12 +53,6 @@ class GridComponent extends React.Component {
     how to do multiple types
     http://stackoverflow.com/questions/19625228/google-maps-api-multiple-keywords-in-place-searches
   */
-  componentDidUpdate (prevProps, prevState) {
-    if (prevProps.workouts.length !== this.props.workouts.length) {
-      this.fetchParks()
-    }
-  }
-
   fetchParks () {
     const { centerLatLng, workouts } = this.props
 
@@ -155,25 +159,27 @@ class GridComponent extends React.Component {
             />*/}
         </div>
 
-        <div className='__grid__list' >
-          {/*<Tabs className='__tabs__container'>
-            <Tab label='Activities'>*/}
-              <AddActivity indexedParks={indexedParks} />
-              <Activities
-                workouts={indexedParks[openedParkID] ? indexedParks[openedParkID].workouts : []}
-              />
-            {/*</Tab>*/}
-            {/*<Tab label='Locations'>
-              <AddActivity indexedParks={indexedParks} />
-              <Groups
-                placeById={indexedParks}
-                profile={profile}
-                activeMarkerIndex={activeMarkerIndex}
-                onFeedItemClick={(index, parkID) => this.setActiveIndex(index, parkID)}
-              />
-            </Tab>
-          </Tabs>*/}
-        </div>
+        {loadedMapData &&
+          <div className='__grid__list' >
+            {/*<Tabs className='__tabs__container'>
+              <Tab label='Activities'>*/}
+                <AddActivity indexedParks={indexedParks} />
+                <Activities
+                  workouts={indexedParks[openedParkID] ? indexedParks[openedParkID].workouts : []}
+                />
+              {/*</Tab>*/}
+              {/*<Tab label='Locations'>
+                <AddActivity indexedParks={indexedParks} />
+                <Groups
+                  placeById={indexedParks}
+                  profile={profile}
+                  activeMarkerIndex={activeMarkerIndex}
+                  onFeedItemClick={(index, parkID) => this.setActiveIndex(index, parkID)}
+                />
+              </Tab>
+            </Tabs>*/}
+          </div>
+        }
       </div>
     )
   }
