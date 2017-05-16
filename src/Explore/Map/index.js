@@ -6,7 +6,7 @@ import { GoogleMapLoader, GoogleMap, Marker } from 'react-google-maps'
 import mapStyles from './mapStyles.json'
 // can we get some hot icons in here? http://map-icons.com/
 
-class MarkerList extends React.Component {
+class Map extends React.Component {
   // gets us our map on click location, may pass for location queries in
   // the future
   geocodeLatLng (obj) {
@@ -41,39 +41,44 @@ class MarkerList extends React.Component {
   render () {
     const {
       mapCenter,
-      indexedPlaces,
+      indexedParks,
       activeMarker,
       onMarkerClick,
     } = this.props
 
     return (
       <GoogleMapLoader
-        containerElement={<div style={{ height: '100%' }} />}
+        containerElement={<div style={{ height: '100%', width: '100%' }} />}
         googleMapElement={
           <GoogleMap
+            style={{ height: '100%', width: '100%' }}
             ref={(map) => { this._googleMapComponent = map }}
             defaultOptions={{ styles: mapStyles }}
             defaultZoom={14}
             defaultCenter={mapCenter}
             onClick={(...args) => this.geocodeLatLng(...args)}
           >
-            {Object.keys(indexedPlaces).map((placeID, index) => {
-              return (
-                <Marker
-                  key={index}
-                  animation={activeMarker === index
-                    ? window.google.maps.Animation.BOUNCE
-                    : null
-                  }
-                  icon={activeMarker === index
-                    ? `https://maps.google.com/mapfiles/ms/icons/lightblue.png`
-                    : `https://maps.google.com/mapfiles/ms/icons/pink.png`
-                  }
-                  {...indexedPlaces[placeID].googleData}
-                  onClick={() => onMarkerClick(index, placeID)}
-                  onRightclick={() => console.log(placeID, index)}
-                />
-              )
+            {Object.keys(indexedParks).map((placeID, index) => {
+              const place = indexedParks[placeID]
+
+              if (place.workouts.length) {
+                return (
+                  <Marker
+                    key={index}
+                    animation={activeMarker === index
+                      ? window.google.maps.Animation.BOUNCE
+                      : null
+                    }
+                    icon={activeMarker === index
+                      ? `https://maps.google.com/mapfiles/ms/icons/lightblue.png`
+                      : `https://maps.google.com/mapfiles/ms/icons/pink.png`
+                    }
+                    {...place}
+                    onClick={() => onMarkerClick(index, placeID)}
+                    onRightclick={() => console.log(placeID, index)}
+                  />
+                )
+              }
             })}
           </GoogleMap>
         }
@@ -82,13 +87,13 @@ class MarkerList extends React.Component {
   }
 }
 
-MarkerList.propTypes = {
+Map.propTypes = {
   mapCenter: PropTypes.object.isRequired,
-  indexedPlaces: PropTypes.object.isRequired,
+  indexedParks: PropTypes.object.isRequired,
   activeMarker: PropTypes.number.isRequired,
   geocoder: PropTypes.object,
   onMarkerClick: PropTypes.func.isRequired,
   onPlaceSelect: PropTypes.func.isRequired,
 }
 
-export default MarkerList
+export default Map

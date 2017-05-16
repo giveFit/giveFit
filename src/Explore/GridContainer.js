@@ -1,14 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { Tab, Tabs } from 'material-ui'
+// import { Tab, Tabs } from 'material-ui'
 
 import foursquare from 'utils/foursquareApi'
 
-import Groups from './Groups/ParkContainer'
+// import Groups from './Groups/ParkContainer'
 import Activities from './Activities/'
 
-import ActivityContainer from './ActivityContainer'
+// import ActivityContainer from './ActivityContainer'
 import MapContainer from './Map/index'
 import AddActivity from './components/WorkoutCreator/index'
 
@@ -24,10 +24,10 @@ class GridComponent extends React.Component {
     }
 
     this.state = {
-      parksAndGyms: [],
+      indexedParks: {},
       loadedMapData: false,
-      activeIndex: -1,
-      openedActivity: '',
+      activeMarkerIndex: -1,
+      openedParkID: '',
     }
 
     this.geocoder = new this.googleMaps.Geocoder()
@@ -43,56 +43,79 @@ class GridComponent extends React.Component {
     how to do multiple types
     http://stackoverflow.com/questions/19625228/google-maps-api-multiple-keywords-in-place-searches
   */
-  componentDidMount () {
-    const { centerLatLng } = this.props
+  componentDidUpdate (prevProps, prevState) {
+    if (prevProps.workouts.length !== this.props.workouts.length) {
+      this.fetchParks()
+    }
+  }
+
+  fetchParks () {
+    const { centerLatLng, workouts } = this.props
 
     // Note : This concatination logic can be moved to foursquareApi.js to keep it consistent with googleApi
     // FourSquare category tree: https://developer.foursquare.com/categorytree
-    const recCenters = {
+    const query = {
       ll: centerLatLng.lat.toString().concat(',' + centerLatLng.lng.toString()),
       radius: 5000,
       query: 'recreation center',
       venuePhotos: 1,
     }
-    const parks = {
-      ll: centerLatLng.lat.toString().concat(',' + centerLatLng.lng.toString()),
-      radius: 5000,
-      query: 'park',
-      venuePhotos: 1,
-    }
 
-    try {
-      // Foursquare api calls
-      // Explore: https://developer.foursquare.com/docs/venues/explore
-      const recCentersPromise = foursquare.venues.explore(recCenters)
-      const parksPromise = foursquare.venues.explore(parks)
+    // Foursquare api calls
+    // Explore: https://developer.foursquare.com/docs/venues/explore
+    const recCentersPromise = foursquare.venues.explore(Object.assign({}, query, { query: 'recreation center' }))
+    const parksPromise = foursquare.venues.explore(Object.assign({}, query, { query: 'park' }))
 
-      Promise.all([parksPromise, recCentersPromise])
-        .then(([recCentersResult, parksResult]) => {
-          const recCenterItems = recCentersResult.response.groups[0].items
-          const parksResultItems = parksResult.response.groups[0].items
+    Promise.all([recCentersPromise, parksPromise])
+      .then(([recCentersResult, parksResult]) => {
+        const recCenters = recCentersResult.response.groups[0].items
+        const parksResults = parksResult.response.groups[0].items
+        const parksAndRecs = parksResults.concat(recCenters)
 
-          this.setState({
-            // NOTE: move this traversal to the utils files
-            parks: parksResultItems,
-            parksAndGyms: parksResultItems.concat(recCenterItems),
-            loadedMapData: true,
-          })
+        // Build parks by ID object
+        const indexedParks = {}
+
+        // @todo: move this traversal to the utils files
+        parksAndRecs.map((park) => {
+          var parkVenue = park.venue
+          // need to iterate over workouts, matching them to the place_id, adding
+          // them as an array to the indexedParks
+          const filteredWorkouts = workouts.filter((workout) => parkVenue.id === workout.node.parkId)
+
+          indexedParks[parkVenue.id] = {
+            parkId: parkVenue.id,
+            title: parkVenue.name,
+            position: {
+              lat: parkVenue.location.lat,
+              lng: parkVenue.location.lng,
+            },
+            rating: parkVenue.rating,
+            photos: this.foursquareGetUrl(parkVenue.photos),
+            vicinity: parkVenue.location.address,
+            workouts: filteredWorkouts,
+          }
         })
-    } catch (err) {
-      console.log(err)
-    }
+
+        this.setState({
+          indexedParks,
+          loadedMapData: true,
+        })
+      })
+      .catch((err) => console.log(err))
   }
 
   setActiveIndex (index, parkID = '') {
-    if (parkID === this.state.openedActivity) {
+    if (parkID === this.state.openedParkID) {
       parkID = ''
     }
 
-    var activeIndex = index === undefined ? -1 : index
+    if (index === this.state.activeMarkerIndex) {
+      index = -1
+    }
 
-    this.setState({ openedActivity: parkID,
-      activeIndex,
+    this.setState({
+      openedParkID: parkID,
+      activeMarkerIndex: index,
     })
   }
 
@@ -106,36 +129,7 @@ class GridComponent extends React.Component {
 
   render () {
     const { centerLatLng, workouts, profile, onPlaceSelect } = this.props
-    const { loadedMapData, activeIndex, parksAndGyms } = this.state
-
-    // Build placeById object
-    const indexedPlaces = {}
-
-    parksAndGyms.forEach((park) => {
-      var parkVenue = park.venue
-      // need to iterate over workouts, matching them to the place_id, adding
-      // them as an array to the indexedPlaces
-      const filteredWorkouts = workouts.filter((workout) => {
-        return parkVenue.id === workout.node.parkId
-      })
-
-      indexedPlaces[parkVenue.id] = {
-        // comments: workout.comments,
-        googleData: {
-          parkId: parkVenue.id,
-          title: parkVenue.name,
-          position: {
-            lat: parkVenue.location.lat,
-            lng: parkVenue.location.lng,
-          },
-          rating: parkVenue.rating,
-          photos: this.foursquareGetUrl(parkVenue.photos),
-          vicinity: parkVenue.location.address,
-          // types: parkVenue.types,
-          workouts: filteredWorkouts,
-        },
-      }
-    })
+    const { loadedMapData, activeMarkerIndex, indexedParks, openedParkID } = this.state
 
     return (
       <div className='__app__body__container'>
@@ -143,19 +137,20 @@ class GridComponent extends React.Component {
           {loadedMapData &&
             <MapContainer
               mapCenter={centerLatLng}
-              indexedPlaces={indexedPlaces}
-              activeMarker={activeIndex}
+              workouts={workouts}
+              indexedParks={indexedParks}
+              activeMarker={activeMarkerIndex}
               geocoder={this.geocoder}
               onMarkerClick={(index, parkID) => this.setActiveIndex(index, parkID)}
               onPlaceSelect={onPlaceSelect}
             />
           }
-          {/*this.state.openedActivity &&
+          {/*this.state.openedParkID &&
             <ActivityContainer
-              indexedPlaces={indexedPlaces}
-              openedActivity={this.state.openedActivity}
-              parkTitle={indexedPlaces[this.state.openedActivity].googleData.title}
-              workouts={indexedPlaces[this.state.openedActivity].googleData.workouts}
+              indexedParks={indexedParks}
+              openedParkID={this.state.openedParkID}
+              parkTitle={indexedParks[this.state.openedParkID].googleData.title}
+              workouts={indexedParks[this.state.openedParkID].googleData.workouts}
               closeActivity={() => this.setActiveIndex()}
             />*/}
         </div>
@@ -163,17 +158,17 @@ class GridComponent extends React.Component {
         <div className='__grid__list' >
           {/*<Tabs className='__tabs__container'>
             <Tab label='Activities'>*/}
-              <AddActivity indexedPlaces={indexedPlaces} />
+              <AddActivity indexedParks={indexedParks} />
               <Activities
-                workouts={workouts}
+                workouts={indexedParks[openedParkID] ? indexedParks[openedParkID].workouts : []}
               />
             {/*</Tab>*/}
             {/*<Tab label='Locations'>
-              <AddActivity indexedPlaces={indexedPlaces} />
+              <AddActivity indexedParks={indexedParks} />
               <Groups
-                placeById={indexedPlaces}
+                placeById={indexedParks}
                 profile={profile}
-                activeIndex={activeIndex}
+                activeMarkerIndex={activeMarkerIndex}
                 onFeedItemClick={(index, parkID) => this.setActiveIndex(index, parkID)}
               />
             </Tab>

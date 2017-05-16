@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { graphql, compose } from 'react-apollo'
 
 import { CREATE_WORKOUT, LOGGEDIN_USER_QUERY } from './gql'
@@ -57,8 +58,8 @@ class WorkoutCreator extends React.Component {
     const scapholdUser = window.localStorage.getItem('scapholdUserId') ? this.auth.getLoggedInUser() : null
     const userProfile = JSON.parse(window.localStorage.getItem('user_profile'))
 
-    this.places = Object.keys(this.props.indexedPlaces).map((placeID) => {
-      const place = this.props.indexedPlaces[placeID].googleData
+    this.places = Object.keys(this.props.indexedParks).map((placeID) => {
+      const place = this.props.indexedParks[placeID]
 
       return {
         title: place.title,
@@ -230,7 +231,7 @@ class WorkoutCreator extends React.Component {
         open={this.state.open}
         onRequestClose={this.handleClose.bind(this)}
       >
-      { this.state.userProfile ? 
+      { this.state.userProfile ?
         <div>
         <div className='top_level_container'>
           <div className='profile_chip_container'>
@@ -325,9 +326,13 @@ class WorkoutCreator extends React.Component {
   }
 }
 
+WorkoutCreator.propTypes = {
+  indexedParks: PropTypes.object.isRequired,
+}
+
 const WorkoutCreatorWithData = compose(
   graphql(CREATE_WORKOUT, {
-    props: ({ mutate }) => ({  
+    props: ({ mutate }) => ({
       createWorkout: (input) => mutate({ variables: { input: input } }),
     }),
   })
