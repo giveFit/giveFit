@@ -37,15 +37,14 @@ class App extends React.Component {
     // updateUser/loginUser expects userId, not user_id
     identity.userId = identity.user_id
     delete identity.user_id
-    const that = this
+
     this.props.loginUser({
       identity: identity,
       access_token: tokenPayload.accessToken,
     })
       .then((res) => {
-        console.log('are we getting a res from the gridcontainer', res)
         const scapholdUserId = res.data.loginUserWithAuth0Lock.user.id
-        console.log('this', this)
+
         this.setState({
           profile: auth0Profile,
           userId: scapholdUserId,

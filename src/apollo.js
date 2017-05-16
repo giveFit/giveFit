@@ -18,13 +18,9 @@ export default () => {
       if (!req.options.headers) {
         req.options.headers = {}  // Create the header object if needed.
       }
-      if (window.localStorage.getItem('scaphold_user_token')) {
-        // assumes we have logged in and stored the returned user token in local storage
-        // per scaphold
-        //req.options.headers.Authorization = `Bearer ${localStorage.getItem('scaphold_user_token')}`;
-        // per us
-        req.options.headers['authorization'] = window.localStorage.getItem('scaphold_user_token') || null
-      }
+
+      req.options.headers['Authorization'] = window.localStorage.getItem('scaphold_user_token') || null
+
       next()
     },
   }])

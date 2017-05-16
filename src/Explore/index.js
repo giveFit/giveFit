@@ -51,14 +51,15 @@ class Explore extends React.Component {
   }
 }
 
-
 Explore.propTypes = {
   location: PropTypes.object.isRequired,
   data: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
-  //profile: PropTypes.object.isRequired,
+  profile: PropTypes.object.isRequired,
 }
 
-const ExploreWithData = graphql(GET_THROUGH_VIEWER)(Explore)
+const ExploreWithData = compose(
+  graphql(GET_THROUGH_VIEWER, {})
+)(Explore)
 
 export default ExploreWithData
