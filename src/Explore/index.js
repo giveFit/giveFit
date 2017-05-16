@@ -13,11 +13,12 @@ class Explore extends React.Component {
 
     this.centerLatLng = null
 
+    const { defaultLat, defaultLng } = this.props.route
     const { query } = this.props.location
 
     this.centerLatLng = {
-      lat: query.lat ? parseFloat(query.lat) : 39.2904,
-      lng: query.lng ? parseFloat(query.lng) : -76.6122,
+      lat: query.lat ? parseFloat(query.lat) : defaultLat,
+      lng: query.lng ? parseFloat(query.lng) : defaultLng,
     }
   }
 
@@ -52,6 +53,7 @@ class Explore extends React.Component {
 }
 
 Explore.propTypes = {
+  route: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   data: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,

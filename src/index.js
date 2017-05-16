@@ -19,7 +19,6 @@ import App from 'App/'
 import Home from 'Home/'
 import Explore from 'Explore/'
 import Profile from 'Profile/'
-import NewYork from 'NewYork/'
 
 import './base.css'
 
@@ -33,9 +32,9 @@ const routes = {
   component: App,
   indexRoute: { component: Home },
   childRoutes: [
-    { path: 'explore', component: Explore },
+    { path: 'explore', component: Explore, defaultLat: 39.2904, defaultLng: -76.6122 },
+    { path: 'new-york', component: Explore, defaultLat: 40.7128, defaultLng: -74.0059 },
     { path: 'profile', component: Profile },
-    { path: 'new-york', component: NewYork },
   ],
 }
 
