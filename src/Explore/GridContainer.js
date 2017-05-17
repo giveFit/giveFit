@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 // import { Tab, Tabs } from 'material-ui'
 
-import foursquare from 'utils/foursquareApi'
+import axios from 'axios'
 
 // import Groups from './Groups/ParkContainer'
 import Activities from './Activities/'
@@ -55,24 +55,27 @@ class GridComponent extends React.Component {
   fetchParks () {
     const { centerLatLng, workouts } = this.props
 
-    // Note : This concatination logic can be moved to foursquareApi.js to keep it consistent with googleApi
-    // FourSquare category tree: https://developer.foursquare.com/categorytree
-    const query = {
-      ll: centerLatLng.lat.toString().concat(',' + centerLatLng.lng.toString()),
-      radius: 5000,
-      query: 'recreation center',
-      venuePhotos: 1,
-    }
-
     // Foursquare api calls
     // Explore: https://developer.foursquare.com/docs/venues/explore
-    const recCentersPromise = foursquare.venues.explore(Object.assign({}, query, { query: 'recreation center' }))
-    const parksPromise = foursquare.venues.explore(Object.assign({}, query, { query: 'park' }))
+    const foursquare = (query) => {
+      return axios.get('https://api.foursquare.com/v2/venues/explore', {
+        params: {
+          client_id: process.env.FOURSQUARE_CLIENT_ID_KEY,
+          client_secret: process.env.FOURSQUARE_CLIENT_SECRET_KEY,
+          ll: centerLatLng.lat.toString().concat(',' + centerLatLng.lng.toString()),
+          radius: 5000,
+          venuePhotos: 1,
+          query,
+          m: 'foursquare',
+          locale: 'en',
+          v: '20140806',
+        },
+      })
+        .then(({ data }) => data.response.groups[0].items)
+    }
 
-    Promise.all([recCentersPromise, parksPromise])
-      .then(([recCentersResult, parksResult]) => {
-        const recCenters = recCentersResult.response.groups[0].items
-        const parksResults = parksResult.response.groups[0].items
+    Promise.all([foursquare('recreation center'), foursquare('park')])
+      .then(([recCenters, parksResults]) => {
         const parksAndRecs = parksResults.concat(recCenters)
 
         // Build parks by ID object
@@ -80,7 +83,8 @@ class GridComponent extends React.Component {
 
         // @todo: move this traversal to the utils files
         parksAndRecs.map((park) => {
-          var parkVenue = park.venue
+          const parkVenue = park.venue
+
           // need to iterate over workouts, matching them to the place_id, adding
           // them as an array to the indexedParks
           const filteredWorkouts = workouts.filter((workout) => parkVenue.id === workout.node.parkId)
@@ -92,7 +96,6 @@ class GridComponent extends React.Component {
               lat: parkVenue.location.lat,
               lng: parkVenue.location.lng,
             },
-            rating: parkVenue.rating,
             photos: this.foursquareGetUrl(parkVenue.photos),
             vicinity: parkVenue.location.address,
             workouts: filteredWorkouts,
