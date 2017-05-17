@@ -66,7 +66,11 @@ class Activities extends React.Component {
                 src={workout.pictureURL}
               />
               <div className='__workout__information'>
-                <div>{moment(workout.startDateTime).format('ddd MMM Do, YYYY h:mm a')} - {moment(workout.endDateTime).format('LT')}</div>
+                <div>
+                  {moment(workout.startDateTime).format('ddd MMM Do, YYYY h:mm a')} - {moment(workout.endDateTime).format('LT')}
+                  <br />
+                  <b>Location: </b>{this.props.indexedParks[workout.parkId].title}
+                </div>
                 <div>
                   <i
                     className='fa fa-bookmark-o __share__icon'
@@ -103,6 +107,7 @@ class Activities extends React.Component {
 }
 
 Activities.propTypes = {
+  indexedParks: PropTypes.object.isRequired,
   workouts: PropTypes.array.isRequired,
   handleWorkoutClick: PropTypes.func.isRequired,
 }
