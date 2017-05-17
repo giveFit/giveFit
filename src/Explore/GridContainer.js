@@ -26,8 +26,7 @@ class GridComponent extends React.Component {
     this.state = {
       indexedParks: {},
       loadedMapData: false,
-      activeMarkerIndex: -1,
-      openedParkID: '',
+      openedParkId: '',
     }
 
     this.geocoder = new this.googleMaps.Geocoder()
@@ -108,21 +107,6 @@ class GridComponent extends React.Component {
       .catch((err) => console.log(err))
   }
 
-  setActiveIndex (index, parkID = '') {
-    if (parkID === this.state.openedParkID) {
-      parkID = ''
-    }
-
-    if (index === this.state.activeMarkerIndex) {
-      index = -1
-    }
-
-    this.setState({
-      openedParkID: parkID,
-      activeMarkerIndex: index,
-    })
-  }
-
   // Url generator for foursquare
   foursquareGetUrl (photos) {
     var image = photos.groups && photos.groups[0] && photos.groups[0].items[0]
@@ -131,9 +115,25 @@ class GridComponent extends React.Component {
     return image ? image.prefix + 'original' + image.suffix : null
   }
 
+  setActiveMarker (parkId = '') {
+    if (parkId === this.state.openedParkId) {
+      parkId = ''
+    }
+
+    this.setState({
+      openedParkId: parkId,
+    })
+  }
+
+  handleWorkoutClick (parkId) {
+    this.setState({
+      openedParkId: parkId,
+    })
+  }
+
   render () {
     const { centerLatLng, workouts, profile, onPlaceSelect } = this.props
-    const { loadedMapData, activeMarkerIndex, indexedParks, openedParkID } = this.state
+    const { loadedMapData, indexedParks, openedParkId } = this.state
 
     return (
       <div className='__app__body__container'>
@@ -143,19 +143,19 @@ class GridComponent extends React.Component {
               mapCenter={centerLatLng}
               workouts={workouts}
               indexedParks={indexedParks}
-              activeMarker={activeMarkerIndex}
+              openedParkId={openedParkId}
               geocoder={this.geocoder}
-              onMarkerClick={(index, parkID) => this.setActiveIndex(index, parkID)}
+              onMarkerClick={(parkId) => this.setActiveMarker(parkId)}
               onPlaceSelect={onPlaceSelect}
             />
           }
-          {/*this.state.openedParkID &&
+          {/*this.state.openedParkId &&
             <ActivityContainer
               indexedParks={indexedParks}
-              openedParkID={this.state.openedParkID}
-              parkTitle={indexedParks[this.state.openedParkID].googleData.title}
-              workouts={indexedParks[this.state.openedParkID].googleData.workouts}
-              closeActivity={() => this.setActiveIndex()}
+              openedParkId={this.state.openedParkId}
+              parkTitle={indexedParks[this.state.openedParkId].googleData.title}
+              workouts={indexedParks[this.state.openedParkId].googleData.workouts}
+              closeActivity={() => this.setActiveMarker()}
             />*/}
         </div>
 
@@ -165,7 +165,8 @@ class GridComponent extends React.Component {
               <Tab label='Activities'>*/}
                 <AddActivity indexedParks={indexedParks} />
                 <Activities
-                  workouts={indexedParks[openedParkID] ? indexedParks[openedParkID].workouts : workouts}
+                  workouts={indexedParks[openedParkId] ? indexedParks[openedParkId].workouts : workouts}
+                  handleWorkoutClick={(parkId) => this.handleWorkoutClick(parkId)}
                 />
               {/*</Tab>*/}
               {/*<Tab label='Locations'>
@@ -173,8 +174,7 @@ class GridComponent extends React.Component {
                 <Groups
                   placeById={indexedParks}
                   profile={profile}
-                  activeMarkerIndex={activeMarkerIndex}
-                  onFeedItemClick={(index, parkID) => this.setActiveIndex(index, parkID)}
+                  onFeedItemClick={(parkId) => this.setActiveMarker(parkId)}
                 />
               </Tab>
             </Tabs>*/}

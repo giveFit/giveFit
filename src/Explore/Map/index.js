@@ -42,7 +42,7 @@ class Map extends React.Component {
     const {
       mapCenter,
       indexedParks,
-      activeMarker,
+      openedParkId,
       onMarkerClick,
     } = this.props
 
@@ -65,16 +65,16 @@ class Map extends React.Component {
                 return (
                   <Marker
                     key={index}
-                    animation={activeMarker === index
+                    animation={openedParkId === placeID
                       ? window.google.maps.Animation.BOUNCE
                       : null
                     }
-                    icon={activeMarker === index
+                    icon={openedParkId === placeID
                       ? `https://maps.google.com/mapfiles/ms/icons/lightblue.png`
                       : `https://maps.google.com/mapfiles/ms/icons/pink.png`
                     }
                     {...place}
-                    onClick={() => onMarkerClick(index, placeID)}
+                    onClick={() => onMarkerClick(placeID)}
                     onRightclick={() => console.log(placeID, index)}
                   />
                 )
@@ -90,7 +90,7 @@ class Map extends React.Component {
 Map.propTypes = {
   mapCenter: PropTypes.object.isRequired,
   indexedParks: PropTypes.object.isRequired,
-  activeMarker: PropTypes.number.isRequired,
+  openedParkId: PropTypes.string.isRequired,
   geocoder: PropTypes.object,
   onMarkerClick: PropTypes.func.isRequired,
   onPlaceSelect: PropTypes.func.isRequired,

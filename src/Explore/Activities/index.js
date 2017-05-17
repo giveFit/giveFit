@@ -42,7 +42,7 @@ class Activities extends React.Component {
         workout = workout.node
 
         return (
-          <CardText key={`workout-${index}`}>
+          <CardText key={`workout-${index}`} onClick={() => this.props.handleWorkoutClick(workout.parkId)}>
             <div className='__workout__header'>
               <Chip
                 onTouchTap={() => this.context.router.push('/profile')}
@@ -104,6 +104,7 @@ class Activities extends React.Component {
 
 Activities.propTypes = {
   workouts: PropTypes.array.isRequired,
+  handleWorkoutClick: PropTypes.array.isRequired,
 }
 
 export default Activities

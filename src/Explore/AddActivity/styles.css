@@ -11,6 +11,10 @@
   box-shadow: none!important;
 }
 
+.add-activity button {
+  z-index: 0!important;
+}
+
 .top_level_container {
   width: 100%;
   box-sizing: border-box;
