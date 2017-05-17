@@ -57,7 +57,7 @@ Explore.propTypes = {
   location: PropTypes.object.isRequired,
   data: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
-  profile: PropTypes.object.isRequired,
+  profile: PropTypes.object,
 }
 
 const ExploreWithData = compose(

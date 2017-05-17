@@ -8,7 +8,7 @@ class Header extends React.Component {
   render () {
     return (
       <div id='Header' className='__app__header'>
-        {!this.props.auth.loggedIn()
+        {!this.props.auth.loggedIn() && this.props.profile
           ? <MainToolbar auth={this.props.auth} />
           : <LoggedInToolbar
               auth={this.props.auth}
