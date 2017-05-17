@@ -59,6 +59,8 @@ config.plugins.push(new webpack.DefinePlugin({
     FILESTACK_API: JSON.stringify(envVariables.FILESTACK_API),
     GOOGLE_API: JSON.stringify(envVariables.GOOGLE_API),
     SCAPHOLD_URL: JSON.stringify(envVariables.SCAPHOLD_URL),
+    FOURSQUARE_CLIENT_ID_KEY: JSON.stringify(envVariables.FOURSQUARE_CLIENT_ID_KEY),
+    FOURSQUARE_CLIENT_SECRET_KEY: JSON.stringify(envVariables.FOURSQUARE_CLIENT_SECRET_KEY),
   },
 }))
 

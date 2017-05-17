@@ -1,7 +1,6 @@
 // Helper class to encapsulate login functionality
 import EventEmitter from 'events'
 import Auth0Lock from 'auth0-lock'
-import { browserHistory } from 'react-router'
 
 var options = {
   /* auth: {
@@ -35,7 +34,6 @@ export default class AuthService extends EventEmitter {
 
       this.setProfile(profile)
       this.emit('authenticated', profile, tokenPaylod)
-      // browserHistory.replace('/home-logged-in')
     })
 
     // Saves the user token

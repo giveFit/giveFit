@@ -9,6 +9,7 @@
     "start-server": "nodemon server.js",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
+    "build": "cross-env NODE_ENV=production webpack",
     "lint": "eslint ./ --cache --quiet --ext .js",
     "lint-fix": "eslint ./ --cache --quiet --ext .js --fix"
   },
@@ -19,7 +20,7 @@
     "auth0-lock": "^10.9.2",
     "babel-eslint": "^7.2.3",
     "babel-polyfill": "^6.22.0",
-    "babel-preset-stage-2": "^6.22.0",
+    "babel-preset-stage-0": "^6.24.1",
     "body-parser": "^1.15.2",
     "chai": "^3.5.0",
     "cross-env": "^5.0.0",
