@@ -37,7 +37,7 @@
     "react-apollo": "1.2.x",
     "react-autosuggest": "^9.0.1",
     "react-dom": "^15.3.2",
-    "react-filepicker": "^0.10.7",
+    "react-filestack": "^0.7.8",
     "react-google-maps": "^4.11.0",
     "react-native-foursquare-api": "0.0.4",
     "react-router": "2.8.x",

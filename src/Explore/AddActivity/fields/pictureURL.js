@@ -1,20 +1,20 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import ReactFilepicker from 'react-filepicker'
+import ReactFilestack from 'react-filestack'
 
 const PictureURL = ({ onChange }) => {
   return (
-    <ReactFilepicker
+    <ReactFilestack
       apikey={process.env.FILESTACK_API}
       options={{
-        mimetype: 'image/*',
-        services: ['COMPUTER', 'FACEBOOK', 'INSTAGRAM', 'GOOGLE_DRIVE', 'DROPBOX'],
+        maxFiles: 1,
       }}
-      buttonText={`<span><i class='fa fa-plus-circle'></i> Add Picture</span>`}
-      onSuccess={(res) => onChange(res.url)}
+      onSuccess={(res) => {
+        onChange(res.filesUploaded[0].url)
+      }}
       buttonClass='add_picture_button'
-      mode='pickAndStore'
+      buttonText={<span><i className='fa fa-plus-circle'></i> Add Picture</span>}
     />
   )
 }
