@@ -19,7 +19,9 @@ export default () => {
         req.options.headers = {}  // Create the header object if needed.
       }
 
-      req.options.headers['Authorization'] = window.localStorage.getItem('scaphold_user_token') || null
+      if (window.localStorage.getItem('scaphold_user_token')) {
+        req.options.headers['Authorization'] = window.localStorage.getItem('scaphold_user_token')
+      }
 
       next()
     },

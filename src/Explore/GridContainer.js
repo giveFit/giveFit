@@ -165,7 +165,7 @@ class GridComponent extends React.Component {
               <Tab label='Activities'>*/}
                 <AddActivity indexedParks={indexedParks} />
                 <Activities
-                  workouts={indexedParks[openedParkID] ? indexedParks[openedParkID].workouts : []}
+                  workouts={indexedParks[openedParkID] ? indexedParks[openedParkID].workouts : workouts}
                 />
               {/*</Tab>*/}
               {/*<Tab label='Locations'>
