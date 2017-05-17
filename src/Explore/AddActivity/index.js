@@ -28,7 +28,7 @@ import './styles.css'
 
 // I'll want to create a subscription here, as well as putting through
 // a groupId to match with whichever group the data is being submitted on
-class WorkoutCreator extends React.Component {
+class AddActivity extends React.Component {
   constructor (props, context) {
     super(props, context)
 
@@ -45,8 +45,8 @@ class WorkoutCreator extends React.Component {
       scapholdUser: null,
       userEmail: null,
       recurring: false,
-      userProfile: {},
       errors: {},
+      date: new Date(),
     }
 
     this.places = []
@@ -55,161 +55,101 @@ class WorkoutCreator extends React.Component {
   }
 
   componentDidMount () {
-    const scapholdUser = window.localStorage.getItem('scapholdUserId') ? this.auth.getLoggedInUser() : null
-    const userProfile = JSON.parse(window.localStorage.getItem('user_profile'))
-
     this.places = Object.keys(this.props.indexedParks).map((placeID) => {
       const place = this.props.indexedParks[placeID]
 
       return {
         title: place.title,
         id: place.parkId,
+        _geoloc: place.position,
       }
     })
+  }
 
-    this.setState({
-      scapholdUser,
-      userProfile,
+  createWorkout () {
+    const _geoloc = {}
+    let {
+      title,
+      type,
+      date,
+      startDateTime,
+      endDateTime,
+      description,
+      requestTrainer,
+      pictureURL,
+      parkId,
+      userEmail,
+      recurring,
+    } = this.state
+
+    if (parkId) {
+      _geoloc.lng = this.props.indexedParks[parkId].position.lng
+      _geoloc.lat = this.props.indexedParks[parkId].position.lat
+    }
+
+    if (date && startDateTime && endDateTime) {
+      startDateTime = new Date(
+        date.getFullYear(), date.getMonth(), date.getDate(),
+        startDateTime.getHours(), startDateTime.getMinutes(),
+      )
+
+      endDateTime = new Date(
+        date.getFullYear(), date.getMonth(), date.getDate(),
+        startDateTime.getHours(), startDateTime.getMinutes(),
+      )
+    }
+    this.props.createWorkout({
+      title,
+      type,
+      startDateTime,
+      endDateTime,
+      description,
+      requestTrainer,
+      pictureURL,
+      parkId,
+      userEmail,
+      recurring,
+      _geoloc,
+      // workoutId is the id of the loggedInUser, allowing us to make a connection in our data graph
+      workoutId: JSON.parse(window.localStorage.getItem('scapholdUserId')),
     })
+      .then(({ data }) => {
+        console.log(data.createWorkout.changedWorkout)
+
+        this.setState({
+          open: false,
+          requestTrainer: false,
+          title: null,
+          type: null,
+          description: null,
+          pictureURL: null,
+          userEmail: null,
+          startDateTime: null,
+          endDateTime: null,
+          parkId: null,
+          recurring: false,
+        })
+      }).catch((error) => {
+        console.log(error)
+
+        const errors = error.toString().split('\n')
+
+        for (let i = 1; i < errors.length; i++) {
+          const fieldName = errors[i].split('"')[1]
+
+          errors[fieldName] = 'This field is required'
+        }
+
+        this.setState({ errors })
+      })
+  }
+
+  handleClose () {
+    this.setState({ open: false })
   }
 
   handleOpen () {
     this.setState({ open: true })
-  }
-
-  // event requestTrainer?
-  handleToggle (event, toggled) {
-    this.setState({
-      [event.target.name]: toggled,
-    })
-  }
-
-  handleClose () {
-    this.setState({open: false})
-  }
-
-  createWorkout () {
-    this.props.createWorkout({
-      title: this.state.title,
-      type: this.state.type,
-      startDateTime: this.state.startDateTime,
-      endDateTime: this.state.endDateTime,
-      description: this.state.description,
-      requestTrainer: this.state.requestTrainer,
-      pictureURL: this.state.pictureURL,
-      parkId: this.state.parkId,
-      userEmail: this.state.userEmail,
-      recurring: this.state.recurring,
-      // workoutId is the id of the loggedInUser, allowing us to make a connection in our data graph
-      workoutId: this.state.scapholdUser,
-    }).then(({data}) => {
-      this.setState({
-        open: false,
-        requestTrainer: false,
-        title: null,
-        type: null,
-        description: null,
-        pictureURL: null,
-        userEmail: null,
-        startDateTime: null,
-        endDateTime: null,
-        parkId: null,
-        recurring: false,
-      })
-    }).catch((error) => {
-      console.log(error)
-
-      const errors = error.toString().split('\n')
-
-      for (let i = 1; i < errors.length; i++) {
-        const fieldName = errors[i].split('"')[1]
-
-        errors[fieldName] = 'This field is required'
-      }
-
-      this.setState({ errors })
-    })
-  }
-
-  onTitleChange (title) {
-    this.setState({ title })
-  }
-
-  onTypeChange (type) {
-    this.setState({ type })
-  }
-
-  handlePictureChange (pictureURL) {
-    this.setState({ pictureURL })
-  }
-
-  handleRequestTrainerToggle () {
-    this.setState({ requestTrainer: !this.state.requestTrainer })
-  }
-
-  onDescriptionChange (description) {
-    this.setState({ description })
-  }
-
-  onDateChange (event, date) {
-    this.setState({
-      date,
-    })
-  }
-
-  onTimeChange (event, time) {
-    this.setState({
-      time,
-    })
-  }
-
-  onLocationChange (parkId) {
-    this.setState({
-      parkId,
-    })
-  }
-
-  handleDate (moment) {
-    const date = moment.toDate()
-    let startDateTime = this.state.startDateTime || new Date()
-    let endDateTime = this.state.endDateTime || new Date()
-
-    startDateTime = new Date(
-      date.getFullYear(), date.getMonth(), date.getDate(),
-      startDateTime.getHours(), startDateTime.getMinutes(),
-    )
-
-    endDateTime = new Date(
-      date.getFullYear(), date.getMonth(), date.getDate(),
-      startDateTime.getHours(), startDateTime.getMinutes(),
-    )
-
-    this.setState({
-      startDateTime,
-      endDateTime,
-    })
-  }
-
-  handleStartDateTime (moment) {
-    this.setState({
-      startDateTime: moment.toDate(),
-    })
-  }
-
-  handleEndDateTime (moment) {
-    this.setState({
-      endDateTime: moment.toDate(),
-    })
-  }
-
-  handleUserEmailChange (userEmail) {
-    this.setState({
-      userEmail,
-    })
-  }
-
-  handleRecurringToggle () {
-    this.setState({ recurring: !this.state.recurring })
   }
 
   notLoggedInDialog () {
@@ -250,7 +190,7 @@ class WorkoutCreator extends React.Component {
         autoScrollBodyContent
         modal={false}
         open={this.state.open}
-        onRequestClose={this.handleClose.bind(this)}
+        onRequestClose={() => this.handleClose()}
       >
         <div>
           <div className='top_level_container'>
@@ -260,21 +200,21 @@ class WorkoutCreator extends React.Component {
                 onTouchTap={() => this.context.router.push('/profile')}
               >
                 <Avatar
-                  src={this.state.userProfile.picture }
+                  src={this.props.profile.picture }
                   onClick={() => this.context.router.push('/profile')}
                 />
-                {this.state.userProfile.nickname}
+                {this.props.profile.nickname}
               </Chip>
             </div>
 
             <div className='title_and_type_container'>
-              <FieldTitle onChange={(value) => this.onTitleChange(value)} errorText={this.state.errors.title} />
-              <FieldType onChange={(value) => this.onTypeChange(value)} value={this.state.type} errorText={this.state.errors.type} />
+              <FieldTitle onChange={(title) => this.setState({ title })} errorText={this.state.errors.title} />
+              <FieldType onChange={(type) => this.setState({ type })} value={this.state.type} errorText={this.state.errors.type} />
             </div>
           </div>
 
           <div className='add_picture_container'>
-            <FieldPictureURL onChange={(url) => this.handlePictureChange(url)} errorText={this.state.errors.pictureURL} />
+            <FieldPictureURL onChange={(pictureURL) => this.setState({ pictureURL })} errorText={this.state.errors.pictureURL} />
             {this.state.pictureURL &&
               <img
                 src={this.state.pictureURL}
@@ -285,19 +225,19 @@ class WorkoutCreator extends React.Component {
 
           <div className='time_and_location_container'>
             <FieldDate
-              onChange={(moment) => this.handleDate(moment)}
+              onChange={(date) => this.setState({ date })}
               errorText={this.state.errors.startDateTime}
             />
             <FieldStartTime
-              onChange={(moment) => this.handleStartDateTime(moment)}
+              onChange={(startDateTime) => this.setState({ startDateTime })}
               errorText={this.state.errors.startDateTime}
             />
             <FieldEndTime
-              onChange={(moment) => this.handleEndDateTime(moment)}
+              onChange={(endDateTime) => this.setState({ endDateTime })}
               errorText={this.state.errors.endDateTime}
             />
             <FieldLocation
-              onChange={(value) => this.onLocationChange(value)}
+              onChange={(parkId) => this.setState({ parkId })}
               places={this.places}
               parkId={this.state.parkId}
               errorText={this.state.errors.parkId}
@@ -306,22 +246,25 @@ class WorkoutCreator extends React.Component {
 
           <div className='request-trainer-container'>
             <FieldRequestTrainer
-              onCheck={() => this.handleRequestTrainerToggle()}
+              onCheck={() => this.setState({ requestTrainer: !this.state.requestTrainer })}
               requestTrainer={this.state.requestTrainer}
               errorText={this.state.errors.requestTrainer}
             />
 
             {this.state.requestTrainer &&
-              <FieldEmail onChange={(value) => this.handleUserEmailChange(value)} errorText={this.state.errors.email} />
+              <FieldEmail
+                onChange={(userEmail) => this.setState({ userEmail })}
+                errorText={this.state.errors.email}
+              />
             }
           </div>
 
           <FieldDescription
-            onChange={(value) => this.onDescriptionChange(value)}
+            onChange={(description) => this.setState({ description })}
             errorText={this.state.errors.description}
           />
           <FieldRecurring
-            onCheck={() => this.handleRecurringToggle()}
+            onCheck={() => this.setState({ recurring: !this.state.recurring })}
             recurring={this.state.recurring}
             errorText={this.state.errors.description}
           />
@@ -345,7 +288,7 @@ class WorkoutCreator extends React.Component {
           backgroundColor='#CE1F3C'
           onTouchTap={() => this.handleOpen()}
         />
-        {this.auth.loggedIn() && this.state.userProfile
+        {this.auth.loggedIn() && this.props.profile
           ? this.loggedInDialog()
           : this.notLoggedInDialog()
         }
@@ -354,16 +297,18 @@ class WorkoutCreator extends React.Component {
   }
 }
 
-WorkoutCreator.propTypes = {
+AddActivity.propTypes = {
   indexedParks: PropTypes.object.isRequired,
+  profile: PropTypes.object.isRequired,
+  workouts: PropTypes.array.isRequired,
 }
 
-const WorkoutCreatorWithData = compose(
+const AddActivityWithData = compose(
   graphql(CREATE_WORKOUT, {
     props: ({ mutate }) => ({
       createWorkout: (input) => mutate({ variables: { input: input } }),
     }),
   })
-)(WorkoutCreator)
+)(AddActivity)
 
-export default WorkoutCreatorWithData
+export default AddActivityWithData

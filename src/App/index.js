@@ -83,7 +83,7 @@ class App extends React.Component {
           profile={profile}
         />
         <div id='body' className='__app__body__container'>
-          {this.renderChildren(profile, userId)}
+          {this.renderChildren(profile)}
         </div>
         <Footer
           pathname={this.props.location.pathname}

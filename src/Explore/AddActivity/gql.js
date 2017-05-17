@@ -13,6 +13,7 @@ export const CREATE_WORKOUT = gql`
         parkId,
         pictureURL,
         userEmail,
+        _geoloc,
         Workout{
           nickname,
           username,

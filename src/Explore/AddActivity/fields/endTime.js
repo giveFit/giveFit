@@ -11,7 +11,7 @@ const EndTime = ({ onChange }) => {
       <TimePicker
         hintText='End Time'
         className='date-time'
-        onChange={(event, time) => onChange(moment(time))}
+        onChange={(event, time) => onChange(moment(time).toDate())}
       />
     </div>
   )

@@ -12,7 +12,7 @@ const _Date = ({ onChange }) => {
         defaultDate={new Date()}
         hintText='Workout Date'
         className='date-time'
-        onChange={(event, date) => onChange(moment(date))}
+        onChange={(event, date) => onChange(moment(date).toDate())}
       />
     </div>
   )

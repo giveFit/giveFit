@@ -14,6 +14,7 @@ const PictureURL = ({ onChange }) => {
       buttonText={`<span><i class='fa fa-plus-circle'></i> Add Picture</span>`}
       onSuccess={(res) => onChange(res.url)}
       buttonClass='add_picture_button'
+      mode='pickAndStore'
     />
   )
 }

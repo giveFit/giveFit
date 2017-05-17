@@ -104,7 +104,7 @@ class Activities extends React.Component {
 
 Activities.propTypes = {
   workouts: PropTypes.array.isRequired,
-  handleWorkoutClick: PropTypes.array.isRequired,
+  handleWorkoutClick: PropTypes.func.isRequired,
 }
 
 export default Activities

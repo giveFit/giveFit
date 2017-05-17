@@ -163,7 +163,11 @@ class GridComponent extends React.Component {
           <div className='__grid__list' >
             {/*<Tabs className='__tabs__container'>
               <Tab label='Activities'>*/}
-                <AddActivity indexedParks={indexedParks} />
+                <AddActivity
+                  indexedParks={indexedParks}
+                  profile={profile}
+                  workouts={workouts}
+                />
                 <Activities
                   workouts={indexedParks[openedParkId] ? indexedParks[openedParkId].workouts : workouts}
                   handleWorkoutClick={(parkId) => this.handleWorkoutClick(parkId)}
@@ -189,7 +193,7 @@ GridComponent.propTypes = {
   centerLatLng: PropTypes.object.isRequired,
   workouts: PropTypes.array.isRequired,
   workoutGroups: PropTypes.array.isRequired,
-  //profile: PropTypes.object.isRequired,
+  profile: PropTypes.object.isRequired,
   onPlaceSelect: PropTypes.func.isRequired,
 }
 
