@@ -8,7 +8,7 @@ class Footer extends React.Component {
   render () {
     return (
       <div id='footer' className='__app__footer'>
-        {this.props.pathname === '/explore' && <MobileBottomNav />}
+        {['/', '/new-york', '/explore'].includes(this.props.pathname) && <MobileBottomNav />}
       </div>
     )
   }
