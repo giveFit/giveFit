@@ -11,7 +11,8 @@
     "build-storybook": "build-storybook",
     "build": "cross-env NODE_ENV=production webpack",
     "lint": "eslint ./ --cache --quiet --ext .js",
-    "lint-fix": "eslint ./ --cache --quiet --ext .js --fix"
+    "lint-fix": "eslint ./ --cache --quiet --ext .js --fix",
+    "deploy": "npm run build && surge --domain givefit.surge.sh --project ./dist/"
   },
   "author": "",
   "license": "ISC",
