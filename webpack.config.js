@@ -1,5 +1,6 @@
 const getConfig = require('hjs-webpack')
 const webpack = require('webpack')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const path = require('path')
 const dotenv = require('dotenv')
 
@@ -66,6 +67,10 @@ config.plugins.push(new webpack.DefinePlugin({
     FOURSQUARE_CLIENT_SECRET_KEY: JSON.stringify(envVariables.FOURSQUARE_CLIENT_SECRET_KEY),
   },
 }))
+
+config.plugins.push(new CopyWebpackPlugin([
+    { from: './assets', to: 'assets' },
+]))
 
 config.resolve.modules = [
   path.join(__dirname, 'src'),

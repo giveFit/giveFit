@@ -7,9 +7,8 @@ import FontIcon from 'material-ui/FontIcon'
 import NavigationExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-more'
 import Hamburger from 'material-ui/svg-icons/navigation/menu'
 import { Link, hashHistory } from 'react-router'
-import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar'
-import { MenuItem, FlatButton, Avatar } from 'material-ui'
-import GroupAdd from 'material-ui/svg-icons/social/group-add'
+import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from 'material-ui/Toolbar'
+import { MenuItem, RaisedButton, FlatButton, Avatar } from 'material-ui'
 
 import './LoggedInToolbar.css'
 
@@ -53,51 +52,60 @@ class LoggedInToolbar extends React.Component {
       <div>
        <Toolbar>
         <ToolbarGroup>
-          <FontIcon className="muidocs-icon-custom-sort" />
-          <IconMenu
-            className='iconMenu'
-            iconButtonElement={
-              <IconButton touch={true} onTouchTap={() => this.handleToggle()}>
-                <Hamburger />
-              </IconButton>
-            }
-          >
-          <MenuItem
-            onTouchTap={this.handleClose.bind(this)}
-            onClick={() => this.context.router.push('/')}
-            primaryText="Home"
-          />
-          <MenuItem
-            onTouchTap={this.handleClose.bind(this)}
-            onClick={() => this.context.router.push('/explore')}
-            primaryText="Workouts"
-          />
-          <MenuItem
-            onTouchTap={this.handleClose.bind(this)}
-            primaryText="API"
-          >
-            <Link to="https://us-west-2.api.scaphold.io/graphql/newGiveFitAlias" target="_blank"/>
-          </MenuItem>
-          <MenuItem
-            onTouchTap={this.handleClose.bind(this)}
-            onClick={() => this.context.router.push('/about-us')}
-            primaryText="About Us"
-          />
-          <MenuItem
-            onTouchTap={this.handleClose.bind(this)}
-            primaryText="Add a Group"
-            leftIcon={<GroupAdd />}
-          />
-          </IconMenu>
-          <ToolbarTitle className='title' text='givefit'
+          <ToolbarTitle
+            className='title'
+            text='GiveFit'
             onClick={() => this.context.router.push('/')}
           />
         </ToolbarGroup>
         <ToolbarGroup >
-          <FlatButton className='onlyLargeScreens' label="Workouts" onClick={() => this.context.router.push('/explore')}/>
-          <FlatButton className='onlyLargeScreens' containerElement={<Link to="https://us-west-2.api.scaphold.io/graphql/newGiveFitAlias" target="_blank"/>} label="API"/>
-          <FlatButton className='onlyLargeScreens' label="About Us" />
-          <FontIcon className='onlyLargeScreens muidocs-icon-custom-sort' />
+          <Avatar
+            className='iconMenu avatar'
+            src={profile.picture}
+            onClick={() => this.context.router.push('/profile')}
+          />
+          <IconMenu
+            className='iconMenu'
+            iconButtonElement={
+              <IconButton touch={true} onTouchTap={this.handleToggle.bind(this)}>
+                <Hamburger />
+              </IconButton>
+            }
+          >
+            <MenuItem
+              onTouchTap={this.handleClose.bind(this)}
+              onClick={() => { window.location = 'https://givefit.net/about-us' }}
+              primaryText='About Us'
+            />
+            <MenuItem
+              primaryText="Profile"
+              onTouchTap={this.handleClose.bind(this)}
+              onClick={() => this.context.router.push('/profile')}
+            />
+            {process.env.__NODE_ENV__ === 'development' &&
+              <MenuItem
+                onTouchTap={this.handleClose.bind(this)}
+                primaryText='API'
+              >
+                <Link to='https://us-west-2.api.scaphold.io/graphql/newGiveFitAlias' target='_blank' />
+              </MenuItem>
+            }
+            <MenuItem
+              onTouchTap={this.handleClose.bind(this)}
+              onClick={() => this.logout()}
+              primaryText='Logout'
+            />
+          </IconMenu>
+        </ToolbarGroup>
+        <ToolbarGroup className='onlyLargeScreens'>
+          {process.env.__NODE_ENV__ === 'development' &&
+            <FlatButton
+              className='onlyLargeScreens'
+              containerElement={<Link to='https://us-west-2.api.scaphold.io/graphql/newGiveFitAlias' target='_blank' />}
+              label='API'
+            />
+          }
+          <FlatButton label='About Us' onClick={() => { window.location = 'https://givefit.net/about-us' }} />
           <Avatar
             className='avatar'
             src={profile.picture}

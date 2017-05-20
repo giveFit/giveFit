@@ -16,7 +16,6 @@ import { browserHistory, Router } from 'react-router'
 import App from 'App/'
 
 // Logged in Components
-import Home from 'Home/'
 import Explore from 'Explore/'
 import Profile from 'Profile/'
 
@@ -30,7 +29,7 @@ const customTheme = getMuiTheme(muiTheme)
 const routes = {
   path: '/',
   component: App,
-  indexRoute: { component: Home },
+  indexRoute: { component: Explore, defaultLat: 39.2904, defaultLng: -76.6122 },
   childRoutes: [
     { path: 'explore', component: Explore, defaultLat: 39.2904, defaultLng: -76.6122 },
     { path: 'new-york', component: Explore, defaultLat: 40.7128, defaultLng: -74.0059 },
