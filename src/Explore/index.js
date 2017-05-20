@@ -61,7 +61,21 @@ Explore.propTypes = {
 }
 
 const ExploreWithData = compose(
-  graphql(GET_THROUGH_VIEWER, {})
+  graphql(GET_THROUGH_VIEWER, {
+    options: (props) => ({
+      variables: {
+        where: {
+          endDateTime: {
+            gte: new Date().toString(),
+          },
+        },
+        orderBy: {
+          field: 'startDateTime',
+          direction: 'ASC',
+        },
+      },
+    }),
+  })
 )(Explore)
 
 export default ExploreWithData
