@@ -38,7 +38,7 @@ const config = getConfig({
         title: 'givefit',
         head: `
           <script src="https://use.fontawesome.com/c37c106dc7.js"></script>
-          </style><script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwOsxUEBGettfG4jFkxFNl2lt3s7dtYPc&libraries=places" ></script>
+          </style><script src="https://maps.googleapis.com/maps/api/js?key=${envVariables.GOOGLE_API}=places" ></script>
         `,
         publicPath: isDevelopment ? 'http://localhost:3000/' : '',
         meta: {
