@@ -37,9 +37,12 @@ class Activities extends React.Component {
 
   WorkoutList () {
     return this.props.workouts
-      // @todo: sort this by date
       .map((workout, index) => {
         workout = workout.node
+
+        if (!this.props.indexedParks[workout.parkId]) {
+          return null
+        }
 
         return (
           <CardText key={`workout-${index}`} onClick={() => this.props.handleWorkoutClick(workout.parkId)}>

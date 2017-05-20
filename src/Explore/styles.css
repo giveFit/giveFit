@@ -7,8 +7,12 @@
 
 .__app__body__container__left {
   flex : 1;
+  height: 100%;
 }
 
+.explore_container {
+  height: 100%;
+}
 
 .__grid__list {
   max-width: 500px;
