@@ -7,6 +7,19 @@ const isDevelopment = process.env.NODE_ENV === 'development'
 
 const envVariables = dotenv.config().parsed
 
+const htmlTemplate = {
+  title: 'givefit',
+  head: `
+    <script src="https://use.fontawesome.com/c37c106dc7.js"></script>
+    </style><script src="https://maps.googleapis.com/maps/api/js?key=${envVariables.GOOGLE_API}&libraries=places" ></script>
+  `,
+  publicPath: isDevelopment ? 'http://localhost:3000/' : '',
+  meta: {
+    'name': 'givefit',
+    'description': 'Find your free fitness community',
+  },
+}
+
 const config = getConfig({
   // entry point for the app
   in: path.join(__dirname, 'src/index.js'),
@@ -34,18 +47,8 @@ const config = getConfig({
 
   html: function (context) {
     return {
-      'index.html': context.defaultTemplate({
-        title: 'givefit',
-        head: `
-          <script src="https://use.fontawesome.com/c37c106dc7.js"></script>
-          </style><script src="https://maps.googleapis.com/maps/api/js?key=${envVariables.GOOGLE_API}=places" ></script>
-        `,
-        publicPath: isDevelopment ? 'http://localhost:3000/' : '',
-        meta: {
-          'name': 'givefit',
-          'description': 'Find your free fitness community',
-        },
-      }),
+      'index.html': context.defaultTemplate(htmlTemplate),
+      '200.html': context.defaultTemplate(htmlTemplate),
     }
   },
 })
