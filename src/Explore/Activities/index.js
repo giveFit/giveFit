@@ -2,10 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import moment from 'moment'
+import { graphql, compose } from 'react-apollo'
 
 import { CardText, Chip, Avatar, Snackbar } from 'material-ui'
 
-import { RSVP_FOR_WORKOUT } from 'gql.js'
+import { RSVP_FOR_WORKOUT } from './gql.js'
 
 import './styles.css'
 
@@ -120,12 +121,13 @@ Activities.propTypes = {
 const ActivitiesWithData = compose(
   graphql(RSVP_FOR_WORKOUT, {
     props: ({ mutate }) => ({
-      
-    })
-  }),
-  graphql(RSVP_FOR_WORKOUT, {
-    props: ({ mutate }) => ({
-      createWorkout: (input) => mutate({ variables: { input: input } }),
+      RSVPForWorkout: (input) => mutate({
+        variables: 
+          {
+            id: workoutID,
+            rsvPsForWorkoutId: userID
+          },
+      }),
     }),
   }),
 )(Activities)
