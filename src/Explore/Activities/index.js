@@ -25,7 +25,7 @@ class Activities extends React.Component {
     this.setState({snack: false})
   }
 
-  RSVPForWorkout (workoutID) { 
+  RSVPForWorkout (workoutID) {
     const id = workoutID
     this.props.RSVPForWorkout({
       id,
