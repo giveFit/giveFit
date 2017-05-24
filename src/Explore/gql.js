@@ -3,9 +3,6 @@ import gql from 'graphql-tag'
 export const GET_THROUGH_VIEWER = gql`
 query GetThroughViewer($where:WorkoutWhereArgs, $orderBy:[WorkoutOrderByArgs!]) {
     viewer{
-      user{
-        id
-      }
       allWorkouts(where:$where, orderBy:$orderBy){
         edges {
           node {
@@ -25,9 +22,14 @@ query GetThroughViewer($where:WorkoutWhereArgs, $orderBy:[WorkoutOrderByArgs!]) 
               username
               picture
             }
+            RSVPsForWorkout{
+              nickname
+              username
+              picture
+            }
           }
         }
       }
-    }
-  }
+    }  
+  }  
 `

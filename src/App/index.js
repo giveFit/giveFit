@@ -24,6 +24,7 @@ class App extends React.Component {
 
     window.localStorage.removeItem('__find_workouts_pos')
     window.localStorage.removeItem('__find_workouts_address')
+    console.log('App props', this.props)
   }
 
   // componentDidMount(){
@@ -114,7 +115,7 @@ const AppWithData = compose(
     props: ({ mutate }) => ({
       updateUser: (user) => mutate({ variables: { user: user } }),
     }),
-  })
+  }),
 )(App)
 
 export default AppWithData

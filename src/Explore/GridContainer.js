@@ -174,7 +174,7 @@ class GridComponent extends React.Component {
                 <ActivitiesWithData
                   workouts={indexedParks[openedParkId] ? indexedParks[openedParkId].workouts : workouts}
                   indexedParks={indexedParks}
-                  user={user}
+                  profile={profile}
                   handleWorkoutClick={(parkId) => this.handleWorkoutClick(parkId)}
                 />
               {/*</Tab>*/}

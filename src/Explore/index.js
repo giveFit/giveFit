@@ -32,7 +32,7 @@ class Explore extends React.Component {
 
     if (!loading) {
       workouts = viewer.allWorkouts.edges || []
-      user = viewer.user
+      user = this.props.user || null
     }
 
     return (
@@ -48,7 +48,6 @@ class Explore extends React.Component {
           profile={profile}
           workoutGroups={workoutGroups}
           workouts={workouts}
-          user={user}
         />
       </div>
     )

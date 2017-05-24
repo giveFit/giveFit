@@ -25,18 +25,15 @@ class Activities extends React.Component {
     this.setState({snack: false})
   }
 
-  RSVPForWorkout (workoutID) {
-    let rsvPsForWorkoutId = null
-    if (this.props.user) {
-      rsvPsForWorkoutId = this.props.user.id
-    }
+  RSVPForWorkout (workoutID) { 
     const id = workoutID
     this.props.RSVPForWorkout({
       id,
-      rsvPsForWorkoutId,
+      // workoutId is the id of the loggedInUser, allowing us to make a connection in our data graph
+      rsvPsForWorkoutId: JSON.parse(window.localStorage.getItem('scapholdUserId')),
     }).then(({ data }) => {
       console.log('data from RSVPForWorkout', data)
-      // this.setState({snack: !this.state.snack})
+      this.setState({snack: !this.state.snack})
     }).catch((error) => {
       console.log(error)
     })

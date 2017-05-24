@@ -35,15 +35,16 @@ class Profile extends React.Component {
     )
   }
   render () {
-    const { profile } = this.props
-    const { loading, viewer } = this.props.data
+    console.log('Profile props', this.props)
+    const { profile, data } = this.props
+    const { loading } = this.props.data
 
     const workouts = !loading
-      ? viewer.user.Workout.edges
+      ? data.getUser.Workout.edges
       : []
 
     const workoutRSVPs = !loading
-      ? viewer.user.WorkoutRSVP.edges
+      ? data.getUser.WorkoutRSVP.edges
       : []
 
     return (
@@ -74,6 +75,7 @@ const ProfileWithData = compose(
   graphql(GET_USER_WORKOUTS, {
     options: (props) => ({
       variables: {
+        id: JSON.parse(window.localStorage.getItem('scapholdUserId')),
         first: 10,
         where: {
           endDateTime: {
