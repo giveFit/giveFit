@@ -28,9 +28,11 @@ class Explore extends React.Component {
     const { loading, viewer } = data
     let workoutGroups = []
     let workouts = []
+    let user = null
 
     if (!loading) {
       workouts = viewer.allWorkouts.edges || []
+      user = viewer.user
     }
 
     return (
@@ -46,6 +48,7 @@ class Explore extends React.Component {
           profile={profile}
           workoutGroups={workoutGroups}
           workouts={workouts}
+          user={user}
         />
       </div>
     )

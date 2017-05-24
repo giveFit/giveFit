@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 import axios from 'axios'
 
 // import Groups from './Groups/ParkContainer'
-import Activities from './Activities/'
+import ActivitiesWithData from './Activities/'
 
 // import ActivityContainer from './ActivityContainer'
 import MapContainer from './Map/index'
@@ -135,7 +135,7 @@ class GridComponent extends React.Component {
   }
 
   render () {
-    const { centerLatLng, workouts, profile, onPlaceSelect } = this.props
+    const { centerLatLng, workouts, profile, onPlaceSelect, user } = this.props
     const { loadedMapData, indexedParks, openedParkId } = this.state
 
     return (
@@ -171,9 +171,10 @@ class GridComponent extends React.Component {
                   profile={profile}
                   workouts={workouts}
                 />
-                <Activities
+                <ActivitiesWithData
                   workouts={indexedParks[openedParkId] ? indexedParks[openedParkId].workouts : workouts}
                   indexedParks={indexedParks}
+                  user={user}
                   handleWorkoutClick={(parkId) => this.handleWorkoutClick(parkId)}
                 />
               {/*</Tab>*/}

@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { graphql, compose } from 'react-apollo'
 
-import { CREATE_WORKOUT, LOGGEDIN_USER_QUERY } from './gql'
+import { CREATE_WORKOUT } from './gql'
 
 import Avatar from 'material-ui/Avatar'
 import Chip from 'material-ui/Chip'

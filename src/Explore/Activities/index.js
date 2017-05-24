@@ -25,8 +25,21 @@ class Activities extends React.Component {
     this.setState({snack: false})
   }
 
-  handleSnack () {
-    this.setState({snack: !this.state.snack})
+  RSVPForWorkout (workoutID) {
+    let rsvPsForWorkoutId = null
+    if (this.props.user) {
+      rsvPsForWorkoutId = this.props.user.id
+    }
+    const id = workoutID
+    this.props.RSVPForWorkout({
+      id,
+      rsvPsForWorkoutId,
+    }).then(({ data }) => {
+      console.log('data from RSVPForWorkout', data)
+      // this.setState({snack: !this.state.snack})
+    }).catch((error) => {
+      console.log(error)
+    })
   }
 
   handleTouchTap () {
@@ -39,6 +52,7 @@ class Activities extends React.Component {
   }
 
   WorkoutList () {
+    console.log('Activities props', this.props)
     return this.props.workouts
       .map((workout, index) => {
         workout = workout.node
@@ -80,7 +94,7 @@ class Activities extends React.Component {
                 <div>
                   <i
                     className='fa fa-check-circle-o __share__icon'
-                    onTouchTap={this.handleSnack.bind(this)}
+                    onTouchTap={() => this.RSVPForWorkout(workout.id)}
                   />
                 </div>
                 <div><i className='fa fa-share __share__icon' /></div>
@@ -121,13 +135,7 @@ Activities.propTypes = {
 const ActivitiesWithData = compose(
   graphql(RSVP_FOR_WORKOUT, {
     props: ({ mutate }) => ({
-      RSVPForWorkout: (input) => mutate({
-        variables: 
-          {
-            id: workoutID,
-            rsvPsForWorkoutId: userID
-          },
-      }),
+      RSVPForWorkout: (input) => mutate({ variables: { input: input } }),
     }),
   }),
 )(Activities)
