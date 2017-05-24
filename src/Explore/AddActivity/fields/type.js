@@ -17,6 +17,10 @@ const Type = ({ onChange, value, errorText = null }) => {
       <MenuItem value={'Bootcamp'} primaryText='Bootcamp' />
       <MenuItem value={'Zumba'} primaryText='Zumba' />
       <MenuItem value={'Dance'} primaryText='Dance' />
+      <MenuItem value={'Run'} primaryText='Run' />
+      <MenuItem value={'Group Fitness'} primaryText='Group Fitness' />
+      <MenuItem value={'Line Dancing'} primaryText='Line Dancing' />
+      <MenuItem value={'Crossfit'} primaryText='Crossfit' />
     </SelectField>
   )
 }

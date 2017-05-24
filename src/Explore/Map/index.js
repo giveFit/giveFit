@@ -54,7 +54,7 @@ class Map extends React.Component {
             style={{ height: '100%', width: '100%' }}
             ref={(map) => { this._googleMapComponent = map }}
             defaultOptions={{ styles: mapStyles }}
-            defaultZoom={14}
+            defaultZoom={13}
             defaultCenter={mapCenter}
             onClick={(...args) => this.geocodeLatLng(...args)}
           >
