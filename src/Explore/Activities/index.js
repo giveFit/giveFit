@@ -5,6 +5,8 @@ import moment from 'moment'
 
 import { CardText, Chip, Avatar, Snackbar } from 'material-ui'
 
+import { RSVP_FOR_WORKOUT } from 'gql.js'
+
 import './styles.css'
 
 class Activities extends React.Component {
@@ -76,7 +78,7 @@ class Activities extends React.Component {
                 </div>
                 <div>
                   <i
-                    className='fa fa-bookmark-o __share__icon'
+                    className='fa fa-check-circle-o __share__icon'
                     onTouchTap={this.handleSnack.bind(this)}
                   />
                 </div>
@@ -115,4 +117,17 @@ Activities.propTypes = {
   handleWorkoutClick: PropTypes.func.isRequired,
 }
 
-export default Activities
+const ActivitiesWithData = compose(
+  graphql(RSVP_FOR_WORKOUT, {
+    props: ({ mutate }) => ({
+      
+    })
+  }),
+  graphql(RSVP_FOR_WORKOUT, {
+    props: ({ mutate }) => ({
+      createWorkout: (input) => mutate({ variables: { input: input } }),
+    }),
+  }),
+)(Activities)
+
+export default ActivitiesWithData

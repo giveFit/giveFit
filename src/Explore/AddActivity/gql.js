@@ -23,15 +23,3 @@ export const CREATE_WORKOUT = gql`
     }
   }
 `
-
-export const LOGGEDIN_USER_QUERY = gql`
-  query LoggedInUser{
-    viewer{
-      user{
-        id
-        username
-        nickname
-      }
-    }
-  }
-`

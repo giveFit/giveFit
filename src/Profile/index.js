@@ -16,10 +16,17 @@ import './styles.css'
 
 /* possible reference: https://github.com/scaphold-io/auth0-lock-playground */
 class Profile extends React.Component {
-  prepareCalendar (workouts) {
+  prepareCalendar (workouts, workoutRSVPs) {
+    // workouts and workoutsRSVPs are non-extensible objects
+    // need a solution to render RSVPs in order @Sal
     return (
       <div className='workouts'>
         {workouts.map((item, index) => (
+          <div key={`calendar-workout-${index}`}>
+            {!item || (<WorkoutPost data={item} />)}
+            </div>
+        ))}
+        {workoutRSVPs.map((item, index) => (
           <div key={`calendar-workout-${index}`}>
             {!item || (<WorkoutPost data={item} />)}
             </div>
@@ -35,16 +42,19 @@ class Profile extends React.Component {
       ? viewer.user.Workout.edges
       : []
 
+    const workoutRSVPs = !loading
+      ? viewer.user.WorkoutRSVP.edges
+      : []
+
     return (
       <div className='home'>
         <Card>
           <CardText>
-            <p>Welcome, {profile.username}!</p>
             <ProfileDetails profile={profile} />
             <ProfileEdit profile={profile} auth={this.props.auth} />
             <Tabs>
               <Tab label="Calendar">
-                {workouts.length ? this.prepareCalendar(workouts) : <CircularProgress size={8} />}
+                {workouts.length ? this.prepareCalendar(workouts, workoutRSVPs) : <CircularProgress size={8} />}
               </Tab>
             </Tabs>
           </CardText>
@@ -67,8 +77,8 @@ const ProfileWithData = compose(
         first: 10,
         where: {
           endDateTime: {
-            gte: new Date().toString()
-          }
+            gte: new Date().toString(),
+          },
         },
         orderBy: {
           field: 'startDateTime',
@@ -76,7 +86,7 @@ const ProfileWithData = compose(
         },
       },
     }),
-  })
+  }),
 )(Profile)
 
 export default ProfileWithData

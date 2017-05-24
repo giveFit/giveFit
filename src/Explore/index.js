@@ -23,6 +23,7 @@ class Explore extends React.Component {
   }
 
   render () {
+    console.log('explore props', this.props)
     const { profile, data } = this.props
     const { loading, viewer } = data
     let workoutGroups = []
@@ -40,7 +41,6 @@ class Explore extends React.Component {
             data.refetch({
               latLng: place.address,
             })
-
             return null
           }}
           profile={profile}
@@ -75,7 +75,7 @@ const ExploreWithData = compose(
         },
       },
     }),
-  })
+  }),
 )(Explore)
 
 export default ExploreWithData

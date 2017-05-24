@@ -23,7 +23,7 @@ class WorkoutPost extends React.Component {
     this.state = {
       snack: false,
       autoHideDuration: 2000,
-      messageTrue: 'Event added to your calendar',
+      messageTrue: 'Event added to your WorkoutPost',
       messageFalse: 'Event removed from your calendar',
     }
   }
