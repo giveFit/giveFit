@@ -24,7 +24,6 @@ class App extends React.Component {
 
     window.localStorage.removeItem('__find_workouts_pos')
     window.localStorage.removeItem('__find_workouts_address')
-    console.log('App props', this.props)
   }
 
   // componentDidMount(){
@@ -84,7 +83,7 @@ class App extends React.Component {
           profile={profile}
         />
         <div id='body' className='__app__body__container'>
-          {this.renderChildren(profile)}
+          {this.renderChildren(profile, userId)}
         </div>
         <Footer
           pathname={this.props.location.pathname}

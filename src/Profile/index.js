@@ -35,7 +35,6 @@ class Profile extends React.Component {
     )
   }
   render () {
-    console.log('Profile props', this.props)
     const { profile, data } = this.props
     const { loading } = this.props.data
 
@@ -49,17 +48,9 @@ class Profile extends React.Component {
 
     return (
       <div className='home'>
-        <Card>
-          <CardText>
-            <ProfileDetails profile={profile} />
-            <ProfileEdit profile={profile} auth={this.props.auth} />
-            <Tabs>
-              <Tab label="Calendar">
-                {workouts.length ? this.prepareCalendar(workouts, workoutRSVPs) : <CircularProgress size={8} />}
-              </Tab>
-            </Tabs>
-          </CardText>
-        </Card>
+        <ProfileDetails profile={profile} />
+        <ProfileEdit profile={profile} auth={this.props.auth} />
+        {workouts.length ? this.prepareCalendar(workouts, workoutRSVPs) : <CircularProgress size={8} />}
       </div>
     )
   }

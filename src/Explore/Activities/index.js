@@ -27,16 +27,18 @@ class Activities extends React.Component {
 
   RSVPForWorkout (workoutID) {
     const id = workoutID
+
     this.props.RSVPForWorkout({
       id,
       // workoutId is the id of the loggedInUser, allowing us to make a connection in our data graph
       rsvPsForWorkoutId: JSON.parse(window.localStorage.getItem('scapholdUserId')),
-    }).then(({ data }) => {
-      console.log('data from RSVPForWorkout', data)
-      this.setState({snack: !this.state.snack})
-    }).catch((error) => {
-      console.log(error)
     })
+      .then(({ data }) => {
+        this.setState({snack: !this.state.snack})
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   }
 
   handleTouchTap () {
@@ -49,7 +51,6 @@ class Activities extends React.Component {
   }
 
   WorkoutList () {
-    console.log('Activities props', this.props)
     return this.props.workouts
       .map((workout, index) => {
         workout = workout.node
@@ -127,6 +128,7 @@ Activities.propTypes = {
   indexedParks: PropTypes.object.isRequired,
   workouts: PropTypes.array.isRequired,
   handleWorkoutClick: PropTypes.func.isRequired,
+  RSVPForWorkout: PropTypes.func.isRequired,
 }
 
 const ActivitiesWithData = compose(

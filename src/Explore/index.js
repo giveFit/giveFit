@@ -23,7 +23,6 @@ class Explore extends React.Component {
   }
 
   render () {
-    console.log('explore props', this.props)
     const { profile, data } = this.props
     const { loading, viewer } = data
     let workoutGroups = []

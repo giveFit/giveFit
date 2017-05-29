@@ -66,7 +66,6 @@ export default class AuthService extends EventEmitter {
 
   setToken (idToken) {
     // Saves user token to localStorage
-    console.log('setting idToken/scaphold_user_token', idToken)
     window.localStorage.setItem('scaphold_user_token', idToken)
   }
 
