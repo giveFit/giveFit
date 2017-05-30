@@ -3,6 +3,11 @@ import gql from 'graphql-tag'
 export const GET_USER_WORKOUTS = gql`
 query GetUserWorkouts($id:ID!, $first: Int, $where: WorkoutWhereArgs!, $orderBy: [WorkoutOrderByArgs!]) {
     getUser(id:$id) {
+      id,
+      headerPhotoURL,
+      description,
+      picture,
+      nickname,
       Workout(first: $first, where: $where, orderBy: $orderBy) {
         edges {
           node {
@@ -13,9 +18,9 @@ query GetUserWorkouts($id:ID!, $first: Int, $where: WorkoutWhereArgs!, $orderBy:
             startDateTime
             endDateTime
             Workout {
-            nickname
-            username
-            picture
+              nickname
+              username
+              picture
             }
           }
         }
@@ -30,9 +35,8 @@ query GetUserWorkouts($id:ID!, $first: Int, $where: WorkoutWhereArgs!, $orderBy:
             startDateTime
             endDateTime
           }
-        }          
+        }
       }
   }
 }
-
 `

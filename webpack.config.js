@@ -12,6 +12,7 @@ const htmlTemplate = {
   title: 'givefit',
   head: `
     <script src="https://use.fontawesome.com/c37c106dc7.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     </style><script src="https://maps.googleapis.com/maps/api/js?key=${envVariables.GOOGLE_API}&libraries=places" ></script>
   `,
   publicPath: isDevelopment ? 'http://localhost:3000/' : '',

@@ -1,0 +1,40 @@
+.profile-header {
+  height: 320px;
+  width: 100%;
+  position: relative;
+}
+
+.profile-header div:first-child, .profile-header div img {
+  height: 100%;
+  width: 100%;
+}
+
+.profile-header .edit-header-photo-container {
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 150px;
+  height: 100px;
+  background: none;
+  border: none;
+  text-align: center;
+}
+
+.profile-header .edit-header-photo-container button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.profile-header .edit-header-photo-container button span {
+  font-size: 3.5em !important;
+}
+
+.profile-header .edit-header-photo-container > span {
+  font-size: 1.5em;
+  color: white;
+}
+

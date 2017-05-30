@@ -1,0 +1,48 @@
+.profile-details {
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  padding: 1em;
+}
+
+.profile-details > div:first-child {
+  width: 25%;
+  display: flex;
+  flex-direction: row;
+}
+
+.profile-details > div:last-child {
+  width: 25%;
+}
+
+.profile-details > div:nth-child(2) {
+  width: 50%;
+}
+
+.profile-details .description textarea {
+  text-align: center;
+}
+
+.profile-details .nickname {
+  padding-left: 1em;
+}
+
+.profile-user-photo {
+  position: relative;
+}
+
+.profile-user-info .edit-profile-photo-container {
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.profile-user-info .edit-profile-photo-container button {
+  background: none;
+  border: none;
+  text-align: center;
+  cursor: pointer;
+}

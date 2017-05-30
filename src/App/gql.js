@@ -3,10 +3,10 @@ import gql from 'graphql-tag'
 export const LOGIN_USER_WITH_AUTH0_LOCK = gql`
   mutation loginUserWithAuth0Lock($credential: LoginUserWithAuth0LockInput!) {
     loginUserWithAuth0Lock(input: $credential) {
-    user{
-      id
-      username
-    }
+      user {
+        id
+        username
+      }
     }
   }
 `

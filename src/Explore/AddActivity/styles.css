@@ -39,18 +39,18 @@
   height: 15em;
 }
 
-.add_picture_button {
+.add_picture_container .add_picture_button {
   background: none;
   margin-top: 5em;
   margin-left: 5em;
   border: none;
 }
 
-.add_picture_button span {
+.add_picture_container .add_picture_button span {
   font-size: 1.5em;
 }
 
-.add_picture_button i {
+.add_picture_container .add_picture_button i {
   font-size: 2em;
 }
 

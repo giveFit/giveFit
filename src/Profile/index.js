@@ -1,21 +1,28 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { graphql, compose } from 'react-apollo'
+
 import { GET_USER_WORKOUTS } from './gql'
 
-import { Card, CardText } from 'material-ui/Card'
-import { Tabs, Tab } from 'material-ui/Tabs'
 import CircularProgress from 'material-ui/CircularProgress'
 
-import ProfileDetails from './components/Details'
-import ProfileEdit from './components/Edit'
-
+import ProfileHeader from './components/ProfileHeader'
+import ProfileDetails from './components/ProfileDetails'
 import WorkoutPost from 'Explore/components/WorkoutPost'
 
 import './styles.css'
 
 /* possible reference: https://github.com/scaphold-io/auth0-lock-playground */
 class Profile extends React.Component {
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      editMode: false,
+      userFieldsToUpdate: {},
+    }
+  }
+
   prepareCalendar (workouts, workoutRSVPs) {
     // workouts and workoutsRSVPs are non-extensible objects
     // need a solution to render RSVPs in order @Sal
@@ -34,23 +41,53 @@ class Profile extends React.Component {
       </div>
     )
   }
+
+  onSaveProfileChanges () {
+    this.setState({
+      editMode: false,
+    })
+  }
+
   render () {
-    const { profile, data } = this.props
-    const { loading } = this.props.data
+    const { data } = this.props
+    const user = !data.loading ? data.getUser : null
 
-    const workouts = !loading
-      ? data.getUser.Workout.edges
-      : []
+    // const workoutRSVPs = !loading
+    //   ? data.getUser.WorkoutRSVP.edges
+    //   : []
 
-    const workoutRSVPs = !loading
-      ? data.getUser.WorkoutRSVP.edges
-      : []
+    if (user) {
+      return (
+        <div className='home'>
+          <ProfileHeader
+            headerPhotoURL={user.headerPhotoURL}
+            editMode={this.state.editMode}
+            onProfileHeaderChange={(url) => this.setState({
+              userFieldsToUpdate: { ...this.state.userFieldsToUpdate, headerPhotoURL: url },
+            })}
+          />
+          <ProfileDetails
+            user={user}
+            editMode={this.state.editMode}
+            onEnableEdit={(editMode) => this.setState({ editMode })}
+            onSaveProfileChanges={(...args) => this.onSaveProfileChanges(...args)}
+            onUserDescriptionChange={(description) => this.setState({
+              userFieldsToUpdate: { ...this.state.userFieldsToUpdate, description },
+            })}
+            onUserNicknameChange={(nickname) => this.setState({
+              userFieldsToUpdate: { ...this.state.userFieldsToUpdate, nickname },
+            })}
+            onProfilePhotoChange={(url) => this.setState({
+              userFieldsToUpdate: { ...this.state.userFieldsToUpdate, picture: url },
+            })}
+          />
+        </div>
+      )
+    }
 
     return (
       <div className='home'>
-        <ProfileDetails profile={profile} />
-        <ProfileEdit profile={profile} auth={this.props.auth} />
-        {workouts.length ? this.prepareCalendar(workouts, workoutRSVPs) : <CircularProgress size={8} />}
+        <div>You are not logged in</div>
       </div>
     )
   }

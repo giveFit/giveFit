@@ -12,7 +12,7 @@ import RaisedButton from 'material-ui/RaisedButton'
 
 import FieldTitle from './fields/title'
 import FieldType from './fields/type'
-import FieldPictureURL from './fields/pictureURL'
+import FieldPictureURL from 'components/UploadPicture'
 import FieldDate from './fields/Date'
 import FieldStartTime from './fields/StartTime'
 import FieldEndTime from './fields/EndTime'

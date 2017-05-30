@@ -40,7 +40,7 @@
     "react-apollo": "1.2.x",
     "react-autosuggest": "^9.0.1",
     "react-dom": "^15.3.2",
-    "react-filestack": "^0.7.8",
+    "react-filestack": "^0.9.1",
     "react-google-maps": "^4.11.0",
     "react-router": "2.8.x",
     "react-tap-event-plugin": "2.0.x",

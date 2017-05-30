@@ -21,7 +21,6 @@ import {blue500, red500, greenA200, white} from 'material-ui/styles/colors'
 
 // Local components
 import WorkoutCreatorWithData from './WorkoutCreator/index'
-import WorkoutPost from './WorkoutPost'
 
 import '../styles.css'
 
