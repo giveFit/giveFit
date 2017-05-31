@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { graphql, compose } from 'react-apollo'
+import slugify from 'slugify'
 
 import { CREATE_WORKOUT } from './gql'
 
@@ -82,6 +83,10 @@ class AddActivity extends React.Component {
       recurring,
     } = this.state
 
+    var randomSlugNumber = Math.floor(Math.random() * 10000).toString()
+    var titleAndSlugString = title.concat(' ',randomSlugNumber)
+    var slug = slugify(titleAndSlugString)
+
     if (parkId) {
       _geoloc.lng = this.props.indexedParks[parkId].position.lng
       _geoloc.lat = this.props.indexedParks[parkId].position.lat
@@ -110,6 +115,7 @@ class AddActivity extends React.Component {
       userEmail,
       recurring,
       _geoloc,
+      slug,
       // workoutId is the id of the loggedInUser, allowing us to make a connection in our data graph
       workoutId: JSON.parse(window.localStorage.getItem('scapholdUserId')),
     })
@@ -128,6 +134,7 @@ class AddActivity extends React.Component {
           endDateTime: null,
           parkId: null,
           recurring: false,
+          slug: null,
         })
       }).catch((error) => {
         console.log(error)

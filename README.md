@@ -1,7 +1,7 @@
 # GiveFit
 GiveFit is the open-source solution to the exclusive fitness community. We're bringing accessible healthy activities through open-source code, accessible, human-centered design, and partnering with likeminded indviduals.
 
-Tthe current website is here: [GiveFit](https://givefit.net). The goal is to replace this static site with a web-app. 
+The current website is here: [GiveFit](https://givefit.net). The goal is to replace the static site with the above web-app. 
 
 ## Contact 
 Contact jake@givefit.net to become a collaborator

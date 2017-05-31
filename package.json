@@ -44,6 +44,7 @@
     "react-google-maps": "^4.11.0",
     "react-router": "2.8.x",
     "react-tap-event-plugin": "2.0.x",
+    "slugify": "^1.1.0",
     "subscriptions-transport-ws": "0.6.x",
     "yargs": "^8.0.1"
   },
