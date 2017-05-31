@@ -18,11 +18,13 @@ export class ProfileCalendarRow extends React.Component {
   }
 
   render () {
+    const { parkId } = this.props
+
     return (
       <div className='profile-calendar'>
         <div className='col'>
           <div className='outline-square'>
-            <span>Location Address</span>
+            <span>{parkId}</span>
           </div>
         </div>
         <div className='col'>
@@ -36,6 +38,8 @@ export class ProfileCalendarRow extends React.Component {
 }
 
 ProfileCalendarRow.propTypes = {
+  parkId: PropTypes.string.isRequired,
+  workouts: PropTypes.array.isRequired,
 }
 
 export default ProfileCalendarRow

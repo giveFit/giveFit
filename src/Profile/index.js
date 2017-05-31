@@ -27,22 +27,39 @@ class Profile extends React.Component {
   }
 
   prepareCalendar (workouts, workoutRSVPs) {
-    // workouts and workoutsRSVPs are non-extensible objects
-    // need a solution to render RSVPs in order @Sal
-    return (
-      <div className='workouts'>
-        {workouts.map((item, index) => (
-          <div key={`calendar-workout-${index}`}>
-            {!item || (<WorkoutPost data={item} />)}
-            </div>
-        ))}
-        {workoutRSVPs.map((item, index) => (
-          <div key={`calendar-workout-${index}`}>
-            {!item || (<WorkoutPost data={item} />)}
-            </div>
-        ))}
-      </div>
-    )
+    const calendar = {}
+
+    for (let i = 0; i < workouts.length; i++) {
+      const workout = workouts[i].node
+
+      calendar[workout.parkId] = calendar[workout.parkId]
+        ? calendar[workout.parkId].concat([workout])
+        : [workout]
+    }
+
+    for (let i = 0; i < workoutRSVPs.length; i++) {
+      const workout = Object.assign({}, workoutRSVPs[i].node)
+
+      workout.rsvp = true
+
+      calendar[workout.parkId] = calendar[workout.parkId]
+        ? calendar[workout.parkId].concat([workout])
+        : [workout]
+    }
+
+    const calendarKeys = Object.keys(calendar)
+
+    return calendarKeys.map((key, index) => {
+      const workouts = calendarKeys[key]
+
+      return (
+        <ProfileCalendarRow
+          key={`parkId-${key}`}
+          parkId={key}
+          workouts={workouts}
+        />
+      )
+    })
   }
 
   onSaveProfileChanges () {
@@ -80,13 +97,10 @@ class Profile extends React.Component {
   render () {
     const { data } = this.props
     const user = !data.loading ? data.getUser : null
-
-    // const workoutRSVPs = !loading
-    //   ? data.getUser.WorkoutRSVP.edges
-    //   : []
+    const userWorkoutRSVPs = !data.loading ? data.getUser.WorkoutRSVP.edges : []
+    const userWorkouts = !data.loading ? data.getUser.Workout.edges : []
 
     if (user) {
-      console.log(data.getUser)
       return (
         <div className='home'>
           <ProfileHeader
@@ -108,9 +122,7 @@ class Profile extends React.Component {
             previousWeek={() => this.previousWeek()}
             nextWeek={() => this.nextWeek()}
           />
-          <ProfileCalendarRow />
-          <ProfileCalendarRow />
-          <ProfileCalendarRow />
+          {this.prepareCalendar(userWorkouts, userWorkoutRSVPs)}
         </div>
       )
     }
