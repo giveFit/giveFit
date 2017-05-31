@@ -84,7 +84,7 @@ class AddActivity extends React.Component {
     } = this.state
 
     var randomSlugNumber = Math.floor(Math.random() * 10000).toString()
-    var titleAndSlugString = title.concat(' ',randomSlugNumber)
+    var titleAndSlugString = title.concat(' ', randomSlugNumber)
     var slug = slugify(titleAndSlugString)
 
     if (parkId) {
@@ -100,7 +100,7 @@ class AddActivity extends React.Component {
 
       endDateTime = new Date(
         date.getFullYear(), date.getMonth(), date.getDate(),
-        startDateTime.getHours(), startDateTime.getMinutes(),
+        endDateTime.getHours(), endDateTime.getMinutes(),
       )
     }
     this.props.createWorkout({
@@ -251,6 +251,15 @@ class AddActivity extends React.Component {
             />
           </div>
 
+          <FieldDescription
+            onChange={(description) => this.setState({ description })}
+            errorText={this.state.errors.description}
+          />
+          <FieldRecurring
+            onCheck={() => this.setState({ recurring: !this.state.recurring })}
+            recurring={this.state.recurring}
+            errorText={this.state.errors.description}
+          />
           <div className='request-trainer-container'>
             <FieldRequestTrainer
               onCheck={() => this.setState({ requestTrainer: !this.state.requestTrainer })}
@@ -265,16 +274,6 @@ class AddActivity extends React.Component {
               />
             }
           </div>
-
-          <FieldDescription
-            onChange={(description) => this.setState({ description })}
-            errorText={this.state.errors.description}
-          />
-          <FieldRecurring
-            onCheck={() => this.setState({ recurring: !this.state.recurring })}
-            recurring={this.state.recurring}
-            errorText={this.state.errors.description}
-          />
         </div>
       </Dialog>
     )
