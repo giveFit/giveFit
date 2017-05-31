@@ -4,9 +4,9 @@ import moment from 'moment'
 
 import FontIcon from 'material-ui/FontIcon'
 
-import './ProfileCalendar.css'
+import './ProfileCalendarBar.css'
 
-export class ProfileCalendar extends React.Component {
+export class ProfileCalendarBar extends React.Component {
   prepareWeekDays (todaysDate) {
     const daysOfTheWeek = [
       { name: 'Sun', index: 0 },
@@ -56,7 +56,7 @@ export class ProfileCalendar extends React.Component {
     const isToday = todaysDate.format('L') === moment().format('L')
 
     return (
-      <div className='profile-calendar'>
+      <div className='profile-calendar-bar'>
         <div className='col'>
           <button
             className={isToday ? 'disabled' : ''}
@@ -78,10 +78,10 @@ export class ProfileCalendar extends React.Component {
   }
 }
 
-ProfileCalendar.propTypes = {
+ProfileCalendarBar.propTypes = {
   todaysDate: PropTypes.object.isRequired,
   previousWeek: PropTypes.func.isRequired,
   nextWeek: PropTypes.func.isRequired,
 }
 
-export default ProfileCalendar
+export default ProfileCalendarBar

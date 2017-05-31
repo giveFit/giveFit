@@ -7,7 +7,8 @@ import { GET_USER_WORKOUTS } from './gql'
 
 import ProfileHeader from './components/ProfileHeader'
 import ProfileDetails from './components/ProfileDetails'
-import ProfileCalendar from './components/ProfileCalendar'
+import ProfileCalendarBar from './components/ProfileCalendarBar'
+import ProfileCalendarRow from './components/ProfileCalendarRow'
 
 import WorkoutPost from 'Explore/components/WorkoutPost'
 
@@ -85,6 +86,7 @@ class Profile extends React.Component {
     //   : []
 
     if (user) {
+      console.log(data.getUser)
       return (
         <div className='home'>
           <ProfileHeader
@@ -101,11 +103,14 @@ class Profile extends React.Component {
             onUserNicknameChange={(nickname) => this.userFieldsToUpdate('nickname', nickname)}
             onProfilePhotoChange={(url) => this.userFieldsToUpdate('picture', url)}
           />
-          <ProfileCalendar
+          <ProfileCalendarBar
             todaysDate={this.state.todaysDate}
             previousWeek={() => this.previousWeek()}
             nextWeek={() => this.nextWeek()}
           />
+          <ProfileCalendarRow />
+          <ProfileCalendarRow />
+          <ProfileCalendarRow />
         </div>
       )
     }
