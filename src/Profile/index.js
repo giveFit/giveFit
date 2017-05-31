@@ -1,13 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import moment from 'moment'
 import { graphql, compose } from 'react-apollo'
 
 import { GET_USER_WORKOUTS } from './gql'
 
-import CircularProgress from 'material-ui/CircularProgress'
-
 import ProfileHeader from './components/ProfileHeader'
 import ProfileDetails from './components/ProfileDetails'
+import ProfileCalendar from './components/ProfileCalendar'
+
 import WorkoutPost from 'Explore/components/WorkoutPost'
 
 import './styles.css'
@@ -20,6 +21,7 @@ class Profile extends React.Component {
     this.state = {
       editMode: false,
       userFieldsToUpdate: {},
+      todaysDate: moment(),
     }
   }
 
@@ -48,6 +50,32 @@ class Profile extends React.Component {
     })
   }
 
+  userFieldsToUpdate (fieldName, value) {
+    this.setState({
+      userFieldsToUpdate: { ...this.state.userFieldsToUpdate, [fieldName]: value },
+    })
+  }
+
+  previousWeek () {
+    const previousWeek = moment(this.state.todaysDate).day(-7)
+
+    if (previousWeek.valueOf() - moment().valueOf() >= 0) {
+      this.setState({
+        todaysDate: moment(this.state.todaysDate).day(-7),
+      })
+    } else {
+      this.setState({
+        todaysDate: moment(),
+      })
+    }
+  }
+
+  nextWeek () {
+    this.setState({
+      todaysDate: moment(this.state.todaysDate).day(7),
+    })
+  }
+
   render () {
     const { data } = this.props
     const user = !data.loading ? data.getUser : null
@@ -62,24 +90,21 @@ class Profile extends React.Component {
           <ProfileHeader
             headerPhotoURL={user.headerPhotoURL}
             editMode={this.state.editMode}
-            onProfileHeaderChange={(url) => this.setState({
-              userFieldsToUpdate: { ...this.state.userFieldsToUpdate, headerPhotoURL: url },
-            })}
+            onProfileHeaderChange={(url) => this.userFieldsToUpdate('headerPhotoURL', url)}
           />
           <ProfileDetails
             user={user}
             editMode={this.state.editMode}
             onEnableEdit={(editMode) => this.setState({ editMode })}
             onSaveProfileChanges={(...args) => this.onSaveProfileChanges(...args)}
-            onUserDescriptionChange={(description) => this.setState({
-              userFieldsToUpdate: { ...this.state.userFieldsToUpdate, description },
-            })}
-            onUserNicknameChange={(nickname) => this.setState({
-              userFieldsToUpdate: { ...this.state.userFieldsToUpdate, nickname },
-            })}
-            onProfilePhotoChange={(url) => this.setState({
-              userFieldsToUpdate: { ...this.state.userFieldsToUpdate, picture: url },
-            })}
+            onUserDescriptionChange={(description) => this.userFieldsToUpdate('description', description)}
+            onUserNicknameChange={(nickname) => this.userFieldsToUpdate('nickname', nickname)}
+            onProfilePhotoChange={(url) => this.userFieldsToUpdate('picture', url)}
+          />
+          <ProfileCalendar
+            todaysDate={this.state.todaysDate}
+            previousWeek={() => this.previousWeek()}
+            nextWeek={() => this.nextWeek()}
           />
         </div>
       )

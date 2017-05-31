@@ -1,0 +1,61 @@
+.profile-calendar {
+  border-top: 1px solid grey;
+  border-bottom: 1px solid grey;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  padding: 1em;
+}
+
+.profile-calendar .col {
+  width: 12.5%;
+  text-align: center;
+}
+
+.profile-calendar .col:nth-child(2) {
+  width: 75%;
+  display: flex;
+  flex-direction: row;
+}
+
+.profile-calendar .col button {
+  border: 1px solid grey;
+  border-radius: 2.2em;
+  padding: 5px;
+  cursor: pointer;
+  background: none;
+}
+
+.profile-calendar .col button.disabled {
+  cursor: default;
+  pointer-events: none;
+  outline: none;
+}
+
+.profile-calendar .col button:hover {
+  border: 1px solid black;
+}
+
+.profile-calendar .col button .material-icons {
+  color: grey !important;
+  display: block !important;
+}
+
+.profile-calendar .col button:hover .material-icons {
+  color: black !important;
+}
+
+.profile-calendar .col .nested-col {
+  width: 14.28%;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-calendar .col .nested-col.currentDay span {
+  color: #61b2a7;
+  font-weight: bold;
+}
+
+.profile-calendar .col .nested-col span {
+  padding-bottom: 0.25em;
+}

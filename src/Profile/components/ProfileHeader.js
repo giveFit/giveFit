@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import UploadPicture from 'components/UploadPicture'
+
 import './ProfileHeader.css'
 
 export class ProfileHeader extends React.Component {
