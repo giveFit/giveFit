@@ -83,9 +83,10 @@ class AddActivity extends React.Component {
       recurring,
     } = this.state
 
+    // consider replacing this random number with uuid: https://github.com/makeable/uuid-v4.js
     var randomSlugNumber = Math.floor(Math.random() * 10000).toString()
     var titleAndSlugString = title.concat(' ', randomSlugNumber)
-    var slug = slugify(titleAndSlugString)
+    var slug = slugify(titleAndSlugString).toLowerCase()
 
     if (parkId) {
       _geoloc.lng = this.props.indexedParks[parkId].position.lng

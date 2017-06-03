@@ -33,3 +33,37 @@ query GetThroughViewer($where:WorkoutWhereArgs, $orderBy:[WorkoutOrderByArgs!]) 
     }  
   }  
 `
+export const GET_BY_SLUG = gql`
+query GetBySlug($where:WorkoutWhereArgs) {
+    viewer{
+      allWorkouts(where:$where){
+        edges {
+          node {
+            id
+            parkId
+            startDateTime
+            title
+            description
+            pictureURL
+            startDateTime
+            endDateTime
+            requestTrainer
+            recurring
+            type
+            slug
+            Workout {
+              nickname
+              username
+              picture
+            }
+            RSVPsForWorkout{
+              nickname
+              username
+              picture
+            }
+          }
+        }
+      }
+    }  
+  }  
+`
