@@ -110,15 +110,21 @@ class GridComponent extends React.Component {
     })
   }
 
-  handleWorkoutClick (parkId) {
+  handleWorkoutClick (parkId, workoutId) {
+    if (workoutId === this.state.selectedWorkoutId) {
+      workoutId = ''
+      parkId = ''
+    }
+
     this.setState({
       openedParkId: parkId,
+      selectedWorkoutId: workoutId,
     })
   }
 
   render () {
     const { centerLatLng, workouts, profile, onPlaceSelect, user } = this.props
-    const { loadedMapData, indexedParks, openedParkId } = this.state
+    const { loadedMapData, indexedParks, openedParkId, selectedWorkoutId } = this.state
 
     return (
       <div className='__app__body__container'>
@@ -157,7 +163,8 @@ class GridComponent extends React.Component {
                   workouts={indexedParks[openedParkId] ? indexedParks[openedParkId].workouts : workouts}
                   indexedParks={indexedParks}
                   profile={profile}
-                  handleWorkoutClick={(parkId) => this.handleWorkoutClick(parkId)}
+                  selectedWorkoutId={selectedWorkoutId}
+                  handleWorkoutClick={(parkId, workoutId) => this.handleWorkoutClick(parkId, workoutId)}
                 />
               {/*</Tab>*/}
               {/*<Tab label='Locations'>

@@ -60,7 +60,11 @@ class Activities extends React.Component {
         }
 
         return (
-          <CardText key={`workout-${index}`} onClick={() => this.props.handleWorkoutClick(workout.parkId)}>
+          <CardText
+            key={`workout-${index}`}
+            className={this.props.selectedWorkoutId === workout.id ? '__selected__workout' : ''}
+            onClick={() => this.props.handleWorkoutClick(workout.parkId, workout.id)}
+          >
             <div className='__workout__header'>
               <Chip
                 onTouchTap={() => this.context.router.push('/profile')}
@@ -126,6 +130,7 @@ class Activities extends React.Component {
 
 Activities.propTypes = {
   indexedParks: PropTypes.object.isRequired,
+  selectedWorkoutId: PropTypes.string.isRequired,
   workouts: PropTypes.array.isRequired,
   handleWorkoutClick: PropTypes.func.isRequired,
   RSVPForWorkout: PropTypes.func.isRequired,
