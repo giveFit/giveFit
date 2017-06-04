@@ -2,10 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { graphql, compose } from 'react-apollo'
 
-import { GET_THROUGH_VIEWER } from './gql'
+import { GET_THROUGH_VIEWER, GET_BY_SLUG } from './gql'
 import GridContainer from './GridContainer'
 
 import './styles.css'
+
+// need query on slug title
 
 class Explore extends React.Component {
   constructor (props, context) {
@@ -77,6 +79,17 @@ const ExploreWithData = compose(
       },
     }),
   }),
+  /*graphql(GET_BY_SLUG, {
+    options: (props) => ({
+      variables: {
+        where: {
+          slug: {
+            eq: new URL(window.location.href).get('slug') ? new URL(window.location.href).get('slug') : null
+          },
+        },
+      },
+    }),
+  }),*/
 )(Explore)
 
 export default ExploreWithData

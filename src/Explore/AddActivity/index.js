@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { graphql, compose } from 'react-apollo'
+import slugify from 'slugify'
 
 import { CREATE_WORKOUT } from './gql'
 
@@ -82,6 +83,11 @@ class AddActivity extends React.Component {
       recurring,
     } = this.state
 
+    // consider replacing this random number with uuid: https://github.com/makeable/uuid-v4.js
+    var randomSlugNumber = Math.floor(Math.random() * 10000).toString()
+    var titleAndSlugString = title.concat(' ', randomSlugNumber)
+    var slug = slugify(titleAndSlugString).toLowerCase()
+
     if (parkId) {
       _geoloc.lng = this.props.indexedParks[parkId].position.lng
       _geoloc.lat = this.props.indexedParks[parkId].position.lat
@@ -95,7 +101,7 @@ class AddActivity extends React.Component {
 
       endDateTime = new Date(
         date.getFullYear(), date.getMonth(), date.getDate(),
-        startDateTime.getHours(), startDateTime.getMinutes(),
+        endDateTime.getHours(), endDateTime.getMinutes(),
       )
     }
     this.props.createWorkout({
@@ -110,6 +116,7 @@ class AddActivity extends React.Component {
       userEmail,
       recurring,
       _geoloc,
+      slug,
       // workoutId is the id of the loggedInUser, allowing us to make a connection in our data graph
       workoutId: JSON.parse(window.localStorage.getItem('scapholdUserId')),
     })
@@ -128,6 +135,7 @@ class AddActivity extends React.Component {
           endDateTime: null,
           parkId: null,
           recurring: false,
+          slug: null,
         })
       }).catch((error) => {
         console.log(error)
@@ -245,6 +253,15 @@ class AddActivity extends React.Component {
             />
           </div>
 
+          <FieldDescription
+            onChange={(description) => this.setState({ description })}
+            errorText={this.state.errors.description}
+          />
+          <FieldRecurring
+            onCheck={() => this.setState({ recurring: !this.state.recurring })}
+            recurring={this.state.recurring}
+            errorText={this.state.errors.description}
+          />
           <div className='request-trainer-container'>
             <FieldRequestTrainer
               onCheck={() => this.setState({ requestTrainer: !this.state.requestTrainer })}
@@ -259,16 +276,6 @@ class AddActivity extends React.Component {
               />
             }
           </div>
-
-          <FieldDescription
-            onChange={(description) => this.setState({ description })}
-            errorText={this.state.errors.description}
-          />
-          <FieldRecurring
-            onCheck={() => this.setState({ recurring: !this.state.recurring })}
-            recurring={this.state.recurring}
-            errorText={this.state.errors.description}
-          />
         </div>
       </Dialog>
     )

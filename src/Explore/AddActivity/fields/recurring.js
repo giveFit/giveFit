@@ -8,7 +8,7 @@ const Recurring = ({ onCheck, recurring }) => {
     <div>
       <Checkbox
         name='recurring'
-        label='Recurrinng'
+        label='Recurring'
         className='request_trainer'
         checked={recurring}
         onCheck={() => onCheck()}

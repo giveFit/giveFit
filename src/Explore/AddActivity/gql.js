@@ -14,6 +14,7 @@ export const CREATE_WORKOUT = gql`
         pictureURL,
         userEmail,
         _geoloc,
+        slug,
         Workout{
           nickname,
           username,
