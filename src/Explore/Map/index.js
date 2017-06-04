@@ -1,10 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { GoogleMapLoader, GoogleMap, Marker } from 'react-google-maps'
+import { triggerEvent } from 'react-google-maps/lib/utils'
 
 // https://mapstyle.withgoogle.com/
 import mapStyles from './mapStyles.json'
 // can we get some hot icons in here? http://map-icons.com/
+
 
 class Map extends React.Component {
   // gets us our map on click location, may pass for location queries in
@@ -36,6 +38,14 @@ class Map extends React.Component {
         // window.alert('Geocoder failed due to: ' + status);
       }
     })
+  }
+
+  componentDidMount () {
+    window.onresize = () => this.handleWindowResize()
+  }
+
+  handleWindowResize () {
+    triggerEvent(this._googleMapComponent, 'resize')
   }
 
   render () {

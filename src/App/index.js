@@ -20,6 +20,7 @@ class App extends React.Component {
     this.state = {
       profile: this.auth.getProfile(),
       userId: JSON.parse(window.localStorage.getItem('scapholdUserId')),
+      footerActiveTab: 'map',
     }
 
     window.localStorage.removeItem('__find_workouts_pos')
@@ -82,11 +83,12 @@ class App extends React.Component {
           auth={this.auth}
           profile={profile}
         />
-        <div id='body' className='__app__body__container'>
+        <div id='body' className={`__app__body__container __${this.state.footerActiveTab}`}>
           {this.renderChildren(profile, userId)}
         </div>
         <Footer
           pathname={this.props.location.pathname}
+          onTabChange={(tab) => this.setState({ footerActiveTab: tab })}
         />
       </div>
     )

@@ -26,7 +26,6 @@ html, body, #root {
 
 .__app__body__container {
   display: flex;
-  flex: 1 0 auto;
   height: 100%;
   width: 100%;
 }
@@ -36,6 +35,7 @@ html, body, #root {
 }
 
 .__app__footer {
+  display: none;
   flex-flow: row wrap;
   /* This aligns items to the end line on main-axis */
   justify-content: flex-end;
@@ -46,8 +46,8 @@ html, body, #root {
   width: 100%;
 }
 
-@media all and (max-width: 480px) {
-  .__app__footer div {
+@media all and (max-width: 560px) {
+  .__app__footer {
     display: flex;
   }
 }
