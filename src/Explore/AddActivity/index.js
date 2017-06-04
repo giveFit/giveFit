@@ -178,6 +178,7 @@ class AddActivity extends React.Component {
     return (
       <Dialog
         style={{ zIndex: 0 }}
+        contentStyle={{ width: 'auto' }}
         actions={[
           <FlatButton
             key='loggedInDialog'
