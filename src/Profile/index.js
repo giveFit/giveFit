@@ -2,16 +2,21 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import { graphql, compose } from 'react-apollo'
+import BigCalendar from 'react-big-calendar'
+import Dialog from 'material-ui/Dialog'
 
 import foursquare from 'utils/foursquare'
 import { GET_USER_WORKOUTS } from './gql'
 
 import ProfileHeader from './components/ProfileHeader'
 import ProfileDetails from './components/ProfileDetails'
-import ProfileCalendarBar from './components/ProfileCalendarBar'
-import ProfileCalendarRow from './components/ProfileCalendarRow'
 
+import 'react-big-calendar/lib/css/react-big-calendar.css'
 import './styles.css'
+
+// Setup the localizer by providing the moment (or globalize) Object
+// to the correct localizer.
+BigCalendar.momentLocalizer(moment) // or globalizeLocalizer
 
 /* possible reference: https://github.com/scaphold-io/auth0-lock-playground */
 class Profile extends React.Component {
@@ -23,81 +28,69 @@ class Profile extends React.Component {
       userFieldsToUpdate: {},
       todaysDate: moment(),
       user: null,
-      calendar: null,
+      events: [],
+      eventDialogOpen: false,
+      eventDialogInfo: {},
     }
   }
 
   componentWillReceiveProps (nextProps) {
+    const events = []
+    const parksDictionary = {}
     const { data } = nextProps
 
     if (this.props.data.loading !== data.loading) {
-      const calendar = {}
       const userWorkouts = data.getUser.Workout.edges
       const userWorkoutRSVPs = data.getUser.WorkoutRSVP.edges
 
       for (let i = 0; i < userWorkouts.length; i++) {
         const workout = userWorkouts[i].node
 
-        if (!calendar[workout.parkId]) {
-          calendar[workout.parkId] = { workouts: [] }
-        }
+        parksDictionary[workout.parkId] = {}
 
-        calendar[workout.parkId].workouts.push(workout)
+        events.push({
+          parkId: workout.parkId,
+          start: new Date(workout.startDateTime),
+          end: new Date(workout.endDateTime),
+        })
       }
 
       for (let i = 0; i < userWorkoutRSVPs.length; i++) {
-        const workout = Object.assign({}, userWorkoutRSVPs[i].node)
+        const workout = userWorkoutRSVPs[i].node
 
-        workout.rsvp = true
+        parksDictionary[workout.parkId] = {}
 
-        if (!calendar[workout.parkId]) {
-          calendar[workout.parkId] = { workouts: [] }
-        }
-
-        calendar[workout.parkId].workouts.push(workout)
+        events.push({
+          parkId: workout.parkId,
+          rsvp: true,
+          start: new Date(workout.startDateTime),
+          end: new Date(workout.endDateTime),
+        })
       }
 
-      const calendarKeys = Object.keys(calendar)
 
-      Promise.all(calendarKeys.map((key) => {
-        return foursquare.getVenueInfoById(key)
+      Promise.all(Object.keys(parksDictionary).map((parkId) => {
+        return foursquare.getVenueInfoById(parkId)
           .then((venueInfo) => {
-            calendar[key].title = venueInfo.name
-            calendar[key].location = venueInfo.location
+            parksDictionary[parkId].title = venueInfo.name
+            parksDictionary[parkId].location = venueInfo.location.formattedAddress.toString()
           })
       }))
         .then(() => {
           this.setState({
             user: data.getUser,
-            calendar,
+            events: events.map((event) => {
+              const park = parksDictionary[event.parkId]
+
+              event.title = event.rsvp ? `${park.title} (RSVP'd)` : park.title
+              event.location = park.location
+
+              return event
+            }),
           })
         })
         .catch((err) => console.log(err))
     }
-  }
-
-  prepareCalendar () {
-    const { calendar } = this.state
-    const calendarKeys = Object.keys(calendar)
-
-    if (!calendarKeys.length) {
-      return (
-        <div className='no-workouts'>You have no Workouts scheduled or RSVP'd to.</div>
-      )
-    }
-
-    return calendarKeys.map((key, index) => {
-      const park = calendar[key]
-
-      return (
-        <ProfileCalendarRow
-          key={`parkId-${key}`}
-          parkTitle={park.title}
-          parkLocation={park.location.address}
-          workouts={park.workouts}
-        />
-      )
-    })
   }
 
   onSaveProfileChanges () {
@@ -112,28 +105,8 @@ class Profile extends React.Component {
     })
   }
 
-  previousWeek () {
-    const previousWeek = moment(this.state.todaysDate).day(-7)
-
-    if (previousWeek.valueOf() - moment().valueOf() >= 0) {
-      this.setState({
-        todaysDate: moment(this.state.todaysDate).day(-7),
-      })
-    } else {
-      this.setState({
-        todaysDate: moment(),
-      })
-    }
-  }
-
-  nextWeek () {
-    this.setState({
-      todaysDate: moment(this.state.todaysDate).day(7),
-    })
-  }
-
   render () {
-    const { user, editMode, todaysDate } = this.state
+    const { user, editMode, events, eventDialogInfo, eventDialogOpen } = this.state
 
     if (user) {
       return (
@@ -152,12 +125,36 @@ class Profile extends React.Component {
             onUserNicknameChange={(nickname) => this.userFieldsToUpdate('nickname', nickname)}
             onProfilePhotoChange={(url) => this.userFieldsToUpdate('picture', url)}
           />
-          <ProfileCalendarBar
-            todaysDate={todaysDate}
-            previousWeek={() => this.previousWeek()}
-            nextWeek={() => this.nextWeek()}
+          <BigCalendar
+            events={events}
+            defaultView='week'
+            eventPropGetter={(event) => {
+              return {
+                className: event.rsvp ? 'rsvpd' : '',
+              }
+            }}
+            onSelectEvent={(event) => {
+              this.setState({
+                eventDialogOpen: true,
+                eventDialogInfo: {
+                  title: event.title,
+                  location: event.location,
+                  start: event.start,
+                  end: event.end,
+                  rsvp: Boolean(event.rsvp),
+                },
+              })
+            }}
           />
-          {this.prepareCalendar()}
+          <Dialog
+            title={eventDialogInfo.title}
+            open={eventDialogOpen}
+            onRequestClose={() => this.setState({ eventDialogOpen: false })}
+          >
+            <div><b>Location:</b> {eventDialogInfo.location}</div>
+            <div><b>Start:</b> {moment(eventDialogInfo.start).format('LLLL')}</div>
+            <div><b>End:</b> {moment(eventDialogInfo.end).format('LLLL')}</div>
+          </Dialog>
         </div>
       )
     }

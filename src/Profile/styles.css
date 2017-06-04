@@ -3,3 +3,11 @@
   text-align: center;
   font-weight: bold;
 }
+
+.rsvpd {
+  background-color: #00b200;
+}
+
+.rsvpd.rbc-selected {
+  background-color: #007f00;
+}
