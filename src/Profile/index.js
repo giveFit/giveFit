@@ -3,14 +3,13 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 import { graphql, compose } from 'react-apollo'
 
+import foursquare from 'utils/foursquare'
 import { GET_USER_WORKOUTS } from './gql'
 
 import ProfileHeader from './components/ProfileHeader'
 import ProfileDetails from './components/ProfileDetails'
 import ProfileCalendarBar from './components/ProfileCalendarBar'
 import ProfileCalendarRow from './components/ProfileCalendarRow'
-
-import WorkoutPost from 'Explore/components/WorkoutPost'
 
 import './styles.css'
 
@@ -23,40 +22,79 @@ class Profile extends React.Component {
       editMode: false,
       userFieldsToUpdate: {},
       todaysDate: moment(),
+      user: null,
+      calendar: null,
     }
   }
 
-  prepareCalendar (workouts, workoutRSVPs) {
-    const calendar = {}
+  componentWillReceiveProps (nextProps) {
+    const { data } = nextProps
 
-    for (let i = 0; i < workouts.length; i++) {
-      const workout = workouts[i].node
+    if (this.props.data.loading !== data.loading) {
+      const calendar = {}
+      const userWorkouts = data.getUser.Workout.edges
+      const userWorkoutRSVPs = data.getUser.WorkoutRSVP.edges
 
-      calendar[workout.parkId] = calendar[workout.parkId]
-        ? calendar[workout.parkId].concat([workout])
-        : [workout]
+      for (let i = 0; i < userWorkouts.length; i++) {
+        const workout = userWorkouts[i].node
+
+        if (!calendar[workout.parkId]) {
+          calendar[workout.parkId] = { workouts: [] }
+        }
+
+        calendar[workout.parkId].workouts.push(workout)
+      }
+
+      for (let i = 0; i < userWorkoutRSVPs.length; i++) {
+        const workout = Object.assign({}, userWorkoutRSVPs[i].node)
+
+        workout.rsvp = true
+
+        if (!calendar[workout.parkId]) {
+          calendar[workout.parkId] = { workouts: [] }
+        }
+
+        calendar[workout.parkId].workouts.push(workout)
+      }
+
+      const calendarKeys = Object.keys(calendar)
+
+      Promise.all(calendarKeys.map((key) => {
+        return foursquare.getVenueInfoById(key)
+          .then((venueInfo) => {
+            calendar[key].title = venueInfo.name
+            calendar[key].location = venueInfo.location
+          })
+      }))
+        .then(() => {
+          this.setState({
+            user: data.getUser,
+            calendar,
+          })
+        })
+        .catch((err) => console.log(err))
     }
+  }
 
-    for (let i = 0; i < workoutRSVPs.length; i++) {
-      const workout = Object.assign({}, workoutRSVPs[i].node)
-
-      workout.rsvp = true
-
-      calendar[workout.parkId] = calendar[workout.parkId]
-        ? calendar[workout.parkId].concat([workout])
-        : [workout]
-    }
-
+  prepareCalendar () {
+    const { calendar } = this.state
     const calendarKeys = Object.keys(calendar)
 
+    if (!calendarKeys.length) {
+      return (
+        <div className='no-workouts'>You have no Workouts scheduled or RSVP'd to.</div>
+      )
+    }
+
     return calendarKeys.map((key, index) => {
-      const workouts = calendarKeys[key]
+      const park = calendar[key]
 
       return (
         <ProfileCalendarRow
           key={`parkId-${key}`}
-          parkId={key}
-          workouts={workouts}
+          parkTitle={park.title}
+          parkLocation={park.location.address}
+          workouts={park.workouts}
         />
       )
     })
@@ -95,22 +133,19 @@ class Profile extends React.Component {
   }
 
   render () {
-    const { data } = this.props
-    const user = !data.loading ? data.getUser : null
-    const userWorkoutRSVPs = !data.loading ? data.getUser.WorkoutRSVP.edges : []
-    const userWorkouts = !data.loading ? data.getUser.Workout.edges : []
+    const { user, editMode, todaysDate } = this.state
 
     if (user) {
       return (
         <div className='home'>
           <ProfileHeader
             headerPhotoURL={user.headerPhotoURL}
-            editMode={this.state.editMode}
+            editMode={editMode}
             onProfileHeaderChange={(url) => this.userFieldsToUpdate('headerPhotoURL', url)}
           />
           <ProfileDetails
             user={user}
-            editMode={this.state.editMode}
+            editMode={editMode}
             onEnableEdit={(editMode) => this.setState({ editMode })}
             onSaveProfileChanges={(...args) => this.onSaveProfileChanges(...args)}
             onUserDescriptionChange={(description) => this.userFieldsToUpdate('description', description)}
@@ -118,11 +153,11 @@ class Profile extends React.Component {
             onProfilePhotoChange={(url) => this.userFieldsToUpdate('picture', url)}
           />
           <ProfileCalendarBar
-            todaysDate={this.state.todaysDate}
+            todaysDate={todaysDate}
             previousWeek={() => this.previousWeek()}
             nextWeek={() => this.nextWeek()}
           />
-          {this.prepareCalendar(userWorkouts, userWorkoutRSVPs)}
+          {this.prepareCalendar()}
         </div>
       )
     }

@@ -18,13 +18,13 @@ export class ProfileCalendarRow extends React.Component {
   }
 
   render () {
-    const { parkId } = this.props
+    const { parkTitle, parkLocation, workouts } = this.props
 
     return (
       <div className='profile-calendar'>
         <div className='col'>
           <div className='outline-square'>
-            <span>{parkId}</span>
+            <span dangerouslySetInnerHTML={{ __html: `${parkTitle} <br /> ${parkLocation}`}} />
           </div>
         </div>
         <div className='col'>
@@ -38,7 +38,8 @@ export class ProfileCalendarRow extends React.Component {
 }
 
 ProfileCalendarRow.propTypes = {
-  parkId: PropTypes.string.isRequired,
+  parkTitle: PropTypes.string.isRequired,
+  parkLocation: PropTypes.string.isRequired,
   workouts: PropTypes.array.isRequired,
 }
 

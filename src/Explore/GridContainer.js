@@ -1,14 +1,12 @@
+// import ActivityContainer from './ActivityContainer'
+// import { Tab, Tabs } from 'material-ui'
+// import Groups from './Groups/ParkContainer'
+
 import React from 'react'
 import PropTypes from 'prop-types'
+import foursquare from 'utils/foursquare'
 
-// import { Tab, Tabs } from 'material-ui'
-
-import axios from 'axios'
-
-// import Groups from './Groups/ParkContainer'
-import ActivitiesWithData from './Activities/'
-
-// import ActivityContainer from './ActivityContainer'
+import Activities from './Activities/index'
 import MapContainer from './Map/index'
 import AddActivity from './AddActivity/index'
 
@@ -55,26 +53,10 @@ class GridComponent extends React.Component {
   fetchParks () {
     const { centerLatLng, workouts } = this.props
 
-    // Foursquare api calls
-    // Explore: https://developer.foursquare.com/docs/venues/explore
-    const foursquare = (query) => {
-      return axios.get('https://api.foursquare.com/v2/venues/explore', {
-        params: {
-          client_id: process.env.FOURSQUARE_CLIENT_ID_KEY,
-          client_secret: process.env.FOURSQUARE_CLIENT_SECRET_KEY,
-          ll: centerLatLng.lat.toString().concat(',' + centerLatLng.lng.toString()),
-          radius: 5000,
-          venuePhotos: 1,
-          query,
-          m: 'foursquare',
-          locale: 'en',
-          v: '20140806',
-        },
-      })
-        .then(({ data }) => data.response.groups[0].items)
-    }
+    const recreationCenters = foursquare.exploreVenues(centerLatLng, 'recreation center')
+    const parks = foursquare.exploreVenues(centerLatLng, 'park')
 
-    Promise.all([foursquare('recreation center'), foursquare('park')])
+    Promise.all([recreationCenters, parks])
       .then(([recCenters, parksResults]) => {
         const parksAndRecs = parksResults.concat(recCenters)
 
@@ -171,7 +153,7 @@ class GridComponent extends React.Component {
                   profile={profile}
                   workouts={workouts}
                 />
-                <ActivitiesWithData
+                <Activities
                   workouts={indexedParks[openedParkId] ? indexedParks[openedParkId].workouts : workouts}
                   indexedParks={indexedParks}
                   profile={profile}

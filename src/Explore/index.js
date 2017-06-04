@@ -30,7 +30,7 @@ class Explore extends React.Component {
     let user = null
 
     if (!loading) {
-      workouts = viewer.allWorkouts.edges || []
+      workouts = viewer ? viewer.allWorkouts.edges : []
       user = this.props.user || null
     }
 

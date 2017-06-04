@@ -27,7 +27,7 @@
 
 .profile-calendar .col .outline-square span {
   padding: 1em;
-  word-break: break-all;
+  word-break: break-word;
 }
 
 .profile-calendar .col .grey-square {
