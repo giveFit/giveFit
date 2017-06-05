@@ -39,7 +39,7 @@ class Explore extends React.Component {
     return (
       <div className='explore_container'>
         <GridContainer
-          centerLatLng={this.centerLatLng}
+        centerLatLng={this.centerLatLng}
           onPlaceSelect={(place) => {
             data.refetch({
               latLng: place.address,
