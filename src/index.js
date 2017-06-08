@@ -19,6 +19,7 @@ import App from 'App/'
 import Explore from 'Explore/'
 import Profile from 'Profile/'
 import Data from 'Data/'
+import AddActivityPageWithData from 'Explore/AddActivity/addActivityPage'
 
 import './base.css'
 
@@ -36,6 +37,7 @@ const routes = {
     { path: 'new-york', component: Explore, defaultLat: 40.7128, defaultLng: -74.0059 },
     { path: 'profile', component: Profile },
     { path: 'data', component: Data },
+    { path: 'add-workout', component: AddActivityPageWithData, defaultLat: 39.2904, defaultLng: -76.6122 },
   ],
 }
 

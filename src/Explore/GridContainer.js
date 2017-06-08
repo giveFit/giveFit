@@ -52,6 +52,9 @@ class GridComponent extends React.Component {
   */
   fetchParks () {
     const { centerLatLng, workouts } = this.props
+    // is there a way to set this at a higher container component so as to pass it to
+    // add-workout route depending on our city?
+    console.log('centerLatLng', centerLatLng)
 
     const recreationCenters = foursquare.exploreVenues(centerLatLng, 'recreation center')
     const parks = foursquare.exploreVenues(centerLatLng, 'park')

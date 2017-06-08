@@ -7,8 +7,6 @@ import GridContainer from './GridContainer'
 
 import './styles.css'
 
-// need query on slug title
-
 class Explore extends React.Component {
   constructor (props, context) {
     super(props, context)

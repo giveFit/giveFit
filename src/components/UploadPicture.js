@@ -23,6 +23,7 @@ const UploadPicture = ({ iconColor = 'black', icon = 'add_a_photo', onChange }) 
         maxFiles: 1,
       }}
       onSuccess={(res) => {
+        console.log('filestack res', res)
         onChange(res.filesUploaded[0].url)
       }}
       buttonClass='add_picture_button'

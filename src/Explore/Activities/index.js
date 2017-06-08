@@ -19,6 +19,7 @@ class Activities extends React.Component {
       messageTrue: 'Event added to your calendar',
       messageFalse: 'Event removed from your calendar',
     }
+    console.log('WorkoutList props', this.props)
   }
 
   handleRequestClose () {
@@ -84,7 +85,7 @@ class Activities extends React.Component {
             <div className='__workout__image__container'>
               <img
                 width='100%'
-                height='300'
+                // height='300'
                 src={workout.pictureURL}
               />
               <div className='__workout__information'>

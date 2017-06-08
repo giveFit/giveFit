@@ -8,6 +8,9 @@ const Description = ({ onChange, errorText = null }) => {
     <TextField
       id='workout_description'
       hintText='Description'
+      floatingLabelText="MultiLine and FloatingLabel"
+      multiLine={true}
+      rows={2}
       errorText={errorText}
       onChange={(e) => onChange(e.target.value)}
     />

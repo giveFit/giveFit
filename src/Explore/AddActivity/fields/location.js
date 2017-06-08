@@ -5,6 +5,7 @@ import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 
 const Location = ({ onChange, places, parkId, errorText = null }) => {
+  console.log('looking at places again', places)
   return (
     <div>
       <span> Choose Location <i className='fa fa-map-marker' /></span>
@@ -14,7 +15,7 @@ const Location = ({ onChange, places, parkId, errorText = null }) => {
         errorText={errorText}
         onChange={(e, index, value) => onChange(value)}
       >
-        {places.map((place) => {
+      {places ? places.map((place) => {
           return (
             <MenuItem
               key={`location-${place.id}`}
@@ -22,7 +23,7 @@ const Location = ({ onChange, places, parkId, errorText = null }) => {
               primaryText={place.title}
             />
           )
-        })}
+        }) : null}
       </SelectField>
     </div>
   )

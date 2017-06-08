@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { graphql, compose } from 'react-apollo'
 import slugify from 'slugify'
+import foursquare from 'utils/foursquare'
 
 import { CREATE_WORKOUT } from './gql'
 
@@ -9,7 +10,6 @@ import Avatar from 'material-ui/Avatar'
 import Chip from 'material-ui/Chip'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
-import RaisedButton from 'material-ui/RaisedButton'
 
 import FieldTitle from './fields/title'
 import FieldType from './fields/type'
@@ -29,10 +29,10 @@ import './styles.css'
 
 // I'll want to create a subscription here, as well as putting through
 // a groupId to match with whichever group the data is being submitted on
-class AddActivity extends React.Component {
+class AddActivityPage extends React.Component {
   constructor (props, context) {
     super(props, context)
-
+    console.log('AddActivityPage props', props)
     this.state = {
       title: null,
       type: null,
@@ -47,24 +47,77 @@ class AddActivity extends React.Component {
       userEmail: null,
       recurring: false,
       errors: {},
+      indexedParks: null,
+      places: [],
       date: new Date(),
     }
 
-    this.places = []
-
     this.auth = new AuthService(process.env.AUTH0_CLIENT_ID, process.env.AUTH0_DOMAIN)
+
+    this.centerLatLng = null
+
+    const { defaultLat, defaultLng } = this.props.route
+    const { query } = this.props.location
+
+    this.centerLatLng = {
+      lat: query.lat ? parseFloat(query.lat) : defaultLat,
+      lng: query.lng ? parseFloat(query.lng) : defaultLng,
+    }
   }
 
   componentDidMount () {
-    this.places = Object.keys(this.props.indexedParks).map((placeID) => {
-      const place = this.props.indexedParks[placeID]
+    this.fetchParks()
+  }
 
-      return {
-        title: place.title,
-        id: place.parkId,
-        _geoloc: place.position,
-      }
-    })
+  fetchParks () {
+    const recreationCenters = foursquare.exploreVenues(this.centerLatLng, 'recreation center')
+    const parks = foursquare.exploreVenues(this.centerLatLng, 'park')
+
+    Promise.all([recreationCenters, parks])
+      .then(([recCenters, parksResults]) => {
+        const parksAndRecs = parksResults.concat(recCenters)
+
+        // Build parks by ID object
+        const indexedParks = {}
+
+        // @todo: move this traversal to the utils files
+        parksAndRecs.map((park) => {
+          const parkVenue = park.venue
+
+          // need to iterate over workouts, matching them to the place_id, adding
+          // them as an array to the indexedParks
+
+          indexedParks[parkVenue.id] = {
+            parkId: parkVenue.id,
+            title: parkVenue.name,
+            position: {
+              lat: parkVenue.location.lat,
+              lng: parkVenue.location.lng,
+            },
+            // photos: this.foursquareGetUrl(parkVenue.photos),
+            vicinity: parkVenue.location.address,
+          }
+        })
+        console.log('indexedParks', indexedParks)
+        this.setState({
+          indexedParks,
+          loadedMapData: true,
+        })
+        var places = Object.keys(indexedParks).map((placeID) => {
+          const place = indexedParks[placeID]
+          // console.log('making places', place)
+          return {
+            title: place.title,
+            id: place.parkId,
+            _geoloc: place.position,
+          }
+        })
+        console.log('do we have places after the map?', places)
+        this.setState({
+          places: places,
+        })
+      })
+      .catch((err) => console.log(err))
   }
 
   createWorkout () {
@@ -89,8 +142,8 @@ class AddActivity extends React.Component {
     var slug = slugify(titleAndSlugString).toLowerCase()
 
     if (parkId) {
-      _geoloc.lng = this.props.indexedParks[parkId].position.lng
-      _geoloc.lat = this.props.indexedParks[parkId].position.lat
+      _geoloc.lng = this.state.indexedParks[parkId].position.lng
+      _geoloc.lat = this.state.indexedParks[parkId].position.lat
     }
 
     if (date && startDateTime && endDateTime) {
@@ -182,26 +235,10 @@ class AddActivity extends React.Component {
     )
   }
 
-  loggedInDialog () {
+  render () {
+    console.log('can we render places?', this.places)
     return (
-      <Dialog
-        style={{ zIndex: 0 }}
-        contentStyle={{ width: 'auto' }}
-        actions={[
-          <FlatButton
-            key='loggedInDialog'
-            label='Ok'
-            primary
-            keyboardFocused
-            onTouchTap={() => this.createWorkout()}
-          />,
-        ]}
-        autoScrollBodyContent
-        modal={false}
-        open={this.state.open}
-        onRequestClose={() => this.handleClose()}
-      >
-        <div>
+      <div>
           <div className='top_level_container'>
             <div className='profile_chip_container'>
               <Chip
@@ -247,7 +284,7 @@ class AddActivity extends React.Component {
             />
             <FieldLocation
               onChange={(parkId) => this.setState({ parkId })}
-              places={this.places}
+              places={this.state.places}
               parkId={this.state.parkId}
               errorText={this.state.errors.parkId}
             />
@@ -276,47 +313,28 @@ class AddActivity extends React.Component {
               />
             }
           </div>
+          <FlatButton
+            key='loggedInDialog'
+            label='Ok'
+            primary
+            keyboardFocused
+            onTouchTap={() => this.createWorkout()}
+          />
         </div>
-      </Dialog>
-    )
-  }
-
-  render () {
-    return (
-      <div className='workout-creator'>
-        <RaisedButton
-          label={<i
-            className='fa fa-plus'
-            style={{ color: '#75F0BA', fontWeight: 'bold' }}
-          >
-             Add Activity
-          </i>}
-          className='add-activity'
-          labelPosition='before'
-          backgroundColor='#CE1F3C'
-          onTouchTap={() => this.handleOpen()}
-        />
-        {this.auth.loggedIn() && this.props.profile
-          ? this.loggedInDialog()
-          : this.notLoggedInDialog()
-        }
-      </div>
     )
   }
 }
 
-AddActivity.propTypes = {
-  indexedParks: PropTypes.object.isRequired,
+AddActivityPage.propTypes = {
   profile: PropTypes.object,
-  workouts: PropTypes.array.isRequired,
 }
 
-const AddActivityWithData = compose(
+const AddActivityPageWithData = compose(
   graphql(CREATE_WORKOUT, {
     props: ({ mutate }) => ({
       createWorkout: (input) => mutate({ variables: { input: input } }),
     }),
   })
-)(AddActivity)
+)(AddActivityPage)
 
-export default AddActivityWithData
+export default AddActivityPageWithData

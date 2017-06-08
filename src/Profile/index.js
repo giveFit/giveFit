@@ -161,7 +161,7 @@ class Profile extends React.Component {
 
     return (
       <div className='home'>
-        <div>You are not logged in</div>
+        <div>Loading...</div>
       </div>
     )
   }
