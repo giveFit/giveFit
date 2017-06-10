@@ -20,7 +20,7 @@ export default () => {
       }
 
       if (window.localStorage.getItem('scaphold_user_token')) {
-        req.options.headers['Authorization'] = window.localStorage.getItem('scaphold_user_token')
+        req.options.headers['Authorization'] = `Bearer ${window.localStorage.getItem('scaphold_user_token')}`
       }
 
       next()

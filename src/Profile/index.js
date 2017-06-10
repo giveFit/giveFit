@@ -39,6 +39,12 @@ class Profile extends React.Component {
     const parksDictionary = {}
     const { data } = nextProps
 
+    if (data.error) {
+      this.props.auth.login()
+
+      return
+    }
+
     if (this.props.data.loading !== data.loading) {
       const userWorkouts = data.getUser.Workout.edges
       const userWorkoutRSVPs = data.getUser.WorkoutRSVP.edges
