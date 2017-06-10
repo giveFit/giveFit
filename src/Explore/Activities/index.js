@@ -64,7 +64,6 @@ class Activities extends React.Component {
           <CardText
             key={`workout-${index}`}
             className={this.props.selectedWorkoutId === workout.id ? '__selected__workout' : ''}
-            onClick={() => this.props.handleWorkoutClick(workout.parkId, workout.id)}
           >
             <div className='__workout__header'>
               <Chip
@@ -85,6 +84,7 @@ class Activities extends React.Component {
             <div className='__workout__image__container'>
               <img
                 width='100%'
+                onClick={() => this.props.handleWorkoutClick(workout.parkId, workout.id)}
                 // height='300'
                 src={workout.pictureURL}
               />
