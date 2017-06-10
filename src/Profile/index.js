@@ -39,6 +39,7 @@ class Profile extends React.Component {
     const parksDictionary = {}
     const { data } = nextProps
 
+    // @todo: there should be a way where we can refresh the scpahold user token
     if (data.error) {
       this.props.auth.login()
 

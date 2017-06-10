@@ -29,6 +29,13 @@ class Explore extends React.Component {
     let workouts = []
     let user = null
 
+    // @todo: there should be a way where we can refresh the scpahold user token
+    if (data.error) {
+      this.props.auth.login()
+
+      return
+    }
+
     if (!loading) {
       workouts = viewer ? viewer.allWorkouts.edges : []
       user = this.props.user || null
