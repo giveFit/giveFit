@@ -61,6 +61,8 @@ Explore.propTypes = {
   profile: PropTypes.object,
 }
 
+// for recurring workouts, create microservice that creates a
+// number of workouts corresponding to each number of times requested
 const ExploreWithData = compose(
   graphql(GET_THROUGH_VIEWER, {
     options: (props) => ({
