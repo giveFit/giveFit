@@ -31,22 +31,22 @@ class MobileBottomNav extends React.Component {
       <Paper zDepth={1}>
         <BottomNavigation selectedIndex={selectedIndex}>
           <BottomNavigationItem
+            className={selectedIndex === 0 ? '__active' : ''}
+            label='Activities'
+            icon={<List />}
+            onTouchTap={() => {
+              this.select(0)
+              this.props.onTabChange('list')
+            }}
+          />
+          <BottomNavigationItem
 
             className={selectedIndex === 0 ? '__active' : ''}
             label='Map'
             icon={<IconLocationOn />}
             onTouchTap={() => {
-              this.select(0)
-              this.props.onTabChange('map')
-            }}
-          />
-          <BottomNavigationItem
-            className={selectedIndex === 0 ? '__active' : ''}
-            label='Activities'
-            icon={<List />}
-            onTouchTap={() => {
               this.select(1)
-              this.props.onTabChange('list')
+              this.props.onTabChange('map')
             }}
           />
         </BottomNavigation>

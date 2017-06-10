@@ -23,7 +23,7 @@ class Explore extends React.Component {
   }
 
   render () {
-    const { profile, data } = this.props
+    const { profile, data, footerActiveTab } = this.props
     const { loading, viewer } = data
     let workoutGroups = []
     let workouts = []
@@ -54,6 +54,7 @@ class Explore extends React.Component {
           profile={profile}
           workoutGroups={workoutGroups}
           workouts={workouts}
+          footerActiveTab={footerActiveTab}
         />
       </div>
     )
@@ -66,6 +67,7 @@ Explore.propTypes = {
   data: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
   profile: PropTypes.object,
+  footerActiveTab: PropTypes.string.isRequired,
 }
 
 // for recurring workouts, create microservice that creates a

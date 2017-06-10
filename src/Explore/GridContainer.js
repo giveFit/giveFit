@@ -126,7 +126,7 @@ class GridComponent extends React.Component {
   }
 
   render () {
-    const { centerLatLng, workouts, profile, onPlaceSelect, user } = this.props
+    const { centerLatLng, workouts, profile, onPlaceSelect, footerActiveTab, user } = this.props
     const { loadedMapData, indexedParks, openedParkId, selectedWorkoutId } = this.state
 
     return (
@@ -141,6 +141,7 @@ class GridComponent extends React.Component {
               geocoder={this.geocoder}
               onMarkerClick={(parkId) => this.setActiveMarker(parkId)}
               onPlaceSelect={onPlaceSelect}
+              footerActiveTab={footerActiveTab}
             />
           }
           {/*this.state.openedParkId &&
@@ -192,6 +193,7 @@ GridComponent.propTypes = {
   workoutGroups: PropTypes.array.isRequired,
   profile: PropTypes.object,
   onPlaceSelect: PropTypes.func.isRequired,
+  footerActiveTab: PropTypes.string.isRequired,
 }
 
 export default GridComponent

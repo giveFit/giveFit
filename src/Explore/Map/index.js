@@ -57,7 +57,12 @@ class Map extends React.Component {
       indexedParks,
       openedParkId,
       onMarkerClick,
+      footerActiveTab,
     } = this.props
+
+    if (footerActiveTab === 'map') {
+      this.handleWindowResize()
+    }
 
     return (
       <GoogleMapLoader
@@ -108,6 +113,7 @@ Map.propTypes = {
   geocoder: PropTypes.object,
   onMarkerClick: PropTypes.func.isRequired,
   onPlaceSelect: PropTypes.func.isRequired,
+  footerActiveTab: PropTypes.string.isRequired,
 }
 
 export default Map

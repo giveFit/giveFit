@@ -20,7 +20,7 @@ class App extends React.Component {
     this.state = {
       profile: this.auth.getProfile(),
       userId: JSON.parse(window.localStorage.getItem('scapholdUserId')),
-      footerActiveTab: 'map',
+      footerActiveTab: 'list',
     }
 
     window.localStorage.removeItem('__find_workouts_pos')
@@ -64,12 +64,13 @@ class App extends React.Component {
       })
   }
 
-  renderChildren (profile, userId) {
+  renderChildren (profile, userId, footerActiveTab) {
     return React.Children.map(this.props.children, (child) => {
       return React.cloneElement(child, {
         profile,
         userId,
         auth: this.auth,
+        footerActiveTab,
       })
     })
   }
@@ -84,7 +85,7 @@ class App extends React.Component {
           profile={profile}
         />
         <div id='body' className={`__app__body__container __${this.state.footerActiveTab}`}>
-          {this.renderChildren(profile, userId)}
+          {this.renderChildren(profile, userId, this.state.footerActiveTab)}
         </div>
         <Footer
           pathname={this.props.location.pathname}
