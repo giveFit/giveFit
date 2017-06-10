@@ -10,6 +10,7 @@ const Location = ({ onChange, places, parkId, errorText = null }) => {
       <span> Choose Location <i className='fa fa-map-marker' /></span>
       <SelectField
         fullWidth
+        autoWidth={true}
         value={parkId}
         errorText={errorText}
         onChange={(e, index, value) => onChange(value)}
