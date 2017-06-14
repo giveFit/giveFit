@@ -73,11 +73,6 @@ class LoggedInToolbar extends React.Component {
             }
           >
             <MenuItem
-              onTouchTap={this.handleClose.bind(this)}
-              onClick={() => { window.location = 'https://givefit.net/about-us' }}
-              primaryText='About Us'
-            />
-            <MenuItem
               primaryText="Profile"
               onTouchTap={this.handleClose.bind(this)}
               onClick={() => this.context.router.push('/profile')}
@@ -105,7 +100,6 @@ class LoggedInToolbar extends React.Component {
               label='API'
             />
           }
-          <FlatButton label='About Us' onClick={() => { window.location = 'https://givefit.net/about-us' }} />
           <FlatButton label='City Leaderboard' onClick={() => this.context.router.push('/city-leaderboard')} />
           <Avatar
             className='avatar'

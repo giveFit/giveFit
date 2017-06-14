@@ -42,7 +42,7 @@ class MainToolbar extends React.Component {
           <ToolbarGroup>
             <ToolbarTitle
               className='title'
-              text='givefit'
+              text='GiveFit'
               onClick={() => this.context.router.push('/')}
             />
           </ToolbarGroup>
@@ -55,11 +55,6 @@ class MainToolbar extends React.Component {
                 </IconButton>
               }
             >
-              <MenuItem
-                onTouchTap={this.handleClose.bind(this)}
-                onClick={() => { window.location = 'https://givefit.net/about-us' }}
-                primaryText='About Us'
-              />
               {process.env.__NODE_ENV__ === 'development' &&
                 <MenuItem
                   onTouchTap={this.handleClose.bind(this)}
@@ -68,6 +63,7 @@ class MainToolbar extends React.Component {
                   <Link to='https://us-west-2.api.scaphold.io/graphql/newGiveFitAlias' target='_blank' />
                 </MenuItem>
               }
+              <FlatButton label='City Leaderboard' onClick={() => this.context.router.push('/city-leaderboard')} />
               <MenuItem
                 onTouchTap={this.handleClose.bind(this)}
                 onClick={() => this.startLogin()}
@@ -83,7 +79,7 @@ class MainToolbar extends React.Component {
                 label='API'
               />
             }
-            <FlatButton label='About Us' onClick={() => { window.location = 'https://givefit.net/about-us' }} />
+            <FlatButton label='City Leaderboard' onClick={() => this.context.router.push('/city-leaderboard')} />
             <ToolbarSeparator />
             <RaisedButton
               label='Login'
