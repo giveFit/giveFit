@@ -126,7 +126,7 @@ class GridComponent extends React.Component {
   }
 
   render () {
-    const { centerLatLng, workouts, profile, onPlaceSelect, footerActiveTab, user } = this.props
+    const { centerLatLng, workouts, profile, onPlaceSelect, footerActiveTab } = this.props
     const { loadedMapData, indexedParks, openedParkId, selectedWorkoutId } = this.state
 
     return (
@@ -144,24 +144,25 @@ class GridComponent extends React.Component {
               footerActiveTab={footerActiveTab}
             />
           }
-          {/*this.state.openedParkId &&
+          {/* this.state.openedParkId &&
             <ActivityContainer
               indexedParks={indexedParks}
               openedParkId={this.state.openedParkId}
               parkTitle={indexedParks[this.state.openedParkId].googleData.title}
               workouts={indexedParks[this.state.openedParkId].googleData.workouts}
               closeActivity={() => this.setActiveMarker()}
-            />*/}
+            /> */}
         </div>
 
         {loadedMapData &&
           <div className='__grid__list' >
-            {/*<Tabs className='__tabs__container'>
-              <Tab label='Activities'>*/}
+            {/* <Tabs className='__tabs__container'>
+              <Tab label='Activities'> */}
                 <AddActivity
                   indexedParks={indexedParks}
                   profile={profile}
                   workouts={workouts}
+                  data={this.props.data}
                 />
                 <Activities
                   workouts={indexedParks[openedParkId] ? indexedParks[openedParkId].workouts : workouts}
@@ -170,8 +171,8 @@ class GridComponent extends React.Component {
                   selectedWorkoutId={selectedWorkoutId}
                   handleWorkoutClick={(parkId, workoutId) => this.handleWorkoutClick(parkId, workoutId)}
                 />
-              {/*</Tab>*/}
-              {/*<Tab label='Locations'>
+              {/* </Tab> */}
+              {/* <Tab label='Locations'>
                 <AddActivity indexedParks={indexedParks} />
                 <Groups
                   placeById={indexedParks}
@@ -179,7 +180,7 @@ class GridComponent extends React.Component {
                   onFeedItemClick={(parkId) => this.setActiveMarker(parkId)}
                 />
               </Tab>
-            </Tabs>*/}
+            </Tabs> */}
           </div>
         }
       </div>
@@ -194,6 +195,7 @@ GridComponent.propTypes = {
   profile: PropTypes.object,
   onPlaceSelect: PropTypes.func.isRequired,
   footerActiveTab: PropTypes.string.isRequired,
+  data: PropTypes.object,
 }
 
 export default GridComponent

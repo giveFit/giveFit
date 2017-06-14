@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
 export const GET_THROUGH_VIEWER = gql`
-query GetThroughViewer($where:WorkoutWhereArgs, $orderBy:[WorkoutOrderByArgs!]) {
+query GetThroughViewer($where:WorkoutWhereArgs, $orderBy:[WorkoutOrderByArgs]) {
     viewer{
       allWorkouts(where:$where, orderBy:$orderBy){
         edges {
@@ -66,4 +66,25 @@ query GetBySlug($where:WorkoutWhereArgs) {
       }
     }  
   }  
+`
+
+export const SUBSCRIBE_TO_WORKOUTS = gql`
+  subscription newWorkouts($subscriptionFilter:WorkoutSubscriptionFilter) {
+    subscribeToWorkout(mutations:[createWorkout], filter: $subscriptionFilter) {
+      mutation
+      value {
+        id
+        parkId
+        startDateTime
+        title
+        description
+        pictureURL
+        startDateTime
+        endDateTime
+        requestTrainer
+        recurring
+        type
+      }
+    }
+  }
 `

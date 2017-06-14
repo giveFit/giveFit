@@ -25,7 +25,7 @@ const UploadPicture = ({ iconColor = 'black', icon = 'add_a_photo', onChange }) 
         maxFiles: 1,
       }}
       onSuccess={(res) => {
-        onChange(`https://process.filestackapi.com/${process.env.FILESTACK_API}/resize=width:450,height:400,fit:crop,align:center/`.concat(res.filesUploaded[0].url))
+        onChange(`https://process.filestackapi.com/${process.env.FILESTACK_API}/resize=width:468,height:310,fit:crop,align:center/`.concat(res.filesUploaded[0].url))
       }}
       buttonClass='add_picture_button'
       buttonText={buttonText()}

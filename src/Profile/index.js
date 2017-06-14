@@ -35,6 +35,7 @@ class Profile extends React.Component {
   }
 
   componentWillReceiveProps (nextProps) {
+    console.log('Profile nextProps', nextProps)
     const events = []
     const parksDictionary = {}
     const { data } = nextProps
@@ -75,7 +76,6 @@ class Profile extends React.Component {
         })
       }
 
-
       Promise.all(Object.keys(parksDictionary).map((parkId) => {
         return foursquare.getVenueInfoById(parkId)
           .then((venueInfo) => {
@@ -113,6 +113,7 @@ class Profile extends React.Component {
   }
 
   render () {
+    console.log('profile props', this.props)
     const { user, editMode, events, eventDialogInfo, eventDialogOpen } = this.state
 
     if (user) {

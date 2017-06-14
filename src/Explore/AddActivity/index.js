@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { graphql, compose } from 'react-apollo'
 import slugify from 'slugify'
+import gql from 'graphql-tag'
 
 import { CREATE_WORKOUT } from './gql'
 
@@ -56,7 +57,9 @@ class AddActivity extends React.Component {
   }
 
   componentDidMount () {
+    console.log('componentDidMount AddActivity')
     this.places = Object.keys(this.props.indexedParks).map((placeID) => {
+      console.log('places')
       const place = this.props.indexedParks[placeID]
 
       return {
@@ -121,8 +124,8 @@ class AddActivity extends React.Component {
       workoutId: JSON.parse(window.localStorage.getItem('scapholdUserId')),
     })
       .then(({ data }) => {
-        console.log(data.createWorkout.changedWorkout)
-
+        console.log('data.createWorkout.changedWorkout', data.createWorkout.changedWorkout)
+        // this.subscribeToNewWorkouts()
         this.setState({
           open: false,
           requestTrainer: false,
@@ -309,6 +312,7 @@ AddActivity.propTypes = {
   indexedParks: PropTypes.object.isRequired,
   profile: PropTypes.object,
   workouts: PropTypes.array.isRequired,
+  data: PropTypes.object,
 }
 
 const AddActivityWithData = compose(

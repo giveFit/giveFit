@@ -131,7 +131,7 @@ class Activities extends React.Component {
 
 Activities.propTypes = {
   indexedParks: PropTypes.object.isRequired,
-  selectedWorkoutId: PropTypes.string.isRequired,
+  selectedWorkoutId: PropTypes.string,
   workouts: PropTypes.array.isRequired,
   handleWorkoutClick: PropTypes.func.isRequired,
   RSVPForWorkout: PropTypes.func.isRequired,
