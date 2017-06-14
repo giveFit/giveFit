@@ -35,10 +35,7 @@ class Explore extends React.Component {
       this.setState({
         workouts: nextProps.viewer.allWorkouts.edges,
       })
-    }
-    if (!this.subscription && !nextProps.loading) {
       console.log('are we hitting the subscription?', nextProps)
-      console.log('are we hitting the subscription? props', this.props)
       this.subscription = this.props.subscribeToMore({
         document: SUBSCRIBE_TO_WORKOUTS,
         variables: {

@@ -36,7 +36,7 @@ const routes = {
     { path: 'explore', component: Explore, defaultLat: 39.2904, defaultLng: -76.6122 },
     { path: 'new-york', component: Explore, defaultLat: 40.7128, defaultLng: -74.0059 },
     { path: 'profile', component: Profile },
-    { path: 'data', component: Data },
+    { path: 'city-leaderboard', component: Data },
     { path: 'add-workout-baltimore', component: AddActivityPageWithData, defaultLat: 39.2904, defaultLng: -76.6122 },
     { path: 'add-workout-new-york', component: AddActivityPageWithData, defaultLat: 40.7128, defaultLng: -74.0059 },
     { path: 'add-workout-washington-dc', component: AddActivityPageWithData, defaultLat: 38.9072, defaultLng: -77.0369 },

@@ -106,7 +106,7 @@ class LoggedInToolbar extends React.Component {
             />
           }
           <FlatButton label='About Us' onClick={() => { window.location = 'https://givefit.net/about-us' }} />
-          <FlatButton label='Data' onClick={() => this.context.router.push('/data')} />
+          <FlatButton label='City Leaderboard' onClick={() => this.context.router.push('/city-leaderboard')} />
           <Avatar
             className='avatar'
             src={profile.picture}

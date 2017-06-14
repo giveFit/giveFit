@@ -5,6 +5,7 @@ import slugify from 'slugify'
 import gql from 'graphql-tag'
 
 import { CREATE_WORKOUT } from './gql'
+import { GET_THROUGH_VIEWER } from '../../Explore/gql'
 
 import Avatar from 'material-ui/Avatar'
 import Chip from 'material-ui/Chip'
@@ -140,6 +141,7 @@ class AddActivity extends React.Component {
           recurring: false,
           slug: null,
         })
+        window.__APOLLO_CLIENT__.resetStore()
       }).catch((error) => {
         console.log(error)
 
@@ -315,12 +317,40 @@ AddActivity.propTypes = {
   data: PropTypes.object,
 }
 
-const AddActivityWithData = compose(
-  graphql(CREATE_WORKOUT, {
-    props: ({ mutate }) => ({
-      createWorkout: (input) => mutate({ variables: { input: input } }),
-    }),
-  })
-)(AddActivity)
+const AddActivityWithData = graphql(CREATE_WORKOUT, {
+  props ({ ownProps, mutate }) {
+    console.log('ownProps', ownProps)
+    return {
+      createWorkout ({title, type, startDateTime, endDateTime, description, requestTrainer, pictureURL, parkId, userEmail, recurring, _geoloc, slug, workoutId}) {
+        var input = {
+          title: title,
+          type: type,
+          startDateTime: startDateTime,
+          endDateTime: endDateTime,
+          description: description,
+          requestTrainer: requestTrainer,
+          pictureURL: pictureURL,
+          parkId: parkId,
+          userEmail: userEmail,
+          recurring: recurring,
+          _geoloc: _geoloc,
+          slug: slug,
+          workoutId: workoutId,
+        }
+        return mutate({
+          variables: { input: input },
+          // @todo: trying to update the store automatically...
+          // not having any luck, will use resetStore() as temporary fix
+          update: (store, { data: { viewer } }) => {
+            const data = store.readQuery({ GET_THROUGH_VIEWER })
+            console.log('data from update', data)
+            data.workouts.push(createWorkout)
+            store.writeQuery({ query: GET_THROUGH_VIEWER, data })
+          },
+        })
+      },
+    }
+  },
+})(AddActivity)
 
 export default AddActivityWithData
