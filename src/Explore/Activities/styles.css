@@ -62,5 +62,6 @@
 
 .__chip {
   margin: 4;
+  height: 32px;
   z-index: 0!important;
 }

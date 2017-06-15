@@ -100,6 +100,8 @@ Explore.propTypes = {
   profile: PropTypes.object,
   footerActiveTab: PropTypes.string.isRequired,
   viewer: PropTypes.object,
+  subscribeToMore: PropTypes.func,
+  loading: PropTypes.bool,
 }
 
 // for recurring workouts, create microservice that creates a

@@ -132,6 +132,7 @@ Activity.propTypes = {
   parkTitle: PropTypes.string.isRequired,
   workouts: PropTypes.array.isRequired,
   closeActivity: PropTypes.func.isRequired,
+  indexedPlaces: PropTypes.object.isRequired,
 }
 
 export default Activity

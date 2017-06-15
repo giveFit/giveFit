@@ -77,8 +77,8 @@ class Activities extends React.Component {
                 <span>{workout.Workout.nickname}</span>
               </Chip>
               <div className='__workout__title'>
-                <span><b>Exercise Title:</b> {workout.title}</span>
-                <span><b>Exercise Type:</b> {workout.type}</span>
+                <span> <b>{workout.title}</b> </span>
+                <span>{workout.type}</span>
               </div>
             </div>
             <div className='__workout__image__container'>
@@ -92,7 +92,7 @@ class Activities extends React.Component {
                 <div>
                   {moment(workout.startDateTime).format('ddd MMM Do, YYYY h:mm a')} - {moment(workout.endDateTime).format('LT')}
                   <br />
-                  <b>Location: </b>{this.props.indexedParks[workout.parkId].title}
+                  {this.props.indexedParks[workout.parkId].title}
                 </div>
                 <div>
                   <i
