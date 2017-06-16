@@ -49,7 +49,7 @@ class AddActivity extends React.Component {
       userEmail: null,
       recurring: false,
       errors: {},
-      date: new Date(),
+      date: null,
     }
 
     this.places = []

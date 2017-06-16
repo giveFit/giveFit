@@ -35,6 +35,7 @@ const routes = {
   childRoutes: [
     { path: 'explore', component: Explore, defaultLat: 39.2904, defaultLng: -76.6122 },
     { path: 'new-york', component: Explore, defaultLat: 40.7128, defaultLng: -74.0059 },
+    { path: 'washington-dc', component: Explore, defaultLat: 38.9072, defaultLng: -77.0369 },
     { path: 'profile', component: Profile },
     { path: 'city-leaderboard', component: Data },
     { path: 'add-workout-baltimore', component: AddActivityPageWithData, defaultLat: 39.2904, defaultLng: -76.6122 },
