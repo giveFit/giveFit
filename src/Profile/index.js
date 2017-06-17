@@ -120,60 +120,62 @@ class Profile extends React.Component {
   render () {
     const { user, editMode, events, eventDialogInfo, eventDialogOpen } = this.state
 
-    if (user) {
+    if (!user) {
       return (
         <div className='home'>
-          <ProfileHeader
-            headerPhotoURL={user.headerPhotoURL}
-            editMode={editMode}
-            onProfileHeaderChange={(url) => this.userFieldsToUpdate('headerPhotoURL', url)}
-          />
-          <ProfileDetails
-            user={user}
-            editMode={editMode}
-            onEnableEdit={(editMode) => this.setState({ editMode })}
-            onSaveProfileChanges={(...args) => this.onSaveProfileChanges(...args)}
-            onUserDescriptionChange={(description) => this.userFieldsToUpdate('description', description)}
-            onUserNicknameChange={(nickname) => this.userFieldsToUpdate('nickname', nickname)}
-            onProfilePhotoChange={(url) => this.userFieldsToUpdate('picture', url)}
-          />
-          <BigCalendar
-            events={events}
-            defaultView='week'
-            eventPropGetter={(event) => {
-              return {
-                className: event.rsvp ? 'rsvpd' : '',
-              }
-            }}
-            onSelectEvent={(event) => {
-              this.setState({
-                eventDialogOpen: true,
-                eventDialogInfo: {
-                  title: event.title,
-                  location: event.location,
-                  start: event.start,
-                  end: event.end,
-                  rsvp: Boolean(event.rsvp),
-                },
-              })
-            }}
-          />
-          <Dialog
-            title={eventDialogInfo.title}
-            open={eventDialogOpen}
-            onRequestClose={() => this.setState({ eventDialogOpen: false })}
-          >
-            <div><b>Location:</b> {eventDialogInfo.location}</div>
-            <div><b>Start:</b> {moment(eventDialogInfo.start).format('LLLL')}</div>
-            <div><b>End:</b> {moment(eventDialogInfo.end).format('LLLL')}</div>
-          </Dialog>
+          <div>Loading...</div>
         </div>
       )
     }
 
     return (
       <div className='home'>
-        <div>Loading...</div>
+        <ProfileHeader
+          headerPhotoURL={this.state.userFieldsToUpdate.headerPhotoURL || user.headerPhotoURL}
+          editMode={editMode}
+          onProfileHeaderChange={(url) => this.userFieldsToUpdate('headerPhotoURL', url)}
+        />
+        <ProfileDetails
+          description={this.state.userFieldsToUpdate.description || user.description }
+          nickname={this.state.userFieldsToUpdate.nickname || user.nickname }
+          picture={this.state.userFieldsToUpdate.picture || user.picture }
+          editMode={editMode}
+          onEnableEdit={(editMode) => this.setState({ editMode, userFieldsToUpdate: {} })}
+          onSaveProfileChanges={(...args) => this.onSaveProfileChanges(...args)}
+          onUserDescriptionChange={(description) => this.userFieldsToUpdate('description', description)}
+          onUserNicknameChange={(nickname) => this.userFieldsToUpdate('nickname', nickname)}
+          onProfilePhotoChange={(url) => this.userFieldsToUpdate('picture', url)}
+        />
+        <BigCalendar
+          events={events}
+          defaultView='week'
+          eventPropGetter={(event) => {
+            return {
+              className: event.rsvp ? 'rsvpd' : '',
+            }
+          }}
+          onSelectEvent={(event) => {
+            this.setState({
+              eventDialogOpen: true,
+              eventDialogInfo: {
+                title: event.title,
+                location: event.location,
+                start: event.start,
+                end: event.end,
+                rsvp: Boolean(event.rsvp),
+              },
+            })
+          }}
+        />
+        <Dialog
+          title={eventDialogInfo.title}
+          open={eventDialogOpen}
+          onRequestClose={() => this.setState({ eventDialogOpen: false })}
+        >
+          <div><b>Location:</b> {eventDialogInfo.location}</div>
+          <div><b>Start:</b> {moment(eventDialogInfo.start).format('LLLL')}</div>
+          <div><b>End:</b> {moment(eventDialogInfo.end).format('LLLL')}</div>
+        </Dialog>
       </div>
     )
   }
@@ -183,6 +185,7 @@ Profile.propTypes = {
   profile: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
   data: PropTypes.object.isRequired,
+  updateUser: PropTypes.func.isRequired,
 }
 
 const ProfileWithData = compose(

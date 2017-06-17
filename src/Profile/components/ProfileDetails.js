@@ -25,18 +25,18 @@ class ProfileDetails extends React.Component {
   }
 
   prepareUserInfo () {
-    const { user, editMode, onUserNicknameChange } = this.props
+    const { nickname, picture, editMode, onUserNicknameChange } = this.props
 
     return (
       <div className='profile-user-info'>
         <div className='profile-user-photo'>
-          <Avatar src={user.picture} size={100} />
+          <Avatar src={picture} size={100} />
           {editMode && this.prepareChangeProfilePhotoButton()}
         </div>
         <TextField
           id='user-nickname'
           className='nickname'
-          defaultValue={user.nickname}
+          defaultValue={nickname}
           disabled={!editMode}
           onChange={(e) => onUserNicknameChange(e.target.value)}
           underlineShow={editMode}
@@ -78,7 +78,7 @@ class ProfileDetails extends React.Component {
   }
 
   render () {
-    const { user, editMode, onUserDescriptionChange } = this.props
+    const { description, editMode, onUserDescriptionChange } = this.props
 
     return (
       <div className='profile-details'>
@@ -87,7 +87,7 @@ class ProfileDetails extends React.Component {
           <TextField
             id='user-description'
             className='description'
-            defaultValue={user.description || 'No Description available'}
+            defaultValue={description || 'No Description available'}
             disabled={!editMode}
             onChange={(e) => onUserDescriptionChange(e.target.value)}
             underlineShow={editMode}
@@ -102,7 +102,9 @@ class ProfileDetails extends React.Component {
 }
 
 ProfileDetails.propTypes = {
-  user: PropTypes.object.isRequired,
+  description: PropTypes.string,
+  nickname: PropTypes.string,
+  picture: PropTypes.string,
   onEnableEdit: PropTypes.func.isRequired,
   onSaveProfileChanges: PropTypes.func.isRequired,
   onProfilePhotoChange: PropTypes.func.isRequired,
