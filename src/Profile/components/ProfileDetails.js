@@ -89,7 +89,7 @@ class ProfileDetails extends React.Component {
             className='description'
             defaultValue={user.description || 'No Description available'}
             disabled={!editMode}
-           onChange={(e) => onUserDescriptionChange(e.target.value)}
+            onChange={(e) => onUserDescriptionChange(e.target.value)}
             underlineShow={editMode}
             fullWidth
             multiLine

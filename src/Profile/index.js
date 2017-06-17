@@ -6,7 +6,7 @@ import BigCalendar from 'react-big-calendar'
 import Dialog from 'material-ui/Dialog'
 
 import foursquare from 'utils/foursquare'
-import { GET_USER_WORKOUTS } from './gql'
+import { GET_USER_WORKOUTS, UPDATE_USER_QUERY } from './gql'
 
 import ProfileHeader from './components/ProfileHeader'
 import ProfileDetails from './components/ProfileDetails'
@@ -35,7 +35,6 @@ class Profile extends React.Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    console.log('Profile nextProps', nextProps)
     const events = []
     const parksDictionary = {}
     const { data } = nextProps
@@ -101,9 +100,15 @@ class Profile extends React.Component {
   }
 
   onSaveProfileChanges () {
-    this.setState({
-      editMode: false,
+    this.props.updateUser({
+      id: this.state.user.id,
+      ...this.state.userFieldsToUpdate,
     })
+      .then(() => {
+        this.setState({
+          editMode: false,
+        })
+      })
   }
 
   userFieldsToUpdate (fieldName, value) {
@@ -113,7 +118,6 @@ class Profile extends React.Component {
   }
 
   render () {
-    console.log('profile props', this.props)
     const { user, editMode, events, eventDialogInfo, eventDialogOpen } = this.state
 
     if (user) {
@@ -197,6 +201,11 @@ const ProfileWithData = compose(
           direction: 'ASC',
         },
       },
+    }),
+  }),
+  graphql(UPDATE_USER_QUERY, {
+    props: ({ mutate }) => ({
+      updateUser: (user) => mutate({ variables: { user: user } }),
     }),
   }),
 )(Profile)

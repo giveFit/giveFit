@@ -40,3 +40,16 @@ query GetUserWorkouts($id:ID!, $first: Int, $where: WorkoutWhereArgs!, $orderBy:
   }
 }
 `
+
+export const UPDATE_USER_QUERY = gql`
+  mutation UpdateUser($user: UpdateUserInput!) {
+    updateUser(input: $user) {
+      changedUser {
+        headerPhotoURL
+        description
+        nickname
+        picture
+      }
+    }
+  }
+`
