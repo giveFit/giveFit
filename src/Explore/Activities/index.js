@@ -13,6 +13,9 @@ import './styles.css'
 class Activities extends React.Component {
   constructor (props) {
     super(props)
+
+    this.message = ''
+
     this.state = {
       snack: false,
       autoHideDuration: 2000,
