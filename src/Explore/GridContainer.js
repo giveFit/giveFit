@@ -157,21 +157,21 @@ class GridComponent extends React.Component {
           <div className='__grid__list' >
             {/* <Tabs className='__tabs__container'>
               <Tab label='Activities'> */}
-                <AddActivity
-                  indexedParks={indexedParks}
-                  profile={profile}
-                  workouts={workouts}
-                  data={this.props.data}
-                />
-                <Activities
-                  workouts={indexedParks[openedParkId] ? indexedParks[openedParkId].workouts : workouts}
-                  indexedParks={indexedParks}
-                  profile={profile}
-                  selectedWorkoutId={selectedWorkoutId}
-                  handleWorkoutClick={(parkId, workoutId) => this.handleWorkoutClick(parkId, workoutId)}
-                />
-              {/* </Tab> */}
-              {/* <Tab label='Locations'>
+            <AddActivity
+              indexedParks={indexedParks}
+              profile={profile}
+              workouts={workouts}
+              data={this.props.data}
+            />
+            <Activities
+              workouts={indexedParks[openedParkId] ? indexedParks[openedParkId].workouts : workouts}
+              indexedParks={indexedParks}
+              profile={profile}
+              selectedWorkoutId={selectedWorkoutId}
+              handleWorkoutClick={(parkId, workoutId) => this.handleWorkoutClick(parkId, workoutId)}
+            />
+            {/* </Tab> */}
+            {/* <Tab label='Locations'>
                 <AddActivity indexedParks={indexedParks} />
                 <Groups
                   placeById={indexedParks}

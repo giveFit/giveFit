@@ -49,80 +49,80 @@ class LoggedInToolbar extends React.Component {
 
     return (
       <div>
-       <Toolbar>
-        <ToolbarGroup>
-          <ToolbarTitle
-            className='title'
-            text='GiveFit'
-            onClick={() => this.context.router.push('/')}
-          />
-        </ToolbarGroup>
-        <ToolbarGroup >
-          <Avatar
-            className='iconMenu avatar'
-            src={profile.picture}
-            onClick={() => this.context.router.push('/profile')}
-          />
-          <IconMenu
-            className='iconMenu'
-            iconButtonElement={
-              <IconButton touch={true} onTouchTap={this.handleToggle.bind(this)}>
-                <Hamburger />
-              </IconButton>
-            }
-          >
-            <MenuItem
-              primaryText="Profile"
-              onTouchTap={this.handleClose.bind(this)}
+        <Toolbar>
+          <ToolbarGroup>
+            <ToolbarTitle
+              className='title'
+              text='GiveFit'
+              onClick={() => this.context.router.push('/')}
+            />
+          </ToolbarGroup>
+          <ToolbarGroup >
+            <Avatar
+              className='iconMenu avatar'
+              src={profile.picture}
               onClick={() => this.context.router.push('/profile')}
             />
-            {process.env.__NODE_ENV__ === 'development' &&
+            <IconMenu
+              className='iconMenu'
+              iconButtonElement={
+                <IconButton touch={true} onTouchTap={this.handleToggle.bind(this)}>
+                  <Hamburger />
+                </IconButton>
+              }
+            >
+              <MenuItem
+                primaryText="Profile"
+                onTouchTap={this.handleClose.bind(this)}
+                onClick={() => this.context.router.push('/profile')}
+              />
+              {process.env.__NODE_ENV__ === 'development' &&
               <MenuItem
                 onTouchTap={this.handleClose.bind(this)}
                 primaryText='API'
               >
                 <Link to='https://us-west-2.api.scaphold.io/graphql/newGiveFitAlias' target='_blank' />
               </MenuItem>
-            }
-            <MenuItem
-              onTouchTap={this.handleClose.bind(this)}
-              onClick={() => this.logout()}
-              primaryText='Logout'
-            />
-          </IconMenu>
-        </ToolbarGroup>
-        <ToolbarGroup className='onlyLargeScreens'>
-          {process.env.__NODE_ENV__ === 'development' &&
+              }
+              <MenuItem
+                onTouchTap={this.handleClose.bind(this)}
+                onClick={() => this.logout()}
+                primaryText='Logout'
+              />
+            </IconMenu>
+          </ToolbarGroup>
+          <ToolbarGroup className='onlyLargeScreens'>
+            {process.env.__NODE_ENV__ === 'development' &&
             <FlatButton
               className='onlyLargeScreens'
               containerElement={<Link to='https://us-west-2.api.scaphold.io/graphql/newGiveFitAlias' target='_blank' />}
               label='API'
             />
-          }
-          <FlatButton label='City Leaderboard' onClick={() => this.context.router.push('/city-leaderboard')} />
-          <Avatar
-            className='avatar'
-            src={profile.picture}
-            onClick={() => this.context.router.push('/profile')}
-          />
-          <IconMenu
-            iconButtonElement={
-              <IconButton touch={true}>
-                <NavigationExpandMoreIcon />
-              </IconButton>
             }
-          >
-            <MenuItem
-              primaryText="Profile"
-              onTouchTap={this.handleClose.bind(this)}
+            <FlatButton label='City Leaderboard' onClick={() => this.context.router.push('/city-leaderboard')} />
+            <Avatar
+              className='avatar'
+              src={profile.picture}
               onClick={() => this.context.router.push('/profile')}
+            />
+            <IconMenu
+              iconButtonElement={
+                <IconButton touch={true}>
+                  <NavigationExpandMoreIcon />
+                </IconButton>
+              }
+            >
+              <MenuItem
+                primaryText="Profile"
+                onTouchTap={this.handleClose.bind(this)}
+                onClick={() => this.context.router.push('/profile')}
               />
-            <MenuItem
-              primaryText="Logout"
-              onClick={this.logout.bind(this)} />
-          </IconMenu>
-        </ToolbarGroup>
-      </Toolbar>
+              <MenuItem
+                primaryText="Logout"
+                onClick={this.logout.bind(this)} />
+            </IconMenu>
+          </ToolbarGroup>
+        </Toolbar>
       </div>
     )
   }

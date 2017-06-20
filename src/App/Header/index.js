@@ -10,9 +10,9 @@ class Header extends React.Component {
       <div id='Header' className='__app__header'>
         {this.props.auth.loggedIn() && this.props.profile
           ? <LoggedInToolbar
-              auth={this.props.auth}
-              profile={this.props.profile}
-            />
+            auth={this.props.auth}
+            profile={this.props.profile}
+          />
           : <MainToolbar auth={this.props.auth} />
         }
       </div>

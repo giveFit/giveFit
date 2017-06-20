@@ -106,14 +106,14 @@ class Activities extends React.Component {
               <div><b>Description</b></div>
               <div>{workout.description}</div>
             </div>}
-              <Snackbar
-                open={this.state.snack}
-                message={this.state.messageTrue}
-                action="undo"
-                autoHideDuration={this.state.autoHideDuration}
-                onActionTouchTap={this.handleActionTouchTap.bind(this)}
-                onRequestClose={this.handleRequestClose.bind(this)}
-              />
+            <Snackbar
+              open={this.state.snack}
+              message={this.state.messageTrue}
+              action="undo"
+              autoHideDuration={this.state.autoHideDuration}
+              onActionTouchTap={this.handleActionTouchTap.bind(this)}
+              onRequestClose={this.handleRequestClose.bind(this)}
+            />
           </CardText>
         )
       })

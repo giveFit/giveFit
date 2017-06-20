@@ -236,88 +236,88 @@ class AddActivityPage extends React.Component {
   render () {
     return (
       <div>
-          <div className='top_level_container'>
-            <div className='profile_chip_container'>
-              <Chip
-                className='profile_chip'
-                onTouchTap={() => this.context.router.push('/profile')}
-              >
-                <Avatar
-                  src={this.props.profile.picture }
-                  onClick={() => this.context.router.push('/profile')}
-                />
-                {this.props.profile.nickname}
-              </Chip>
-            </div>
-
-            <div className='title_and_type_container'>
-              <FieldTitle onChange={(title) => this.setState({ title })} errorText={this.state.errors.title} />
-              <FieldType onChange={(type) => this.setState({ type })} value={this.state.type} errorText={this.state.errors.type} />
-            </div>
+        <div className='top_level_container'>
+          <div className='profile_chip_container'>
+            <Chip
+              className='profile_chip'
+              onTouchTap={() => this.context.router.push('/profile')}
+            >
+              <Avatar
+                src={this.props.profile.picture }
+                onClick={() => this.context.router.push('/profile')}
+              />
+              {this.props.profile.nickname}
+            </Chip>
           </div>
 
-          <div className='add_picture_container'>
-            <FieldPictureURL onChange={(pictureURL) => this.setState({ pictureURL }) } errorText={this.state.errors.pictureURL} />
-            {this.state.pictureURL &&
+          <div className='title_and_type_container'>
+            <FieldTitle onChange={(title) => this.setState({ title })} errorText={this.state.errors.title} />
+            <FieldType onChange={(type) => this.setState({ type })} value={this.state.type} errorText={this.state.errors.type} />
+          </div>
+        </div>
+
+        <div className='add_picture_container'>
+          <FieldPictureURL onChange={(pictureURL) => this.setState({ pictureURL }) } errorText={this.state.errors.pictureURL} />
+          {this.state.pictureURL &&
               <img
                 src={this.state.pictureURL}
                 className='workout_picture'
               />
-            }
-          </div>
+          }
+        </div>
 
-          <div className='time_and_location_container'>
-            <FieldDate
-              onChange={(date) => this.setState({ date })}
-              errorText={this.state.errors.startDateTime}
-            />
-            <FieldStartTime
-              onChange={(startDateTime) => this.setState({ startDateTime })}
-              errorText={this.state.errors.startDateTime}
-            />
-            <FieldEndTime
-              onChange={(endDateTime) => this.setState({ endDateTime })}
-              errorText={this.state.errors.endDateTime}
-            />
-            <FieldLocation
-              onChange={(parkId) => this.setState({ parkId })}
-              places={this.state.places}
-              parkId={this.state.parkId}
-              errorText={this.state.errors.parkId}
-            />
-          </div>
-
-          <FieldDescription
-            onChange={(description) => this.setState({ description })}
-            errorText={this.state.errors.description}
+        <div className='time_and_location_container'>
+          <FieldDate
+            onChange={(date) => this.setState({ date })}
+            errorText={this.state.errors.startDateTime}
           />
-          <FieldRecurring
-            onCheck={() => this.setState({ recurring: !this.state.recurring })}
-            recurring={this.state.recurring}
-            errorText={this.state.errors.description}
+          <FieldStartTime
+            onChange={(startDateTime) => this.setState({ startDateTime })}
+            errorText={this.state.errors.startDateTime}
           />
-          <div className='request-trainer-container'>
-            <FieldRequestTrainer
-              onCheck={() => this.setState({ requestTrainer: !this.state.requestTrainer })}
-              requestTrainer={this.state.requestTrainer}
-              errorText={this.state.errors.requestTrainer}
-            />
+          <FieldEndTime
+            onChange={(endDateTime) => this.setState({ endDateTime })}
+            errorText={this.state.errors.endDateTime}
+          />
+          <FieldLocation
+            onChange={(parkId) => this.setState({ parkId })}
+            places={this.state.places}
+            parkId={this.state.parkId}
+            errorText={this.state.errors.parkId}
+          />
+        </div>
 
-            {this.state.requestTrainer &&
+        <FieldDescription
+          onChange={(description) => this.setState({ description })}
+          errorText={this.state.errors.description}
+        />
+        <FieldRecurring
+          onCheck={() => this.setState({ recurring: !this.state.recurring })}
+          recurring={this.state.recurring}
+          errorText={this.state.errors.description}
+        />
+        <div className='request-trainer-container'>
+          <FieldRequestTrainer
+            onCheck={() => this.setState({ requestTrainer: !this.state.requestTrainer })}
+            requestTrainer={this.state.requestTrainer}
+            errorText={this.state.errors.requestTrainer}
+          />
+
+          {this.state.requestTrainer &&
               <FieldEmail
                 onChange={(userEmail) => this.setState({ userEmail })}
                 errorText={this.state.errors.email}
               />
-            }
-          </div>
-          <FlatButton
-            key='loggedInDialog'
-            label='Ok'
-            primary
-            keyboardFocused
-            onTouchTap={() => this.createWorkout()}
-          />
+          }
         </div>
+        <FlatButton
+          key='loggedInDialog'
+          label='Ok'
+          primary
+          keyboardFocused
+          onTouchTap={() => this.createWorkout()}
+        />
+      </div>
     )
   }
 }

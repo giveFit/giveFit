@@ -28,8 +28,8 @@ class App extends React.Component {
   }
 
   // componentDidMount(){
-    // console.log('componentDidMount');
-    // localStorage.setItem('userId', JSON.stringify(this.state.userId))
+  // console.log('componentDidMount');
+  // localStorage.setItem('userId', JSON.stringify(this.state.userId))
   // }
 
   onAuthenticated (auth0Profile, tokenPayload) {

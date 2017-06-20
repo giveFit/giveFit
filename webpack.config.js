@@ -71,7 +71,7 @@ config.plugins.push(new webpack.DefinePlugin({
 }))
 
 config.plugins.push(new CopyWebpackPlugin([
-    { from: './assets', to: 'assets' },
+  { from: './assets', to: 'assets' },
 ]))
 
 config.resolve.modules = [

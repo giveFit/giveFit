@@ -37,7 +37,7 @@ class ParkFeed extends React.Component {
   componentWillReceiveProps (newProps) {
     if (newProps.active !== this.props.active && newProps.active === true) {
       const element = findDOMNode(this.root)
-       // Scrolls the current element into the visible area of the browser
+      // Scrolls the current element into the visible area of the browser
       element.scrollIntoView({block: 'end', behavior: 'smooth'})
     }
   }
@@ -63,9 +63,9 @@ class ParkFeed extends React.Component {
       <CardHeader
         title={props.data.googleData.title}
         subtitle={<a target="_blank" rel='noopener noreferrer' href={'http://maps.google.com/?q=' + props.data.googleData.vicinity}>{props.data.googleData.vicinity}</a>}
-        >
-      {/* would eventually like to add tags */}
-        </CardHeader>
+      >
+        {/* would eventually like to add tags */}
+      </CardHeader>
       <CardMedia
         overlay={
           <CardTitle

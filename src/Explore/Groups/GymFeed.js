@@ -28,7 +28,7 @@ class GymFeed extends React.Component {
   componentWillReceiveProps (newProps) {
     if (newProps.active !== this.props.active && newProps.active === true) {
       const element = findDOMNode(this.root)
-       // Scrolls the current element into the visible area of the browser
+      // Scrolls the current element into the visible area of the browser
       element.scrollIntoView({block: 'end', behavior: 'smooth'})
     }
   }
@@ -83,29 +83,29 @@ class GymFeed extends React.Component {
         Is this your gym or studio? Claim it <a href="mailto:jktunney5@gmail.com?subject=Claim Gym&body=Message" target="_blank" rel='noopener noreferrer'>here</a>!
       </CardText>
       <Card expanded={this.state.expanded}>
-      <CardText expandable={true}>
-      <Tabs >
-          <Tab label="Workouts">
-           <div>
-            <WorkoutCreator />
-           </div>
-          </Tab>
-          <Tab label="Comments" >
-           <div>
-             <div>
-               <TextField hintText="Add a comment"/>
-               <Comment />
-             </div>
-           </div>
-          </Tab>
+        <CardText expandable={true}>
+          <Tabs >
+            <Tab label="Workouts">
+              <div>
+                <WorkoutCreator />
+              </div>
+            </Tab>
+            <Tab label="Comments" >
+              <div>
+                <div>
+                  <TextField hintText="Add a comment"/>
+                  <Comment />
+                </div>
+              </div>
+            </Tab>
           </Tabs>
-      </CardText>
+        </CardText>
       </Card>
-     {/* <CardText>
+      {/* <CardText>
         <div>Comments</div>
       </CardText> */}
       <CardActions >
-      {this.state.expanded ? <FlatButton label="Reduce" onTouchTap={this.handleReduce.bind(this)} /> : <FlatButton label="See more workouts" onTouchTap={this.handleExpand.bind(this)} /> }
+        {this.state.expanded ? <FlatButton label="Reduce" onTouchTap={this.handleReduce.bind(this)} /> : <FlatButton label="See more workouts" onTouchTap={this.handleExpand.bind(this)} /> }
       </CardActions>
     </Card>
   }

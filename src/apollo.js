@@ -16,7 +16,7 @@ export default () => {
     applyMiddleware (req, next) {
       // Easy way to add authorization headers for every request
       if (!req.options.headers) {
-        req.options.headers = {}  // Create the header object if needed.
+        req.options.headers = {} // Create the header object if needed.
       }
 
       if (window.localStorage.getItem('scaphold_user_token')) {
@@ -34,8 +34,8 @@ export default () => {
 
   // Extend the network interface with the WebSocket
   const networkInterfaceWithSubscriptions = addGraphQLSubscriptions(
-      networkInterface,
-      wsClient
+    networkInterface,
+    wsClient
   )
 
   // Finally, create your ApolloClient instance with the modified network interface

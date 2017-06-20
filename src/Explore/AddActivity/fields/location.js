@@ -15,15 +15,15 @@ const Location = ({ onChange, places, parkId, errorText = null }) => {
         errorText={errorText}
         onChange={(e, index, value) => onChange(value)}
       >
-      {places ? places.map((place) => {
-        return (
+        {places ? places.map((place) => {
+          return (
             <MenuItem
               key={`location-${place.id}`}
               value={place.id}
               primaryText={place.title}
             />
-        )
-      }) : null}
+          )
+        }) : null}
       </SelectField>
     </div>
   )

@@ -18,10 +18,10 @@ class ParkContainer extends React.Component {
         {
           !item ||
           <GymFeed
-              active={activeIndex === index}
-              onClick={() => onFeedItemClick(index)}
-              data={placeById[item]}
-            />
+            active={activeIndex === index}
+            onClick={() => onFeedItemClick(index)}
+            data={placeById[item]}
+          />
         }
       </div>
     ))
