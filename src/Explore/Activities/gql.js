@@ -1,21 +1,20 @@
 import gql from 'graphql-tag'
 
-export const RSVP_FOR_WORKOUT = gql`
-  mutation RSVPForWorkout($input: UpdateWorkoutInput!){
-    updateWorkout(input:$input){
-      changedWorkout{
+export const ADD_RSVP_FOR_WORKOUT = gql`
+  mutation addRSVPForWorkout($input: AddToRsvpsConnectionInput!){
+    addToRsvpsConnection (input: $input) {
+      viewer {
         id
-          Workout{
-            nickname
-            username
-            WorkoutRSVP{
-              edges {
-                node {
-                id
-              }
-            }
-          }
-        }
+      }
+    }
+  }
+`
+
+export const REMOVE_RSVP_FOR_WORKOUT = gql`
+  mutation removeRSVPForWorkout($input: RemoveFromRsvpsConnectionInput!){
+    removeFromRsvpsConnection (input: $input) {
+      viewer {
+        id
       }
     }
   }

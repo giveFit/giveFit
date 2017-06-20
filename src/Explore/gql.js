@@ -23,15 +23,17 @@ query GetThroughViewer($where:WorkoutWhereArgs, $orderBy:[WorkoutOrderByArgs]) {
               picture
             }
             RSVPsForWorkout{
-              nickname
-              username
-              picture
+              edges {
+                node {
+                  id
+                }
+              }
             }
           }
         }
       }
-    }  
-  }  
+    }
+  }
 `
 export const GET_BY_SLUG = gql`
 query GetBySlug($where:WorkoutWhereArgs) {
@@ -57,15 +59,17 @@ query GetBySlug($where:WorkoutWhereArgs) {
               picture
             }
             RSVPsForWorkout{
-              nickname
-              username
-              picture
+              edges {
+                node {
+                  id
+                }
+              }
             }
           }
         }
       }
-    }  
-  }  
+    }
+  }
 `
 
 export const SUBSCRIBE_TO_WORKOUTS = gql`
