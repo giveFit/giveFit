@@ -117,6 +117,10 @@ class Profile extends React.Component {
     })
   }
 
+  toggleEdit (editMode) {
+    this.setState({ editMode, userFieldsToUpdate: {} })
+  }
+
   render () {
     const { user, editMode, events, eventDialogInfo, eventDialogOpen } = this.state
 
@@ -140,7 +144,7 @@ class Profile extends React.Component {
           nickname={this.state.userFieldsToUpdate.nickname || user.nickname }
           picture={this.state.userFieldsToUpdate.picture || user.picture }
           editMode={editMode}
-          onEnableEdit={(editMode) => this.setState({ editMode, userFieldsToUpdate: {} })}
+          onEnableEdit={(editMode) => this.toggleEdit(editMode)}
           onSaveProfileChanges={(...args) => this.onSaveProfileChanges(...args)}
           onUserDescriptionChange={(description) => this.userFieldsToUpdate('description', description)}
           onUserNicknameChange={(nickname) => this.userFieldsToUpdate('nickname', nickname)}

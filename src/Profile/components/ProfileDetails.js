@@ -36,7 +36,7 @@ class ProfileDetails extends React.Component {
         <TextField
           id='user-nickname'
           className='nickname'
-          defaultValue={nickname}
+          value={nickname}
           disabled={!editMode}
           onChange={(e) => onUserNicknameChange(e.target.value)}
           underlineShow={editMode}
@@ -87,7 +87,7 @@ class ProfileDetails extends React.Component {
           <TextField
             id='user-description'
             className='description'
-            defaultValue={description || 'No Description available'}
+            value={description || 'No Description available'}
             disabled={!editMode}
             onChange={(e) => onUserDescriptionChange(e.target.value)}
             underlineShow={editMode}
