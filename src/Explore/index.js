@@ -35,7 +35,6 @@ class Explore extends React.Component {
       this.setState({
         workouts: nextProps.viewer.allWorkouts.edges,
       })
-      console.log('are we hitting the subscription?', nextProps)
       this.subscription = this.props.subscribeToMore({
         document: SUBSCRIBE_TO_WORKOUTS,
         variables: {
@@ -45,6 +44,9 @@ class Explore extends React.Component {
             },
           },
         },
+        // @todo: look into update on the addActivity component
+        // may need to refer back to this function, and change
+        // its name to updateQuery, line 386
         updateQuery: (prev, { subscriptionData }) => {
           console.log('updateQuery prev', prev)
           console.log('updateQuery subscriptionData', subscriptionData)

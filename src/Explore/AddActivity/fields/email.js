@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import TextField from 'material-ui/TextField'
 
 const Email = ({ onChange, errorText = null }) => {
+  console.log('email onChange', onChange)
   return (
     <TextField
       className='user_email'
