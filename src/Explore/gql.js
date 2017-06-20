@@ -30,8 +30,8 @@ query GetThroughViewer($where:WorkoutWhereArgs, $orderBy:[WorkoutOrderByArgs]) {
           }
         }
       }
-    }  
-  }  
+    }
+  }
 `
 export const GET_BY_SLUG = gql`
 query GetBySlug($where:WorkoutWhereArgs) {
@@ -56,16 +56,12 @@ query GetBySlug($where:WorkoutWhereArgs) {
               username
               picture
             }
-            RSVPsForWorkout{
-              nickname
-              username
-              picture
-            }
+
           }
         }
       }
-    }  
-  }  
+    }
+  }
 `
 
 export const SUBSCRIBE_TO_WORKOUTS = gql`
