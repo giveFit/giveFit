@@ -294,6 +294,8 @@ class AddActivityPage extends React.Component {
             onChange={(description) => this.setState({ description })}
             errorText={this.state.errors.description}
           />
+          {/* @todo: https://github.com/scaphold-io/scaphold-business-logic-examples/tree/master/webtasks
+          add recurring workout logic post mutation */}
           <FieldRecurring
             onCheck={() => this.setState({ recurring: !this.state.recurring })}
             recurring={this.state.recurring}

@@ -35,6 +35,8 @@ class GridComponent extends React.Component {
   }
 
   componentDidUpdate (prevProps, prevState) {
+    console.log('componentDidUpdate prevProps ', prevProps.workouts)
+    console.log('componentDidUpdate props', this.props.workouts)
     if (prevProps.workouts.length !== this.props.workouts.length) {
       this.fetchParks()
     }

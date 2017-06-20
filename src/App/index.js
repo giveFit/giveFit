@@ -77,6 +77,7 @@ class App extends React.Component {
 
   render () {
     const { profile, userId } = this.state
+    console.log('app props', this.props)
 
     return (
       <div id='app' className='__app__main'>
