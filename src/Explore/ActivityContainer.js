@@ -65,11 +65,11 @@ class Activity extends React.Component {
                 labelColor={'white'}
                 label='RSVP'
                 className='rsvp-button'
-                onTouchTap={() => console.log('RSVP\'ing to this Place')}
+                onTouchTap={() => console.warn('RSVP\'ing to this Place')}
               />
               <div
                 className='share-button'
-                onClick={() => console.log('Sharing to this Place')}
+                onClick={() => console.warn('Sharing to this Place')}
               >
                 <span>Share</span>
                 <i className='fa fa-share share-icon' />

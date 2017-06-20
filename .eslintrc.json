@@ -6,6 +6,7 @@
     "react"
   ],
   "rules": {
-    "comma-dangle": [2, "always-multiline"]
+    "comma-dangle": [2, "always-multiline"],
+    "no-console": ["error", { "allow": ["warn", "error"] }]
   }
 }

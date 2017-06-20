@@ -30,12 +30,11 @@ class Explore extends React.Component {
     }
   }
   componentWillReceiveProps (nextProps) {
-    console.log('nextProps', nextProps)
     if (!nextProps.loading) {
       this.setState({
         workouts: nextProps.viewer.allWorkouts.edges,
       })
-      console.log('are we hitting the subscription?', nextProps)
+
       this.subscription = this.props.subscribeToMore({
         document: SUBSCRIBE_TO_WORKOUTS,
         variables: {
@@ -46,8 +45,6 @@ class Explore extends React.Component {
           },
         },
         updateQuery: (prev, { subscriptionData }) => {
-          console.log('updateQuery prev', prev)
-          console.log('updateQuery subscriptionData', subscriptionData)
           if (!subscriptionData.data) {
             return prev
           }
@@ -69,8 +66,7 @@ class Explore extends React.Component {
   }
 
   render () {
-    console.log('explore props', this.props)
-    const { profile, footerActiveTab } = this.props
+    const { profile, footerActiveTab, data } = this.props
     let workoutGroups = []
 
     return (
@@ -102,6 +98,7 @@ Explore.propTypes = {
   viewer: PropTypes.object,
   subscribeToMore: PropTypes.func,
   loading: PropTypes.bool,
+  data: PropTypes.object,
 }
 
 // for recurring workouts, create microservice that creates a

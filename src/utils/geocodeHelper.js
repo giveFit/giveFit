@@ -1,15 +1,15 @@
 function geocode (options) {
   return new Promise((resolve, reject) => {
-    const geocoder = new google.maps.Geocoder()
+    const geocoder = new window.google.maps.Geocoder()
     geocoder.geocode(options, (results, status) => {
       if (status === 'OK') {
         if (results.length) {
-					 resolve(results)
+          resolve(results)
         } else {
-          reject(`No results`)
+          reject(new Error('No results'))
         }
       } else {
-        reject('Geocoder failed due to ' + status)
+        reject(new Error(`Geocoder failed due to  ${status}`))
       }
     })
   })

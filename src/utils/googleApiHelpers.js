@@ -1,5 +1,3 @@
-import GooglePlaces from 'node-googleplaces'
-
 // returns a list of 20 places based on our request options
 export function searchNearby (googleMaps, div, request) {
   return new Promise((resolve, reject) => {
@@ -10,7 +8,7 @@ export function searchNearby (googleMaps, div, request) {
       if (status === googleMaps.places.PlacesServiceStatus.OK) {
         resolve(results)
       } else {
-        reject('Error')
+        reject(new Error('Error'))
       }
     })
   })

@@ -27,7 +27,7 @@ class GymFeed extends React.Component {
 
   componentWillReceiveProps (newProps) {
     if (newProps.active !== this.props.active && newProps.active === true) {
-      const element = findDOMNode(this.refs.root)
+      const element = findDOMNode(this.root)
        // Scrolls the current element into the visible area of the browser
       element.scrollIntoView({block: 'end', behavior: 'smooth'})
     }
@@ -44,7 +44,6 @@ class GymFeed extends React.Component {
   }
   // handleOpen of WorkoutCreator
   handleOpen () {
-    console.log('handling open')
     this.setState({open: true})
   };
   // handleClose of WorkoutCreator
@@ -54,7 +53,7 @@ class GymFeed extends React.Component {
   render () {
     const {props} = this
 
-    return <Card ref='root' key={props.data.id} className={props.active ? 'cardActive' : ''} onTouchTap={() => this.props.onClick()}>
+    return <Card ref={(c) => { this.root = c }} key={props.data.id} className={props.active ? 'cardActive' : ''} onTouchTap={() => this.props.onClick()}>
       <CardHeader
         title={props.data.googleData.title}
         // avatar={props.data.avatar}
@@ -81,7 +80,7 @@ class GymFeed extends React.Component {
         {props.data.rating ? <div> Rating: &nbsp {props.data.rating} </div> : <div></div>}
       </CardText>
       <CardText>
-        Is this your gym or studio? Claim it <a href="mailto:jktunney5@gmail.com?subject=Claim Gym&body=Message" target="_blank">here</a>!
+        Is this your gym or studio? Claim it <a href="mailto:jktunney5@gmail.com?subject=Claim Gym&body=Message" target="_blank" rel='noopener noreferrer'>here</a>!
       </CardText>
       <Card expanded={this.state.expanded}>
       <CardText expandable={true}>
@@ -114,6 +113,8 @@ class GymFeed extends React.Component {
 
 GymFeed.propTypes = {
   onClick: PropTypes.func.isRequired,
+  data: PropTypes.object,
+  active: PropTypes.boolean,
 }
 
 export default GymFeed

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 
 import IconMenu from 'material-ui/IconMenu'
 import IconButton from 'material-ui/IconButton'
-import FontIcon from 'material-ui/FontIcon'
 import Hamburger from 'material-ui/svg-icons/navigation/menu'
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar'
 import { MenuItem, RaisedButton, FlatButton } from 'material-ui'

@@ -19,7 +19,6 @@ class Activities extends React.Component {
       messageTrue: 'Event added to your calendar',
       messageFalse: 'Event removed from your calendar',
     }
-    console.log('WorkoutList props', this.props)
   }
 
   handleRequestClose () {
@@ -38,7 +37,7 @@ class Activities extends React.Component {
         this.setState({snack: !this.state.snack})
       })
       .catch((error) => {
-        console.log(error)
+        console.warn(error)
       })
   }
 

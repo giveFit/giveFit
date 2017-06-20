@@ -32,7 +32,7 @@ import './styles.css'
 class AddActivityPage extends React.Component {
   constructor (props, context) {
     super(props, context)
-    console.log('AddActivityPage props', props)
+
     this.state = {
       title: null,
       type: null,
@@ -98,26 +98,26 @@ class AddActivityPage extends React.Component {
             vicinity: parkVenue.location.address,
           }
         })
-        console.log('indexedParks', indexedParks)
+
         this.setState({
           indexedParks,
           loadedMapData: true,
         })
         var places = Object.keys(indexedParks).map((placeID) => {
           const place = indexedParks[placeID]
-          // console.log('making places', place)
+
           return {
             title: place.title,
             id: place.parkId,
             _geoloc: place.position,
           }
         })
-        console.log('do we have places after the map?', places)
+
         this.setState({
           places: places,
         })
       })
-      .catch((err) => console.log(err))
+      .catch((err) => console.error(err))
   }
 
   createWorkout () {
@@ -174,8 +174,6 @@ class AddActivityPage extends React.Component {
       workoutId: JSON.parse(window.localStorage.getItem('scapholdUserId')),
     })
       .then(({ data }) => {
-        console.log(data.createWorkout.changedWorkout)
-
         this.setState({
           open: false,
           requestTrainer: false,
@@ -191,7 +189,7 @@ class AddActivityPage extends React.Component {
           slug: null,
         })
       }).catch((error) => {
-        console.log(error)
+        console.error(error)
 
         const errors = error.toString().split('\n')
 
@@ -236,7 +234,6 @@ class AddActivityPage extends React.Component {
   }
 
   render () {
-    console.log('can we render places?', this.places)
     return (
       <div>
           <div className='top_level_container'>
@@ -327,6 +324,9 @@ class AddActivityPage extends React.Component {
 
 AddActivityPage.propTypes = {
   profile: PropTypes.object,
+  route: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+  createWorkout: PropTypes.func.isRequired,
 }
 
 const AddActivityPageWithData = compose(

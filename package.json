@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "pre-commit": [
+    "lint"
+  ],
   "scripts": {
+    "precommit-msg": "echo 'Pre-commit checks...' && exit 0",
     "start": "cross-env NODE_ENV=development hjs-dev-server",
     "start-client": "webpack-dev-server -d --hot --inline --no-info --port 3000",
     "start-server": "nodemon server.js",
@@ -36,6 +40,7 @@
     "node-googleplaces": "^0.1.2",
     "nodemon": "^1.10.2",
     "precss": "^1.4.0",
+    "pre-commit": "^1.2.2",
     "react": "^15.3.2",
     "react-apollo": "1.2.x",
     "react-autosuggest": "^9.0.1",

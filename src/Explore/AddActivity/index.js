@@ -1,8 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { graphql, compose } from 'react-apollo'
+import { graphql } from 'react-apollo'
 import slugify from 'slugify'
-import gql from 'graphql-tag'
 
 import { CREATE_WORKOUT } from './gql'
 import { GET_THROUGH_VIEWER } from '../../Explore/gql'
@@ -58,9 +57,7 @@ class AddActivity extends React.Component {
   }
 
   componentDidMount () {
-    console.log('componentDidMount AddActivity')
     this.places = Object.keys(this.props.indexedParks).map((placeID) => {
-      console.log('places')
       const place = this.props.indexedParks[placeID]
 
       return {
@@ -125,7 +122,6 @@ class AddActivity extends React.Component {
       workoutId: JSON.parse(window.localStorage.getItem('scapholdUserId')),
     })
       .then(({ data }) => {
-        console.log('data.createWorkout.changedWorkout', data.createWorkout.changedWorkout)
         // this.subscribeToNewWorkouts()
         this.setState({
           open: false,
@@ -143,7 +139,7 @@ class AddActivity extends React.Component {
         })
         window.__APOLLO_CLIENT__.resetStore()
       }).catch((error) => {
-        console.log(error)
+        console.error(error)
 
         const errors = error.toString().split('\n')
 
@@ -315,11 +311,11 @@ AddActivity.propTypes = {
   profile: PropTypes.object,
   workouts: PropTypes.array.isRequired,
   data: PropTypes.object,
+  createWorkout: PropTypes.func.isRequired,
 }
 
 const AddActivityWithData = graphql(CREATE_WORKOUT, {
   props ({ ownProps, mutate }) {
-    console.log('ownProps', ownProps)
     return {
       createWorkout ({title, type, startDateTime, endDateTime, description, requestTrainer, pictureURL, parkId, userEmail, recurring, _geoloc, slug, workoutId}) {
         var input = {
@@ -343,8 +339,9 @@ const AddActivityWithData = graphql(CREATE_WORKOUT, {
           // not having any luck, will use resetStore() as temporary fix
           update: (store, { data: { viewer } }) => {
             const data = store.readQuery({ GET_THROUGH_VIEWER })
-            console.log('data from update', data)
-            data.workouts.push(createWorkout)
+
+            // @todo: createWorkout is undefined
+            // data.workouts.push(createWorkout)
             store.writeQuery({ query: GET_THROUGH_VIEWER, data })
           },
         })

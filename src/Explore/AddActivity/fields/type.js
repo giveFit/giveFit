@@ -28,6 +28,7 @@ const Type = ({ onChange, value, errorText = null }) => {
 Type.propTypes = {
   onChange: PropTypes.func.isRequired,
   errorText: PropTypes.string,
+  value: PropTypes.string,
 }
 
 export default Type

@@ -3,12 +3,11 @@ import PropTypes from 'prop-types'
 
 import IconMenu from 'material-ui/IconMenu'
 import IconButton from 'material-ui/IconButton'
-import FontIcon from 'material-ui/FontIcon'
 import NavigationExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-more'
 import Hamburger from 'material-ui/svg-icons/navigation/menu'
 import { Link, hashHistory } from 'react-router'
-import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from 'material-ui/Toolbar'
-import { MenuItem, RaisedButton, FlatButton, Avatar } from 'material-ui'
+import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar'
+import { MenuItem, FlatButton, Avatar } from 'material-ui'
 
 import './LoggedInToolbar.css'
 

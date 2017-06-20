@@ -2,22 +2,11 @@ import React from 'react'
 import {findDOMNode} from 'react-dom'
 import PropTypes from 'prop-types'
 
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
-import FlatButton from 'material-ui/FlatButton'
-import RaisedButton from 'material-ui/RaisedButton'
-import {Tabs, Tab} from 'material-ui/Tabs'
-import TextField from 'material-ui/TextField'
-import Toggle from 'material-ui/Toggle'
-import { Avatar, Chip } from 'material-ui'
-import {GridList, GridTile} from 'material-ui/GridList'
+import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card'
 
 // svg-icons
 import BookmarkBorder from 'material-ui/svg-icons/action/bookmark-border'
-import Done from 'material-ui/svg-icons/action/done'
-import FitnessCenter from 'material-ui/svg-icons/places/fitness-center'
-import DatePicker from 'material-ui/DatePicker'
-import Comment from 'material-ui/svg-icons/communication/comment'
-import {blue500, red500, greenA200, white} from 'material-ui/styles/colors'
+import { greenA200, white } from 'material-ui/styles/colors'
 
 // Local components
 import WorkoutCreatorWithData from './WorkoutCreator/index'
@@ -47,32 +36,33 @@ const inlineStyles = {
 class ParkFeed extends React.Component {
   componentWillReceiveProps (newProps) {
     if (newProps.active !== this.props.active && newProps.active === true) {
-      const element = findDOMNode(this.refs.root)
+      const element = findDOMNode(this.root)
        // Scrolls the current element into the visible area of the browser
       element.scrollIntoView({block: 'end', behavior: 'smooth'})
     }
   }
 
   handleSave () {
-    alert('hey saving')
+    window.alert('hey saving')
     // add a mutation here to save to the user's "saved workouts"
   }
   handleTouchTap () {
-    alert('You clicked the Chip.')
+    window.alert('You clicked the Chip.')
   }
   // handleOpen of WorkoutCreator
   handleOpen () {
-    console.log('handling open')
+    console.warn('handling open')
+
     this.setState({open: true})
   };
 
   render () {
     const {props} = this
 
-    return <div><Card ref='root' key={props.data.id} className={props.active ? 'cardActive' : ''} onTouchTap={() => this.props.onClick(this.props.parkID)}>
+    return <div><Card ref={(c) => { this.root = c }} key={props.data.id} className={props.active ? 'cardActive' : ''} onTouchTap={() => this.props.onClick(this.props.parkID)}>
       <CardHeader
         title={props.data.googleData.title}
-        subtitle={<a href={'http://maps.google.com/?q=' + props.data.googleData.vicinity} target="_blank">{props.data.googleData.vicinity}</a>}
+        subtitle={<a target="_blank" rel='noopener noreferrer' href={'http://maps.google.com/?q=' + props.data.googleData.vicinity}>{props.data.googleData.vicinity}</a>}
         >
       {/* would eventually like to add tags */}
         </CardHeader>
@@ -97,7 +87,7 @@ class ParkFeed extends React.Component {
       </CardMedia>
       <CardText>
 
-        Click "View Activities" for the calendar of upcoming activities at this location, or "Post an Activity" to create your own.
+        Click &quot;View Activities&quot; for the calendar of upcoming activities at this location, or &quot;Post an Activity&quot; to create your own.
 
       </CardText>
 
@@ -111,6 +101,9 @@ class ParkFeed extends React.Component {
 
 ParkFeed.propTypes = {
   onClick: PropTypes.func.isRequired,
+  parkID: PropTypes.string,
+  data: PropTypes.object,
+  active: PropTypes.boolean,
 }
 
 export default ParkFeed

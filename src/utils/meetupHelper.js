@@ -53,7 +53,11 @@ function saveToJson (data) {
 }
 
 function waitAllPromises (arr) {
-  if (arr.length === 0) return resolve([])
+  if (arr.length === 0) {
+    Promise.resolve([])
+
+    return
+  }
 
   return new Promise(function (resolve, reject) {
     var numResolved = 0

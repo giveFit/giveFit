@@ -15,7 +15,7 @@ class App extends React.Component {
     this.onAuthenticated = this.onAuthenticated.bind(this)
     this.auth = new AuthService(process.env.AUTH0_CLIENT_ID, process.env.AUTH0_DOMAIN)
     this.auth.on('authenticated', this.onAuthenticated)
-    this.auth.on('error', console.log)
+    this.auth.on('error', console.error)
 
     this.state = {
       profile: this.auth.getProfile(),
@@ -60,7 +60,7 @@ class App extends React.Component {
         })
       })
       .catch(err => {
-        console.log(`Error updating user: ${err.message}`)
+        console.warn(`Error updating user: ${err.message}`)
       })
   }
 
