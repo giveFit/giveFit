@@ -1,10 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { graphql } from 'react-apollo'
+import { withApollo, graphql } from 'react-apollo'
 import slugify from 'slugify'
+import moment from 'moment'
 
 import { CREATE_WORKOUT } from './gql'
-import { GET_THROUGH_VIEWER } from '../../Explore/gql'
 
 import Avatar from 'material-ui/Avatar'
 import Chip from 'material-ui/Chip'
@@ -23,6 +23,7 @@ import FieldRequestTrainer from './fields/requestTrainer'
 import FieldDescription from './fields/description'
 import FieldEmail from './fields/email'
 import FieldRecurring from './fields/recurring'
+import FieldNoRecurring from './fields/noRecurring'
 
 import AuthService from 'utils/AuthService'
 
@@ -47,6 +48,7 @@ class AddActivity extends React.Component {
       scapholdUser: null,
       userEmail: null,
       recurring: false,
+      recurringWeeks: 0,
       errors: {},
       date: null,
     }
@@ -82,6 +84,7 @@ class AddActivity extends React.Component {
       parkId,
       userEmail,
       recurring,
+      recurringWeeks,
     } = this.state
 
     // consider replacing this random number with uuid: https://github.com/makeable/uuid-v4.js
@@ -116,6 +119,7 @@ class AddActivity extends React.Component {
       parkId,
       userEmail,
       recurring,
+      recurringWeeks,
       _geoloc,
       slug,
       // workoutId is the id of the loggedInUser, allowing us to make a connection in our data graph
@@ -135,9 +139,13 @@ class AddActivity extends React.Component {
           endDateTime: null,
           parkId: null,
           recurring: false,
+          recurringWeeks: 0,
           slug: null,
         })
-        window.__APOLLO_CLIENT__.resetStore()
+        // renders the newly created workout without refreshing the page
+        this.props.client.resetStore()
+        // render new data on the map as well as the list
+        this.onSuccess()
       }).catch((error) => {
         console.error(error)
 
@@ -151,6 +159,11 @@ class AddActivity extends React.Component {
 
         this.setState({ errors })
       })
+  }
+
+  onSuccess () {
+    // @todo: call the map to reload, add a snackbar too :)
+    // console.log('added a new workout, need to call the map markers')
   }
 
   handleClose () {
@@ -242,6 +255,7 @@ class AddActivity extends React.Component {
               onChange={(startDateTime) => this.setState({ startDateTime })}
               errorText={this.state.errors.startDateTime}
             />
+            {/* @todo: I'd like to make it so that the clock is set in state an hour after start time */}
             <FieldEndTime
               onChange={(endDateTime) => this.setState({ endDateTime })}
               errorText={this.state.errors.endDateTime}
@@ -258,11 +272,21 @@ class AddActivity extends React.Component {
             onChange={(description) => this.setState({ description })}
             errorText={this.state.errors.description}
           />
-          <FieldRecurring
-            onCheck={() => this.setState({ recurring: !this.state.recurring })}
-            recurring={this.state.recurring}
-            errorText={this.state.errors.description}
-          />
+          <div>
+            <FieldRecurring
+              onCheck={() => this.setState({ recurring: !this.state.recurring })}
+              recurring={this.state.recurring}
+              errorText={this.state.errors.description}
+            />
+            {
+              this.state.recurring &&
+              <FieldNoRecurring
+                onChange={(recurringWeeks) => this.setState({ recurringWeeks })}
+                value={this.state.recurringWeeks}
+                errorText={this.state.errors.noRecurring}
+              />
+            }
+          </div>
           <div className='request-trainer-container'>
             <FieldRequestTrainer
               onCheck={() => this.setState({ requestTrainer: !this.state.requestTrainer })}
@@ -312,12 +336,13 @@ AddActivity.propTypes = {
   workouts: PropTypes.array.isRequired,
   data: PropTypes.object,
   createWorkout: PropTypes.func.isRequired,
+  client: PropTypes.object,
 }
 
-const AddActivityWithData = graphql(CREATE_WORKOUT, {
+const AddActivityWithData = withApollo(graphql(CREATE_WORKOUT, {
   props ({ ownProps, mutate }) {
     return {
-      createWorkout ({title, type, startDateTime, endDateTime, description, requestTrainer, pictureURL, parkId, userEmail, recurring, _geoloc, slug, workoutId}) {
+      createWorkout ({title, type, startDateTime, endDateTime, description, requestTrainer, pictureURL, parkId, userEmail, recurring, _geoloc, slug, workoutId, recurringWeeks}) {
         var input = {
           title: title,
           type: type,
@@ -329,25 +354,55 @@ const AddActivityWithData = graphql(CREATE_WORKOUT, {
           parkId: parkId,
           userEmail: userEmail,
           recurring: recurring,
+          recurringWeeks: recurringWeeks,
           _geoloc: _geoloc,
           slug: slug,
           workoutId: workoutId,
         }
-        return mutate({
-          variables: { input: input },
-          // @todo: trying to update the store automatically...
-          // not having any luck, will use resetStore() as temporary fix
-          update: (store, { data: { viewer } }) => {
-            const data = store.readQuery({ GET_THROUGH_VIEWER })
 
-            // @todo: createWorkout is undefined
-            // data.workouts.push(createWorkout)
-            store.writeQuery({ query: GET_THROUGH_VIEWER, data })
-          },
-        })
+        if (recurring === true) {
+          try {
+            for (var i = 0; i < recurringWeeks - 1; i++) {
+              mutate({
+                // assign a new start/endDateTime to each new iteration
+                variables: {
+                  input: {
+                    ...input,
+                    startDateTime: moment(startDateTime).clone().add(i, 'week').toDate(),
+                    endDateTime: moment(endDateTime).clone().add(i, 'week').toDate(),
+                  },
+                },
+              })
+            }
+          } finally {
+            // eslint-disable-next-line no-unsafe-finally
+            return mutate({
+              // assign a new start/endDateTime to each new iteration
+              variables: {
+                input: {
+                  ...input,
+                  startDateTime: moment(startDateTime).clone().add(recurringWeeks - 1, 'week').toDate(),
+                  endDateTime: moment(endDateTime).clone().add(recurringWeeks - 1, 'week').toDate(),
+                },
+              },
+              // @todo: trying to update the store automatically...
+              // not having any luck, using resetStore() as temporary fix
+              /* update: (proxy, { data: { viewer } }) => {
+                const data = proxy.readQuery({ GET_THROUGH_VIEWER })
+                console.log('data from update', data)
+                data.workouts.push(createWorkout)
+                proxy.writeQuery({ query: GET_THROUGH_VIEWER, data })
+              }, */
+            })
+          }
+        } else {
+          return mutate({
+            variables: { input: input },
+          })
+        }
       },
     }
   },
-})(AddActivity)
+})(AddActivity))
 
 export default AddActivityWithData

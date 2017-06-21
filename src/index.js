@@ -20,7 +20,7 @@ import Explore from 'Explore/'
 import Profile from 'Profile/'
 import Data from 'Data/'
 import AddActivityPageWithData from 'Explore/AddActivity/addActivityPage'
-
+import Workout from './Workout'
 import './base.css'
 
 // Needed for onTouchTap
@@ -33,14 +33,45 @@ const routes = {
   component: App,
   indexRoute: { component: Explore, defaultLat: 39.2904, defaultLng: -76.6122 },
   childRoutes: [
-    { path: 'explore', component: Explore, defaultLat: 39.2904, defaultLng: -76.6122 },
-    { path: 'new-york', component: Explore, defaultLat: 40.7128, defaultLng: -74.0059 },
-    { path: 'washington-dc', component: Explore, defaultLat: 38.9072, defaultLng: -77.0369 },
+    {
+      path: 'explore',
+      component: Explore,
+      defaultLat: 39.2904,
+      defaultLng: -76.6122,
+    },
+    {
+      path: 'new-york',
+      component: Explore,
+      defaultLat: 40.7128,
+      defaultLng: -74.0059,
+    },
+    {
+      path: 'washington-dc',
+      component: Explore,
+      defaultLat: 38.9072,
+      defaultLng: -77.0369,
+    },
     { path: 'profile', component: Profile },
     { path: 'city-leaderboard', component: Data },
-    { path: 'add-workout-baltimore', component: AddActivityPageWithData, defaultLat: 39.2904, defaultLng: -76.6122 },
-    { path: 'add-workout-new-york', component: AddActivityPageWithData, defaultLat: 40.7128, defaultLng: -74.0059 },
-    { path: 'add-workout-washington-dc', component: AddActivityPageWithData, defaultLat: 38.9072, defaultLng: -77.0369 },
+    {
+      path: 'add-workout-baltimore',
+      component: AddActivityPageWithData,
+      defaultLat: 39.2904,
+      defaultLng: -76.6122,
+    },
+    {
+      path: 'add-workout-new-york',
+      component: AddActivityPageWithData,
+      defaultLat: 40.7128,
+      defaultLng: -74.0059,
+    },
+    {
+      path: 'add-workout-washington-dc',
+      component: AddActivityPageWithData,
+      defaultLat: 38.9072,
+      defaultLng: -77.0369,
+    },
+    { path: '/workout/:workoutId', component: Workout },
   ],
 }
 

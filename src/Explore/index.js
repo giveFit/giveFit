@@ -44,6 +44,9 @@ class Explore extends React.Component {
             },
           },
         },
+        // @todo: look into update on the addActivity component
+        // may need to refer back to this function, and change
+        // its name to updateQuery, line 386
         updateQuery: (prev, { subscriptionData }) => {
           if (!subscriptionData.data) {
             return prev
