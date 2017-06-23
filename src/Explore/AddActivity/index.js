@@ -387,12 +387,12 @@ const AddActivityWithData = withApollo(graphql(CREATE_WORKOUT, {
               },
               // @todo: trying to update the store automatically...
               // not having any luck, using resetStore() as temporary fix
-              /* update: (proxy, { data: { viewer } }) => {
-                const data = proxy.readQuery({ GET_THROUGH_VIEWER })
-                console.log('data from update', data)
-                data.workouts.push(createWorkout)
-                proxy.writeQuery({ query: GET_THROUGH_VIEWER, data })
-              }, */
+              /* updateQuery: (proxy, { data: { viewer } }) => {
+              const data = proxy.readQuery({ GET_THROUGH_VIEWER })
+              console.log('data from update', data)
+              data.workouts.push(createWorkout)
+              proxy.writeQuery({ query: GET_THROUGH_VIEWER, data })
+            },  */
             })
           }
         } else {

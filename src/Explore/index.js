@@ -109,6 +109,7 @@ Explore.propTypes = {
 const withData = graphql(GET_THROUGH_VIEWER, {
   options: ({ params }) => ({
     variables: {
+      first: 100,
       where: {
         endDateTime: {
           gte: new Date().toString(),

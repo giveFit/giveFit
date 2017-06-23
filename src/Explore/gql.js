@@ -1,9 +1,9 @@
 import gql from 'graphql-tag'
 
 export const GET_THROUGH_VIEWER = gql`
-query GetThroughViewer($where:WorkoutWhereArgs, $orderBy:[WorkoutOrderByArgs]) {
+query GetThroughViewer($first: Int, $where:WorkoutWhereArgs, $orderBy:[WorkoutOrderByArgs]) {
     viewer{
-      allWorkouts(where:$where, orderBy:$orderBy){
+      allWorkouts(first: $first, where:$where, orderBy:$orderBy){
         edges {
           node {
             id
