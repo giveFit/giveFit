@@ -144,8 +144,6 @@ class AddActivity extends React.Component {
         })
         // renders the newly created workout without refreshing the page
         this.props.client.resetStore()
-        // render new data on the map as well as the list
-        this.onSuccess()
       }).catch((error) => {
         console.error(error)
 
@@ -161,10 +159,9 @@ class AddActivity extends React.Component {
       })
   }
 
-  onSuccess () {
-    // @todo: call the map to reload, add a snackbar too :)
-    // console.log('added a new workout, need to call the map markers')
-  }
+  // @todo: add a snackbar notifying user of successful workout creation
+  // @todo: set newly created workout marker to active
+  // @todo: scroll new workout into view
 
   handleClose () {
     this.setState({ open: false })
@@ -385,14 +382,6 @@ const AddActivityWithData = withApollo(graphql(CREATE_WORKOUT, {
                   endDateTime: moment(endDateTime).clone().add(recurringWeeks - 1, 'week').toDate(),
                 },
               },
-              // @todo: trying to update the store automatically...
-              // not having any luck, using resetStore() as temporary fix
-              /* updateQuery: (proxy, { data: { viewer } }) => {
-              const data = proxy.readQuery({ GET_THROUGH_VIEWER })
-              console.log('data from update', data)
-              data.workouts.push(createWorkout)
-              proxy.writeQuery({ query: GET_THROUGH_VIEWER, data })
-            },  */
             })
           }
         } else {

@@ -29,41 +29,44 @@ class Explore extends React.Component {
       workouts: [],
     }
   }
+
+  componentDidMount () {
+    this.subscription = this.props.subscribeToMore({
+      document: SUBSCRIBE_TO_WORKOUTS,
+      variables: {
+        subscriptionFilter: {
+          endDateTime: {
+            gte: new Date().toString(),
+          },
+        },
+      },
+      // @todo: it seems like this could be working...
+      // need to compare against this when used without
+      // the resetStore() on the AddActivity component
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+        return {
+          viewer: {
+            allWorkouts: {
+              edges: [
+                ...prev.viewer.allWorkouts.edges,
+                {
+                  node: subscriptionData.data.subscribeToWorkout.value,
+                },
+              ],
+            },
+          },
+        }
+      },
+    })
+  }
+
   componentWillReceiveProps (nextProps) {
     if (!nextProps.loading) {
       this.setState({
         workouts: nextProps.viewer.allWorkouts.edges,
-      })
-
-      this.subscription = this.props.subscribeToMore({
-        document: SUBSCRIBE_TO_WORKOUTS,
-        variables: {
-          subscriptionFilter: {
-            endDateTime: {
-              gte: new Date().toString(),
-            },
-          },
-        },
-        // @todo: look into update on the addActivity component
-        // may need to refer back to this function, and change
-        // its name to updateQuery, line 386
-        updateQuery: (prev, { subscriptionData }) => {
-          if (!subscriptionData.data) {
-            return prev
-          }
-          return {
-            viewer: {
-              allWorkouts: {
-                edges: [
-                  ...prev.viewer.allWorkouts.edges,
-                  {
-                    node: subscriptionData.data.subscribeToWorkout.value,
-                  },
-                ],
-              },
-            },
-          }
-        },
       })
     }
   }
@@ -73,20 +76,25 @@ class Explore extends React.Component {
     let workoutGroups = []
 
     return (
-      <div className='explore_container'>
-        <GridContainer
-          centerLatLng={this.centerLatLng}
-          onPlaceSelect={(place) => {
-            data.refetch({
-              latLng: place.address,
-            })
-            return null
-          }}
-          profile={profile}
-          workoutGroups={workoutGroups}
-          workouts={this.state.workouts}
-          footerActiveTab={footerActiveTab}
-        />
+      <div>
+        { this.props.loading
+          ? <div> Loading... </div>
+          : <div className='explore_container'>
+            <GridContainer
+              centerLatLng={this.centerLatLng}
+              onPlaceSelect={(place) => {
+                data.refetch({
+                  latLng: place.address,
+                })
+                return null
+              }}
+              profile={profile}
+              workoutGroups={workoutGroups}
+              workouts={this.state.workouts}
+              footerActiveTab={footerActiveTab}
+            />
+          </div>
+        }
       </div>
     )
   }

@@ -27,8 +27,6 @@ import AuthService from 'utils/AuthService'
 
 import './styles.css'
 
-// I'll want to create a subscription here, as well as putting through
-// a groupId to match with whichever group the data is being submitted on
 class AddActivityPage extends React.Component {
   constructor (props, context) {
     super(props, context)
@@ -136,7 +134,7 @@ class AddActivityPage extends React.Component {
       recurring,
     } = this.state
 
-    // consider replacing this random number with uuid: https://github.com/makeable/uuid-v4.js
+    // @todo: consider replacing this random number with uuid: https://github.com/makeable/uuid-v4.js
     var randomSlugNumber = Math.floor(Math.random() * 10000).toString()
     var titleAndSlugString = title.concat(' ', randomSlugNumber)
     var slug = slugify(titleAndSlugString).toLowerCase()
