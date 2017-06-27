@@ -5,7 +5,6 @@ import { graphql, compose } from 'react-apollo'
 import BigCalendar from 'react-big-calendar'
 import Dialog from 'material-ui/Dialog'
 import { Tabs, Tab } from 'material-ui/Tabs'
-import Slider from 'material-ui/Slider'
 import Iframe from 'react-iframe'
 
 import foursquare from 'utils/foursquare'
@@ -13,6 +12,7 @@ import { GET_USER_WORKOUTS, UPDATE_USER_QUERY } from './gql'
 
 import ProfileHeader from './components/ProfileHeader'
 import ProfileDetails from './components/ProfileDetails'
+import AddClassesWithData from './components/AddClasses'
 
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import './styles.css'
@@ -196,6 +196,7 @@ class Profile extends React.Component {
             </div>
           </Tab>
           <Tab label="Add Activities">
+            <AddClassesWithData />
           </Tab>
         </Tabs>
       </div>
