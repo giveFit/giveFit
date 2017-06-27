@@ -137,11 +137,6 @@ class Profile extends React.Component {
 
     return (
       <div className='home'>
-        <ProfileHeader
-          headerPhotoURL={this.state.userFieldsToUpdate.headerPhotoURL || user.headerPhotoURL}
-          editMode={editMode}
-          onProfileHeaderChange={(url) => this.userFieldsToUpdate('headerPhotoURL', url)}
-        />
         <ProfileDetails
           description={this.state.userFieldsToUpdate.description || user.description }
           nickname={this.state.userFieldsToUpdate.nickname || user.nickname }

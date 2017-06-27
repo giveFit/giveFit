@@ -3,11 +3,10 @@ import PropTypes from 'prop-types'
 import { graphql, withApollo } from 'react-apollo'
 import slugify from 'slugify'
 import foursquare from 'utils/foursquare'
+import moment from 'moment'
 
 import { CREATE_WORKOUT } from '../gql'
 
-import Avatar from 'material-ui/Avatar'
-import Chip from 'material-ui/Chip'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 
@@ -234,8 +233,6 @@ class AddClasses extends React.Component {
     return (
       <div>
         <div className='top_level_container'>
-          
-
           <div className='title_and_type_container'>
             <FieldTitle onChange={(title) => this.setState({ title })} errorText={this.state.errors.title} />
             <FieldType onChange={(type) => this.setState({ type })} value={this.state.type} errorText={this.state.errors.type} />
@@ -278,13 +275,13 @@ class AddClasses extends React.Component {
           errorText={this.state.errors.description}
         />
         <div>
-            <FieldRecurring
-              onCheck={() => this.setState({ recurring: !this.state.recurring })}
-              recurring={this.state.recurring}
-              errorText={this.state.errors.description}
-            />
+          <FieldRecurring
+            onCheck={() => this.setState({ recurring: !this.state.recurring })}
+            recurring={this.state.recurring}
+            errorText={this.state.errors.description}
+          />
           {
-              this.state.recurring &&
+            this.state.recurring &&
             <FieldNoRecurring
               onChange={(recurringWeeks) => this.setState({ recurringWeeks })}
               value={this.state.recurringWeeks}
