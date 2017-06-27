@@ -4,6 +4,9 @@ import moment from 'moment'
 import { graphql, compose } from 'react-apollo'
 import BigCalendar from 'react-big-calendar'
 import Dialog from 'material-ui/Dialog'
+import { Tabs, Tab } from 'material-ui/Tabs'
+import Slider from 'material-ui/Slider'
+import Iframe from 'react-iframe'
 
 import foursquare from 'utils/foursquare'
 import { GET_USER_WORKOUTS, UPDATE_USER_QUERY } from './gql'
@@ -150,36 +153,51 @@ class Profile extends React.Component {
           onUserNicknameChange={(nickname) => this.userFieldsToUpdate('nickname', nickname)}
           onProfilePhotoChange={(url) => this.userFieldsToUpdate('picture', url)}
         />
-        <BigCalendar
-          events={events}
-          defaultView='week'
-          eventPropGetter={(event) => {
-            return {
-              className: event.rsvp ? 'rsvpd' : '',
-            }
-          }}
-          onSelectEvent={(event) => {
-            this.setState({
-              eventDialogOpen: true,
-              eventDialogInfo: {
-                title: event.title,
-                location: event.location,
-                start: event.start,
-                end: event.end,
-                rsvp: Boolean(event.rsvp),
-              },
-            })
-          }}
-        />
-        <Dialog
-          title={eventDialogInfo.title}
-          open={eventDialogOpen}
-          onRequestClose={() => this.setState({ eventDialogOpen: false })}
-        >
-          <div><b>Location:</b> {eventDialogInfo.location}</div>
-          <div><b>Start:</b> {moment(eventDialogInfo.start).format('LLLL')}</div>
-          <div><b>End:</b> {moment(eventDialogInfo.end).format('LLLL')}</div>
-        </Dialog>
+        <Tabs>
+          <Tab label="Calendar">
+            <BigCalendar
+              events={events}
+              defaultView='week'
+              eventPropGetter={(event) => {
+                return {
+                  className: event.rsvp ? 'rsvpd' : '',
+                }
+              }}
+              onSelectEvent={(event) => {
+                this.setState({
+                  eventDialogOpen: true,
+                  eventDialogInfo: {
+                    title: event.title,
+                    location: event.location,
+                    start: event.start,
+                    end: event.end,
+                    rsvp: Boolean(event.rsvp),
+                  },
+                })
+              }}
+            />
+            <Dialog
+              title={eventDialogInfo.title}
+              open={eventDialogOpen}
+              onRequestClose={() => this.setState({ eventDialogOpen: false })}
+            >
+              <div><b>Location:</b> {eventDialogInfo.location}</div>
+              <div><b>Start:</b> {moment(eventDialogInfo.start).format('LLLL')}</div>
+              <div><b>End:</b> {moment(eventDialogInfo.end).format('LLLL')}</div>
+            </Dialog>
+          </Tab>
+          <Tab label="Data">
+            <div>
+              <Iframe url="https://share.geckoboard.com/dashboards/WQ2QZ3RODA4V2ER4"
+                width="100%"
+                height="800px"
+                allowFullScreen
+              />
+            </div>
+          </Tab>
+          <Tab label="Add Activities">
+          </Tab>
+        </Tabs>
       </div>
     )
   }
