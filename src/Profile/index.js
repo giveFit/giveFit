@@ -10,7 +10,7 @@ import Iframe from 'react-iframe'
 import foursquare from 'utils/foursquare'
 import { GET_USER_WORKOUTS, UPDATE_USER_QUERY } from './gql'
 
-import ProfileHeader from './components/ProfileHeader'
+// import ProfileHeader from './components/ProfileHeader'
 import ProfileDetails from './components/ProfileDetails'
 import AddClassesWithData from './components/AddClasses'
 
@@ -152,7 +152,7 @@ class Profile extends React.Component {
           <Tab label="Calendar">
             <BigCalendar
               events={events}
-              defaultView='week'
+              defaultView='agenda'
               eventPropGetter={(event) => {
                 return {
                   className: event.rsvp ? 'rsvpd' : '',

@@ -62,7 +62,6 @@ class Map extends React.Component {
     if (footerActiveTab === 'map') {
       this.handleWindowResize()
     }
-
     return (
       <GoogleMapLoader
         containerElement={<div style={{ height: '100%', width: '100%' }} />}
