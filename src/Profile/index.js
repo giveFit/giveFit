@@ -148,6 +148,8 @@ class Profile extends React.Component {
           onUserNicknameChange={(nickname) => this.userFieldsToUpdate('nickname', nickname)}
           onProfilePhotoChange={(url) => this.userFieldsToUpdate('picture', url)}
         />
+        {/* @todo: if the user is not an admin, they should only see the calendar: https://docs.scaphold.io/authentication/permissions/
+        the other tabs should be feature upgrades */}
         <Tabs>
           <Tab label="Calendar">
             <BigCalendar
