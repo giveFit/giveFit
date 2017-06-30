@@ -8,6 +8,13 @@ query GetUserWorkouts($id:ID!, $first: Int, $where: WorkoutWhereArgs!, $orderBy:
       description,
       picture,
       nickname,
+      PaidUserConnect {
+      id,
+      PaidUserConnect{
+        id
+        picture
+      }
+    }
       Workout(first: $first, where: $where, orderBy: $orderBy) {
         edges {
           node {

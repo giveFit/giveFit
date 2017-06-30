@@ -126,7 +126,6 @@ class Profile extends React.Component {
 
   render () {
     const { user, editMode, events, eventDialogInfo, eventDialogOpen } = this.state
-
     if (!user) {
       return (
         <div className='home'>
@@ -193,7 +192,15 @@ class Profile extends React.Component {
             </div>
           </Tab>
           <Tab label="Add Activities">
-            <AddClassesWithData />
+            {/* looking at whether the user has a "PaidUser" connection, if not
+            direct them to sign up...
+            @todo: improve onboarding flow of new paid users */}
+            { this.props.data.getUser.PaidUserConnect
+              ? <AddClassesWithData />
+              : <div>
+              Please email jake@givefit.net to access this feature
+              </div>
+            }
           </Tab>
         </Tabs>
       </div>
