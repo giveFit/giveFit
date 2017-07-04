@@ -64,6 +64,10 @@ class App extends React.Component {
       })
   }
 
+  onTabChange (tab) {
+    this.setState({ footerActiveTab: tab })
+  }
+
   renderChildren (profile, userId, footerActiveTab) {
     return React.Children.map(this.props.children, (child) => {
       return React.cloneElement(child, {
@@ -71,6 +75,7 @@ class App extends React.Component {
         userId,
         auth: this.auth,
         footerActiveTab,
+        onTabChange: (tab) => this.onTabChange(tab),
       })
     })
   }
@@ -89,7 +94,8 @@ class App extends React.Component {
         </div>
         <Footer
           pathname={this.props.location.pathname}
-          onTabChange={(tab) => this.setState({ footerActiveTab: tab })}
+          onTabChange={(tab) => this.onTabChange(tab)}
+          footerActiveTab={this.state.footerActiveTab}
         />
       </div>
     )

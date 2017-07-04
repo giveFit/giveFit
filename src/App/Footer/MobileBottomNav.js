@@ -12,40 +12,25 @@ import List from 'material-ui/svg-icons/action/list'
  * state (for instance, by the URL).
  */
 class MobileBottomNav extends React.Component {
-  constructor (props) {
-    super(props)
-
-    this.state = {
-      selectedIndex: 0,
-    }
-  }
-
-  select (index) {
-    this.setState({ selectedIndex: index })
-  };
-
   render () {
-    const { selectedIndex } = this.state
+    const { footerActiveTab } = this.props
 
     return (
       <Paper zDepth={1}>
-        <BottomNavigation selectedIndex={selectedIndex}>
+        <BottomNavigation selectedIndex={footerActiveTab === 'list' ? 0 : 1}>
           <BottomNavigationItem
-            className={selectedIndex === 0 ? '__active' : ''}
+            className={footerActiveTab === 'list' ? '__active' : ''}
             label='Activities'
             icon={<List />}
             onTouchTap={() => {
-              this.select(0)
               this.props.onTabChange('list')
             }}
           />
           <BottomNavigationItem
-
-            className={selectedIndex === 0 ? '__active' : ''}
+            className={footerActiveTab === 'map' ? '__active' : ''}
             label='Map'
             icon={<IconLocationOn />}
             onTouchTap={() => {
-              this.select(1)
               this.props.onTabChange('map')
             }}
           />
@@ -57,6 +42,7 @@ class MobileBottomNav extends React.Component {
 
 MobileBottomNav.propTypes = {
   onTabChange: PropTypes.func.isRequired,
+  footerActiveTab: PropTypes.string.isRequired,
 }
 
 export default MobileBottomNav

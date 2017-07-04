@@ -21,12 +21,6 @@ class GridComponent extends React.Component {
       return
     }
 
-    this.state = {
-      indexedParks: {},
-      loadedMapData: false,
-      openedParkId: '',
-    }
-
     this.geocoder = new this.googleMaps.Geocoder()
   }
 
@@ -86,10 +80,7 @@ class GridComponent extends React.Component {
           }
         })
 
-        this.setState({
-          indexedParks,
-          loadedMapData: true,
-        })
+        this.props.setParks(indexedParks)
       })
       .catch((err) => console.error(err))
   }
@@ -102,31 +93,18 @@ class GridComponent extends React.Component {
     return image ? image.prefix + 'original' + image.suffix : null
   }
 
-  setActiveMarker (parkId = '') {
-    if (parkId === this.state.openedParkId) {
-      parkId = ''
-    }
-
-    this.setState({
-      openedParkId: parkId,
-    })
-  }
-
-  handleWorkoutClick (parkId, workoutId) {
-    if (workoutId === this.state.selectedWorkoutId) {
-      workoutId = ''
-      parkId = ''
-    }
-
-    this.setState({
-      openedParkId: parkId,
-      selectedWorkoutId: workoutId,
-    })
-  }
-
   render () {
-    const { centerLatLng, workouts, profile, onPlaceSelect, footerActiveTab } = this.props
-    const { loadedMapData, indexedParks, openedParkId, selectedWorkoutId } = this.state
+    const {
+      centerLatLng,
+      workouts,
+      profile,
+      onPlaceSelect,
+      footerActiveTab,
+      loadedMapData,
+      indexedParks,
+      openedParkId,
+      selectedWorkoutId,
+    } = this.props
 
     return (
       <div className='__app__body__container'>
@@ -138,7 +116,7 @@ class GridComponent extends React.Component {
               indexedParks={indexedParks}
               openedParkId={openedParkId}
               geocoder={this.geocoder}
-              onMarkerClick={(parkId) => this.setActiveMarker(parkId)}
+              onMarkerClick={(parkId) => this.props.setActiveMarker(parkId)}
               onPlaceSelect={onPlaceSelect}
               footerActiveTab={footerActiveTab}
             />
@@ -149,7 +127,7 @@ class GridComponent extends React.Component {
               openedParkId={this.state.openedParkId}
               parkTitle={indexedParks[this.state.openedParkId].googleData.title}
               workouts={indexedParks[this.state.openedParkId].googleData.workouts}
-              closeActivity={() => this.setActiveMarker()}
+              closeActivity={() => this.props.setActiveMarker()}
             /> */}
         </div>
 
@@ -168,7 +146,7 @@ class GridComponent extends React.Component {
               indexedParks={indexedParks}
               profile={profile}
               selectedWorkoutId={selectedWorkoutId}
-              handleWorkoutClick={(parkId, workoutId) => this.handleWorkoutClick(parkId, workoutId)}
+              handleWorkoutClick={(parkId, workoutId) => this.props.handleWorkoutClick(parkId, workoutId)}
             />
             {/* </Tab> */}
             {/* <Tab label='Locations'>
@@ -176,7 +154,7 @@ class GridComponent extends React.Component {
                 <Groups
                   placeById={indexedParks}
                   profile={profile}
-                  onFeedItemClick={(parkId) => this.setActiveMarker(parkId)}
+                  onFeedItemClick={(parkId) => this.props.setActiveMarker(parkId)}
                 />
               </Tab>
             </Tabs> */}
@@ -195,6 +173,13 @@ GridComponent.propTypes = {
   onPlaceSelect: PropTypes.func.isRequired,
   footerActiveTab: PropTypes.string.isRequired,
   data: PropTypes.object,
+  handleWorkoutClick: PropTypes.func.isRequired,
+  setActiveMarker: PropTypes.func.isRequired,
+  setParks: PropTypes.func.isRequired,
+  indexedParks: PropTypes.object.isRequired,
+  loadedMapData: PropTypes.bool.isRequired,
+  openedParkId: PropTypes.string.isRequired,
+  selectedWorkoutId: PropTypes.string,
 }
 
 export default GridComponent

@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { graphql } from 'react-apollo'
 
-import { GET_THROUGH_VIEWER, SUBSCRIBE_TO_WORKOUTS } from './gql'
+import { GET_THROUGH_VIEWER } from './gql'
 import GridContainer from './GridContainer'
 
 import './styles.css'
@@ -16,51 +16,16 @@ class Explore extends React.Component {
     const { defaultLat, defaultLng } = this.props.route
     const { query } = this.props.location
 
-    // create and add listener to addActivity event
-    /* this.subscribeToNewWorkouts = this.subscribeToNewWorkouts.bind(this)
-    var eventListener = new EventEmitter()
-    eventListener.on('createWorkout', this.subscribeToNewWorkouts) */
-
     this.centerLatLng = {
       lat: query.lat ? parseFloat(query.lat) : defaultLat,
       lng: query.lng ? parseFloat(query.lng) : defaultLng,
     }
     this.state = {
       workouts: [],
+      indexedParks: {},
+      loadedMapData: false,
+      openedParkId: '',
     }
-  }
-
-  componentDidMount () {
-    this.subscription = this.props.subscribeToMore({
-      document: SUBSCRIBE_TO_WORKOUTS,
-      variables: {
-        subscriptionFilter: {
-          endDateTime: {
-            gte: new Date().toString(),
-          },
-        },
-      },
-      // @todo: it seems like this could be working...
-      // need to compare against this when used without
-      // the resetStore() on the AddActivity component
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) {
-          return prev
-        }
-        return {
-          viewer: {
-            allWorkouts: {
-              edges: [
-                ...prev.viewer.allWorkouts.edges,
-                {
-                  node: subscriptionData.data.subscribeToWorkout.value,
-                },
-              ],
-            },
-          },
-        }
-      },
-    })
   }
 
   componentWillReceiveProps (nextProps) {
@@ -92,11 +57,48 @@ class Explore extends React.Component {
               workoutGroups={workoutGroups}
               workouts={this.state.workouts}
               footerActiveTab={footerActiveTab}
+              handleWorkoutClick={this.handleWorkoutClick.bind(this)}
+              setActiveMarker={this.setActiveMarker.bind(this)}
+              setParks={this.setParks.bind(this)}
+              indexedParks={this.state.indexedParks}
+              loadedMapData={this.state.loadedMapData}
+              openedParkId={this.state.openedParkId}
             />
           </div>
         }
       </div>
     )
+  }
+
+  handleWorkoutClick (parkId, workoutId) {
+    if (workoutId === this.state.selectedWorkoutId) {
+      workoutId = ''
+      parkId = ''
+    }
+
+    this.setState({
+      openedParkId: parkId,
+      selectedWorkoutId: workoutId,
+    })
+  }
+
+  setActiveMarker (parkId = '') {
+    if (parkId === this.state.openedParkId) {
+      parkId = ''
+    }
+
+    this.setState({
+      openedParkId: parkId,
+    })
+
+    this.props.onTabChange('list')
+  }
+
+  setParks (indexedParks) {
+    this.setState({
+      indexedParks,
+      loadedMapData: true,
+    })
   }
 }
 
@@ -110,6 +112,7 @@ Explore.propTypes = {
   subscribeToMore: PropTypes.func,
   loading: PropTypes.bool,
   data: PropTypes.object,
+  onTabChange: PropTypes.func.isRequired,
 }
 
 // for recurring workouts, create microservice that creates a

@@ -8,7 +8,7 @@ class Footer extends React.Component {
     return (
       <div id='footer' className='__app__footer'>
         {['/', '/new-york', '/explore'].includes(this.props.pathname) &&
-        <MobileBottomNav onTabChange={this.props.onTabChange} />}
+        <MobileBottomNav footerActiveTab={this.props.footerActiveTab} onTabChange={this.props.onTabChange} />}
       </div>
     )
   }
@@ -17,6 +17,7 @@ class Footer extends React.Component {
 Footer.propTypes = {
   pathname: PropTypes.string.isRequired,
   onTabChange: PropTypes.func.isRequired,
+  footerActiveTab: PropTypes.string.isRequired,
 }
 
 export default Footer

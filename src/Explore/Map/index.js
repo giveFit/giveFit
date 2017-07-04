@@ -43,7 +43,7 @@ class Map extends React.Component {
   }
 
   componentDidMount () {
-    window.onresize = () => this.handleWindowResize()
+    // window.onresize = () => Reflect.apply(this.handleWindowResize, this, [])
   }
 
   handleWindowResize () {
@@ -56,12 +56,13 @@ class Map extends React.Component {
       indexedParks,
       openedParkId,
       onMarkerClick,
-      footerActiveTab,
+      // footerActiveTab,
     } = this.props
 
-    if (footerActiveTab === 'map') {
-      this.handleWindowResize()
-    }
+    // @todo: why isn't this needed
+    // if (footerActiveTab === 'map') {
+      // this.handleWindowResize().bind(this)
+    // }
 
     return (
       <GoogleMapLoader
@@ -69,7 +70,9 @@ class Map extends React.Component {
         googleMapElement={
           <GoogleMap
             style={{ height: '100%', width: '100%' }}
-            ref={(map) => { this._googleMapComponent = map }}
+            ref={(map) => {
+              this._googleMapComponent = map
+            }}
             defaultOptions={{ styles: mapStyles }}
             defaultZoom={13}
             defaultCenter={mapCenter}
