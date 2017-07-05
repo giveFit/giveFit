@@ -64,6 +64,11 @@ class Explore extends React.Component {
   }
 
   componentWillReceiveProps (nextProps) {
+    // @todo: there should be a way where we can refresh the scpahold user token
+    if (nextProps.error) {
+      this.props.auth.logout()
+      return
+    }
     if (!nextProps.loading) {
       this.setState({
         workouts: nextProps.viewer.allWorkouts.edges,
@@ -110,6 +115,7 @@ Explore.propTypes = {
   subscribeToMore: PropTypes.func,
   loading: PropTypes.bool,
   data: PropTypes.object,
+  error: PropTypes.bool,
 }
 
 // for recurring workouts, create microservice that creates a
