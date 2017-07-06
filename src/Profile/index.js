@@ -196,7 +196,7 @@ class Profile extends React.Component {
             direct them to sign up...
             @todo: improve onboarding flow of new paid users */}
             <AddClassesWithData />
-            {/* @todo: this section is working on permissions for who can and 
+            {/* @todo: this section is working on permissions for who can and
             cannot add a workout */}
             {/* { this.props.data.getUser.PaidUserConnect
               ? <AddClassesWithData />

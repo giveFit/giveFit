@@ -64,7 +64,6 @@ class Explore extends React.Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    console.log('nextProps', nextProps)
     // @todo: there should be a way where we can refresh the scpahold user token
     if (!nextProps.loading && !nextProps.viewer) {
       this.props.auth.login()
