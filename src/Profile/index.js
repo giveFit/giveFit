@@ -195,12 +195,15 @@ class Profile extends React.Component {
             {/* looking at whether the user has a "PaidUser" connection, if not
             direct them to sign up...
             @todo: improve onboarding flow of new paid users */}
-            { this.props.data.getUser.PaidUserConnect
+            <AddClassesWithData />
+            {/* @todo: this section is working on permissions for who can and 
+            cannot add a workout */}
+            {/* { this.props.data.getUser.PaidUserConnect
               ? <AddClassesWithData />
               : <div>
               Please email jake@givefit.net to access this feature
               </div>
-            }
+            } */}
           </Tab>
         </Tabs>
       </div>
