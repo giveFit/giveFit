@@ -75,11 +75,13 @@ class LoggedInToolbar extends React.Component {
                 primaryText="Profile"
                 onTouchTap={this.handleClose.bind(this)}
                 onClick={() => this.context.router.push('/profile')}
+                style={{ color: 'white' }}
               />
               {process.env.__NODE_ENV__ === 'development' &&
               <MenuItem
                 onTouchTap={this.handleClose.bind(this)}
                 primaryText='API'
+                style={{ color: 'white' }}
               >
                 <Link to='https://us-west-2.api.scaphold.io/graphql/newGiveFitAlias' target='_blank' />
               </MenuItem>
@@ -88,6 +90,7 @@ class LoggedInToolbar extends React.Component {
                 onTouchTap={this.handleClose.bind(this)}
                 onClick={() => this.logout()}
                 primaryText='Logout'
+                style={{ color: 'white' }}
               />
             </IconMenu>
           </ToolbarGroup>
@@ -97,9 +100,14 @@ class LoggedInToolbar extends React.Component {
               className='onlyLargeScreens'
               containerElement={<Link to='https://us-west-2.api.scaphold.io/graphql/newGiveFitAlias' target='_blank' />}
               label='API'
+              style={{ color: 'white' }}
             />
             }
-            <FlatButton label='City Leaderboard' onClick={() => this.context.router.push('/city-leaderboard')} />
+            <FlatButton
+              label='City Leaderboard'
+              onClick={() => this.context.router.push('/city-leaderboard')}
+              style={{ color: 'white' }}
+            />
             <Avatar
               className='avatar'
               src={profile.picture}
@@ -116,9 +124,11 @@ class LoggedInToolbar extends React.Component {
                 primaryText="Profile"
                 onTouchTap={this.handleClose.bind(this)}
                 onClick={() => this.context.router.push('/profile')}
+                style={{ color: 'white' }}
               />
               <MenuItem
                 primaryText="Logout"
+                style={{ color: 'white' }}
                 onClick={this.logout.bind(this)} />
             </IconMenu>
           </ToolbarGroup>

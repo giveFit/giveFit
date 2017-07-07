@@ -1,3 +1,7 @@
+.__app__header > div > div {
+  background-color: rgba(206,31,60,.3)!important;
+}
+
 .__app__grid__container {
   width: 100%;
   height: 100%;

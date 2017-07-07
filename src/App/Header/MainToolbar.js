@@ -67,6 +67,7 @@ class MainToolbar extends React.Component {
                 onTouchTap={this.handleClose.bind(this)}
                 onClick={() => this.startLogin()}
                 primaryText='Log in'
+                style={{ backgroundColor: '#336', color: 'white' }}
                 leftIcon={<PersonAdd />} />
             </IconMenu>
           </ToolbarGroup>
@@ -76,14 +77,21 @@ class MainToolbar extends React.Component {
                 className='onlyLargeScreens'
                 containerElement={<Link to='https://us-west-2.api.scaphold.io/graphql/newGiveFitAlias' target='_blank' />}
                 label='API'
+                style={{ color: 'white' }}
               />
             }
-            <FlatButton label='City Leaderboard' onClick={() => this.context.router.push('/city-leaderboard')} />
+            <FlatButton
+              label='City Leaderboard'
+              onClick={() => this.context.router.push('/city-leaderboard')}
+              style={{ color: 'white' }}
+            />
             <ToolbarSeparator />
             <RaisedButton
               label='Login'
               primary={true}
+              buttonStyle={{ backgroundColor: '#336' }}
               onClick={() => this.startLogin()}
+              labelColor="white"
             />
           </ToolbarGroup>
         </Toolbar>
