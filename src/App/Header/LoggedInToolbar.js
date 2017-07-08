@@ -6,7 +6,7 @@ import IconButton from 'material-ui/IconButton'
 import NavigationExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-more'
 import Hamburger from 'material-ui/svg-icons/navigation/menu'
 import { Link, hashHistory } from 'react-router'
-import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar'
+import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar'
 import { MenuItem, FlatButton, Avatar } from 'material-ui'
 
 import './LoggedInToolbar.css'
@@ -51,10 +51,11 @@ class LoggedInToolbar extends React.Component {
       <div>
         <Toolbar>
           <ToolbarGroup>
-            <ToolbarTitle
+            <img
               className='title'
-              text='GiveFit'
+              src="/assets/givefitLogo.png"
               onClick={() => this.context.router.push('/')}
+              width="50"
             />
           </ToolbarGroup>
           <ToolbarGroup >
@@ -75,13 +76,11 @@ class LoggedInToolbar extends React.Component {
                 primaryText="Profile"
                 onTouchTap={this.handleClose.bind(this)}
                 onClick={() => this.context.router.push('/profile')}
-                style={{ color: 'white' }}
               />
               {process.env.__NODE_ENV__ === 'development' &&
               <MenuItem
                 onTouchTap={this.handleClose.bind(this)}
                 primaryText='API'
-                style={{ color: 'white' }}
               >
                 <Link to='https://us-west-2.api.scaphold.io/graphql/newGiveFitAlias' target='_blank' />
               </MenuItem>
@@ -90,7 +89,6 @@ class LoggedInToolbar extends React.Component {
                 onTouchTap={this.handleClose.bind(this)}
                 onClick={() => this.logout()}
                 primaryText='Logout'
-                style={{ color: 'white' }}
               />
             </IconMenu>
           </ToolbarGroup>
@@ -124,11 +122,9 @@ class LoggedInToolbar extends React.Component {
                 primaryText="Profile"
                 onTouchTap={this.handleClose.bind(this)}
                 onClick={() => this.context.router.push('/profile')}
-                style={{ color: 'white' }}
               />
               <MenuItem
                 primaryText="Logout"
-                style={{ color: 'white' }}
                 onClick={this.logout.bind(this)} />
             </IconMenu>
           </ToolbarGroup>

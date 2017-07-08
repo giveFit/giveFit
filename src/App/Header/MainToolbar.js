@@ -6,7 +6,6 @@ import IconButton from 'material-ui/IconButton'
 import Hamburger from 'material-ui/svg-icons/navigation/menu'
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar'
 import { MenuItem, RaisedButton, FlatButton } from 'material-ui'
-import PersonAdd from 'material-ui/svg-icons/social/person-add'
 
 import { Link } from 'react-router'
 
@@ -46,6 +45,13 @@ class MainToolbar extends React.Component {
             />
           </ToolbarGroup>
           <ToolbarGroup>
+            <RaisedButton
+              label='Login'
+              primary={true}
+              buttonStyle={{ backgroundColor: '#336' }}
+              onClick={() => this.startLogin()}
+              labelColor="white"
+            />
             <IconMenu
               className='iconMenu'
               iconButtonElement={
@@ -63,12 +69,6 @@ class MainToolbar extends React.Component {
                 </MenuItem>
               }
               <FlatButton label='City Leaderboard' onClick={() => this.context.router.push('/city-leaderboard')} />
-              <MenuItem
-                onTouchTap={this.handleClose.bind(this)}
-                onClick={() => this.startLogin()}
-                primaryText='Log in'
-                style={{ backgroundColor: '#336', color: 'white' }}
-                leftIcon={<PersonAdd />} />
             </IconMenu>
           </ToolbarGroup>
           <ToolbarGroup className='onlyLargeScreens'>
