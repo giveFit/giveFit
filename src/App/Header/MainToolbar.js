@@ -46,6 +46,7 @@ class MainToolbar extends React.Component {
           </ToolbarGroup>
           <ToolbarGroup>
             <RaisedButton
+              className='login-button'
               label='Login'
               primary={true}
               buttonStyle={{ backgroundColor: '#336' }}
