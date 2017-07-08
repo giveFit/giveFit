@@ -52,6 +52,7 @@ const routes = {
       defaultLng: -77.0369,
     },
     { path: 'profile', component: Profile },
+    { path: 'profile/:id', component: Profile },
     { path: 'city-leaderboard', component: Data },
     {
       path: 'add-workout-baltimore',

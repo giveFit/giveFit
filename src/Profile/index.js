@@ -31,6 +31,7 @@ class Profile extends React.Component {
       events: [],
       eventDialogOpen: false,
       eventDialogInfo: {},
+      error: null,
     }
   }
 
@@ -47,6 +48,12 @@ class Profile extends React.Component {
     }
 
     if (this.props.data.loading !== data.loading) {
+      if (!this.props.data.getUser) {
+        this.setState({
+          error: true,
+        })
+      }
+
       const userWorkouts = data.getUser.Workout.edges
       const userWorkoutRSVPs = data.getUser.WorkoutRSVP.edges
 
@@ -122,7 +129,15 @@ class Profile extends React.Component {
   }
 
   render () {
-    const { user, editMode, events, eventDialogInfo, eventDialogOpen } = this.state
+    const { user, editMode, events, eventDialogInfo, eventDialogOpen, error } = this.state
+
+    if (error) {
+      return (
+        <div>
+          <div>User does not exist...</div>
+        </div>
+      )
+    }
 
     if (!user) {
       return (
@@ -196,7 +211,7 @@ const ProfileWithData = compose(
   graphql(GET_USER_WORKOUTS, {
     options: (props) => ({
       variables: {
-        id: JSON.parse(window.localStorage.getItem('scapholdUserId')),
+        id: props.params.id || JSON.parse(window.localStorage.getItem('scapholdUserId')),
         first: 10,
         where: {
           endDateTime: {
