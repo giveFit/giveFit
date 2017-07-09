@@ -72,18 +72,21 @@ class LoggedInToolbar extends React.Component {
               }
             >
               <MenuItem
+                primaryText="Workout Classes"
+                onTouchTap={this.handleClose.bind(this)}
+                onClick={() => this.context.router.push('/')}
+              />
+              <MenuItem
                 primaryText="Profile"
                 onTouchTap={this.handleClose.bind(this)}
                 onClick={() => this.context.router.push('/profile')}
               />
-              {process.env.__NODE_ENV__ === 'development' &&
               <MenuItem
                 onTouchTap={this.handleClose.bind(this)}
                 primaryText='API'
               >
-                <Link to='https://us-west-2.api.scaphold.io/graphql/newGiveFitAlias' target='_blank' />
+                <Link to='https://graphql-docs.com/docs/User/?graphqlUrl=https://us-west-2.api.scaphold.io/graphql/newGiveFitAlias' target='_blank' />
               </MenuItem>
-              }
               <MenuItem
                 onTouchTap={this.handleClose.bind(this)}
                 onClick={() => this.logout()}
@@ -92,13 +95,12 @@ class LoggedInToolbar extends React.Component {
             </IconMenu>
           </ToolbarGroup>
           <ToolbarGroup className='onlyLargeScreens'>
-            {process.env.__NODE_ENV__ === 'development' &&
+            <FlatButton label='Workout Classes' onClick={() => this.context.router.push('/')} />
             <FlatButton
               className='onlyLargeScreens'
-              containerElement={<Link to='https://us-west-2.api.scaphold.io/graphql/newGiveFitAlias' target='_blank' />}
+              containerElement={<Link to='https://graphql-docs.com/docs/User/?graphqlUrl=https://us-west-2.api.scaphold.io/graphql/newGiveFitAlias' target='_blank' />}
               label='API'
             />
-            }
             <FlatButton label='City Leaderboard' onClick={() => this.context.router.push('/city-leaderboard')} />
             <Avatar
               className='avatar'

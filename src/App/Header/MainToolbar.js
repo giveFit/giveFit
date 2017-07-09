@@ -54,14 +54,11 @@ class MainToolbar extends React.Component {
                 </IconButton>
               }
             >
-              {process.env.__NODE_ENV__ === 'development' &&
-                <MenuItem
-                  onTouchTap={this.handleClose.bind(this)}
-                  primaryText='API'
-                >
-                  <Link to='https://us-west-2.api.scaphold.io/graphql/newGiveFitAlias' target='_blank' />
-                </MenuItem>
-              }
+              <MenuItem
+                primaryText="Workout Classes"
+                onTouchTap={this.handleClose.bind(this)}
+                onClick={() => this.context.router.push('/')}
+              />
               <FlatButton label='City Leaderboard' onClick={() => this.context.router.push('/city-leaderboard')} />
               <MenuItem
                 onTouchTap={this.handleClose.bind(this)}
@@ -71,13 +68,12 @@ class MainToolbar extends React.Component {
             </IconMenu>
           </ToolbarGroup>
           <ToolbarGroup className='onlyLargeScreens'>
-            {process.env.__NODE_ENV__ === 'development' &&
-              <FlatButton
-                className='onlyLargeScreens'
-                containerElement={<Link to='https://us-west-2.api.scaphold.io/graphql/newGiveFitAlias' target='_blank' />}
-                label='API'
-              />
-            }
+            <FlatButton label='Workout Classes' onClick={() => this.context.router.push('/')} />
+            <FlatButton
+              className='onlyLargeScreens'
+              containerElement={<Link to='https://graphql-docs.com/docs/User/?graphqlUrl=https://us-west-2.api.scaphold.io/graphql/newGiveFitAlias' target='_blank' />}
+              label='API'
+            />
             <FlatButton label='City Leaderboard' onClick={() => this.context.router.push('/city-leaderboard')} />
             <ToolbarSeparator />
             <RaisedButton

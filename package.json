@@ -16,7 +16,7 @@
     "build": "cross-env NODE_ENV=production webpack",
     "lint": "eslint ./ --cache --quiet --ext .js",
     "lint-fix": "eslint ./ --cache --quiet --ext .js --fix",
-    "deploy": "npm run build && surge --domain givefit.surge.sh --project ./dist/"
+    "deploy": "npm run build && surge --domain givefitapp.surge.sh --project ./dist/"
   },
   "author": "",
   "license": "ISC",
