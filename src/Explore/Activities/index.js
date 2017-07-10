@@ -85,6 +85,7 @@ class Activities extends React.Component {
         if (!this.props.indexedParks[workout.parkId]) {
           return null
         }
+
         return (
           <CardText
             key={`workout-${index}`}

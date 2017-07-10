@@ -63,6 +63,7 @@ class Explore extends React.Component {
               indexedParks={this.state.indexedParks}
               loadedMapData={this.state.loadedMapData}
               openedParkId={this.state.openedParkId}
+              selectedWorkoutId={this.state.selectedWorkoutId}
             />
           </div>
         }
