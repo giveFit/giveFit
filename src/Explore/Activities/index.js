@@ -70,12 +70,10 @@ class Activities extends React.Component {
     window.alert('Event removed from your calendar.')
   }
 
-  handleWorkoutClick (workout, index) {
+  handleWorkoutClick (workout) {
     this.props.handleWorkoutClick(workout.parkId, workout.id)
 
-    this.workouts[index].scrollIntoView({
-      block: 'end', behavior: 'smooth',
-    })
+    this.clickedWorkout = workout.id
   }
 
   WorkoutList () {
@@ -100,9 +98,9 @@ class Activities extends React.Component {
           <CardText
             key={`workout-${index}`}
             className={this.props.selectedWorkoutId === workout.id ? '__selected__workout' : ''}
-            onClick={() => this.handleWorkoutClick(workout, index)}
+            onClick={() => this.handleWorkoutClick(workout)}
           >
-            <div className='__workout__header' ref={(c) => { this.workouts[index] = c }}>
+            <div className='__workout__header' ref={(c) => { this.workouts[workout.id] = c }}>
               <Chip
                 onTouchTap={() => this.context.router.push('/profile')}
                 className='__chip'
@@ -162,6 +160,14 @@ class Activities extends React.Component {
           </CardText>
         )
       })
+  }
+
+  componentDidUpdate () {
+    if (this.clickedWorkout) {
+      this.workouts[this.clickedWorkout].scrollIntoView({
+        block: 'end', behavior: 'smooth',
+      })
+    }
   }
 
   render () {

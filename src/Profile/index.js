@@ -48,7 +48,7 @@ class Profile extends React.Component {
     }
 
     if (this.props.data.loading !== data.loading) {
-      if (!this.props.data.getUser) {
+      if (!data.getUser) {
         this.setState({
           error: true,
         })
