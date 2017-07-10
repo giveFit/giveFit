@@ -29,7 +29,7 @@ class Explore extends React.Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (!nextProps.loading) {
+    if (!nextProps.loading && !this.state.workouts.length) {
       this.setState({
         workouts: nextProps.viewer.allWorkouts.edges,
       })
@@ -42,7 +42,7 @@ class Explore extends React.Component {
 
     return (
       <div>
-        { this.props.loading
+        { this.props.loading && !this.state.workouts.length
           ? <div> Loading... </div>
           : <div className='explore_container'>
             <GridContainer
