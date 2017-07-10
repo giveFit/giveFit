@@ -34,6 +34,11 @@ query GetUserWorkouts($id:ID!, $first: Int, $where: WorkoutWhereArgs!, $orderBy:
             description
             startDateTime
             endDateTime
+            Workout {
+              nickname
+              username
+              picture
+            }
           }
         }
       }

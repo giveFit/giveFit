@@ -10,6 +10,7 @@ import { GET_USER_WORKOUTS, UPDATE_USER_QUERY } from './gql'
 
 import ProfileHeader from './components/ProfileHeader'
 import ProfileDetails from './components/ProfileDetails'
+import Event from './components/Event'
 
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import './styles.css'
@@ -64,8 +65,10 @@ class Profile extends React.Component {
 
         events.push({
           parkId: workout.parkId,
+          description: workout.description,
           start: new Date(workout.startDateTime),
           end: new Date(workout.endDateTime),
+          user: workout.Workout,
         })
       }
 
@@ -76,9 +79,11 @@ class Profile extends React.Component {
 
         events.push({
           parkId: workout.parkId,
+          description: workout.description,
           rsvp: true,
           start: new Date(workout.startDateTime),
           end: new Date(workout.endDateTime),
+          user: workout.Workout,
         })
       }
 
@@ -128,6 +133,19 @@ class Profile extends React.Component {
     this.setState({ editMode, userFieldsToUpdate: {} })
   }
 
+  prepareEventsForMobile (events) {
+    return (
+      <div className='events__mobile'>
+        {events.map((event, index) => (
+          <Event
+            key={`event-${index}`}
+            event={event}
+          />
+        ))}
+      </div>
+    )
+  }
+
   render () {
     const { user, editMode, events, eventDialogInfo, eventDialogOpen, error } = this.state
 
@@ -165,9 +183,10 @@ class Profile extends React.Component {
           onUserNicknameChange={(nickname) => this.userFieldsToUpdate('nickname', nickname)}
           onProfilePhotoChange={(url) => this.userFieldsToUpdate('picture', url)}
         />
+        {this.prepareEventsForMobile(events)}
         <BigCalendar
           events={events}
-          defaultView='week'
+          defaultView='agenda'
           eventPropGetter={(event) => {
             return {
               className: event.rsvp ? 'rsvpd' : '',

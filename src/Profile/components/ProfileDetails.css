@@ -2,21 +2,23 @@
   text-align: center;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   padding: 1em;
 }
 
 .profile-details > div:first-child {
-  width: 25%;
+  width: 10em;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .profile-details > div:last-child {
-  width: 25%;
+  width: 12em;
 }
 
 .profile-details > div:nth-child(2) {
-  width: 50%;
+  width: 12em;
 }
 
 .profile-details .description textarea {
@@ -45,4 +47,34 @@
   border: none;
   text-align: center;
   cursor: pointer;
+}
+
+.events__mobile {
+  display: none;
+}
+
+@media all and (max-width: 560px) {
+  .__app__footer {
+    display: flex;
+  }
+
+  .events__mobile {
+    display: block;
+  }
+
+  .rbc-calendar {
+    display: none!important;
+  }
+
+  #user-nickname {
+    text-align: center;
+  }
+
+  .profile-details {
+    flex-wrap: wrap;
+  }
+
+  .profile-details div {
+    width: 100%!important;
+  }
 }
