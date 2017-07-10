@@ -120,7 +120,7 @@ class Activities extends React.Component {
                     <br />
                     <span>{this.props.indexedParks[workout.parkId].title}</span>
                     <br />
-                    {Boolean(RSVPCount) && <span>RSVPed: {RSVPCount}</span>}
+                    {Boolean(RSVPCount) && <span>RSVPs: {RSVPCount}</span>}
                   </div>
                 </div>
               </div>

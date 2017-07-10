@@ -22,6 +22,7 @@ import FieldDescription from './fields/description'
 import FieldEmail from './fields/email'
 import FieldRecurring from './fields/recurring'
 import FieldNoRecurring from './fields/noRecurring'
+import FieldPublic from './fields/Public'
 
 import AuthService from 'utils/AuthService'
 
@@ -274,6 +275,7 @@ class AddClasses extends React.Component {
           onChange={(description) => this.setState({ description })}
           errorText={this.state.errors.description}
         />
+        <FieldPublic />
         <div>
           <FieldRecurring
             onCheck={() => this.setState({ recurring: !this.state.recurring })}
