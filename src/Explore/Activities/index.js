@@ -16,6 +16,8 @@ class Activities extends React.Component {
 
     this.message = ''
 
+    this.workouts = {}
+
     this.state = {
       snack: false,
       autoHideDuration: 2000,
@@ -68,6 +70,14 @@ class Activities extends React.Component {
     window.alert('Event removed from your calendar.')
   }
 
+  handleWorkoutClick (workout, index) {
+    this.props.handleWorkoutClick(workout.parkId, workout.id)
+
+    this.workouts[index].scrollIntoView({
+      block: 'end', behavior: 'smooth',
+    })
+  }
+
   WorkoutList () {
     return this.props.workouts
       .map((workout, index) => {
@@ -90,8 +100,9 @@ class Activities extends React.Component {
           <CardText
             key={`workout-${index}`}
             className={this.props.selectedWorkoutId === workout.id ? '__selected__workout' : ''}
+            onClick={() => this.handleWorkoutClick(workout, index)}
           >
-            <div className='__workout__header'>
+            <div className='__workout__header' ref={(c) => { this.workouts[index] = c }}>
               <Chip
                 onTouchTap={() => this.context.router.push('/profile')}
                 className='__chip'
@@ -110,8 +121,6 @@ class Activities extends React.Component {
             <div className='__workout__image__container'>
               <img
                 width='100%'
-                onClick={() => this.props.handleWorkoutClick(workout.parkId, workout.id)}
-                // height='300'
                 src={workout.pictureURL}
               />
               <div className='__workout__information'>

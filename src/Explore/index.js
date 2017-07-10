@@ -90,6 +90,7 @@ class Explore extends React.Component {
 
     this.setState({
       openedParkId: parkId,
+      selectedWorkoutId: '',
     })
 
     this.props.onTabChange('list')
