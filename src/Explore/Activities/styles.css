@@ -17,6 +17,19 @@
   flex-direction: column;
 }
 
+.__workout__edit {
+  display: flex;
+  flex-grow: 1;
+  padding-left: 1em;
+  justify-content: flex-end;
+}
+
+.__workout__edit i {
+  font-size: 1.5em;
+  cursor: pointer;
+  margin: 0 0.5em;
+}
+
 .__workout__image__container {
   position: relative;
   padding-top: 0.5em;

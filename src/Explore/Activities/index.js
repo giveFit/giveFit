@@ -6,7 +6,7 @@ import { graphql, compose } from 'react-apollo'
 
 import { CardText, Chip, Avatar, Snackbar } from 'material-ui'
 
-import { ADD_RSVP_FOR_WORKOUT, REMOVE_RSVP_FOR_WORKOUT, GET_THROUGH_VIEWER } from './gql.js'
+import { ADD_RSVP_FOR_WORKOUT, REMOVE_RSVP_FOR_WORKOUT, DELETE_WORKOUT, GET_THROUGH_VIEWER } from './gql.js'
 
 import './styles.css'
 
@@ -99,6 +99,30 @@ class Activities extends React.Component {
       })
   }
 
+  editWorkout (workoutId, index) {
+    // call activity container
+  }
+
+  deleteWorkout (workoutId, name, index) {
+    this.props.deleteWorkout({
+      id: workoutId,
+    })
+      .then(() => {
+        this.message = `Deleted Workout ${name}`
+
+        const workouts = this.state.workouts.slice()
+        delete workouts[index]
+
+        this.setState({
+          snack: !this.state.snack,
+          workouts,
+        })
+      })
+      .catch((error) => {
+        console.warn(error)
+      })
+  }
+
   handleTouchTap () {
     window.alert('You clicked the Chip.')
   }
@@ -166,6 +190,18 @@ class Activities extends React.Component {
                 <span> <b>{workout.title}</b> </span>
                 <span>{workout.type}</span>
               </div>
+              {workout.Workout.id === this.state.userId &&
+                <div className='__workout__edit'>
+                  <i
+                    className='fa fa-pencil'
+                    onTouchTap={() => this.editWorkout(workout.id, index)}
+                  />
+                  <i
+                    className='fa fa-trash'
+                    onTouchTap={() => this.deleteWorkout(workout.id, workout.title, index)}
+                  />
+                </div>
+              }
             </div>
             <div className='__workout__image__container'>
               <img
@@ -225,10 +261,11 @@ Activities.propTypes = {
   indexedParks: PropTypes.object.isRequired,
   selectedWorkoutId: PropTypes.string,
   handleWorkoutClick: PropTypes.func.isRequired,
-  addRSVPForWorkout: PropTypes.func.isRequired,
-  removeRSVPForWorkout: PropTypes.func.isRequired,
 
   // graphql props
+  addRSVPForWorkout: PropTypes.func.isRequired,
+  removeRSVPForWorkout: PropTypes.func.isRequired,
+  deleteWorkout: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   viewer: PropTypes.object,
 }
@@ -242,6 +279,11 @@ const ActivitiesWithData = compose(
   graphql(REMOVE_RSVP_FOR_WORKOUT, {
     props: ({ mutate }) => ({
       removeRSVPForWorkout: (input) => mutate({ variables: { input: input } }),
+    }),
+  }),
+  graphql(DELETE_WORKOUT, {
+    props: ({ mutate }) => ({
+      deleteWorkout: (input) => mutate({ variables: { input: input } }),
     }),
   }),
   graphql(GET_THROUGH_VIEWER, {

@@ -19,6 +19,39 @@ export const REMOVE_RSVP_FOR_WORKOUT = gql`
     }
   }
 `
+
+export const DELETE_WORKOUT = gql`
+  mutation deleteWorkout($input: DeleteWorkoutInput!){
+    deleteWorkout (input: $input) {
+      viewer {
+        id
+      }
+    }
+  }
+`
+
+// @todo: this needs to be tested
+export const UPDATE_WORKOUT = gql`
+  mutation updateWorkout($input: UpdateWorkoutInput!){
+    updateWorkout (input: $input) {
+      changedWorkout {
+        id
+        title,
+        type,
+        startDateTime,
+        endDateTime,
+        description,
+        requestTrainer,
+        parkId,
+        pictureURL,
+        userEmail,
+        _geoloc,
+        slug,
+      }
+    }
+  }
+`
+
 export const GET_THROUGH_VIEWER = gql`
 query GetThroughViewer($first: Int, $where:WorkoutWhereArgs, $orderBy:[WorkoutOrderByArgs]) {
     viewer{
@@ -37,6 +70,7 @@ query GetThroughViewer($first: Int, $where:WorkoutWhereArgs, $orderBy:[WorkoutOr
             recurring
             type
             Workout {
+              id
               nickname
               username
               picture
