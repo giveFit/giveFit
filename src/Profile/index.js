@@ -228,21 +228,23 @@ Profile.propTypes = {
 
 const ProfileWithData = compose(
   graphql(GET_USER_WORKOUTS, {
-    options: (props) => ({
-      variables: {
-        id: props.params.id || JSON.parse(window.localStorage.getItem('scapholdUserId')),
-        first: 10,
-        where: {
-          endDateTime: {
-            gte: new Date().toString(),
+    options: (props) => {
+      return {
+        variables: {
+          id: props.params.id || JSON.parse(window.localStorage.getItem('scapholdUserId')),
+          first: 10,
+          where: {
+            endDateTime: {
+              gte: new Date().toString(),
+            },
+          },
+          orderBy: {
+            field: 'startDateTime',
+            direction: 'ASC',
           },
         },
-        orderBy: {
-          field: 'startDateTime',
-          direction: 'ASC',
-        },
-      },
-    }),
+      }
+    },
   }),
   graphql(UPDATE_USER_QUERY, {
     props: ({ mutate }) => ({
