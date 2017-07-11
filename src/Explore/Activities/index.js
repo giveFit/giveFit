@@ -240,9 +240,7 @@ class Activities extends React.Component {
 
   componentDidUpdate () {
     if (this.clickedWorkout) {
-      this.workouts[this.clickedWorkout].scrollIntoView({
-        block: 'end', behavior: 'smooth',
-      })
+      this.workouts[this.clickedWorkout].scrollIntoView(true)
 
       delete this.clickedWorkout
     }
