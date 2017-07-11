@@ -96,7 +96,6 @@ class GridComponent extends React.Component {
   render () {
     const {
       centerLatLng,
-      workouts,
       profile,
       onPlaceSelect,
       footerActiveTab,
@@ -112,7 +111,6 @@ class GridComponent extends React.Component {
           {loadedMapData &&
             <MapContainer
               mapCenter={centerLatLng}
-              workouts={workouts}
               indexedParks={indexedParks}
               openedParkId={openedParkId}
               geocoder={this.geocoder}
@@ -138,12 +136,11 @@ class GridComponent extends React.Component {
             <AddActivity
               indexedParks={indexedParks}
               profile={profile}
-              workouts={workouts}
               data={this.props.data}
             />
             <Activities
-              workouts={indexedParks[openedParkId] ? indexedParks[openedParkId].workouts : workouts}
               indexedParks={indexedParks}
+              openedParkId={openedParkId}
               profile={profile}
               selectedWorkoutId={selectedWorkoutId}
               handleWorkoutClick={(parkId, workoutId) => this.props.handleWorkoutClick(parkId, workoutId)}
@@ -168,7 +165,6 @@ class GridComponent extends React.Component {
 GridComponent.propTypes = {
   centerLatLng: PropTypes.object.isRequired,
   workouts: PropTypes.array.isRequired,
-  workoutGroups: PropTypes.array.isRequired,
   profile: PropTypes.object,
   onPlaceSelect: PropTypes.func.isRequired,
   footerActiveTab: PropTypes.string.isRequired,

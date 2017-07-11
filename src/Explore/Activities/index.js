@@ -6,7 +6,7 @@ import { graphql, compose } from 'react-apollo'
 
 import { CardText, Chip, Avatar, Snackbar } from 'material-ui'
 
-import { ADD_RSVP_FOR_WORKOUT, REMOVE_RSVP_FOR_WORKOUT } from './gql.js'
+import { ADD_RSVP_FOR_WORKOUT, REMOVE_RSVP_FOR_WORKOUT, GET_THROUGH_VIEWER } from './gql.js'
 
 import './styles.css'
 
@@ -19,9 +19,35 @@ class Activities extends React.Component {
     this.workouts = {}
 
     this.state = {
+      workouts: [],
       snack: false,
       autoHideDuration: 2000,
       userId: JSON.parse(window.localStorage.getItem('scapholdUserId')),
+    }
+  }
+
+  componentWillReceiveProps (nextProps) {
+    if (!nextProps.loading) {
+      const allWorkouts = nextProps.viewer.allWorkouts.edges
+      const workouts = []
+
+      for (let i = 0; i < allWorkouts.length; i++) {
+        const workout = allWorkouts[i]
+
+        const isUserRSVPed = workout.node.RSVPsForWorkout.edges.reduce((previous, current) => {
+          if (previous === true) {
+            return true
+          }
+
+          return current.node.id === this.state.userId
+        }, false)
+
+        workouts.push(Object.assign({}, workout.node, { isUserRSVPed }))
+      }
+
+      this.setState({
+        workouts,
+      })
     }
   }
 
@@ -29,7 +55,7 @@ class Activities extends React.Component {
     this.setState({snack: false})
   }
 
-  addRSVPForWorkout (workoutId) {
+  addRSVPForWorkout (workoutId, index) {
     this.props.addRSVPForWorkout({
       workoutId,
       // workoutId is the id of the loggedInUser, allowing us to make a connection in our data graph
@@ -38,14 +64,20 @@ class Activities extends React.Component {
       .then(() => {
         this.message = 'Event added to your calendar'
 
-        this.setState({ snack: !this.state.snack })
+        const workouts = this.state.workouts.slice()
+        workouts[index] = Object.assign({}, workouts[index], { isUserRSVPed: true })
+
+        this.setState({
+          snack: !this.state.snack,
+          workouts,
+        })
       })
       .catch((error) => {
         console.warn(error)
       })
   }
 
-  removeRSVPForWorkout (workoutId) {
+  removeRSVPForWorkout (workoutId, index) {
     this.props.removeRSVPForWorkout({
       workoutId,
       // workoutId is the id of the loggedInUser, allowing us to make a connection in our data graph
@@ -54,7 +86,13 @@ class Activities extends React.Component {
       .then(() => {
         this.message = 'Event removed from your calendar'
 
-        this.setState({ snack: !this.state.snack })
+        const workouts = this.state.workouts.slice()
+        workouts[index] = Object.assign({}, workouts[index], { isUserRSVPed: false })
+
+        this.setState({
+          snack: !this.state.snack,
+          workouts,
+        })
       })
       .catch((error) => {
         console.warn(error)
@@ -76,19 +114,32 @@ class Activities extends React.Component {
     this.clickedWorkout = workout.id
   }
 
+  prepareRSVPButton (workout, index) {
+    if (!this.state.userId) {
+      return
+    }
+
+    if (workout.isUserRSVPed) {
+      return (
+        <i
+          className='fa fa-check-circle __share__icon'
+          onTouchTap={() => this.removeRSVPForWorkout(workout.id, index)}
+        />
+      )
+    }
+
+    return (
+      <i
+        className='fa fa-check-circle-o __share__icon'
+        onTouchTap={() => this.addRSVPForWorkout(workout.id, index)}
+      />
+    )
+  }
+
   WorkoutList () {
-    return this.props.workouts
+    return this.state.workouts
       .map((workout, index) => {
-        workout = workout.node
-
         const RSVPCount = workout.RSVPsForWorkout.edges.length
-        const isUserRSVPed = workout.RSVPsForWorkout.edges.reduce((previous, current) => {
-          if (previous === true) {
-            return true
-          }
-
-          return current.node.id === this.state.userId
-        }, false)
 
         if (!this.props.indexedParks[workout.parkId]) {
           return null
@@ -98,7 +149,7 @@ class Activities extends React.Component {
           <CardText
             key={`workout-${index}`}
             className={this.props.selectedWorkoutId === workout.id ? '__selected__workout' : ''}
-            onClick={() => this.handleWorkoutClick(workout)}
+
           >
             <div className='__workout__header' ref={(c) => { this.workouts[workout.id] = c }}>
               <Chip
@@ -120,6 +171,7 @@ class Activities extends React.Component {
               <img
                 width='100%'
                 src={workout.pictureURL}
+                onClick={() => this.handleWorkoutClick(workout)}
               />
               <div className='__workout__information'>
                 <div>
@@ -129,19 +181,7 @@ class Activities extends React.Component {
                   <br />
                   {Boolean(RSVPCount) && <span>RSVPed: {RSVPCount}</span>}
                 </div>
-                <div>
-                  {
-                    isUserRSVPed
-                      ? <i
-                        className='fa fa-check-circle __share__icon'
-                        onTouchTap={() => this.removeRSVPForWorkout(workout.id)}
-                      />
-                      : <i
-                        className='fa fa-check-circle-o __share__icon'
-                        onTouchTap={() => this.addRSVPForWorkout(workout.id)}
-                      />
-                  }
-                </div>
+                <div>{this.prepareRSVPButton(workout, index)}</div>
                 <div><i className='fa fa-share __share__icon' /></div>
               </div>
             </div>
@@ -167,6 +207,8 @@ class Activities extends React.Component {
       this.workouts[this.clickedWorkout].scrollIntoView({
         block: 'end', behavior: 'smooth',
       })
+
+      delete this.clickedWorkout
     }
   }
 
@@ -182,10 +224,13 @@ class Activities extends React.Component {
 Activities.propTypes = {
   indexedParks: PropTypes.object.isRequired,
   selectedWorkoutId: PropTypes.string,
-  workouts: PropTypes.array.isRequired,
   handleWorkoutClick: PropTypes.func.isRequired,
   addRSVPForWorkout: PropTypes.func.isRequired,
   removeRSVPForWorkout: PropTypes.func.isRequired,
+
+  // graphql props
+  loading: PropTypes.bool.isRequired,
+  viewer: PropTypes.object,
 }
 
 const ActivitiesWithData = compose(
@@ -199,6 +244,38 @@ const ActivitiesWithData = compose(
       removeRSVPForWorkout: (input) => mutate({ variables: { input: input } }),
     }),
   }),
+  graphql(GET_THROUGH_VIEWER, {
+    options: ({ openedParkId }) => {
+      const query = {
+        variables: {
+          first: 100,
+          where: {
+            endDateTime: {
+              gte: new Date().toString(),
+            },
+          },
+          orderBy: {
+            field: 'startDateTime',
+            direction: 'ASC',
+          },
+        },
+      }
+
+      if (openedParkId) {
+        query.variables.where.parkId = {
+          eq: openedParkId,
+        }
+      }
+
+      return query
+    },
+    props: ({ data: { viewer, loading } }) => {
+      return {
+        viewer,
+        loading,
+      }
+    },
+  })
 )(Activities)
 
 export default ActivitiesWithData

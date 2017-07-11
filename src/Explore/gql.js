@@ -1,34 +1,13 @@
 import gql from 'graphql-tag'
 
 export const GET_THROUGH_VIEWER = gql`
-query GetThroughViewer($first: Int, $where:WorkoutWhereArgs, $orderBy:[WorkoutOrderByArgs]) {
+query GetThroughViewer($first: Int, $where:WorkoutWhereArgs) {
     viewer{
-      allWorkouts(first: $first, where:$where, orderBy:$orderBy){
+      allWorkouts(first: $first, where:$where){
         edges {
           node {
             id
             parkId
-            startDateTime
-            title
-            description
-            pictureURL
-            startDateTime
-            endDateTime
-            requestTrainer
-            recurring
-            type
-            Workout {
-              nickname
-              username
-              picture
-            }
-            RSVPsForWorkout{
-              edges {
-                node {
-                  id
-                }
-              }
-            }
           }
         }
       }

@@ -330,7 +330,6 @@ class AddActivity extends React.Component {
 AddActivity.propTypes = {
   indexedParks: PropTypes.object.isRequired,
   profile: PropTypes.object,
-  workouts: PropTypes.array.isRequired,
   data: PropTypes.object,
   createWorkout: PropTypes.func.isRequired,
   client: PropTypes.object,

@@ -38,7 +38,6 @@ class Explore extends React.Component {
 
   render () {
     const { profile, footerActiveTab, data } = this.props
-    let workoutGroups = []
 
     return (
       <div>
@@ -54,7 +53,6 @@ class Explore extends React.Component {
                 return null
               }}
               profile={profile}
-              workoutGroups={workoutGroups}
               workouts={this.state.workouts}
               footerActiveTab={footerActiveTab}
               handleWorkoutClick={this.handleWorkoutClick.bind(this)}
@@ -111,7 +109,6 @@ Explore.propTypes = {
   profile: PropTypes.object,
   footerActiveTab: PropTypes.string.isRequired,
   viewer: PropTypes.object,
-  subscribeToMore: PropTypes.func,
   loading: PropTypes.bool,
   data: PropTypes.object,
   onTabChange: PropTypes.func.isRequired,
@@ -128,14 +125,10 @@ const withData = graphql(GET_THROUGH_VIEWER, {
           gte: new Date().toString(),
         },
       },
-      orderBy: {
-        field: 'startDateTime',
-        direction: 'ASC',
-      },
     },
   }),
-  props: ({ data: { viewer, loading, subscribeToMore } }) => ({
-    viewer, loading, subscribeToMore,
+  props: ({ data: { viewer, loading } }) => ({
+    viewer, loading,
   }),
 })
 
