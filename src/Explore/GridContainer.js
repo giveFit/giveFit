@@ -8,7 +8,6 @@ import foursquare from 'utils/foursquare'
 
 import Activities from './Activities/index'
 import MapContainer from './Map/index'
-import AddActivity from './AddActivity/index'
 
 class GridComponent extends React.Component {
   constructor (props) {
@@ -157,12 +156,6 @@ class GridComponent extends React.Component {
           <div className='__grid__list' >
             {/* <Tabs className='__tabs__container'>
               <Tab label='Activities'> */}
-            <AddActivity
-              indexedParks={indexedParks}
-              profile={profile}
-              workouts={workouts}
-              data={this.props.data}
-            />
             <Activities
               workouts={indexedParks[openedParkId] ? indexedParks[openedParkId].workouts : workouts}
               indexedParks={indexedParks}
