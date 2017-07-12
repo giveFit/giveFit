@@ -65,7 +65,7 @@ class GridComponent extends React.Component {
 
           // need to iterate over workouts, matching them to the place_id, adding
           // them as an array to the indexedParks
-          const filteredWorkouts = workouts.filter((workout) => parkVenue.id === workout.node.parkId)
+          const filteredWorkouts = workouts.filter((workout) => parkVenue.id === workout.parkId)
 
           indexedParks[parkVenue.id] = {
             parkId: parkVenue.id,
@@ -103,6 +103,7 @@ class GridComponent extends React.Component {
       indexedParks,
       openedParkId,
       selectedWorkoutId,
+      workouts,
     } = this.props
 
     return (
@@ -139,6 +140,7 @@ class GridComponent extends React.Component {
               data={this.props.data}
             />
             <Activities
+              workouts={indexedParks[openedParkId] ? indexedParks[openedParkId].workouts : workouts}
               indexedParks={indexedParks}
               openedParkId={openedParkId}
               profile={profile}

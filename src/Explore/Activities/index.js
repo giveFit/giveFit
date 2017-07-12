@@ -6,7 +6,7 @@ import { graphql, compose } from 'react-apollo'
 
 import { CardText, Chip, Avatar, Snackbar } from 'material-ui'
 
-import { ADD_RSVP_FOR_WORKOUT, REMOVE_RSVP_FOR_WORKOUT, DELETE_WORKOUT, GET_THROUGH_VIEWER } from './gql.js'
+import { ADD_RSVP_FOR_WORKOUT, REMOVE_RSVP_FOR_WORKOUT, DELETE_WORKOUT } from './gql.js'
 
 import './styles.css'
 
@@ -16,37 +16,24 @@ class Activities extends React.Component {
 
     this.message = ''
 
-    this.workouts = {}
+    this.refWorkouts = {}
+
+    const userId = JSON.parse(window.localStorage.getItem('scapholdUserId'))
 
     this.state = {
-      workouts: [],
+      workouts: this.props.workouts,
       snack: false,
       autoHideDuration: 2000,
-      userId: JSON.parse(window.localStorage.getItem('scapholdUserId')),
+      userId,
     }
   }
 
   componentWillReceiveProps (nextProps) {
-    if (!nextProps.loading) {
-      const allWorkouts = nextProps.viewer.allWorkouts.edges
-      const workouts = []
+    const workoutsLength = nextProps.workouts.length
 
-      for (let i = 0; i < allWorkouts.length; i++) {
-        const workout = allWorkouts[i]
-
-        const isUserRSVPed = workout.node.RSVPsForWorkout.edges.reduce((previous, current) => {
-          if (previous === true) {
-            return true
-          }
-
-          return current.node.id === this.state.userId
-        }, false)
-
-        workouts.push(Object.assign({}, workout.node, { isUserRSVPed }))
-      }
-
+    if (!workoutsLength || workoutsLength !== this.props.workouts.length) {
       this.setState({
-        workouts,
+        workouts: nextProps.workouts,
       })
     }
   }
@@ -175,7 +162,7 @@ class Activities extends React.Component {
             className={this.props.selectedWorkoutId === workout.id ? '__selected__workout' : ''}
 
           >
-            <div className='__workout__header' ref={(c) => { this.workouts[workout.id] = c }}>
+            <div className='__workout__header' ref={(c) => { this.refWorkouts[workout.id] = c }}>
               <Chip
                 onTouchTap={() => this.context.router.push('/profile')}
                 className='__chip'
@@ -240,7 +227,9 @@ class Activities extends React.Component {
 
   componentDidUpdate () {
     if (this.clickedWorkout) {
-      this.workouts[this.clickedWorkout].scrollIntoView(true)
+      this.refWorkouts[this.clickedWorkout].scrollIntoView({
+        block: 'end', behavior: 'smooth',
+      })
 
       delete this.clickedWorkout
     }
@@ -256,6 +245,7 @@ class Activities extends React.Component {
 }
 
 Activities.propTypes = {
+  workouts: PropTypes.array.isRequired,
   indexedParks: PropTypes.object.isRequired,
   selectedWorkoutId: PropTypes.string,
   handleWorkoutClick: PropTypes.func.isRequired,
@@ -264,8 +254,6 @@ Activities.propTypes = {
   addRSVPForWorkout: PropTypes.func.isRequired,
   removeRSVPForWorkout: PropTypes.func.isRequired,
   deleteWorkout: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired,
-  viewer: PropTypes.object,
 }
 
 const ActivitiesWithData = compose(
@@ -284,38 +272,6 @@ const ActivitiesWithData = compose(
       deleteWorkout: (input) => mutate({ variables: { input: input } }),
     }),
   }),
-  graphql(GET_THROUGH_VIEWER, {
-    options: ({ openedParkId }) => {
-      const query = {
-        variables: {
-          first: 100,
-          where: {
-            endDateTime: {
-              gte: new Date().toString(),
-            },
-          },
-          orderBy: {
-            field: 'startDateTime',
-            direction: 'ASC',
-          },
-        },
-      }
-
-      if (openedParkId) {
-        query.variables.where.parkId = {
-          eq: openedParkId,
-        }
-      }
-
-      return query
-    },
-    props: ({ data: { viewer, loading } }) => {
-      return {
-        viewer,
-        loading,
-      }
-    },
-  })
 )(Activities)
 
 export default ActivitiesWithData

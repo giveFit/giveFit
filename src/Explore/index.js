@@ -30,8 +30,25 @@ class Explore extends React.Component {
 
   componentWillReceiveProps (nextProps) {
     if (!nextProps.loading && !this.state.workouts.length) {
+      const allWorkouts = nextProps.viewer.allWorkouts.edges
+      const workouts = []
+
+      for (let i = 0; i < allWorkouts.length; i++) {
+        const workout = allWorkouts[i]
+
+        const isUserRSVPed = workout.node.RSVPsForWorkout.edges.reduce((previous, current) => {
+          if (previous === true) {
+            return true
+          }
+
+          return current.node.id === this.props.userId
+        }, false)
+
+        workouts.push(Object.assign({}, workout.node, { isUserRSVPed }))
+      }
+
       this.setState({
-        workouts: nextProps.viewer.allWorkouts.edges,
+        workouts,
       })
     }
   }
@@ -112,6 +129,7 @@ Explore.propTypes = {
   loading: PropTypes.bool,
   data: PropTypes.object,
   onTabChange: PropTypes.func.isRequired,
+  userId: PropTypes.string,
 }
 
 // for recurring workouts, create microservice that creates a
