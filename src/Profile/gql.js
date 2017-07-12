@@ -18,6 +18,7 @@ query GetUserWorkouts($id:ID!, $first: Int, $where: WorkoutWhereArgs!, $orderBy:
             startDateTime
             endDateTime
             Workout {
+              id
               nickname
               username
               picture
@@ -35,6 +36,7 @@ query GetUserWorkouts($id:ID!, $first: Int, $where: WorkoutWhereArgs!, $orderBy:
             startDateTime
             endDateTime
             Workout {
+              id
               nickname
               username
               picture
