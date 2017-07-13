@@ -42,7 +42,6 @@ class ProfileDetails extends React.Component {
           underlineShow={editMode}
           fullWidth
           multiLine
-
         />
       </div>
     )

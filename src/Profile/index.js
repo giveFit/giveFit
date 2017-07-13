@@ -118,6 +118,7 @@ class Profile extends React.Component {
     })
       .then(() => {
         this.setState({
+          user: { ...this.state.user, ...this.state.userFieldsToUpdate },
           editMode: false,
         })
       })
