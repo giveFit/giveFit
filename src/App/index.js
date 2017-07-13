@@ -55,8 +55,6 @@ class App extends React.Component {
 
         this.props.updateUser({
           id: scapholdUserId,
-          picture: auth0Profile.picture,
-          nickname: auth0Profile.nickname,
         })
       })
       .catch(err => {
