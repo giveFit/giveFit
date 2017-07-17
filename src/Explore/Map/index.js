@@ -61,7 +61,7 @@ class Map extends React.Component {
 
     // @todo: why isn't this needed
     // if (footerActiveTab === 'map') {
-      // this.handleWindowResize().bind(this)
+    // this.handleWindowResize().bind(this)
     // }
 
     return (
