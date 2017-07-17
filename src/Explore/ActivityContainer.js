@@ -29,18 +29,19 @@ class Activity extends React.Component {
     const startIndex = currentPage ? currentPage * 5 : 0
     const endIndex = startIndex + resultsPerPage
 
-    return this.props.workouts
+    return (
+      this.props.workouts
       .slice(startIndex, endIndex)
-      // @todo: sort this by date
+    // @todo: sort this by date
       .map((workout, index) => {
         workout = workout.node
 
         return (
           <CardText key={`workout-${index}`}>
-            <div className='workout-header'>
+            <div className="workout-header">
               <Chip
                 onTouchTap={() => this.context.router.push('/profile')}
-                className='chip'
+                className="chip"
               >
                 <Avatar
                   src={workout.Workout.picture}
@@ -48,36 +49,43 @@ class Activity extends React.Component {
                 />
                 <span>{workout.Workout.nickname}</span>
               </Chip>
-              <div className='workout-title'>
+              <div className="workout-title">
                 {workout.title || 'N/A'}
-                <i className='fa fa-pencil edit-icon' />
+                <i className="fa fa-pencil edit-icon" />
               </div>
             </div>
-            <div className='workout-date'>
-              {workout.date ? moment(workout.date).format('ddd MMM Do YYYY') : 'N/A'} {workout.time ? moment(workout.time).format('LT') : 'N/A'}
+            <div className="workout-date">
+              {workout.date
+                ? moment(workout.date).format('ddd MMM Do YYYY')
+                : 'N/A'}
+              {' '}
+              {workout.time ? moment(workout.time).format('LT') : 'N/A'}
             </div>
-            <div className='workout-description'>
+            <div className="workout-description">
               {workout.description}
             </div>
-            <div className='button-container'>
+            <div className="button-container">
               <RaisedButton
                 backgroundColor={'#1F01B9'}
                 labelColor={'white'}
-                label='RSVP'
-                className='rsvp-button'
-                onTouchTap={() => console.warn('RSVP\'ing to this Place')}
+                label="RSVP"
+                className="rsvp-button"
+                onTouchTap={() => console.warn("RSVP'ing to this Place")}
               />
               <div
-                className='share-button'
+                className="share-button"
                 onClick={() => console.warn('Sharing to this Place')}
               >
-                <span>Share</span>
-                <i className='fa fa-share share-icon' />
+                <span>
+                    Share
+                </span>
+                <i className="fa fa-share share-icon" />
               </div>
             </div>
           </CardText>
         )
       })
+    )
   }
 
   setPage (page) {
@@ -91,32 +99,32 @@ class Activity extends React.Component {
   previousPage () {
     const { currentPage } = this.state
 
-    this.setState({ currentPage: (currentPage - 1 < 0) ? 0 : currentPage - 1 })
+    this.setState({ currentPage: currentPage - 1 < 0 ? 0 : currentPage - 1 })
   }
 
   render () {
     // Round Result up because maxPage is number of pages to display all the
     // results
-    const maxPage = Math.ceil(this.props.workouts.length / this.RESULTS_PER_PAGE)
+    const maxPage = Math.ceil(
+      this.props.workouts.length / this.RESULTS_PER_PAGE
+    )
 
     return (
-      <div className='container'>
-        <div className='header'>
+      <div className="container">
+        <div className="header">
           <i
-            className='fa fa-times'
+            className="fa fa-times"
             style={{ color: 'white', cursor: 'pointer' }}
             onClick={() => this.props.closeActivity()}
           />
           <span style={{ color: '#000032' }}>{this.props.parkTitle}</span>
-          <WorkoutCreator
-            indexedPlaces={this.props.indexedPlaces}
-          />
+          <WorkoutCreator indexedPlaces={this.props.indexedPlaces} />
         </div>
-        <div className='body'>
+        <div className="body">
           <Pagination
             maxPage={maxPage}
             currentPage={this.state.currentPage}
-            setPage={(page) => this.setPage(page)}
+            setPage={page => this.setPage(page)}
             next={() => this.nextPage()}
             previous={() => this.previousPage()}
           />

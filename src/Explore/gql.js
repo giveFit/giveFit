@@ -57,6 +57,7 @@ query GetBySlug($where:WorkoutWhereArgs) {
             type
             slug
             Workout {
+              id
               nickname
               username
               picture
