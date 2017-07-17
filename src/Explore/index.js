@@ -15,6 +15,10 @@ class Explore extends React.Component {
 
     const { defaultLat, defaultLng } = this.props.route
     const { query } = this.props.location
+    // create and add listener to addActivity event
+    /* this.subscribeToNewWorkouts = this.subscribeToNewWorkouts.bind(this)
+    var eventListener = new EventEmitter()
+    eventListener.on('createWorkout', this.subscribeToNewWorkouts) */
 
     this.centerLatLng = {
       lat: query.lat ? parseFloat(query.lat) : defaultLat,
@@ -36,13 +40,16 @@ class Explore extends React.Component {
       for (let i = 0; i < allWorkouts.length; i++) {
         const workout = allWorkouts[i]
 
-        const isUserRSVPed = workout.node.RSVPsForWorkout.edges.reduce((previous, current) => {
-          if (previous === true) {
-            return true
-          }
+        const isUserRSVPed = workout.node.RSVPsForWorkout.edges.reduce(
+          (previous, current) => {
+            if (previous === true) {
+              return true
+            }
 
-          return current.node.id === this.props.userId
-        }, false)
+            return current.node.id === this.props.userId
+          },
+          false
+        )
 
         workouts.push(Object.assign({}, workout.node, { isUserRSVPed }))
       }
@@ -54,16 +61,17 @@ class Explore extends React.Component {
   }
 
   render () {
-    const { profile, footerActiveTab, data } = this.props
+    const { profile, footerActiveTab, data, location } = this.props
+    const { workoutId, parkId } = location.query
 
     return (
       <div>
-        { this.props.loading && !this.state.workouts.length
+        {this.props.loading && !this.state.workouts.length
           ? <div> Loading... </div>
-          : <div className='explore_container'>
+          : <div className="explore_container">
             <GridContainer
               centerLatLng={this.centerLatLng}
-              onPlaceSelect={(place) => {
+              onPlaceSelect={place => {
                 data.refetch({
                   latLng: place.address,
                 })
@@ -71,6 +79,8 @@ class Explore extends React.Component {
               }}
               profile={profile}
               workouts={this.state.workouts}
+              workoutQueryParam={workoutId}
+              parkQueryParam={parkId}
               footerActiveTab={footerActiveTab}
               handleWorkoutClick={this.handleWorkoutClick.bind(this)}
               setActiveMarker={this.setActiveMarker.bind(this)}
@@ -80,8 +90,7 @@ class Explore extends React.Component {
               openedParkId={this.state.openedParkId}
               selectedWorkoutId={this.state.selectedWorkoutId}
             />
-          </div>
-        }
+          </div>}
       </div>
     )
   }
@@ -142,11 +151,16 @@ const withData = graphql(GET_THROUGH_VIEWER, {
         endDateTime: {
           gte: new Date().toString(),
         },
+        slug: {
+          isNull: false,
+        },
       },
     },
   }),
-  props: ({ data: { viewer, loading } }) => ({
-    viewer, loading,
+  props: ({ data: { viewer, loading, subscribeToMore } }) => ({
+    viewer,
+    loading,
+    subscribeToMore,
   }),
 })
 

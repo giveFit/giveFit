@@ -21,7 +21,9 @@ class Workout extends React.Component {
           <div className="workout-header">
             <Chip
               onTouchTap={() =>
-                this.context.router.push(`/?workoutId=${workout.id}`)}
+                this.context.router.push(
+                  `/?workoutId=${workout.id}&parkId=${workout.parkId}`
+                )}
               className="chip"
             >
               Back to Workout list
