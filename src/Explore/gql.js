@@ -17,6 +17,7 @@ query GetThroughViewer($first: Int, $where:WorkoutWhereArgs, $orderBy:[WorkoutOr
             requestTrainer
             recurring
             type
+            slug
             Workout {
               nickname
               username

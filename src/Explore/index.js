@@ -15,7 +15,6 @@ class Explore extends React.Component {
 
     const { defaultLat, defaultLng } = this.props.route
     const { query } = this.props.location
-
     // create and add listener to addActivity event
     /* this.subscribeToNewWorkouts = this.subscribeToNewWorkouts.bind(this)
     var eventListener = new EventEmitter()
@@ -72,17 +71,18 @@ class Explore extends React.Component {
   }
 
   render () {
-    const { profile, footerActiveTab, data } = this.props
+    const { profile, footerActiveTab, data, location } = this.props
     let workoutGroups = []
+    const { workoutId, parkId } = location.query
 
     return (
       <div>
-        { this.props.loading
+        {this.props.loading
           ? <div> Loading... </div>
-          : <div className='explore_container'>
+          : <div className="explore_container">
             <GridContainer
               centerLatLng={this.centerLatLng}
-              onPlaceSelect={(place) => {
+              onPlaceSelect={place => {
                 data.refetch({
                   latLng: place.address,
                 })
@@ -91,10 +91,11 @@ class Explore extends React.Component {
               profile={profile}
               workoutGroups={workoutGroups}
               workouts={this.state.workouts}
+              workoutQueryParam={workoutId}
+              parkQueryParam={parkId}
               footerActiveTab={footerActiveTab}
             />
-          </div>
-        }
+          </div>}
       </div>
     )
   }
@@ -122,6 +123,9 @@ const withData = graphql(GET_THROUGH_VIEWER, {
         endDateTime: {
           gte: new Date().toString(),
         },
+        slug: {
+          isNull: false,
+        },
       },
       orderBy: {
         field: 'startDateTime',
@@ -130,7 +134,9 @@ const withData = graphql(GET_THROUGH_VIEWER, {
     },
   }),
   props: ({ data: { viewer, loading, subscribeToMore } }) => ({
-    viewer, loading, subscribeToMore,
+    viewer,
+    loading,
+    subscribeToMore,
   }),
 })
 

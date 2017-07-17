@@ -24,7 +24,8 @@ class GridComponent extends React.Component {
     this.state = {
       indexedParks: {},
       loadedMapData: false,
-      openedParkId: '',
+      openedParkId: props.parkQueryParam || '',
+      selectedWorkoutId: props.workoutQueryParam || null,
     }
 
     this.geocoder = new this.googleMaps.Geocoder()
@@ -55,7 +56,10 @@ class GridComponent extends React.Component {
     // is there a way to set this at a higher container component so as to pass it to
     // add-workout route depending on our city?
 
-    const recreationCenters = foursquare.exploreVenues(centerLatLng, 'recreation center')
+    const recreationCenters = foursquare.exploreVenues(
+      centerLatLng,
+      'recreation center'
+    )
     const parks = foursquare.exploreVenues(centerLatLng, 'park')
 
     Promise.all([recreationCenters, parks])
@@ -66,12 +70,14 @@ class GridComponent extends React.Component {
         const indexedParks = {}
 
         // @todo: move this traversal to the utils files
-        parksAndRecs.map((park) => {
+        parksAndRecs.map(park => {
           const parkVenue = park.venue
 
           // need to iterate over workouts, matching them to the place_id, adding
           // them as an array to the indexedParks
-          const filteredWorkouts = workouts.filter((workout) => parkVenue.id === workout.node.parkId)
+          const filteredWorkouts = workouts.filter(
+            workout => parkVenue.id === workout.node.parkId
+          )
 
           indexedParks[parkVenue.id] = {
             parkId: parkVenue.id,
@@ -91,7 +97,7 @@ class GridComponent extends React.Component {
           loadedMapData: true,
         })
       })
-      .catch((err) => console.error(err))
+      .catch(err => console.error(err))
   }
 
   // Url generator for foursquare
@@ -125,12 +131,23 @@ class GridComponent extends React.Component {
   }
 
   render () {
-    const { centerLatLng, workouts, profile, onPlaceSelect, footerActiveTab } = this.props
-    const { loadedMapData, indexedParks, openedParkId, selectedWorkoutId } = this.state
+    const {
+      centerLatLng,
+      workouts,
+      profile,
+      onPlaceSelect,
+      footerActiveTab,
+    } = this.props
+    const {
+      loadedMapData,
+      indexedParks,
+      openedParkId,
+      selectedWorkoutId,
+    } = this.state
 
     return (
-      <div className='__app__body__container'>
-        <div className='__app__body__container__left'>
+      <div className="__app__body__container">
+        <div className="__app__body__container__left">
           {loadedMapData &&
             <MapContainer
               mapCenter={centerLatLng}
@@ -138,11 +155,10 @@ class GridComponent extends React.Component {
               indexedParks={indexedParks}
               openedParkId={openedParkId}
               geocoder={this.geocoder}
-              onMarkerClick={(parkId) => this.setActiveMarker(parkId)}
+              onMarkerClick={parkId => this.setActiveMarker(parkId)}
               onPlaceSelect={onPlaceSelect}
               footerActiveTab={footerActiveTab}
-            />
-          }
+            />}
           {/* this.state.openedParkId &&
             <ActivityContainer
               indexedParks={indexedParks}
@@ -154,7 +170,7 @@ class GridComponent extends React.Component {
         </div>
 
         {loadedMapData &&
-          <div className='__grid__list' >
+          <div className="__grid__list">
             {/* <Tabs className='__tabs__container'>
               <Tab label='Activities'> */}
             <AddActivity
@@ -164,11 +180,16 @@ class GridComponent extends React.Component {
               data={this.props.data}
             />
             <Activities
-              workouts={indexedParks[openedParkId] ? indexedParks[openedParkId].workouts : workouts}
+              workouts={
+                indexedParks[openedParkId]
+                  ? indexedParks[openedParkId].workouts
+                  : workouts
+              }
               indexedParks={indexedParks}
               profile={profile}
               selectedWorkoutId={selectedWorkoutId}
-              handleWorkoutClick={(parkId, workoutId) => this.handleWorkoutClick(parkId, workoutId)}
+              handleWorkoutClick={(parkId, workoutId) =>
+                this.handleWorkoutClick(parkId, workoutId)}
             />
             {/* </Tab> */}
             {/* <Tab label='Locations'>
@@ -180,8 +201,7 @@ class GridComponent extends React.Component {
                 />
               </Tab>
             </Tabs> */}
-          </div>
-        }
+          </div>}
       </div>
     )
   }
@@ -195,6 +215,8 @@ GridComponent.propTypes = {
   onPlaceSelect: PropTypes.func.isRequired,
   footerActiveTab: PropTypes.string.isRequired,
   data: PropTypes.object,
+  workoutQueryParam: PropTypes.any,
+  parkQueryParam: PropTypes.any,
 }
 
 export default GridComponent
