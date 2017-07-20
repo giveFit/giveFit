@@ -87,7 +87,7 @@ class App extends React.Component {
           auth={this.auth}
           profile={profile}
         />
-        <div id='body' className={`__app__body__container __${this.state.footerActiveTab}`}>
+        <div id='body' className={`__app__main__body__container __${this.state.footerActiveTab}`}>
           {this.renderChildren(profile, userId, this.state.footerActiveTab)}
         </div>
         <Footer
