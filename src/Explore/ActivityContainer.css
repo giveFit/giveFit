@@ -28,46 +28,46 @@
   align-items: center;
   padding-left: 1em;
   justify-content: space-between;
-};
+}
 
 .workout-date {
   color: grey;
   padding: 1em 1em 1em 0;
-};
+}
 
 .workout-description {
   border-bottom: 2px solid #efefef;
-};
+}
 
 .button-container {
   border-bottom: 2px solid #efefef;
   display: flex;
   justify-content: space-between;
-};
+}
 
 .rsvp-button {
   margin: 0.5em 0;
   box-shadow: 3px 3px 8px black;
   cursor: pointer;
-};
+}
 
 .share-button {
   align-items: center;
   display: flex;
   cursor: pointer;
-};
+}
 
 .share-icon {
   font-size: 2em;
   padding-left: 0.5em;
-};
+}
 
 .edit-icon {
   color: grey;
   padding-left: 0.4em;
   font-size: 1.2em;
   cursor: pointer;
-};
+}
 
 .chip {
   margin: 4;

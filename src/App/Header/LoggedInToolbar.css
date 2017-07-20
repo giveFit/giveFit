@@ -7,12 +7,12 @@
 }
 
 .avatar {
-    margin: 10px 15px 10px 10px;
+  margin: 10px 15px 10px 10px;
 }
 
 .title {
   cursor: pointer;
-};
+}
 
 .avatar {
   margin: 10px;
@@ -28,7 +28,7 @@
 }
 
 /* Small screens */
-@media all and (max-width: 480px) {
+@media all and (max-width: 560px) {
   .navigation {
     /* On small screens, we are no longer using row direction but column */
     flex-direction: column;
@@ -36,13 +36,13 @@
 }
 
 
-@media (min-width : 480px){
+@media (min-width : 560px){
   .iconMenu{
       display : none !important;
   }
 }
 
-@media (max-width : 480px){
+@media (max-width : 560px){
   .onlyLargeScreens{
       display : none !important;
   }

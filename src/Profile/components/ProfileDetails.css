@@ -55,10 +55,6 @@
 }
 
 @media all and (max-width: 560px) {
-  .__app__footer {
-    display: flex;
-  }
-
   .events__mobile {
     display: block;
   }
