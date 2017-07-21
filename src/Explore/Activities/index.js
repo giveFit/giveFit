@@ -5,8 +5,14 @@ import moment from 'moment'
 import { graphql, compose } from 'react-apollo'
 
 import { CardText, Chip, Avatar, Snackbar, RaisedButton, Paper } from 'material-ui'
+import IconMenu from 'material-ui/IconMenu'
+import MenuItem from 'material-ui/MenuItem'
+import IconButton from 'material-ui/IconButton'
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
 import PersonAdd from 'material-ui/svg-icons/social/person-add'
 import FitnessCenter from 'material-ui/svg-icons/places/fitness-center'
+import Delete from 'material-ui/svg-icons/action/delete'
+import ModeEdit from 'material-ui/svg-icons/editor/mode-edit'
 
 import {
   ADD_RSVP_FOR_WORKOUT,
@@ -203,17 +209,23 @@ class Activities extends React.Component {
                 <span>{workout.type}</span>
               </div>
               {workout.Workout.id === this.state.userId &&
-                <div className="__workout__edit">
-                  <i
-                    className="fa fa-pencil"
+                <IconMenu
+                  iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
+                  anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+                  targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                >
+                  <MenuItem
+                    onTouchTap={() => this.deleteWorkout(workout.id, workout.title, index)}
+                    primaryText='Delete'
+                    leftIcon={<Delete />}
+                  />
+                  <MenuItem
                     onTouchTap={() => this.editWorkout(workout.id, index)}
+                    primaryText='Edit'
+                    leftIcon={<ModeEdit />}
                   />
-                  <i
-                    className="fa fa-trash"
-                    onTouchTap={() =>
-                      this.deleteWorkout(workout.id, workout.title, index)}
-                  />
-                </div>}
+                </IconMenu>
+              }
             </div>
             <div className="__workout__image__container">
               <img
