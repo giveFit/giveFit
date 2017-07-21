@@ -4,7 +4,9 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 import { graphql, compose } from 'react-apollo'
 
-import { CardText, Chip, Avatar, Snackbar } from 'material-ui'
+import { CardText, Chip, Avatar, Snackbar, RaisedButton, Paper } from 'material-ui'
+import PersonAdd from 'material-ui/svg-icons/social/person-add'
+import FitnessCenter from 'material-ui/svg-icons/places/fitness-center'
 
 import {
   ADD_RSVP_FOR_WORKOUT,
@@ -55,7 +57,6 @@ class Activities extends React.Component {
       })
       .then(() => {
         this.message = 'Event added to your calendar'
-
         const workouts = this.state.workouts.slice()
         workouts[index] = Object.assign({}, workouts[index], {
           isUserRSVPed: true,
@@ -140,19 +141,25 @@ class Activities extends React.Component {
     if (!this.state.userId) {
       return
     }
-
     if (workout.isUserRSVPed) {
       return (
-        <i
-          className="fa fa-check-circle __share__icon"
+        <RaisedButton
+          label="You have RSVP'd!"
+          labelPosition="before"
+          secondary={true}
+          icon={<FitnessCenter />}
+          style={styles.button}
           onTouchTap={() => this.removeRSVPForWorkout(workout.id, index)}
         />
       )
     }
-
     return (
-      <i
-        className="fa fa-check-circle-o __share__icon"
+      <RaisedButton
+        label="RSVP to this Class"
+        labelPosition="before"
+        primary={true}
+        icon={<PersonAdd />}
+        style={styles.button}
         onTouchTap={() => this.addRSVPForWorkout(workout.id, index)}
       />
     )
@@ -167,93 +174,94 @@ class Activities extends React.Component {
       }
 
       return (
-        <CardText
-          key={`workout-${index}`}
-          className={
-            this.props.selectedWorkoutId === workout.id
-              ? '__selected__workout'
-              : ''
-          }
-        >
-          <div
-            className="__workout__header"
-            ref={c => {
-              this.refWorkouts[workout.id] = c
-            }}
+        <Paper zDepth={5} key={`workout-${index}`}>
+          <CardText
+            className={
+              this.props.selectedWorkoutId === workout.id
+                ? '__selected__workout'
+                : ''
+            }
           >
-            <Chip
-              onTouchTap={() => this.context.router.push('/profile')}
-              className="__chip"
+            <div
+              className="__workout__header"
+              ref={c => {
+                this.refWorkouts[workout.id] = c
+              }}
             >
-              <Avatar
-                src={workout.Workout.picture}
-                onClick={() => this.context.router.push('/profile')}
+              <Chip
+                onTouchTap={() => this.context.router.push('/profile')}
+                className="__chip"
+              >
+                <Avatar
+                  src={workout.Workout.picture}
+                  onClick={() => this.context.router.push('/profile')}
+                />
+                <span>{workout.Workout.nickname}</span>
+              </Chip>
+              <div className="__workout__title">
+                <span> <b>{workout.title}</b> </span>
+                <span>{workout.type}</span>
+              </div>
+              {workout.Workout.id === this.state.userId &&
+                <div className="__workout__edit">
+                  <i
+                    className="fa fa-pencil"
+                    onTouchTap={() => this.editWorkout(workout.id, index)}
+                  />
+                  <i
+                    className="fa fa-trash"
+                    onTouchTap={() =>
+                      this.deleteWorkout(workout.id, workout.title, index)}
+                  />
+                </div>}
+            </div>
+            <div className="__workout__image__container">
+              <img
+                width="100%"
+                src={workout.pictureURL}
+                onTouchTap={() => this.handleWorkoutClick(workout)}
               />
-              <span>{workout.Workout.nickname}</span>
-            </Chip>
-            <div className="__workout__title">
-              <span> <b>{workout.title}</b> </span>
-              <span>{workout.type}</span>
+              <div className="__workout__information">
+                <div>
+                  <span>
+                    {moment(workout.startDateTime).format(
+                      'ddd MMM Do, YYYY h:mm a'
+                    )}
+                    {' '}
+                    -
+                    {' '}
+                    {moment(workout.endDateTime).format('LT')}
+                  </span>
+                  <br />
+                  <span>{this.props.indexedParks[workout.parkId].title}</span>
+                  <br />
+                  {Boolean(RSVPCount) && <span>RSVPed: {RSVPCount}</span>}
+                </div>
+                <div>
+                  <i
+                    className="fa fa-share __share__icon"
+                    onTouchTap={() =>
+                      this.context.router.push(`/workout/${workout.slug}`)}
+                  />
+                </div>
+              </div>
             </div>
-            {workout.Workout.id === this.state.userId &&
-              <div className="__workout__edit">
-                <i
-                  className="fa fa-pencil"
-                  onTouchTap={() => this.editWorkout(workout.id, index)}
-                />
-                <i
-                  className="fa fa-trash"
-                  onTouchTap={() =>
-                    this.deleteWorkout(workout.id, workout.title, index)}
-                />
+            {workout.description &&
+              <div className="__description_container">
+                <div><b>Description</b></div>
+                <div>{workout.description}</div>
               </div>}
-          </div>
-          <div className="__workout__image__container">
-            <img
-              width="100%"
-              src={workout.pictureURL}
-              onTouchTap={() => this.handleWorkoutClick(workout)}
+            <div>{this.prepareRSVPButton(workout, index)}</div>
+            <Snackbar
+              open={this.state.snack}
+              message={this.message}
+              action="undo"
+              autoHideDuration={this.state.autoHideDuration}
+              onActionTouchTap={this.handleActionTouchTap.bind(this)}
+              onRequestClose={this.handleRequestClose.bind(this)}
             />
-            <div className="__workout__information">
-              <div>
-                <span>
-                  {moment(workout.startDateTime).format(
-                    'ddd MMM Do, YYYY h:mm a'
-                  )}
-                  {' '}
-                  -
-                  {' '}
-                  {moment(workout.endDateTime).format('LT')}
-                </span>
-                <br />
-                <span>{this.props.indexedParks[workout.parkId].title}</span>
-                <br />
-                {Boolean(RSVPCount) && <span>RSVPed: {RSVPCount}</span>}
-              </div>
-              <div>{this.prepareRSVPButton(workout, index)}</div>
-              <div>
-                <i
-                  className="fa fa-share __share__icon"
-                  onTouchTap={() =>
-                    this.context.router.push(`/workout/${workout.slug}`)}
-                />
-              </div>
-            </div>
-          </div>
-          {workout.description &&
-            <div className="__description_container">
-              <div><b>Description</b></div>
-              <div>{workout.description}</div>
-            </div>}
-          <Snackbar
-            open={this.state.snack}
-            message={this.message}
-            action="undo"
-            autoHideDuration={this.state.autoHideDuration}
-            onActionTouchTap={this.handleActionTouchTap.bind(this)}
-            onRequestClose={this.handleRequestClose.bind(this)}
-          />
-        </CardText>
+          </CardText>
+        </Paper>
       )
     })
   }
@@ -276,6 +284,12 @@ class Activities extends React.Component {
       </div>
     )
   }
+}
+
+const styles = {
+  button: {
+    margin: 12,
+  },
 }
 
 Activities.propTypes = {
