@@ -8,11 +8,17 @@ import { CardText, Chip, Avatar, Snackbar, RaisedButton, Paper } from 'material-
 import IconMenu from 'material-ui/IconMenu'
 import MenuItem from 'material-ui/MenuItem'
 import IconButton from 'material-ui/IconButton'
+
+// icons
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
 import PersonAdd from 'material-ui/svg-icons/social/person-add'
 import FitnessCenter from 'material-ui/svg-icons/places/fitness-center'
 import Delete from 'material-ui/svg-icons/action/delete'
 import ModeEdit from 'material-ui/svg-icons/editor/mode-edit'
+import Share from 'material-ui/svg-icons/social/share'
+
+//colors
+import {red500} from 'material-ui/styles/colors'
 
 import {
   ADD_RSVP_FOR_WORKOUT,
@@ -235,6 +241,23 @@ class Activities extends React.Component {
               />
               <div className="__workout__information">
                 <div>
+                  <span>{this.props.indexedParks[workout.parkId].title}</span>
+                  <br />
+                  {Boolean(RSVPCount) && <span>RSVPed: {RSVPCount}</span>}
+                </div>
+                <div>
+                  <IconButton tooltip="Share">
+                    <Share
+                      onTouchTap={() => this.context.router.push(`/workout/${workout.slug}`)}
+                      hoverColor={red500}
+                    />
+                  </IconButton>
+                </div>
+              </div>
+            </div>
+            {workout.description &&
+              <div className="__description_container">
+                <strong>
                   <span>
                     {moment(workout.startDateTime).format(
                       'ddd MMM Do, YYYY h:mm a'
@@ -244,23 +267,7 @@ class Activities extends React.Component {
                     {' '}
                     {moment(workout.endDateTime).format('LT')}
                   </span>
-                  <br />
-                  <span>{this.props.indexedParks[workout.parkId].title}</span>
-                  <br />
-                  {Boolean(RSVPCount) && <span>RSVPed: {RSVPCount}</span>}
-                </div>
-                <div>
-                  <i
-                    className="fa fa-share __share__icon"
-                    onTouchTap={() =>
-                      this.context.router.push(`/workout/${workout.slug}`)}
-                  />
-                </div>
-              </div>
-            </div>
-            {workout.description &&
-              <div className="__description_container">
-                <div><b>Description</b></div>
+                </strong>
                 <div>{workout.description}</div>
               </div>}
             <div>{this.prepareRSVPButton(workout, index)}</div>
