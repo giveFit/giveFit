@@ -17,7 +17,7 @@ import Delete from 'material-ui/svg-icons/action/delete'
 import ModeEdit from 'material-ui/svg-icons/editor/mode-edit'
 import Share from 'material-ui/svg-icons/social/share'
 
-//colors
+// colors
 import {red500} from 'material-ui/styles/colors'
 
 import {
