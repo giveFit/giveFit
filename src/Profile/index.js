@@ -4,13 +4,14 @@ import moment from 'moment'
 import { graphql, compose } from 'react-apollo'
 import BigCalendar from 'react-big-calendar'
 import Dialog from 'material-ui/Dialog'
+import { Tabs, Tab } from 'material-ui/Tabs'
 
 import foursquare from 'utils/foursquare'
 import { GET_USER_WORKOUTS, UPDATE_USER_QUERY } from './gql'
 
-import ProfileHeader from './components/ProfileHeader'
 import ProfileDetails from './components/ProfileDetails'
 import Event from './components/Event'
+import AddClassesWithData from './components/AddClasses'
 
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import './styles.css'
@@ -86,28 +87,6 @@ class Profile extends React.Component {
           user: workout.Workout,
         })
       }
-
-      Promise.all(Object.keys(parksDictionary).map((parkId) => {
-        return foursquare.getVenueInfoById(parkId)
-          .then((venueInfo) => {
-            parksDictionary[parkId].title = venueInfo.name
-            parksDictionary[parkId].location = venueInfo.location.formattedAddress.toString()
-          })
-      }))
-        .then(() => {
-          this.setState({
-            user: data.getUser,
-            events: events.map((event) => {
-              const park = parksDictionary[event.parkId]
-
-              event.title = event.rsvp ? `${park.title} (RSVP'd)` : park.title
-              event.location = park.location
-
-              return event
-            }),
-          })
-        })
-        .catch((err) => console.error(err))
     }
   }
 
@@ -168,11 +147,6 @@ class Profile extends React.Component {
 
     return (
       <div className='home'>
-        <ProfileHeader
-          headerPhotoURL={this.state.userFieldsToUpdate.headerPhotoURL || user.headerPhotoURL}
-          editMode={editMode}
-          onProfileHeaderChange={(url) => this.userFieldsToUpdate('headerPhotoURL', url)}
-        />
         <ProfileDetails
           description={this.state.userFieldsToUpdate.description || user.description }
           nickname={this.state.userFieldsToUpdate.nickname || user.nickname }
@@ -185,36 +159,54 @@ class Profile extends React.Component {
           onProfilePhotoChange={(url) => this.userFieldsToUpdate('picture', url)}
         />
         {this.prepareEventsForMobile(events)}
-        <BigCalendar
-          events={events}
-          defaultView='agenda'
-          eventPropGetter={(event) => {
-            return {
-              className: event.rsvp ? 'rsvpd' : '',
-            }
-          }}
-          onSelectEvent={(event) => {
-            this.setState({
-              eventDialogOpen: true,
-              eventDialogInfo: {
-                title: event.title,
-                location: event.location,
-                start: event.start,
-                end: event.end,
-                rsvp: Boolean(event.rsvp),
-              },
-            })
-          }}
-        />
-        <Dialog
-          title={eventDialogInfo.title}
-          open={eventDialogOpen}
-          onRequestClose={() => this.setState({ eventDialogOpen: false })}
-        >
-          <div><b>Location:</b> {eventDialogInfo.location}</div>
-          <div><b>Start:</b> {moment(eventDialogInfo.start).format('LLLL')}</div>
-          <div><b>End:</b> {moment(eventDialogInfo.end).format('LLLL')}</div>
-        </Dialog>
+        <Tabs>
+          <Tab label="Calendar">
+            {/* <BigCalendar
+              events={events}
+              defaultView='agenda'
+              eventPropGetter={(event) => {
+                return {
+                  className: event.rsvp ? 'rsvpd' : '',
+                }
+              }}
+              onSelectEvent={(event) => {
+                this.setState({
+                  eventDialogOpen: true,
+                  eventDialogInfo: {
+                    title: event.title,
+                    location: event.location,
+                    start: event.start,
+                    end: event.end,
+                    rsvp: Boolean(event.rsvp),
+                  },
+                })
+              }}
+            /> */}
+          </Tab>
+          <Tab label="Add Activities">
+            {/* looking at whether the user has a "PaidUser" connection, if not
+            direct them to sign up...
+            @todo: improve onboarding flow of new paid users */}
+            <AddClassesWithData />
+            {/* @todo: this section is working on permissions for who can and
+            cannot add a workout */}
+            {/* { this.props.data.getUser.PaidUserConnect
+              ? <AddClassesWithData />
+              : <div>
+              Please email jake@givefit.net to access this feature
+              </div>
+            } */}
+          </Tab>
+          <Dialog
+            title={eventDialogInfo.title}
+            open={eventDialogOpen}
+            onRequestClose={() => this.setState({ eventDialogOpen: false })}
+          >
+            <div><b>Location:</b> {eventDialogInfo.location}</div>
+            <div><b>Start:</b> {moment(eventDialogInfo.start).format('LLLL')}</div>
+            <div><b>End:</b> {moment(eventDialogInfo.end).format('LLLL')}</div>
+          </Dialog>
+        </Tabs>
       </div>
     )
   }
