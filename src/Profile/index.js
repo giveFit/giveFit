@@ -8,7 +8,7 @@ import { Tabs, Tab } from 'material-ui/Tabs'
 
 import { GET_USER_WORKOUTS, UPDATE_USER_QUERY } from './gql'
 
-import ProfileDetails from './components/ProfileDetails'
+// import ProfileDetails from './components/ProfileDetails'
 import Event from './components/Event'
 import AddClassesWithData from './components/AddClasses'
 
@@ -22,14 +22,13 @@ BigCalendar.momentLocalizer(moment) // or globalizeLocalizer
 /* possible reference: https://github.com/scaphold-io/auth0-lock-playground */
 class Profile extends React.Component {
   constructor (props) {
-    console.log('profile props', props)
     super(props)
 
     this.state = {
-      editMode: false,
+      // editMode: false,
       userFieldsToUpdate: {},
       todaysDate: moment(),
-      user: null,
+      // user: null,
       events: [],
       eventDialogOpen: false,
       eventDialogInfo: {},
@@ -127,7 +126,8 @@ class Profile extends React.Component {
   }
 
   render () {
-    const { user, editMode, events, eventDialogInfo, eventDialogOpen, error } = this.state
+    /* const { user, editMode, events, eventDialogInfo, eventDialogOpen, error } = this.state */
+    const { events, eventDialogInfo, eventDialogOpen, error } = this.state
 
     if (error) {
       return (
@@ -137,17 +137,17 @@ class Profile extends React.Component {
       )
     }
 
-    /*if (!user) {
+    /* if (!user) {
       return (
         <div className='home'>
           <div>Loading...</div>
         </div>
       )
-    }*/
+    } */
 
     return (
       <div className='home'>
-       {/* <ProfileDetails
+        {/* <ProfileDetails
           description={this.state.userFieldsToUpdate.description || user.description }
           nickname={this.state.userFieldsToUpdate.nickname || user.nickname }
           picture={this.state.userFieldsToUpdate.picture || user.picture }
@@ -157,7 +157,7 @@ class Profile extends React.Component {
           onUserDescriptionChange={(description) => this.userFieldsToUpdate('description', description)}
           onUserNicknameChange={(nickname) => this.userFieldsToUpdate('nickname', nickname)}
           onProfilePhotoChange={(url) => this.userFieldsToUpdate('picture', url)}
-        />*/}
+        /> */}
         {this.prepareEventsForMobile(events)}
         <Tabs>
           {/* <Tab label="Calendar">

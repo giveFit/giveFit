@@ -1,33 +1,30 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import PlacesAutocomplete, { geocodeByAddress, geocodeByPlaceId, getLatLng } from 'react-places-autocomplete'
 
 class AutoForm extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = { address: '' }
     this.onChange = (address) => this.setState({ address })
   }
 
-  handleFormSubmit(event) {
-    console.log('asd')
+  handleFormSubmit (event) {
     event.preventDefault()
 
     geocodeByPlaceId(this.state.address)
       .then(results => getLatLng(results[0]))
-      .then(latLng => console.log('Success', latLng))
       .catch(error => console.error('Error', error))
   }
   handleSelect (address, placeId) {
-    console.log(address, placeId)
     this.setState({ address, placeId })
     geocodeByPlaceId(placeId)
       .then(results => getLatLng(results[0]))
-      .then(({ lat, lng }) => this.props.onChange( address, placeId, lat, lng ))
+      .then(({ lat, lng }) => this.props.onChange(address, placeId, lat, lng))
   }
   handleEnter (address) {
     geocodeByAddress(address)
       .then(results => {
-      console.log('handleEnter results', results)
       })
   }
   // You can do other things with address string or placeId. For example, geocode :)
@@ -89,7 +86,11 @@ const defaultStyles = {
   },
   autocompleteItemActive: {
     backgroundColor: '#fafafa',
-  }
+  },
+}
+
+AutoForm.propTypes = {
+  onChange: PropTypes.func.isRequired,
 }
 
 export default AutoForm
