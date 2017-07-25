@@ -1,17 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-// import TextField from 'material-ui/TextField'
+
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 
 const NoRecurring = ({ onChange, errorText = null, value }) => {
   return (
     <div>
-      {/* <TextField
-        hintText='Enter the number of weeks'
-        errorText={errorText}
-        onChange={(e) => onChange(e.target.value)}
-      /> */}
       <SelectField
         floatingLabelText="Number of weeks"
         autoWidth={true}

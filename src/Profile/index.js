@@ -8,7 +8,7 @@ import { Tabs, Tab } from 'material-ui/Tabs'
 
 import { GET_USER_WORKOUTS, UPDATE_USER_QUERY } from './gql'
 
-// import ProfileDetails from './components/ProfileDetails'
+import ProfileDetails from './components/ProfileDetails'
 import Event from './components/Event'
 import AddClassesWithData from './components/AddClasses'
 
@@ -25,10 +25,10 @@ class Profile extends React.Component {
     super(props)
 
     this.state = {
-      // editMode: false,
+      editMode: false,
       userFieldsToUpdate: {},
       todaysDate: moment(),
-      // user: null,
+      user: null,
       events: [],
       eventDialogOpen: false,
       eventDialogInfo: {},
@@ -58,12 +58,13 @@ class Profile extends React.Component {
       const userWorkouts = data.getUser.Workout.edges
       const userWorkoutRSVPs = data.getUser.WorkoutRSVP.edges
 
+      console.log('wor', userWorkouts)
+
       for (let i = 0; i < userWorkouts.length; i++) {
         const workout = userWorkouts[i].node
-
         parksDictionary[workout.parkId] = {}
-
         events.push({
+          title: workout.workoutLocation,
           parkId: workout.parkId,
           description: workout.description,
           start: new Date(workout.startDateTime),
@@ -86,6 +87,13 @@ class Profile extends React.Component {
           user: workout.Workout,
         })
       }
+
+      console.log(events, 'events')
+
+      this.setState({
+        user: data.getUser,
+        events,
+      })
     }
   }
 
@@ -126,8 +134,8 @@ class Profile extends React.Component {
   }
 
   render () {
-    /* const { user, editMode, events, eventDialogInfo, eventDialogOpen, error } = this.state */
-    const { events, eventDialogInfo, eventDialogOpen, error } = this.state
+    const { user, editMode, events, eventDialogInfo, eventDialogOpen, error } = this.state
+    // const { events, eventDialogInfo, eventDialogOpen, error } = this.state
 
     if (error) {
       return (
@@ -137,30 +145,29 @@ class Profile extends React.Component {
       )
     }
 
-    /* if (!user) {
+    if (!user) {
       return (
         <div className='home'>
           <div>Loading...</div>
         </div>
       )
-    } */
+    }
 
     return (
       <div className='home'>
-        {/* <ProfileDetails
+        <ProfileDetails
           description={this.state.userFieldsToUpdate.description || user.description }
           nickname={this.state.userFieldsToUpdate.nickname || user.nickname }
-          picture={this.state.userFieldsToUpdate.picture || user.picture }
+          picture={this.state.userFieldsToUpdate && this.state.userFieldsToUpdate.picture || user.picture }
           editMode={editMode}
           onEnableEdit={(editMode) => this.toggleEdit(editMode)}
           onSaveProfileChanges={(...args) => this.onSaveProfileChanges(...args)}
           onUserDescriptionChange={(description) => this.userFieldsToUpdate('description', description)}
           onUserNicknameChange={(nickname) => this.userFieldsToUpdate('nickname', nickname)}
           onProfilePhotoChange={(url) => this.userFieldsToUpdate('picture', url)}
-        /> */}
-        {this.prepareEventsForMobile(events)}
+        />
         <Tabs>
-          {/* <Tab label="Calendar">
+          <Tab label="Calendar">
             <BigCalendar
               events={events}
               defaultView='agenda'
@@ -182,11 +189,8 @@ class Profile extends React.Component {
                 })
               }}
             />
-          </Tab> */}
+          </Tab>
           <Tab label="Add Activities">
-            {/* looking at whether the user has a "PaidUser" connection, if not
-            direct them to sign up...
-            @todo: improve onboarding flow of new paid users */}
             <AddClassesWithData />
             {/* @todo: this section is working on permissions for who can and
             cannot add a workout */}

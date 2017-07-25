@@ -16,6 +16,8 @@ query GetUserWorkouts($id:ID!, $first: Int, $where: WorkoutWhereArgs!, $orderBy:
             title
             description
             startDateTime
+            workoutAddress
+            workoutLocation
             endDateTime
             Workout {
               id

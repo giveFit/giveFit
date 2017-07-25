@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import TextField from 'material-ui/TextField'
 
-class AditionalAddress extends React.Component {
+class WorkoutLocation extends React.Component {
   render () {
     return (
       <div style={{marginTop: 18}}>
@@ -11,7 +11,7 @@ class AditionalAddress extends React.Component {
         <br />
         <TextField
           style={{marginTop: 5, marginLeft: 10}}
-          hintText="Additional Address"
+          hintText="Workout Location"
           onChange={(e, value) => this.props.onChange(value)}
         /><br />
       </div>
@@ -19,8 +19,8 @@ class AditionalAddress extends React.Component {
   }
 }
 
-AditionalAddress.propTypes = {
+WorkoutLocation.propTypes = {
   onChange: PropTypes.func.isRequired,
 }
 
-export default AditionalAddress
+export default WorkoutLocation

@@ -10,7 +10,7 @@ import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 
 import AutoForm from './fields/SimpleForm'
-import AdditionalAddress from './fields/additionalAddress'
+import WorkoutLocation from './fields/workoutLocation'
 import FieldTitle from './fields/title'
 import FieldType from './fields/type'
 import FieldPictureURL from 'components/UploadPicture'
@@ -66,7 +66,7 @@ class AddClasses extends React.Component {
 
   onChangeMap (address, id, lat, lng) {
     this.setState({
-      workoutLocation: address.address,
+      workoutAddress: address.address,
       parkId: address.parkId,
       lat: address.lat,
       lng: address.lng,
@@ -87,6 +87,7 @@ class AddClasses extends React.Component {
       parkId,
       userEmail,
       recurring,
+      recurringWeeks,
       workoutLocation,
       workoutAddress,
     } = this.state
@@ -123,6 +124,7 @@ class AddClasses extends React.Component {
       parkId,
       userEmail,
       recurring,
+      recurringWeeks,
       _geoloc,
       slug,
       workoutLocation,
@@ -131,6 +133,7 @@ class AddClasses extends React.Component {
       workoutId: JSON.parse(window.localStorage.getItem('scapholdUserId')),
     })
       .then(({ data }) => {
+        console.log('data', data)
         this.setState({
           open: false,
           requestTrainer: false,
@@ -234,8 +237,8 @@ class AddClasses extends React.Component {
         <AutoForm
           onChange={(address, parkId, lat, lng) => this.onChangeMap({ address, parkId, lat, lng })}
         />
-        <AdditionalAddress
-          onChange={workoutAddress => this.setState({ workoutAddress })}
+        <WorkoutLocation
+          onChange={workoutLocation => this.setState({ workoutLocation })}
         />
         <div>
           <FieldRecurring
@@ -307,7 +310,6 @@ const AddClassesWithData = withApollo(graphql(CREATE_WORKOUT, {
           workoutAddress: workoutAddress,
           workoutLocation: workoutLocation,
         }
-
         if (recurring === true) {
           try {
             for (var i = 0; i < recurringWeeks - 1; i++) {
