@@ -6,7 +6,6 @@ import BigCalendar from 'react-big-calendar'
 import Dialog from 'material-ui/Dialog'
 import { Tabs, Tab } from 'material-ui/Tabs'
 
-import foursquare from 'utils/foursquare'
 import { GET_USER_WORKOUTS, UPDATE_USER_QUERY } from './gql'
 
 import ProfileDetails from './components/ProfileDetails'
@@ -23,6 +22,7 @@ BigCalendar.momentLocalizer(moment) // or globalizeLocalizer
 /* possible reference: https://github.com/scaphold-io/auth0-lock-playground */
 class Profile extends React.Component {
   constructor (props) {
+    console.log('profile props', props)
     super(props)
 
     this.state = {
@@ -137,17 +137,17 @@ class Profile extends React.Component {
       )
     }
 
-    if (!user) {
+    /*if (!user) {
       return (
         <div className='home'>
           <div>Loading...</div>
         </div>
       )
-    }
+    }*/
 
     return (
       <div className='home'>
-        <ProfileDetails
+       {/* <ProfileDetails
           description={this.state.userFieldsToUpdate.description || user.description }
           nickname={this.state.userFieldsToUpdate.nickname || user.nickname }
           picture={this.state.userFieldsToUpdate.picture || user.picture }
@@ -157,11 +157,11 @@ class Profile extends React.Component {
           onUserDescriptionChange={(description) => this.userFieldsToUpdate('description', description)}
           onUserNicknameChange={(nickname) => this.userFieldsToUpdate('nickname', nickname)}
           onProfilePhotoChange={(url) => this.userFieldsToUpdate('picture', url)}
-        />
+        />*/}
         {this.prepareEventsForMobile(events)}
         <Tabs>
-          <Tab label="Calendar">
-            {/* <BigCalendar
+          {/* <Tab label="Calendar">
+            <BigCalendar
               events={events}
               defaultView='agenda'
               eventPropGetter={(event) => {
@@ -181,8 +181,8 @@ class Profile extends React.Component {
                   },
                 })
               }}
-            /> */}
-          </Tab>
+            />
+          </Tab> */}
           <Tab label="Add Activities">
             {/* looking at whether the user has a "PaidUser" connection, if not
             direct them to sign up...
@@ -197,16 +197,16 @@ class Profile extends React.Component {
               </div>
             } */}
           </Tab>
-          <Dialog
-            title={eventDialogInfo.title}
-            open={eventDialogOpen}
-            onRequestClose={() => this.setState({ eventDialogOpen: false })}
-          >
-            <div><b>Location:</b> {eventDialogInfo.location}</div>
-            <div><b>Start:</b> {moment(eventDialogInfo.start).format('LLLL')}</div>
-            <div><b>End:</b> {moment(eventDialogInfo.end).format('LLLL')}</div>
-          </Dialog>
         </Tabs>
+        <Dialog
+          title={eventDialogInfo.title}
+          open={eventDialogOpen}
+          onRequestClose={() => this.setState({ eventDialogOpen: false })}
+        >
+          <div><b>Location:</b> {eventDialogInfo.location}</div>
+          <div><b>Start:</b> {moment(eventDialogInfo.start).format('LLLL')}</div>
+          <div><b>End:</b> {moment(eventDialogInfo.end).format('LLLL')}</div>
+        </Dialog>
       </div>
     )
   }

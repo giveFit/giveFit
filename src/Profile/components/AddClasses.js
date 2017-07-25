@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { graphql, withApollo } from 'react-apollo'
 import slugify from 'slugify'
-import foursquare from 'utils/foursquare'
 import moment from 'moment'
 
 import { CREATE_WORKOUT } from '../gql'
@@ -10,13 +9,14 @@ import { CREATE_WORKOUT } from '../gql'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 
+import AutoForm from './fields/SimpleForm'
+import AdditionalAddress from './fields/additionalAddress'
 import FieldTitle from './fields/title'
 import FieldType from './fields/type'
 import FieldPictureURL from 'components/UploadPicture'
 import FieldDate from './fields/Date'
 import FieldStartTime from './fields/StartTime'
 import FieldEndTime from './fields/EndTime'
-import FieldLocation from './fields/location'
 import FieldRequestTrainer from './fields/requestTrainer'
 import FieldDescription from './fields/description'
 import FieldEmail from './fields/email'
@@ -50,6 +50,8 @@ class AddClasses extends React.Component {
       indexedParks: null,
       places: [],
       date: new Date(),
+      location: null,
+      workoutLocation: '',
     }
 
     this.auth = new AuthService(process.env.AUTH0_CLIENT_ID, process.env.AUTH0_DOMAIN)
@@ -62,59 +64,13 @@ class AddClasses extends React.Component {
     }
   }
 
-  componentDidMount () {
-    this.fetchParks()
-  }
-
-  fetchParks () {
-    const recreationCenters = foursquare.exploreVenues(this.centerLatLng, 'recreation center')
-    const parks = foursquare.exploreVenues(this.centerLatLng, 'park')
-
-    Promise.all([recreationCenters, parks])
-      .then(([recCenters, parksResults]) => {
-        const parksAndRecs = parksResults.concat(recCenters)
-
-        // Build parks by ID object
-        const indexedParks = {}
-
-        // @todo: move this traversal to the utils files
-        parksAndRecs.map((park) => {
-          const parkVenue = park.venue
-
-          // need to iterate over workouts, matching them to the place_id, adding
-          // them as an array to the indexedParks
-
-          indexedParks[parkVenue.id] = {
-            parkId: parkVenue.id,
-            title: parkVenue.name,
-            position: {
-              lat: parkVenue.location.lat,
-              lng: parkVenue.location.lng,
-            },
-            // photos: this.foursquareGetUrl(parkVenue.photos),
-            vicinity: parkVenue.location.address,
-          }
-        })
-
-        this.setState({
-          indexedParks,
-          loadedMapData: true,
-        })
-        var places = Object.keys(indexedParks).map((placeID) => {
-          const place = indexedParks[placeID]
-
-          return {
-            title: place.title,
-            id: place.parkId,
-            _geoloc: place.position,
-          }
-        })
-
-        this.setState({
-          places: places,
-        })
-      })
-      .catch((err) => console.error(err))
+  onChangeMap (address, id, lat, lng) {
+    this.setState({
+      workoutLocation: address.address,
+      parkId: address.parkId,
+      lat: address.lat,
+      lng: address.lng,
+    })
   }
 
   createWorkout () {
@@ -131,6 +87,8 @@ class AddClasses extends React.Component {
       parkId,
       userEmail,
       recurring,
+      workoutLocation,
+      workoutAddress,
     } = this.state
 
     // @todo: consider replacing this random number with uuid: https://github.com/makeable/uuid-v4.js
@@ -139,8 +97,8 @@ class AddClasses extends React.Component {
     var slug = slugify(titleAndSlugString).toLowerCase()
 
     if (parkId) {
-      _geoloc.lng = this.state.indexedParks[parkId].position.lng
-      _geoloc.lat = this.state.indexedParks[parkId].position.lat
+      _geoloc.lng = this.state.lat
+      _geoloc.lat = this.state.lng
     }
 
     if (date && startDateTime && endDateTime) {
@@ -167,6 +125,8 @@ class AddClasses extends React.Component {
       recurring,
       _geoloc,
       slug,
+      workoutLocation,
+      workoutAddress,
       // workoutId is the id of the loggedInUser, allowing us to make a connection in our data graph
       workoutId: JSON.parse(window.localStorage.getItem('scapholdUserId')),
     })
@@ -184,6 +144,8 @@ class AddClasses extends React.Component {
           parkId: null,
           recurring: false,
           slug: null,
+          workoutLocation: '',
+          workoutAddress: '',
         })
       }).catch((error) => {
         console.error(error)
@@ -263,19 +225,18 @@ class AddClasses extends React.Component {
             onChange={(endDateTime) => this.setState({ endDateTime })}
             errorText={this.state.errors.endDateTime}
           />
-          <FieldLocation
-            onChange={(parkId) => this.setState({ parkId })}
-            places={this.state.places}
-            parkId={this.state.parkId}
-            errorText={this.state.errors.parkId}
-          />
         </div>
-
         <FieldDescription
           onChange={(description) => this.setState({ description })}
           errorText={this.state.errors.description}
         />
         <FieldPublic />
+        <AutoForm
+          onChange={(address, parkId, lat, lng) => this.onChangeMap({ address, parkId, lat, lng })}
+        />
+        <AdditionalAddress
+          onChange={workoutAddress => this.setState({ workoutAddress })}
+        />
         <div>
           <FieldRecurring
             onCheck={() => this.setState({ recurring: !this.state.recurring })}
@@ -305,6 +266,8 @@ class AddClasses extends React.Component {
               />
           }
         </div>
+        {/* Need a way to refresh the page/direct you to your new workout?
+        toast + reset the fields?  */}
         <FlatButton
           key='loggedInDialog'
           label='Submit'
@@ -325,7 +288,7 @@ AddClasses.propTypes = {
 const AddClassesWithData = withApollo(graphql(CREATE_WORKOUT, {
   props ({ ownProps, mutate }) {
     return {
-      createWorkout ({title, type, startDateTime, endDateTime, description, requestTrainer, pictureURL, parkId, userEmail, recurring, _geoloc, slug, workoutId, recurringWeeks}) {
+      createWorkout ({title, type, startDateTime, endDateTime, description, requestTrainer, pictureURL, parkId, userEmail, recurring, _geoloc, slug, workoutId, recurringWeeks, workoutAddress, workoutLocation}) {
         var input = {
           title: title,
           type: type,
@@ -341,6 +304,8 @@ const AddClassesWithData = withApollo(graphql(CREATE_WORKOUT, {
           _geoloc: _geoloc,
           slug: slug,
           workoutId: workoutId,
+          workoutAddress: workoutAddress,
+          workoutLocation: workoutLocation,
         }
 
         if (recurring === true) {
